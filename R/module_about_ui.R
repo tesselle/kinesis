@@ -16,7 +16,7 @@ module_about_ui <- function(id) {
         align = "center",
         offset = 2,
         wellPanel(
-          img(src = "/logo.png", width = "120px", alt = "janus"),
+          img(src = "logo.png", width = "120px", alt = "janus"),
           h4(
             paste("janus", utils::packageVersion("janus"), sep = " ")
           ),

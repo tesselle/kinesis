@@ -36,6 +36,23 @@ library(janus)
 run_app("seriate")
 ```
 
+## Deploy on shinyapps.io
+
+Download the [package
+source](http://github.com/tesselle/janus/archive/master.zip) from
+GitHub, open the `janus.Rproj` in RStudio, then deploy to
+[shinyapps.io](https://www.shinyapps.io) (assuming
+[**rsconnect**](https://github.com/rstudio/rsconnect) is properly
+configured).
+
+``` r
+## Load package
+devtools::load_all(".")
+
+## Deploy
+deploy("seriate")
+```
+
 ## Contributing
 
 Please note that the **janus** project is released with a [Contributor

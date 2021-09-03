@@ -17,4 +17,6 @@
 ^\.Rproj\.user$
 ^\.github$
 ^\.httr-oauth$
+^app\.R$
 ^revdep$
+^rsconnect$

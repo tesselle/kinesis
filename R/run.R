@@ -16,7 +16,7 @@
 #'  }
 #' @examples
 #' \dontrun{
-#' run_app("seriation")
+#' run_app("seriate")
 #' }
 #' @return A \pkg{shiny} application object.
 #' @family shiny

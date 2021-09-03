@@ -30,7 +30,7 @@ Matrix Seriation \tab \code{seriate} \cr
 }
 \examples{
 \dontrun{
-run_app("seriation")
+run_app("seriate")
 }
 }
 \author{
