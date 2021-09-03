@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person(given = "Nicolas",
            family = "Frerebeau",
-           role = "aut",
+           role = c("aut", "cre"),
            email = "nicolas.frerebeau@u-bordeaux-montaigne.fr",
            comment = c(ORCID = "0000-0001-5759-4944"))
 Maintainer: Nicolas Frerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>
@@ -14,7 +14,13 @@ License: GPL (>= 3)
 URL: https://github.com/tesselle/janus
 BugReports: https://github.com/tesselle/janus/issues
 Imports: 
-    shiny
+    arkhe,
+    pkgload,
+    shiny,
+    stats,
+    tabula,
+    tools,
+    utils
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
