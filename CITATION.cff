@@ -1,0 +1,50 @@
+# -----------------------------------------------------------
+# CITATION file created with {cffr} R package, v0.1.0
+# See also: https://docs.ropensci.org/cffr/
+# -----------------------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "janus" in publications use:'
+type: software
+license: GPL-3.0-or-later
+title: 'janus: ''Shiny'' Applications for the tesselle R Packages'
+version: 0.0.0.9000
+abstract: A collection of 'shiny' applications for the tesselle R packages.
+authors:
+- family-names: Frerebeau
+  given-names: Nicolas
+  email: nicolas.frerebeau@u-bordeaux-montaigne.fr
+  orcid: https://orcid.org/0000-0001-5759-4944
+  affiliation: Université Bordeaux Montaigne
+preferred-citation:
+  type: manual
+  title: 'janus: ''Shiny'' Applications for the tesselle R Packages'
+  authors:
+  - family-names: Frerebeau
+    given-names: Nicolas
+    email: nicolas.frerebeau@u-bordeaux-montaigne.fr
+    orcid: https://orcid.org/0000-0001-5759-4944
+    affiliation: Université Bordeaux Montaigne
+  version: 0.0.0.9000
+  abstract: A collection of 'shiny' applications for the tesselle R packages.
+  repository-code: https://github.com/tesselle/janus
+  url: https://github.com/tesselle/janus
+  contact:
+  - family-names: Frerebeau
+    given-names: Nicolas
+    email: nicolas.frerebeau@u-bordeaux-montaigne.fr
+    orcid: https://orcid.org/0000-0001-5759-4944
+    affiliation: Université Bordeaux Montaigne
+  license: GPL-3.0-or-later
+  year: '2021'
+repository-code: https://github.com/tesselle/janus
+url: https://github.com/tesselle/janus
+contact:
+- family-names: Frerebeau
+  given-names: Nicolas
+  email: nicolas.frerebeau@u-bordeaux-montaigne.fr
+  orcid: https://orcid.org/0000-0001-5759-4944
+  affiliation: Université Bordeaux Montaigne
+keywords:
+- shiny-apps
+- r package

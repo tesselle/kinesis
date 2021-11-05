@@ -16,7 +16,6 @@ A collection of 'shiny' applications for the tesselle R
 \strong{Type:} \tab Package \cr
 \strong{Version:} \tab 0.0.0.9000 \cr
 \strong{License:} \tab GPL-3 \cr
-\strong{Zenodo:} \tab
 }
 }
 \seealso{
