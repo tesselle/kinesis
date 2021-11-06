@@ -33,6 +33,7 @@
 #' @importFrom dimensio bootstrap ca get_eigenvalues plot_columns
 #' plot_contributions plot_rows plot_variance
 #' @importFrom ggplot2 theme_bw
+#' @importFrom khroma colour info
 #' @importFrom tabula permute plot_bertin plot_ford plot_heatmap
 #' plot_spot seriate_average
 NULL

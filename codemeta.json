@@ -105,6 +105,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "khroma",
+      "name": "khroma",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=khroma"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
       "provider": {
@@ -144,7 +156,7 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "208.967KB",
+  "fileSize": "214.593KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",

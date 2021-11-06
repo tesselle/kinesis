@@ -14,5 +14,6 @@ shiny_server <- function(input, output, session) {
   callModule(module_ca_server, "ca", user_data, user_settings)
   callModule(module_seriate_server, "seriate", user_data, user_settings)
   callModule(module_footer_server, "footer", user_data, user_settings)
+  callModule(module_settings_server, "settings", user_settings)
   session$onSessionEnded(stopApp)
 }

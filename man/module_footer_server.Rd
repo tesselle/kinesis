@@ -28,6 +28,7 @@ Other server modules:
 \code{\link{module_ca_server}()},
 \code{\link{module_import_server}()},
 \code{\link{module_seriate_server}()},
+\code{\link{module_settings_server}()},
 \code{\link{module_visualize_server}()}
 }
 \concept{server modules}
