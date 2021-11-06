@@ -21,6 +21,7 @@ A collection of 'shiny' applications for the tesselle R packages.
 Useful links:
 \itemize{
   \item \url{https://github.com/tesselle/janus}
+  \item \url{https://packages.tesselle.org/janus/}
   \item Report bugs at \url{https://github.com/tesselle/janus/issues}
 }
 

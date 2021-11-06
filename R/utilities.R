@@ -26,12 +26,6 @@ deploy <- function(app = c("seriate")) {
   if (appDir == "")
     stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
 
-  ## Write app.R
-  cat(
-    "pkgload::load_all(\".\")",
-    sprintf("run_app(\"%s\")", app),
-    file = "app.R", sep = "\n"
-  )
   ## Deploy to shinyapps.io
-  rsconnect::deployApp(appTitle = app)
+  rsconnect::deployApp(appDir = appDir, appTitle = app)
 }

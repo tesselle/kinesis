@@ -28,7 +28,7 @@ preferred-citation:
   version: 0.0.0.9000
   abstract: A collection of 'shiny' applications for the tesselle R packages.
   repository-code: https://github.com/tesselle/janus
-  url: https://github.com/tesselle/janus
+  url: https://packages.tesselle.org/janus/
   contact:
   - family-names: Frerebeau
     given-names: Nicolas
@@ -38,7 +38,7 @@ preferred-citation:
   license: GPL-3.0-or-later
   year: '2021'
 repository-code: https://github.com/tesselle/janus
-url: https://github.com/tesselle/janus
+url: https://packages.tesselle.org/janus/
 contact:
 - family-names: Frerebeau
   given-names: Nicolas

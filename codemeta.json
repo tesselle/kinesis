@@ -80,18 +80,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "pkgload",
-      "name": "pkgload",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=pkgload"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
       "provider": {
@@ -131,11 +119,12 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "114.496KB",
+  "fileSize": "114.663KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",
     "r-package"
   ],
-  "releaseNotes": "https://github.com/tesselle/janus/blob/master/NEWS.md"
+  "releaseNotes": "https://github.com/tesselle/janus/blob/master/NEWS.md",
+  "relatedLink": "https://packages.tesselle.org/janus/"
 }
