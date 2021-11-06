@@ -4,10 +4,12 @@
 \alias{module_footer_ui}
 \title{Footer UI}
 \usage{
-module_footer_ui(id)
+module_footer_ui(id, name)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
+
+\item{name}{A \code{\link{character}} string giving the name of the app.}
 }
 \description{
 Footer UI

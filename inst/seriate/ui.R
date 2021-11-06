@@ -10,7 +10,7 @@ shiny_ui <- function(request) {
       module_import_ui("import"),
       module_seriate_ui("seriate"),
       module_about_ui("about"),
-      footer = module_footer_ui("footer")
+      footer = module_footer_ui("footer", name = "seriate")
     )
   )
 }

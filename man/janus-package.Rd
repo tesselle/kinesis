@@ -7,8 +7,7 @@
 \alias{janus}
 \title{janus: 'Shiny' Applications for the tesselle R Packages}
 \description{
-A collection of 'shiny' applications for the tesselle R
-    packages.
+A collection of 'shiny' applications for the tesselle R packages.
 }
 \details{
 \tabular{ll}{

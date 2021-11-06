@@ -4,7 +4,14 @@
 \alias{module_import_server}
 \title{Import Server}
 \usage{
-module_import_server(input, output, session, user_data, user_settings)
+module_import_server(
+  input,
+  output,
+  session,
+  user_data,
+  user_settings,
+  mode = c("count", "composition", "incidence")
+)
 }
 \arguments{
 \item{input}{Provided by \pkg{Shiny}.}
@@ -13,10 +20,14 @@ module_import_server(input, output, session, user_data, user_settings)
 
 \item{session}{Provided by \pkg{Shiny}.}
 
-\item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the
-following elements: "\code{data}".}
+\item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the following
+elements: "\code{data}".}
 
 \item{user_settings}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
+
+\item{mode}{A \code{\link{character}} string specifying the data type. It must be one
+of \code{"count"}, \code{"composition"} or \code{"incidence"}. Any unambiguous substring
+can be given.}
 }
 \description{
 Import Server

@@ -24,7 +24,7 @@ module_about_ui <- function(id) {
           tags$p(
             icon("github"), "Source code:", tags$br(),
             tags$a(href = "https://github.com/tesselle/janus", rel = "external",
-                   title = "https://github.com/tesselle/janus")
+                   title = "GitHub", "https://github.com/tesselle/janus")
           ),
           tags$p(
             "This program is free software: you can redistribute it and/or

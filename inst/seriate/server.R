@@ -10,7 +10,7 @@ shiny_server <- function(input, output, session) {
   # Set reactive values
   user_data <- reactiveValues()
   user_settings <- reactiveValues()
-  callModule(module_import_server, "import", user_data, user_settings)
+  callModule(module_import_server, "import", user_data, user_settings, mode = "count")
   callModule(module_seriate_server, "seriate", user_data, user_settings)
   callModule(module_footer_server, "footer", user_data, user_settings)
   session$onSessionEnded(stopApp)
