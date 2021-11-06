@@ -10,7 +10,7 @@
 #'  of `"count"`, `"composition"` or `"incidence"`. Any unambiguous substring
 #'  can be given.
 #' @seealso [module_import_ui()]
-#' @family Server modules
+#' @family server modules
 #' @export
 module_import_server <- function(input, output, session,
                                  user_data, user_settings,

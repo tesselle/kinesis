@@ -24,9 +24,9 @@ Footer Server
 \seealso{
 \code{\link[=module_footer_ui]{module_footer_ui()}}
 
-Other Server modules: 
+Other server modules: 
 \code{\link{module_import_server}()},
 \code{\link{module_seriate_server}()},
 \code{\link{module_visualize_server}()}
 }
-\concept{Server modules}
+\concept{server modules}

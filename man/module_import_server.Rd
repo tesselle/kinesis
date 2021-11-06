@@ -35,9 +35,9 @@ Import Server
 \seealso{
 \code{\link[=module_import_ui]{module_import_ui()}}
 
-Other Server modules: 
+Other server modules: 
 \code{\link{module_footer_server}()},
 \code{\link{module_seriate_server}()},
 \code{\link{module_visualize_server}()}
 }
-\concept{Server modules}
+\concept{server modules}

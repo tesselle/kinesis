@@ -7,7 +7,7 @@
 #'  following elements: "`data`".
 #' @param user_settings A [shiny::reactiveValues()] list.
 #' @seealso [module_seriate_ui()]
-#' @family Server modules
+#' @family server modules
 #' @export
 module_seriate_server <- function(input, output, session,
                                   user_data, user_settings) {

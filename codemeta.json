@@ -1,5 +1,8 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "janus",
   "description": "A collection of 'shiny' applications for the tesselle R\n    packages.",
@@ -47,6 +50,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rsconnect",
+      "name": "rsconnect",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rsconnect"
     }
   ],
   "softwareRequirements": [
@@ -54,6 +69,7 @@
       "@type": "SoftwareApplication",
       "identifier": "arkhe",
       "name": "arkhe",
+      "version": ">= 0.4.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -115,7 +131,11 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "112.935KB",
+  "fileSize": "114.496KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
-  "keywords": ["shiny-apps", "r-package"]
+  "keywords": [
+    "shiny-apps",
+    "r-package"
+  ],
+  "releaseNotes": "https://github.com/tesselle/janus/blob/master/NEWS.md"
 }

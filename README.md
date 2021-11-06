@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/tesselle/janus/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/janus/actions)
+
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -18,12 +20,11 @@ provides exhanced graphical user interfaces for the
 
 ## Installation
 
-You can install the development version from
-[GitHub](https://github.com/) with:
+You can install the latest version of **janus** from [our
+repository](https://tesselle.r-universe.dev) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("tesselle/janus")
+install.packages("janus", repos = "https://tesselle.r-universe.dev")
 ```
 
 ## Usage
