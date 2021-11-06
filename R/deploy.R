@@ -1,8 +1,8 @@
 # HELPERS
 
-#' Deploy an App to shinyapps.io
+#' Deploy an App
 #'
-#' FOR DEVELOPMENT ONLY.
+#' Deploy a shiny application with \pkg{rsconnect}.
 #' @param app A [`character`] string specifying the Shiny application
 #'  to run (see details). Any unambiguous substring can be given.
 #' @details
@@ -12,14 +12,16 @@
 #'  }
 #' @examples
 #' \dontrun{
-#' devtools::load_all(".")
 #' deploy("seriate")
 #' }
 #' @family shiny
 #' @author N. Frerebeau
-#' @keywords internal
-#' @noRd
-deploy <- function(app = c("seriate")) {
+deploy <- function(app = c("seriate", "ca")) {
+  if (!requireNamespace("rsconnect", quietly = TRUE)) {
+    msg <- "Package rsconnect needed for this function to work."
+    stop(msg, call. = FALSE)
+  }
+
   app <- match.arg(app, several.ok = FALSE)
   appDir <- system.file(app, package = "janus")
 

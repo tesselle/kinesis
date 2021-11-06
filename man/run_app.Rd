@@ -2,7 +2,7 @@
 % Please edit documentation in R/run.R
 \name{run_app}
 \alias{run_app}
-\title{Run a Shiny App}
+\title{Run an App}
 \usage{
 run_app(app = c("seriate", "ca"), browser = TRUE, display = "auto")
 }
@@ -33,6 +33,10 @@ Correspondence Analysis \tab \code{ca} \cr
 \dontrun{
 run_app("seriate")
 }
+}
+\seealso{
+Other shiny: 
+\code{\link{deploy}()}
 }
 \author{
 N. Frerebeau

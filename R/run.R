@@ -1,6 +1,6 @@
 # SHINY
 
-#' Run a Shiny App
+#' Run an App
 #'
 #' A wrapper for [shiny::shinyAppDir()].
 #' @param app A [`character`] string specifying the Shiny application
