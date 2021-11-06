@@ -26,11 +26,25 @@ module_seriate_server <- function(input, output, session,
   })
   plot_data <- reactive({
     req(user_data$data)
-    tabula::plot_ford(user_data$data)
+    req(input$plot_type)
+    mtx_plot <- switch(
+      input$plot_type,
+      heat = function(x) tabula::plot_heatmap(arkhe::as_composition(x)),
+      ford = tabula::plot_ford,
+      bertin = tabula::plot_bertin
+    )
+    mtx_plot(user_data$data)
   })
   plot_permute <- reactive({
     req(data_permute())
-    tabula::plot_ford(data_permute())
+    req(input$plot_type)
+    mtx_plot <- switch(
+      input$plot_type,
+      heat = function(x) tabula::plot_heatmap(arkhe::as_composition(x)),
+      ford = tabula::plot_ford,
+      bertin = tabula::plot_bertin
+    )
+    mtx_plot(data_permute())
   })
   observeEvent(data_permute(), {
     updateTabsetPanel(session, inputId = "plot", selected = "panel_permute")
@@ -40,9 +54,11 @@ module_seriate_server <- function(input, output, session,
     data_seriate()
   })
   output$plot_data <- renderPlot({
-    plot_data()
+    plot_data() +
+      user_settings$scale_fill
   })
   output$plot_permute <- renderPlot({
-    plot_permute()
+    plot_permute() +
+      user_settings$scale_fill
   })
 }

@@ -43,13 +43,21 @@ module_seriate_ui <- function(id) {
             actionButton(
               inputId = ns("go_seriate"),
               label = "Seriate"
+            ),
+
+            ## Input: select plot
+            radioButtons(
+              inputId = ns("plot_type"),
+              label = "Display",
+              choices = c(Bertin = "bertin", Ford = "ford", Heatmap = "heat"),
+              selected = "heat"
             )
           ) # wellPanel
         ),
         column(
           width = 8,
           ## Output: permutation summary
-          verbatimTextOutput(outputId = ns("summary")),
+          # verbatimTextOutput(outputId = ns("summary")),
 
           tabsetPanel(
             id = ns("plot"),

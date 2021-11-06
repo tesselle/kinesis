@@ -1,4 +1,4 @@
-#' Matrix Seriation Shiny App User Interface Object
+#' Correspondence Analysis Shiny App User Interface Object
 #'
 #' @author N. Frerebeau
 #' @keywords internal
@@ -6,12 +6,11 @@
 shiny_ui <- function(request) {
   fluidPage(
     navbarPage(
-      "Matrix Seriation",
+      "Correspondence Analysis",
       module_import_ui("import"),
       module_ca_ui("ca"),
-      module_seriate_ui("seriate"),
       module_about_ui("about"),
-      footer = module_footer_ui("footer", name = "seriate")
+      footer = module_footer_ui("footer", name = "ca")
     )
   )
 }

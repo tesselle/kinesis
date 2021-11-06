@@ -80,6 +80,31 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "dimensio",
+      "name": "dimensio",
+      "version": ">= 0.2.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dimensio"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ggplot2",
+      "name": "ggplot2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
       "provider": {
@@ -119,7 +144,7 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "114.663KB",
+  "fileSize": "208.967KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",

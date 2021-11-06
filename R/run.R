@@ -13,6 +13,7 @@
 #'  \tabular{ll}{
 #'   **Application name** \tab  **Keyword** \cr
 #'   Matrix Seriation \tab `seriate` \cr
+#'   Correspondence Analysis \tab `ca` \cr
 #'  }
 #' @examples
 #' \dontrun{
@@ -22,7 +23,7 @@
 #' @family shiny
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("seriate"),
+run_app <- function(app = c("seriate", "ca"),
                     browser = TRUE, display = "auto") {
   app <- match.arg(app, several.ok = FALSE)
   appDir <- system.file(app, package = "janus")

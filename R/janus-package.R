@@ -30,6 +30,9 @@
 
 #' @import shiny
 #' @importFrom arkhe as_count as_incidence as_occurrence as_composition
-#' @importFrom tabula permute plot_bertin plot_ford plot_heatmap plot_rank
+#' @importFrom dimensio bootstrap ca get_eigenvalues plot_columns
+#' plot_contributions plot_rows plot_variance
+#' @importFrom ggplot2 theme_bw
+#' @importFrom tabula permute plot_bertin plot_ford plot_heatmap
 #' plot_spot seriate_average
 NULL

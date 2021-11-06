@@ -1,4 +1,4 @@
-#' Matrix Seriation Shiny App Server Function
+#' Correspondence Analysis Shiny App Server Function
 #'
 #' @param input Provided by \pkg{Shiny}.
 #' @param output Provided by \pkg{Shiny}.
@@ -12,7 +12,6 @@ shiny_server <- function(input, output, session) {
   user_settings <- reactiveValues()
   callModule(module_import_server, "import", user_data, user_settings, mode = "count")
   callModule(module_ca_server, "ca", user_data, user_settings)
-  callModule(module_seriate_server, "seriate", user_data, user_settings)
   callModule(module_footer_server, "footer", user_data, user_settings)
   session$onSessionEnded(stopApp)
 }

@@ -14,6 +14,7 @@ About UI
 }
 \seealso{
 Other UI modules: 
+\code{\link{module_ca_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_import_ui}()},
 \code{\link{module_seriate_ui}()},

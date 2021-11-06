@@ -25,6 +25,7 @@ Footer Server
 \code{\link[=module_footer_ui]{module_footer_ui()}}
 
 Other server modules: 
+\code{\link{module_ca_server}()},
 \code{\link{module_import_server}()},
 \code{\link{module_seriate_server}()},
 \code{\link{module_visualize_server}()}

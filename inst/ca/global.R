@@ -1,0 +1,17 @@
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## Title:   Correspondence Analysis
+## Authors: Nicolas Frerebeau, Université Bordeaux Montaigne (France)
+## Contact: nicolas.frerebeau@u-bordeaux-montainge.fr
+##++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+## Clean current environment ===================================================
+rm(list = ls())
+
+## Load packages ===============================================================
+options(repos = c(tesselle = "https://tesselle.r-universe.dev",
+                  CRAN = "https://cloud.r-project.org"))
+library(janus)
+
+## Set Shiny settings ==========================================================
+options(shiny.maxRequestSize = 30*1024^2)
+enableBookmarking(store = "server")
