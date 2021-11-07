@@ -16,6 +16,7 @@
 #' }
 #' @family shiny
 #' @author N. Frerebeau
+#' @export
 deploy <- function(app = c("seriate", "ca")) {
   if (!requireNamespace("rsconnect", quietly = TRUE)) {
     msg <- "Package rsconnect needed for this function to work."

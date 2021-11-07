@@ -8,8 +8,6 @@
 rm(list = ls())
 
 ## Load packages ===============================================================
-options(repos = c(tesselle = "https://tesselle.r-universe.dev",
-                  CRAN = "https://cloud.r-project.org"))
 library(janus)
 
 ## Set Shiny settings ==========================================================

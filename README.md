@@ -40,6 +40,10 @@ run_app("seriate")
 ## Deploy
 
 ``` r
+## Set repositories
+options(repos = c(tesselle = "https://tesselle.r-universe.dev",
+                  CRAN = "https://cloud.r-project.org"))
+
 ## Assuming rsconnect is properly configured
 deploy("seriate")
 ```

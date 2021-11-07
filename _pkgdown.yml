@@ -16,3 +16,11 @@ reference:
 - title: Server
   contents:
   - has_concept("server modules")
+
+navbar:
+ components:
+   articles:
+    text: Apps
+    menu:
+    - text: Seriation
+      href: https://tesselle.shinyapps.io/seriate/
