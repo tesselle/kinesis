@@ -119,6 +119,7 @@
       "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
+      "version": ">= 1.5.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -156,7 +157,7 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "214.593KB",
+  "fileSize": "212.431KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",

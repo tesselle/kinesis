@@ -4,14 +4,11 @@
 \alias{module_settings_server}
 \title{Settings Server}
 \usage{
-module_settings_server(input, output, session, user_settings)
+module_settings_server(id, user_settings)
 }
 \arguments{
-\item{input}{provided by \pkg{Shiny}.}
-
-\item{output}{provided by \pkg{Shiny}.}
-
-\item{session}{provided by \pkg{Shiny}.}
+\item{id}{An ID string that corresponds with the ID used to call the module's
+UI function.}
 
 \item{user_settings}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
 }
@@ -25,7 +22,6 @@ Other server modules:
 \code{\link{module_ca_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_import_server}()},
-\code{\link{module_seriate_server}()},
-\code{\link{module_visualize_server}()}
+\code{\link{module_seriate_server}()}
 }
 \concept{server modules}

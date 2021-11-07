@@ -20,7 +20,6 @@ Other UI modules:
 \code{\link{module_ca_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_seriate_ui}()},
-\code{\link{module_settings_ui}()},
-\code{\link{module_visualize_ui}()}
+\code{\link{module_settings_ui}()}
 }
 \concept{UI modules}

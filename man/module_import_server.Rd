@@ -4,30 +4,20 @@
 \alias{module_import_server}
 \title{Import Server}
 \usage{
-module_import_server(
-  input,
-  output,
-  session,
-  user_data,
-  user_settings,
-  mode = c("count", "composition", "incidence")
-)
+module_import_server(id, user_data, user_settings, mode)
 }
 \arguments{
-\item{input}{Provided by \pkg{Shiny}.}
-
-\item{output}{Provided by \pkg{Shiny}.}
-
-\item{session}{Provided by \pkg{Shiny}.}
+\item{id}{An ID string that corresponds with the ID used to call the module's
+UI function.}
 
 \item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the following
 elements: "\code{data}".}
 
 \item{user_settings}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
 
-\item{mode}{A \code{\link{character}} string specifying the data type. It must be one
-of \code{"count"}, \code{"composition"} or \code{"incidence"}. Any unambiguous substring
-can be given.}
+\item{mode}{A \code{\link{character}} string specifying the target data type.
+It must be one of \code{"count"}, \code{"composition"} or \code{"incidence"}.
+Any unambiguous substring can be given.}
 }
 \description{
 Import Server
@@ -39,7 +29,6 @@ Other server modules:
 \code{\link{module_ca_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_seriate_server}()},
-\code{\link{module_settings_server}()},
-\code{\link{module_visualize_server}()}
+\code{\link{module_settings_server}()}
 }
 \concept{server modules}

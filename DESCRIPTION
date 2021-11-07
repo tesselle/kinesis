@@ -20,7 +20,7 @@ Imports:
     dimensio (>= 0.2.2),
     ggplot2,
     khroma,
-    shiny,
+    shiny (>= 1.5.0),
     stats,
     tabula,
     tools,

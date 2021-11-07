@@ -4,14 +4,11 @@
 \alias{module_footer_server}
 \title{Footer Server}
 \usage{
-module_footer_server(input, output, session, user_data, user_settings)
+module_footer_server(id, user_data, user_settings)
 }
 \arguments{
-\item{input}{Provided by \pkg{Shiny}.}
-
-\item{output}{Provided by \pkg{Shiny}.}
-
-\item{session}{Provided by \pkg{Shiny}.}
+\item{id}{An ID string that corresponds with the ID used to call the module's
+UI function.}
 
 \item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the
 following elements: "\code{data}".}
@@ -28,7 +25,6 @@ Other server modules:
 \code{\link{module_ca_server}()},
 \code{\link{module_import_server}()},
 \code{\link{module_seriate_server}()},
-\code{\link{module_settings_server}()},
-\code{\link{module_visualize_server}()}
+\code{\link{module_settings_server}()}
 }
 \concept{server modules}
