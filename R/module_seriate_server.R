@@ -60,14 +60,11 @@ module_seriate_server  <- function(id, user_data, user_settings) {
       plot_permute()
     })
     ## Download ----------------------------------------------------------------
-    output$export_plot_data <- export_plot("matrix_raw", plot_data(),
-                                           width = user_settings$fig_width,
-                                           height = user_settings$fig_height,
-                                           units = user_settings$fig_units)
-    output$export_plot_perm <- export_plot("matrix_permuted", plot_permute(),
-                                           width = user_settings$fig_width,
-                                           height = user_settings$fig_height,
-                                           units = user_settings$fig_units)
-    output$export_table <- export_table("matrix_permuted", data_permute())
+    output$export_plot_data <- module_export_plot(
+      "plot_matrix_raw", "matrix_raw", plot_data(), user_settings)
+    output$export_plot_perm <- module_export_plot(
+      "plot_matrix_permuted", "matrix_permuted", plot_permute(), user_settings)
+    output$export_table <- module_export_table(
+      "matrix_permuted", "matrix_permuted", data_permute())
   })
 }
