@@ -54,11 +54,19 @@ module_seriate_server <- function(input, output, session,
     data_seriate()
   })
   output$plot_data <- renderPlot({
-    plot_data() +
-      user_settings$scale_fill
+    plot_data()
   })
   output$plot_permute <- renderPlot({
-    plot_permute() +
-      user_settings$scale_fill
+    plot_permute()
   })
+  ## Download ------------------------------------------------------------------
+  output$export_plot_data <- export_plot("matrix_raw", plot_data(),
+                                         width = user_settings$fig_width,
+                                         height = user_settings$fig_height,
+                                         units = user_settings$fig_units)
+  output$export_plot_perm <- export_plot("matrix_permuted", plot_permute(),
+                                         width = user_settings$fig_width,
+                                         height = user_settings$fig_height,
+                                         units = user_settings$fig_units)
+  output$export_table <- export_table("matrix_permuted", data_permute())
 }

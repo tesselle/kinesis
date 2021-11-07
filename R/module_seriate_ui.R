@@ -22,14 +22,12 @@ module_seriate_ui <- function(id) {
               label = "Permute rows",
               value = TRUE
             ),
-
             ## Input: checkbox if permute columns
             checkboxInput(
               inputId = ns("margin_col"),
               label = "Permute columns",
               value = TRUE
             ),
-
             ## Input: select CA axes
             numericInput(
               inputId = ns("axes"),
@@ -39,12 +37,12 @@ module_seriate_ui <- function(id) {
               max = 10,
               step = 1
             ),
-
+            ## Input: seriate
             actionButton(
               inputId = ns("go_seriate"),
-              label = "Seriate"
+              label = "Seriate",
+              style = "margin-bottom: 15px;"
             ),
-
             ## Input: select plot
             radioButtons(
               inputId = ns("plot_type"),
@@ -58,24 +56,33 @@ module_seriate_ui <- function(id) {
           width = 8,
           ## Output: permutation summary
           # verbatimTextOutput(outputId = ns("summary")),
-
-          tabsetPanel(
-            id = ns("plot"),
-            type = "tabs",
-            tabPanel(
-              title = "Raw data",
-              value = "panel_raw",
-              style = "margin-top: 15px;",
-              ## Output: plot raw matrix
-              plotOutput(outputId = ns("plot_data"))
-            ),
-            tabPanel(
-              title = "Rearranged matrix",
-              value = "panel_permute",
-              style = "margin-top: 15px;",
-              ## Output: plot reordered matrix
-              plotOutput(outputId = ns("plot_permute"))
-            )
+          fluidRow(
+            tabsetPanel(
+              id = ns("plot"),
+              type = "tabs",
+              tabPanel(
+                title = "Raw data",
+                value = "panel_raw",
+                style = "margin-top: 15px;",
+                ## Output: download
+                downloadButton(outputId = ns("export_plot_data"),
+                               label = "Export plot"),
+                ## Output: plot raw matrix
+                plotOutput(outputId = ns("plot_data"))
+              ),
+              tabPanel(
+                title = "Rearranged matrix",
+                value = "panel_permute",
+                style = "margin-top: 15px;",
+                ## Output: download
+                downloadButton(outputId = ns("export_plot_perm"),
+                               label = "Export plot"),
+                downloadButton(outputId = ns("export_table"),
+                               label = "Export matrix"),
+                ## Output: plot reordered matrix
+                plotOutput(outputId = ns("plot_permute"))
+              )
+            ) # tabsetPanel
           )
         )
       ) # fluidRow
