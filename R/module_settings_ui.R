@@ -38,6 +38,13 @@ module_settings_ui <- function(id) {
             label = "Figure units",
             choices = c("in", "cm", "mm")
           ),
+          numericInput(
+            inputId = ns("fig_dpi"),
+            label = "Figure resolution",
+            value = 300,
+            min = 72,
+            max = 320
+          ),
           tags$br(),
           h4("Colour Schemes"),
           selectInput(

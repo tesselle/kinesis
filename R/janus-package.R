@@ -29,6 +29,7 @@
 "_PACKAGE"
 
 #' @import shiny
+#' @import khroma
 #' @importFrom arkhe as_count as_incidence as_occurrence as_composition
 #' @importFrom dimensio bootstrap ca get_eigenvalues plot_columns
 #' plot_contributions plot_rows plot_variance

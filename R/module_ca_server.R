@@ -75,7 +75,7 @@ module_ca_server <- function(id, user_data, user_settings) {
     output$plot_results <- renderPlot({
       plot_results() +
         ggplot2::theme_bw() +
-        user_settings$scale_color
+        scale_picker(user_settings$col_qualitative, "colour")
     })
     output$plot_contrib1 <- renderPlot({
       plot_contrib1() +

@@ -54,10 +54,10 @@ module_seriate_server  <- function(id, user_data, user_settings) {
       data_seriate()
     })
     output$plot_data <- renderPlot({
-      plot_data()
+      plot_data() + scale_picker(user_settings$col_sequential, "fill")
     })
     output$plot_permute <- renderPlot({
-      plot_permute()
+      plot_permute() + scale_picker(user_settings$col_sequential, "fill")
     })
     ## Download ----------------------------------------------------------------
     output$export_plot_data <- module_export_plot(

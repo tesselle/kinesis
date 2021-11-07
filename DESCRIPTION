@@ -19,7 +19,7 @@ Imports:
     arkhe (>= 0.4.0),
     dimensio (>= 0.2.2),
     ggplot2,
-    khroma,
+    khroma (>= 1.7.0),
     shiny (>= 1.5.0),
     stats,
     tabula,

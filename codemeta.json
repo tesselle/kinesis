@@ -107,6 +107,7 @@
       "@type": "SoftwareApplication",
       "identifier": "khroma",
       "name": "khroma",
+      "version": ">= 1.7.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -157,7 +158,7 @@
     }
   ],
   "readme": "https://github.com/tesselle/janus/blob/master/README.md",
-  "fileSize": "212.431KB",
+  "fileSize": "213.55KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",

@@ -9,15 +9,14 @@
 module_settings_server <- function(id, user_settings) {
   moduleServer(id, function(input, output, session) {
     ## Observe -----------------------------------------------------------------
-    observe({
-      ## Colour scheme
-      scale_qualitative <- khroma::colour(input$col_qualitative, names = FALSE)
-      scale_sequential <- khroma::colour(input$col_sequential, names = FALSE)
-      scale_diverging <- khroma::colour(input$col_diverging, names = FALSE)
-
-      user_settings$scale_qualitative <- scale_qualitative
-      user_settings$scale_sequential <- scale_sequential
-      user_settings$scale_diverging <- scale_diverging
+    observeEvent(input$col_qualitative, {
+      user_settings$col_qualitative <- input$col_qualitative
+    })
+    observeEvent(input$col_sequential, {
+      user_settings$col_sequential <- input$col_sequential
+    })
+    observeEvent(input$col_diverging, {
+      user_settings$col_diverging <- input$col_diverging
     })
     observeEvent(input$fig_width, {
       user_settings$fig_width <- input$fig_width
@@ -27,6 +26,9 @@ module_settings_server <- function(id, user_settings) {
     })
     observeEvent(input$fig_units, {
       user_settings$fig_units <- input$fig_units
+    })
+    observeEvent(input$fig_dpi, {
+      user_settings$fig_dpi <- input$fig_dpi
     })
     ## Render ------------------------------------------------------------------
     output$last_saved <- renderText({
