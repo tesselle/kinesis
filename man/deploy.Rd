@@ -32,3 +32,4 @@ Other shiny:
 N. Frerebeau
 }
 \concept{shiny}
+\keyword{internal}

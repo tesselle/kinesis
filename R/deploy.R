@@ -15,6 +15,7 @@
 #' deploy("seriate")
 #' }
 #' @family shiny
+#' @keywords internal
 #' @author N. Frerebeau
 #' @export
 deploy <- function(app = c("seriate", "ca")) {
