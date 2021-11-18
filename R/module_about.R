@@ -6,7 +6,7 @@
 #' @family UI modules
 #' @keywords internal
 #' @export
-module_about_ui <- function(id) {
+module_about_ui <- function(id, cite = "janus") {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -43,7 +43,7 @@ module_about_ui <- function(id) {
           ),
           tags$br(),
           tags$p("To cite in publications use:"),
-          markdown(format(utils::citation("tabula"), style = "text"))
+          markdown(format(utils::citation(cite), style = "text"))
         ) # wellPanel
       ) # column
     ) # fluidRow

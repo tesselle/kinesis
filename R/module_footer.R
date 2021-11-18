@@ -16,7 +16,7 @@ module_footer_ui <- function(id, name) {
   tags$footer(
     style = "margin-top: 1em; width: 100%; text-align: center;",
     tags$p(
-      actionLink(inputId = ns("cite"), label = "How to cite"),
+      actionLink(inputId = ns("citation"), label = "How to cite"),
       HTML(" &middot; "),
       tags$a(href = "https://github.com/tesselle/janus/issues",
           rel = "external", title = "Issue", "Report a bug or request")
@@ -35,18 +35,17 @@ module_footer_ui <- function(id, name) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param user_data A [shiny::reactiveValues()] list with the
-#'  following elements: "`data`".
-#' @param user_settings A [shiny::reactiveValues()] list.
+#' @param cite A [`character`] string giving the name of the package to be
+#'  cited.
 #' @seealso [module_footer_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
-module_footer_server  <- function(id, user_data, user_settings) {
+module_footer_server  <- function(id, cite = "janus") {
   moduleServer(id, function(input, output, session) {
     ## Event -------------------------------------------------------------------
-    observeEvent(input$cite, {
-      bib <- format(utils::citation("tabula"), style = "text")
+    observeEvent(input$citation, {
+      bib <- format(utils::citation(cite), style = "text")
 
       showModal(
         modalDialog(

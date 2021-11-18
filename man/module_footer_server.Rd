@@ -4,16 +4,14 @@
 \alias{module_footer_server}
 \title{Footer Server}
 \usage{
-module_footer_server(id, user_data, user_settings)
+module_footer_server(id, cite = "janus")
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the
-following elements: "\code{data}".}
-
-\item{user_settings}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
+\item{cite}{A \code{\link{character}} string giving the name of the package to be
+cited.}
 }
 \description{
 Footer Server

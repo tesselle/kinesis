@@ -4,7 +4,7 @@
 \alias{module_about_ui}
 \title{About UI}
 \usage{
-module_about_ui(id)
+module_about_ui(id, cite = "janus")
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}

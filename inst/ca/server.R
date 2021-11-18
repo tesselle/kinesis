@@ -13,6 +13,6 @@ shiny_server <- function(input, output, session) {
   module_import_server("import", user_data, user_settings, mode = "count")
   module_ca_server("ca", user_data, user_settings)
   module_settings_server("settings", user_settings)
-  module_footer_server("footer", user_data, user_settings)
+  module_footer_server("footer", cite = "dimensio")
   session$onSessionEnded(stopApp)
 }

@@ -11,7 +11,7 @@ shiny_ui <- function(request) {
       module_ca_ui("ca"),
       module_seriate_ui("seriate"),
       module_settings_ui("settings"),
-      module_about_ui("about"),
+      module_about_ui("about", cite = "tabula"),
       footer = module_footer_ui("footer", name = "seriate")
     )
   )

@@ -12,7 +12,7 @@ module_ca_ui <- function(id) {
   ns <- NS(id)
 
   tabPanel(
-    "Analyse",
+    "CA",
     icon = icon("chart-bar"),
     fluidPage(
       fluidRow(
@@ -41,22 +41,6 @@ module_ca_ui <- function(id) {
               choices = c(Rows = 1, Columns = 2),
               selected = 1
             )
-          ), # wellPanel
-          wellPanel(
-            ## Input: select bootstrat replicates
-            numericInput(
-              inputId = ns("replicates"),
-              label = "Replicates",
-              value = 500,
-              min = 10,
-              max = NA,
-              step = 10
-            ),
-            ## Input: run bootstrap
-            actionButton(
-              inputId = ns("go_bootrstrap"),
-              label = "Bootstrap"
-            )
           ) # wellPanel
         ),
         column(
@@ -69,7 +53,7 @@ module_ca_ui <- function(id) {
               value = "panel_results",
               style = "margin-top: 15px;",
               ## Output: plot coordinates
-              plotOutput(outputId = ns("plot_results"))
+              plotOutput(outputId = ns("plot_ca"))
             ),
             tabPanel(
               title = "Contributions",
@@ -103,6 +87,27 @@ module_ca_ui <- function(id) {
               style = "margin-top: 15px;",
               ## Output: plot reordered matrix
               verbatimTextOutput(outputId = ns("summary"))
+            ),
+            tabPanel(
+              title = "Bootstrap",
+              value = "panel_bootstrap",
+              style = "margin-top: 15px;",
+              ## Input: set bootstrap replicates
+              numericInput(
+                inputId = ns("replicates"),
+                label = "Replicates",
+                value = 500,
+                min = 10,
+                max = NA,
+                step = 10
+              ),
+              ## Input: run bootstrap
+              actionButton(
+                inputId = ns("go_bootrstrap"),
+                label = "Bootstrap"
+              ),
+              ## Output: plot bootstrap replicates
+              plotOutput(outputId = ns("plot_boot"))
             )
           ) # tabsetPanel
         )
@@ -126,83 +131,115 @@ module_ca_ui <- function(id) {
 module_ca_server <- function(id, user_data, user_settings) {
   moduleServer(id, function(input, output, session) {
     ## Reactive ----------------------------------------------------------------
-    data_ca <- reactive({
-      req(user_data$data)
-      dimensio::ca(user_data$data, rank = input$rank,
-                   sup_row = input$sup_row, sup_col = input$sup_col)
+    ca_axis1 <- reactive({
+      req(input$axis1)
+      as.numeric(input$axis1)
     })
-    boot_ca <- eventReactive(input$go_bootrstrap, {
-      req(data_ca())
+    ca_axis2 <- reactive({
+      req(input$axis2)
+      as.numeric(input$axis2)
+    })
+    ca_margin <- reactive({
+      req(input$margin)
+      as.numeric(input$margin)
+    })
+    ca_plot <- reactive({
+      switch(
+        ca_margin(),
+        `1` = dimensio::plot_rows,
+        `2` = dimensio::plot_columns
+      )
+    })
+    ca_results <- reactive({
+      req(user_data$data)
+      dimensio::ca(
+        user_data$data,
+        rank = input$rank,
+        sup_row = input$sup_row,
+        sup_col = input$sup_col
+      )
+    })
+    ca_boot <- eventReactive(input$go_bootrstrap, {
+      req(ca_results())
       req(input$replicates)
 
-      dimensio::bootstrap(data_ca(), n = input$replicates)
-    })
-    plot_results <- reactive({
-      req(data_ca())
-      req(input$axis1)
-      req(input$axis2)
-      ca_plot <- switch(
-        input$margin,
-        "1" = dimensio::plot_rows,
-        "2" = dimensio::plot_columns
+      id <- showNotification(
+        ui = "Bootstraping...",
+        duration = NULL,
+        closeButton = FALSE
       )
-      ca_plot(data_ca(), axes = as.numeric(c(input$axis1, input$axis2)))
+      on.exit(removeNotification(id), add = TRUE)
+
+      dimensio::bootstrap(ca_results(), n = input$replicates)
+    })
+    plot_ca <- reactive({
+      req(ca_results())
+      ca_plot()(ca_results(), axes = c(ca_axis1(), ca_axis2()))
+    })
+    plot_boot <- reactive({
+      req(ca_boot())
+      ca_plot()(ca_boot(), axes = c(ca_axis1(), ca_axis2()))
     })
     plot_variance <- reactive({
-      req(data_ca())
-      dimensio::plot_variance(data_ca())
+      req(ca_results())
+      dimensio::plot_variance(ca_results())
     })
     plot_contrib1 <- reactive({
-      req(data_ca())
-      req(input$axis1)
-      dimensio::plot_contributions(data_ca(), margin = as.numeric(input$margin),
-                                   axes = as.numeric(input$axis1))
+      req(ca_results())
+      dimensio::plot_contributions(
+        ca_results(),
+        margin = ca_margin(),
+        axes = ca_axis1()
+      )
     })
     plot_contrib2 <- reactive({
-      req(data_ca())
-      req(input$axis2)
-      dimensio::plot_contributions(data_ca(), margin = as.numeric(input$margin),
-                                   axes = as.numeric(input$axis2))
+      req(ca_results())
+      dimensio::plot_contributions(
+        ca_results(),
+        margin = ca_margin(),
+        axes = ca_axis2()
+      )
     })
     ## Observe -----------------------------------------------------------------
-    observeEvent(data_ca(), {
-      choices <- seq_len(dim(data_ca()))
-      names(choices) <- unique(rownames(dimensio::get_eigenvalues(data_ca())))
+    observeEvent(ca_results(), {
+      choices <- seq_len(dim(ca_results()))
+      names(choices) <- unique(rownames(dimensio::get_eigenvalues(ca_results())))
       updateSelectizeInput(session, inputId = "axis1", choices = choices)
     })
     observeEvent(input$axis1, {
-      choices <- seq_len(dim(data_ca()))
-      names(choices) <- unique(rownames(dimensio::get_eigenvalues(data_ca())))
+      choices <- seq_len(dim(ca_results()))
+      names(choices) <- unique(rownames(dimensio::get_eigenvalues(ca_results())))
 
       choices <- choices[-as.numeric(input$axis1)]
       updateSelectizeInput(session, inputId = "axis2", choices = choices)
     })
     ## Render ------------------------------------------------------------------
     output$variance <- renderTable({
-      dimensio::get_eigenvalues(data_ca())
+      req(ca_results())
+      dimensio::get_eigenvalues(ca_results())
     }, striped = TRUE, hover = FALSE, rownames = TRUE, colnames = TRUE)
     output$contrib <- renderTable({
-      dimensio::get_contributions(data_ca())
+      req(ca_results())
+      dimensio::get_contributions(ca_results())
     }, striped = TRUE, hover = FALSE, rownames = TRUE, colnames = TRUE)
     output$summary <- renderPrint({
-      dimensio::summary(data_ca(), margin = as.numeric(input$margin))
+      req(ca_results())
+      dimensio::summary(ca_results(), margin = as.numeric(input$margin))
     })
-    output$plot_results <- renderPlot({
-      plot_results() +
-        ggplot2::theme_bw() +
-        scale_picker(user_settings$col_qualitative, "colour")
+    output$plot_ca <- renderPlot({
+      plot_ca()
+    })
+    output$plot_boot <- renderPlot({
+      plot_boot()
     })
     output$plot_contrib1 <- renderPlot({
-      plot_contrib1() +
-        ggplot2::theme_bw()
+      plot_contrib1()
     })
     output$plot_contrib2 <- renderPlot({
-      plot_contrib2() +
-        ggplot2::theme_bw()
+      plot_contrib2()
     })
     output$plot_variance <- renderPlot({
-      plot_variance() +
-        ggplot2::theme_bw()
+      plot_variance()
     })
   })
 }
