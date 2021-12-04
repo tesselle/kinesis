@@ -1,16 +1,15 @@
 # https://docs.github.com/en/actions/learn-github-actions/reusing-workflows
 on:
-  push:
-    branches: [main, master]
-    tags: ['*']
+  release:
+    types: [published]
 
-name: pkgdown
+name: drat
 
 jobs:
-  pkgdown:
-    uses: tesselle/packages/.github/workflows/pkgdown.yaml@main
+  drat:
+    uses: tesselle/packages/.github/workflows/drat.yaml@main
     with:
       REPO: ${{ github.event.repository.name }}
-      COMMIT: ${{ github.sha }}
+      RELEASE: ${{ github.event.release.tag_name }}
     secrets:
       TOKEN: ${{ secrets.ACCESS_TOKEN }}

@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/tesselle/janus/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/janus/actions)
+[![codecov](https://codecov.io/gh/tesselle/janus/branch/master/graph/badge.svg)](https://codecov.io/gh/tesselle/janus)
 
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
