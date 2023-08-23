@@ -54,7 +54,7 @@ module_settings_ui <- function(id) {
             inputId = ns("col_qualitative"),
             label = "Qualitative",
             choices = col$palette[col$type == "qualitative"],
-            selected = "okabe ito"
+            selected = "okabeito"
           ),
           selectInput(
             inputId = ns("col_sequential"),

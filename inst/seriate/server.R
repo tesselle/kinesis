@@ -10,10 +10,12 @@ shiny_server <- function(input, output, session) {
   # Set reactive values
   user_data <- reactiveValues()
   user_settings <- reactiveValues()
-  module_import_server("import", user_data, user_settings, mode = "count")
+
+  module_import_server("import", user_data)
+  module_prepare_server("prepare", user_data)
   module_ca_server("ca", user_data, user_settings)
   module_seriate_server("seriate", user_data, user_settings)
   module_settings_server("settings", user_settings)
-  module_footer_server("footer", cite = "tabula")
+  module_footer_server("footer", cite = c("kairos", "tabula"))
   session$onSessionEnded(stopApp)
 }

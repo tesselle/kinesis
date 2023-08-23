@@ -87,27 +87,6 @@ module_ca_ui <- function(id) {
               style = "margin-top: 15px;",
               ## Output: plot reordered matrix
               verbatimTextOutput(outputId = ns("summary"))
-            ),
-            tabPanel(
-              title = "Bootstrap",
-              value = "panel_bootstrap",
-              style = "margin-top: 15px;",
-              ## Input: set bootstrap replicates
-              numericInput(
-                inputId = ns("replicates"),
-                label = "Replicates",
-                value = 500,
-                min = 10,
-                max = NA,
-                step = 10
-              ),
-              ## Input: run bootstrap
-              actionButton(
-                inputId = ns("go_bootrstrap"),
-                label = "Bootstrap"
-              ),
-              ## Output: plot bootstrap replicates
-              plotOutput(outputId = ns("plot_boot"))
             )
           ) # tabsetPanel
         )
@@ -146,8 +125,8 @@ module_ca_server <- function(id, user_data, user_settings) {
     ca_plot <- reactive({
       switch(
         ca_margin(),
-        `1` = dimensio::plot_rows,
-        `2` = dimensio::plot_columns
+        `1` = dimensio::viz_rows,
+        `2` = dimensio::viz_columns
       )
     })
     ca_results <- reactive({
@@ -159,34 +138,17 @@ module_ca_server <- function(id, user_data, user_settings) {
         sup_col = input$sup_col
       )
     })
-    ca_boot <- eventReactive(input$go_bootrstrap, {
-      req(ca_results())
-      req(input$replicates)
-
-      id <- showNotification(
-        ui = "Bootstraping...",
-        duration = NULL,
-        closeButton = FALSE
-      )
-      on.exit(removeNotification(id), add = TRUE)
-
-      dimensio::bootstrap(ca_results(), n = input$replicates)
-    })
     plot_ca <- reactive({
       req(ca_results())
       ca_plot()(ca_results(), axes = c(ca_axis1(), ca_axis2()))
     })
-    plot_boot <- reactive({
-      req(ca_boot())
-      ca_plot()(ca_boot(), axes = c(ca_axis1(), ca_axis2()))
-    })
     plot_variance <- reactive({
       req(ca_results())
-      dimensio::plot_variance(ca_results())
+      dimensio::screeplot(ca_results(), cumulative = TRUE)
     })
     plot_contrib1 <- reactive({
       req(ca_results())
-      dimensio::plot_contributions(
+      dimensio::viz_contributions(
         ca_results(),
         margin = ca_margin(),
         axes = ca_axis1()
@@ -194,7 +156,7 @@ module_ca_server <- function(id, user_data, user_settings) {
     })
     plot_contrib2 <- reactive({
       req(ca_results())
-      dimensio::plot_contributions(
+      dimensio::viz_contributions(
         ca_results(),
         margin = ca_margin(),
         axes = ca_axis2()
@@ -228,9 +190,6 @@ module_ca_server <- function(id, user_data, user_settings) {
     })
     output$plot_ca <- renderPlot({
       plot_ca()
-    })
-    output$plot_boot <- renderPlot({
-      plot_boot()
     })
     output$plot_contrib1 <- renderPlot({
       plot_contrib1()

@@ -24,6 +24,7 @@ Correspondence Analysis Server
 Other server modules: 
 \code{\link{module_footer_server}()},
 \code{\link{module_import_server}()},
+\code{\link{module_prepare_server}()},
 \code{\link{module_seriate_server}()},
 \code{\link{module_settings_server}()}
 }

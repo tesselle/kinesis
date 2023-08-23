@@ -113,35 +113,29 @@ module_seriate_server  <- function(id, user_data, user_settings) {
       margin <- NULL
       if (input$margin_row) margin <- c(margin, 1)
       if (input$margin_col) margin <- c(margin, 2)
-      tabula::seriate_average(user_data$data, margin = margin,
-                              axes = input$axes)
+      kairos::seriate_average(user_data$data, margin = margin, axes = input$axes)
     })
     data_permute <- reactive({
       req(user_data$data)
       req(data_seriate())
-      tabula::permute(user_data$data, data_seriate())
+      kairos::permute(user_data$data, data_seriate())
+    })
+    fun_plot <- reactive({
+      req(input$plot_type)
+      switch(
+        input$plot_type,
+        heat = tabula::plot_heatmap,
+        ford = tabula::plot_ford,
+        bertin = tabula::plot_bertin
+      )
     })
     plot_data <- reactive({
       req(user_data$data)
-      req(input$plot_type)
-      mtx_plot <- switch(
-        input$plot_type,
-        heat = function(x) tabula::plot_heatmap(arkhe::as_composition(x)),
-        ford = tabula::plot_ford,
-        bertin = tabula::plot_bertin
-      )
-      mtx_plot(user_data$data)
+      fun_plot()(user_data$data)
     })
     plot_permute <- reactive({
       req(data_permute())
-      req(input$plot_type)
-      mtx_plot <- switch(
-        input$plot_type,
-        heat = function(x) tabula::plot_heatmap(arkhe::as_composition(x)),
-        ford = tabula::plot_ford,
-        bertin = tabula::plot_bertin
-      )
-      mtx_plot(data_permute())
+      fun_plot()(data_permute())
     })
     observeEvent(data_permute(), {
       updateTabsetPanel(session, inputId = "plot", selected = "panel_permute")
@@ -151,10 +145,10 @@ module_seriate_server  <- function(id, user_data, user_settings) {
       data_seriate()
     })
     output$plot_data <- renderPlot({
-      plot_data() + scale_picker(user_settings$col_sequential, "fill")
+      plot_data()
     })
     output$plot_permute <- renderPlot({
-      plot_permute() + scale_picker(user_settings$col_sequential, "fill")
+      plot_permute()
     })
     ## Download ----------------------------------------------------------------
     output$export_plot_data <- module_export_plot(

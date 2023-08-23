@@ -34,10 +34,6 @@ Correspondence Analysis \tab \code{ca} \cr
 run_app("seriate")
 }
 }
-\seealso{
-Other shiny: 
-\code{\link{deploy}()}
-}
 \author{
 N. Frerebeau
 }

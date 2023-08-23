@@ -43,7 +43,7 @@ module_about_ui <- function(id, cite = "janus") {
           ),
           tags$br(),
           tags$p("To cite in publications use:"),
-          markdown(format(utils::citation(cite), style = "text"))
+          cite_markdown(cite)
         ) # wellPanel
       ) # column
     ) # fluidRow

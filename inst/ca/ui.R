@@ -7,7 +7,7 @@ shiny_ui <- function(request) {
   fluidPage(
     navbarPage(
       "Correspondence Analysis",
-      module_import_ui("import"),
+      module_data_ui("data"),
       module_ca_ui("ca"),
       module_settings_ui("settings"),
       module_about_ui("about", cite = "dimensio"),

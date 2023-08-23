@@ -1,4 +1,3 @@
-
 # UI ===========================================================================
 #' Footer UI
 #'
@@ -19,13 +18,14 @@ module_footer_ui <- function(id, name) {
       actionLink(inputId = ns("citation"), label = "How to cite"),
       HTML(" &middot; "),
       tags$a(href = "https://github.com/tesselle/janus/issues",
-          rel = "external", title = "Issue", "Report a bug or request")
+             rel = "external", title = "Issue", "Report a bug or request")
     ),
     tags$p(
       "This app is a part of the", tags$strong("tesselle"), "project,",
       "a collection of packages for research and teaching in archaeology.",
       "Learn more at",
-      tags$a(href = url, rel = "external", title = "tesselle", "tesselle.org")
+      tags$a(href = url, rel = "external", title = "tesselle", "tesselle.org"),
+      "."
     )
   )
 }
@@ -45,12 +45,10 @@ module_footer_server  <- function(id, cite = "janus") {
   moduleServer(id, function(input, output, session) {
     ## Event -------------------------------------------------------------------
     observeEvent(input$citation, {
-      bib <- format(utils::citation(cite), style = "text")
-
       showModal(
         modalDialog(
           title = "Citation",
-          markdown(bib),
+          cite_markdown(cite),
           easyClose = TRUE,
           footer = modalButton("Close")
         )
