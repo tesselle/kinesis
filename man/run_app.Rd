@@ -4,7 +4,7 @@
 \alias{run_app}
 \title{Run an App}
 \usage{
-run_app(app = c("seriate", "ca"), browser = TRUE, display = "auto")
+run_app(app = c("seriate"), browser = TRUE, display = "auto")
 }
 \arguments{
 \item{app}{A \code{\link{character}} string specifying the Shiny application
@@ -26,7 +26,6 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 \tabular{ll}{
 \strong{Application name} \tab  \strong{Keyword} \cr
 Matrix Seriation \tab \code{seriate} \cr
-Correspondence Analysis \tab \code{ca} \cr
 }
 }
 \examples{
