@@ -22,8 +22,7 @@ Imports:
     tools,
     utils
 Suggests:
-    rmarkdown,
-    rsconnect
+    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

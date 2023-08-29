@@ -16,7 +16,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 ## Overview
 
 A collection of [**shiny**](https://shiny.rstudio.com) application that
-provides exhanced graphical user interfaces for the
+provides graphical user interfaces for the
 [tesselle](https://www.tesselle.org) packages.
 
 ## Installation
@@ -36,17 +36,6 @@ library(janus)
 
 ## Run the app for matrix seriation
 run_app("seriate")
-```
-
-## Deploy
-
-``` r
-## Set repositories
-options(repos = c(tesselle = "https://tesselle.r-universe.dev",
-                  CRAN = "https://cloud.r-project.org"))
-
-## Assuming rsconnect is properly configured
-deploy("seriate")
 ```
 
 ## Contributing
