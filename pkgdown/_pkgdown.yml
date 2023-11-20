@@ -1,0 +1,17 @@
+url: https://packages.tesselle.org/janus
+
+template:
+  package: tekton
+
+reference:
+- title: Apps
+  contents:
+  - has_concept("shiny apps")
+
+# navbar:
+#  components:
+#    articles:
+#     text: Apps
+#     menu:
+#     - text: Seriation
+#       href: https://tesselle.shinyapps.io/seriate/

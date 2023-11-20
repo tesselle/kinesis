@@ -1,0 +1,12 @@
+bibentry(
+  bibtype      = "Manual",
+  header       = "To cite janus in publications use:",
+  footer       = "This package is a part of the tesselle project <https://www.tesselle.org>.",
+  author       = person("Nicolas", "Frerebeau", role = "aut"),
+  title        = "{janus: 'Shiny' Applications for the tesselle R Packages}",
+  year         = "2023",
+  organization = "Université Bordeaux Montaigne",
+  address      = "Pessac, France",
+  note         = sprintf("R package version %s", meta$Version),
+  url          = "https://packages.tesselle.org/janus/"
+)
