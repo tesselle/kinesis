@@ -30,10 +30,7 @@
 
 #' @import shiny
 #' @import bslib
-#' @importFrom dimensio ca get_eigenvalues plot_columns
-#' plot_contributions plot_rows plot_variance
-#' @importFrom khroma colour info
-#' @importFrom tabula plot_bertin plot_ford plot_heatmap
-#' plot_spot
+#' @importFrom dimensio ca
 #' @importFrom kairos permute seriate_average
+#' @importFrom tabula plot_bertin plot_ford
 NULL

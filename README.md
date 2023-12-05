@@ -61,7 +61,7 @@ install.packages("janus", repos = "https://tesselle.r-universe.dev")
 library(janus)
 
 ## Run the app for matrix seriation
-run_app("kairos")
+run_app("seriation")
 ```
 
 ## Contributing

@@ -17,18 +17,15 @@ module_prepare_ui <- function(id) {
         id = ns("prepare_accordion"),
         open = FALSE,
         accordion_panel(
-          title = tooltip(
-            span("1. Select columns", icon("circle-question")),
-            "Select the columns you would like to keep.",
-            placement = "auto"
-          ),
+          title = "1. Select columns",
           value = "select",
           checkboxGroupInput(
-            inputId = ns("select_extra"),
-            label = "Select supplementary variables",
+            inputId = ns("select"),
+            label = NULL,
+            choices = NULL,
+            selected = NULL,
             width = "100%"
-          ),
-          helpText("Selected variables will be excluded from calculations.")
+          )
         ),
         accordion_panel(
           title = tooltip(
@@ -37,26 +34,15 @@ module_prepare_ui <- function(id) {
             placement = "auto"
           ),
           value = "remove",
-          ## Input: remove missing
+          ## Input: remove zero
           checkboxInput(
-            inputId = ns("remove_missing_row"),
-            label = "Remove rows with missing values",
+            inputId = ns("remove_zero_row"),
+            label = "Remove rows with zero",
             value = FALSE
           ),
           checkboxInput(
-            inputId = ns("remove_missing_column"),
-            label = "Remove columns with missing values",
-            value = FALSE
-          ),
-          ## Input: remove empty
-          checkboxInput(
-            inputId = ns("remove_empty_row"),
-            label = "Remove empty rows",
-            value = FALSE
-          ),
-          checkboxInput(
-            inputId = ns("remove_empty_column"),
-            label = "Remove empty columns",
+            inputId = ns("remove_zero_column"),
+            label = "Remove columns with zero",
             value = FALSE
           ),
           ## Input: remove constant
@@ -64,6 +50,14 @@ module_prepare_ui <- function(id) {
             inputId = ns("remove_constant_column"),
             label = "Remove constant columns",
             value = FALSE
+          ),
+          hr(),
+          ## Input: remove all?
+          checkboxInput(
+            inputId = ns("all"),
+            label = "Remove only if all values meet the condition",
+            value = TRUE,
+            width = "100%"
           )
         ),
         accordion_panel(
@@ -72,7 +66,8 @@ module_prepare_ui <- function(id) {
             "Remove data points that fall outside a specification.",
             placement = "auto"
           ),
-          value = "filter"
+          value = "filter",
+          uiOutput(outputId = ns("filter"))
         )
       )
     ), # column
@@ -89,73 +84,125 @@ module_prepare_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param user_data A [shiny::reactiveValues()] list.
+#' @param x A reactive `data.frame` (typically returned by
+#'  [module_import_server()]).
+#' @return A reactive `data.frame`.
 #' @seealso [module_prepare_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
-module_prepare_server <- function(id, user_data) {
+module_prepare_server <- function(id, x) {
+  stopifnot(is.reactive(x))
+
   moduleServer(id, function(input, output, session) {
-    ## Reactive ----------------------------------------------------------------
-    data_raw <- reactive({
-      req(user_data$data_raw)
-      user_data$data_raw
-    })
-    ## Observe -----------------------------------------------------------------
+    ## Select data
     observe({
-      i <- vapply(X = data_raw(), FUN = is.numeric, FUN.VALUE = logical(1))
-      choices <- colnames(data_raw())
-      selected <- choices[!i]
-      updateCheckboxGroupInput(inputId = "select_extra", inline = TRUE,
-                               choices = choices, selected = selected)
+      updateCheckboxGroupInput(
+        inputId = "select",
+        label = "Select columns to keep:",
+        choices = colnames(x()),
+        selected = colnames(x()),
+        inline = TRUE
+      )
     })
-    observe({
-      j <- colnames(data_raw()) %in% input$select_extra
-      quanti <- data_raw()[, !j, drop = FALSE]
-      extra <- data_raw()[, j, drop = FALSE]
+    data_select <- bindEvent(
+      reactive({ x()[, input$select, drop = FALSE] }),
+      input$select
+    )
 
-      ## Remove row/column
-      if (isTRUE(input$remove_missing_row)) {
-        miss <- apply(X = quanti, MARGIN = 1, FUN = function(x) any(is.na(x)))
-        quanti <- quanti[!miss, , drop = FALSE]
-        extra <- extra[!miss, , drop = FALSE]
+    ## Remove data
+    data_clean <- reactive({
+      out <- data_select()
+
+      ## Remove rows
+      ## If only zeros
+      if (isTRUE(input$remove_zero_row)) {
+        out <- arkhe::remove_zero(out, margin = 1, all = input$all)
       }
-      if (isTRUE(input$remove_missing_col)) {
-        quanti <- arkhe::remove_NA(quanti, margin = 2, all = FALSE)
+
+      ## Remove columns
+      ## If only zeros
+      if (isTRUE(input$remove_zero_column)) {
+        out <- arkhe::remove_zero(out, margin = 2, all = input$all)
       }
-      if (isTRUE(input$remove_empty_row)) {
-        zeros <- rowSums(quanti, na.rm = FALSE) == 0
-        quanti <- quanti[!zeros, , drop = FALSE]
-        extra <- extra[!zeros, , drop = FALSE]
-      }
-      if (isTRUE(input$remove_empty_col)) {
-        quanti <- arkhe::remove_zero(quanti, margin = 2, all = TRUE, na.rm = FALSE)
-      }
+
+      ## If constant
       if (isTRUE(input$remove_constant_column)) {
-        quanti <- arkhe::remove_constant(quanti, na.rm = FALSE)
+        out <- arkhe::remove_constant(out)
       }
 
-      ## Filter rows
-      # TODO
-
-      user_data$data_quanti <- quanti
-      user_data$data_extra <- extra
+      out
     })
-    ## Output ------------------------------------------------------------------
-    output$table <- DT::renderDataTable({
-      req(user_data$data_quanti)
-      x <- cbind(user_data$data_extra, user_data$data_quanti)
-      x <- DT::datatable(x)
 
-      if (ncol(req(user_data$data_extra)) > 0) {
-        x <- DT::formatStyle(
-          table = x,
-          columns = seq_len(ncol(user_data$data_extra)),
-          backgroundColor = "lightgrey"
-        )
+    ## Filter rows
+    data_filter <- reactive({
+      parts <- colnames(data_clean())
+      each_var <- lapply(
+        X = parts,
+        FUN = function(j, x, val) {
+          ok <- filter_var(x = x[[j]], val = input[[j]])
+          ok %||% TRUE
+        },
+        x = data_clean(),
+        val = input
+      )
+      keep <- Reduce(f = `&`, x = each_var)
+      if (all(!keep)) return(data_clean())
+      data_clean()[keep, , drop = FALSE]
+    })
+
+    ## Render filters
+    output$filter <- renderUI({
+      req(data_clean())
+      index <- arkhe::detect(x = data_clean(), f = is.numeric,
+                             margin = 2, negate = TRUE)
+      quali <- data_clean()[, index, drop = FALSE]
+      n <- ncol(quali)
+
+      if (n == 0) return(NULL)
+      parts <- colnames(quali)
+      ui <- vector(mode = "list", length = n)
+      for (j in seq_len(n)) {
+        x <- quali[, j, drop = TRUE]
+        ui[[j]] <- make_filter(session, x = x, var = parts[j])
       }
 
-      x
+      ui
     })
+    # FIXME: trouver une meilleure approche que forcer l'execution.
+    # La difficulté vient de l'usage de renderUI() qui n'est pas évaluée
+    # tant que l'utilisateur n'affiche pas cette portion d'interface.
+    outputOptions(output, name = "filter", suspendWhenHidden = FALSE)
+
+    ## Render table
+    output$table <-  DT::renderDataTable({ data_filter() })
+
+    data_filter
   })
+}
+
+make_filter <- function(session, x, var) {
+  ns <- session$ns
+  if (is.numeric(x)) {
+    rng <- range(x, na.rm = TRUE)
+    sliderInput(inputId = ns(var), label = var, width = "100%",
+                min = rng[1], max = rng[2], value = rng)
+  } else if (is.character(x)) {
+    levs <- unique(x)
+    selectInput(inputId = ns(var), label = var, width = "100%",
+                choices = levs, selected = levs, multiple = TRUE)
+  } else {
+    ## Not supported
+    NULL
+  }
+}
+filter_var <- function(x, val) {
+  if (is.numeric(x)) {
+    !is.na(x) & x >= val[1] & x <= val[2]
+  } else if (is.character(x)) {
+    x %in% val
+  } else {
+    ## No control, so don't filter
+    TRUE
+  }
 }

@@ -4,13 +4,17 @@
 \alias{module_prepare_server}
 \title{Prepare Data Server}
 \usage{
-module_prepare_server(id, user_data)
+module_prepare_server(id, x)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
+\item{x}{A reactive \code{data.frame} (typically returned by
+\code{\link[=module_import_server]{module_import_server()}}).}
+}
+\value{
+A reactive \code{data.frame}.
 }
 \description{
 Prepare Data Server
@@ -19,11 +23,15 @@ Prepare Data Server
 \code{\link[=module_prepare_ui]{module_prepare_ui()}}
 
 Other server modules: 
-\code{\link{module_ca_server}()},
+\code{\link{module_count_server}()},
 \code{\link{module_footer_server}()},
+\code{\link{module_header_server}()},
+\code{\link{module_home_server}()},
 \code{\link{module_import_server}()},
+\code{\link{module_missing_server}()},
+\code{\link{module_multivar_server}()},
 \code{\link{module_seriate_server}()},
-\code{\link{module_settings_server}()}
+\code{\link{module_summary_server}()}
 }
 \concept{server modules}
 \keyword{internal}

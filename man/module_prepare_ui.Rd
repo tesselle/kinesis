@@ -16,13 +16,14 @@ Prepare Data UI
 \code{\link[=module_prepare_server]{module_prepare_server()}}
 
 Other UI modules: 
-\code{\link{module_about_ui}()},
-\code{\link{module_ca_ui}()},
-\code{\link{module_data_ui}()},
 \code{\link{module_footer_ui}()},
+\code{\link{module_header_ui}()},
+\code{\link{module_home_ui}()},
 \code{\link{module_import_ui}()},
+\code{\link{module_missing_ui}()},
+\code{\link{module_multivar_ui}()},
 \code{\link{module_seriate_ui}()},
-\code{\link{module_settings_ui}()}
+\code{\link{module_summary_ui}()}
 }
 \concept{UI modules}
 \keyword{internal}

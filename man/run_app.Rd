@@ -4,7 +4,7 @@
 \alias{run_app}
 \title{Run an App}
 \usage{
-run_app(app = c("seriate"), browser = TRUE, display = "auto")
+run_app(app = c("seriation"), browser = TRUE, display = "auto")
 }
 \arguments{
 \item{app}{A \code{\link{character}} string specifying the Shiny application
@@ -25,15 +25,15 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 \details{
 \tabular{ll}{
 \strong{Application name} \tab  \strong{Keyword} \cr
-Matrix Seriation \tab \code{seriate} \cr
+Matrix Seriation \tab \code{seriation} \cr
 }
 }
 \examples{
 \dontrun{
-run_app("seriate")
+run_app("seriation")
 }
 }
 \author{
 N. Frerebeau
 }
-\concept{shiny}
+\concept{shiny apps}

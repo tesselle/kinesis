@@ -12,17 +12,17 @@
 #' @details
 #'  \tabular{ll}{
 #'   **Application name** \tab  **Keyword** \cr
-#'   Matrix Seriation \tab `seriate` \cr
+#'   Matrix Seriation \tab `seriation` \cr
 #'  }
 #' @examples
 #' \dontrun{
-#' run_app("seriate")
+#' run_app("seriation")
 #' }
 #' @return A \pkg{shiny} application object.
-#' @family shiny
+#' @family shiny apps
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("seriate"),
+run_app <- function(app = c("seriation"),
                     browser = TRUE, display = "auto") {
   app <- match.arg(app, several.ok = FALSE)
   appDir <- system.file(app, package = "janus")
@@ -34,4 +34,25 @@ run_app <- function(app = c("seriate"),
     appDir = appDir,
     options = list(launch.browser = browser, display.mode = display)
   )
+}
+
+#' Read Configuration Values
+#'
+#' A wrapper for [config::get()].
+#' @param app A [`character`] string specifying the Shiny application
+#'  configuration to get . Any unambiguous substring can be given.
+#' @param config A [`character`] string specifying the name of configuration to
+#'  read from.
+#' @return A [`list`] of configuration values.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @export
+get_config <- function(app = c("seriation"), config = getOption("janus.config")) {
+  app <- match.arg(app, several.ok = FALSE)
+  file <- system.file(app, "config.yml", package = "janus")
+
+  if (file == "")
+    stop(sprintf("Could not find %s configuration.", sQuote(app)), call. = FALSE)
+
+  config::get(value = NULL, config = config %||% "default", file = file)
 }

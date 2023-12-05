@@ -15,17 +15,18 @@ URL: https://github.com/tesselle/janus,
     https://packages.tesselle.org/janus/
 BugReports: https://github.com/tesselle/janus/issues
 Imports: 
-    dimensio (>= 0.4.0),
-    kairos (>= 1.2.0),
+    arkhe (>= 1.4.0),
+    bslib (>= 0.5.1),
+    config,
+    dimensio (>= 0.5.0),
+    DT,
+    grDevices,
+    kairos (>= 2.0.2),
     khroma (>= 1.11.0),
     shiny (>= 1.6.0),
-    bslib (>= 0.5.1),
     stats,
-    tabula (>= 3.0.0),
-    tools,
+    tabula (>= 3.0.1),
     utils
-Suggests:
-    rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

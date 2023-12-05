@@ -4,16 +4,17 @@
 \alias{module_seriate_server}
 \title{Seriate Server}
 \usage{
-module_seriate_server(id, user_data, user_settings)
+module_seriate_server(id, x)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{user_data}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list with the
-following elements: "\code{data}".}
-
-\item{user_settings}{A \code{\link[shiny:reactiveValues]{shiny::reactiveValues()}} list.}
+\item{x}{A reactive \code{data.frame} (typically returned by
+\code{\link[=module_prepare_server]{module_prepare_server()}}).}
+}
+\value{
+A reactive \code{\link[kairos:PermutationOrder-class]{kairos:: AveragePermutationOrder}} object.
 }
 \description{
 Seriate Server
@@ -22,11 +23,15 @@ Seriate Server
 \code{\link[=module_seriate_ui]{module_seriate_ui()}}
 
 Other server modules: 
-\code{\link{module_ca_server}()},
+\code{\link{module_count_server}()},
 \code{\link{module_footer_server}()},
+\code{\link{module_header_server}()},
+\code{\link{module_home_server}()},
 \code{\link{module_import_server}()},
+\code{\link{module_missing_server}()},
+\code{\link{module_multivar_server}()},
 \code{\link{module_prepare_server}()},
-\code{\link{module_settings_server}()}
+\code{\link{module_summary_server}()}
 }
 \concept{server modules}
 \keyword{internal}

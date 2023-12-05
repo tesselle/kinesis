@@ -4,14 +4,11 @@
 \alias{module_footer_server}
 \title{Footer Server}
 \usage{
-module_footer_server(id, cite = "janus")
+module_footer_server(id)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
-
-\item{cite}{A \code{\link{character}} string giving the name of the package to be
-cited.}
 }
 \description{
 Footer Server
@@ -20,11 +17,15 @@ Footer Server
 \code{\link[=module_footer_ui]{module_footer_ui()}}
 
 Other server modules: 
-\code{\link{module_ca_server}()},
+\code{\link{module_count_server}()},
+\code{\link{module_header_server}()},
+\code{\link{module_home_server}()},
 \code{\link{module_import_server}()},
+\code{\link{module_missing_server}()},
+\code{\link{module_multivar_server}()},
 \code{\link{module_prepare_server}()},
 \code{\link{module_seriate_server}()},
-\code{\link{module_settings_server}()}
+\code{\link{module_summary_server}()}
 }
 \concept{server modules}
 \keyword{internal}

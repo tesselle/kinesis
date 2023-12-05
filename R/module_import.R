@@ -7,7 +7,7 @@
 #' @keywords internal
 #' @export
 module_import_ui <- function(id) {
-  # Create a namespace function using the provided id
+  ## Create a namespace function using the provided id
   ns <- NS(id)
 
   sidebarLayout(
@@ -15,16 +15,27 @@ module_import_ui <- function(id) {
       ## Input: select a file
       fileInput(
         inputId = ns("file"),
-        label = tooltip(
-          span("Choose a CSV file", icon("circle-question")),
-          "Select the location of, and the CSV file you want to upload. Please check the default settings below and adjust them to your data.",
-          placement = "auto"
-        ),
+        label = "Choose a CSV file:",
         multiple = FALSE,
         accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
       ),
+      tags$p(
+      helpText("Select the location of, and the CSV file you want to upload."),
+      helpText("Please check the default settings below and adjust them to your data."),
       helpText("This application only supports data encoded in UFT-8."),
+      ),
+      tags$p(
+      helpText("It assumes that you keep your data tidy: each variable must be saved in its own column and each observation (sample) must be saved in its own row.")
+      ),
       tags$hr(),
+      ## Input: lines of the data to skip
+      numericInput(
+        inputId = ns("skip"),
+        label = "Lines of the data file to skip:",
+        value = 0,
+        min = 0,
+        step = 1
+      ),
       ## Input: checkbox if file has header
       checkboxInput(
         inputId = ns("header"),
@@ -35,7 +46,7 @@ module_import_ui <- function(id) {
       checkboxInput(
         inputId = ns("rownames"),
         label = "Row names",
-        value = TRUE
+        value = FALSE
       ),
       ## Input: select decimal
       radioButtons(
@@ -55,8 +66,14 @@ module_import_ui <- function(id) {
       radioButtons(
         inputId = ns("quote"),
         label = "Quote",
-        choices = c(None = "", "Double Quote" = '"', "Single Quote" = "'"),
+        choices = c(None = "", "Double quote" = '"', "Single quote" = "'"),
         selected = '"'
+      ),
+      ## Input: missing string
+      textInput(
+        inputId = ns("na.strings"),
+        label = "String to be interpreted as missing value:",
+        value = ""
       )
     ), # sidebarPanel
     mainPanel(
@@ -71,48 +88,45 @@ module_import_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param user_data A [shiny::reactiveValues()] list.
+#' @return A reactive `data.frame`.
 #' @seealso [module_import_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
-module_import_server <- function(id, user_data) {
+module_import_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    ## Event -------------------------------------------------------------------
-    observeEvent({
-      input$file
-      input$header
-      input$sep
-      input$dec
-      input$quote
-      input$rownames
-    }, {
+    ## Read data file
+    data <- reactive({
       req(input$file)
-
-      tryCatch(
-        {
-          df <- utils::read.table(
-            file = input$file$datapath,
-            header = input$header,
-            sep = input$sep,
-            dec = input$dec,
-            quote = input$quote,
-            row.names = if (input$rownames) 1 else NULL
-          )
-        },
-        error = function(e) {
-          stop(safeError(e)) # Return a safeError if a parsing error occurs
-        }
+      df <- load_file(
+        path = input$file$datapath,
+        header = input$header,
+        sep = input$sep,
+        dec = input$dec,
+        quote = input$quote,
+        rownames = if (input$rownames) 1 else NULL,
+        na.strings = input$na.strings,
+        skip = if (!is.na(input$skip)) input$skip else 0
       )
+    })
 
-      ## Store data
-      user_data$file <- input$file
-      user_data$data_raw <- df
-    })
-    ## Output ------------------------------------------------------------------
-    output$table <- DT::renderDataTable({
-      req(user_data$data_raw)
-      user_data$data_raw
-    })
+    ## Render table
+    output$table <- DT::renderDataTable({ data() })
+
+    data
   })
+}
+
+load_file <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
+                      rownames = NULL, na.strings = "NA", skip = 0) {
+  tryCatch(
+    {
+      utils::read.table(file = path, header = header, sep = sep, dec = dec,
+                        quote = quote, row.names = rownames,
+                        na.strings = na.strings, skip = skip)
+    },
+    error = function(e) {
+      stop(safeError(e)) # Return a safeError if a parsing error occurs
+    }
+  )
 }

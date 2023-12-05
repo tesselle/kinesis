@@ -11,86 +11,82 @@ module_seriate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tabPanel(
-    "Seriate",
-    icon = icon("sort-amount-up"),
-    fluidPage(
-      fluidRow(
-        column(
-          width = 4,
-          wellPanel(
-            ## Input: checkbox if permute rows
-            checkboxInput(
-              inputId = ns("margin_row"),
-              label = "Permute rows",
-              value = TRUE
-            ),
-            ## Input: checkbox if permute columns
-            checkboxInput(
-              inputId = ns("margin_col"),
-              label = "Permute columns",
-              value = TRUE
-            ),
-            ## Input: select CA axes
-            numericInput(
-              inputId = ns("axes"),
-              label = "CA dimension",
-              value = 1,
-              min = 1,
-              max = 10,
-              step = 1
-            ),
-            ## Input: seriate
-            actionButton(
-              inputId = ns("go_seriate"),
-              label = "Seriate",
-              style = "margin-bottom: 15px;"
-            ),
-            ## Input: select plot
-            radioButtons(
-              inputId = ns("plot_type"),
-              label = "Display",
-              choices = c(Bertin = "bertin", Ford = "ford", Heatmap = "heat"),
-              selected = "heat"
-            )
-          ) # wellPanel
+  sidebarLayout(
+    sidebarPanel(
+      ## Input: checkbox if permute rows
+      checkboxInput(
+        inputId = ns("margin_row"),
+        label = "Permute rows",
+        value = TRUE
+      ),
+      ## Input: checkbox if permute columns
+      checkboxInput(
+        inputId = ns("margin_col"),
+        label = "Permute columns",
+        value = TRUE
+      ),
+      ## Input: select CA axes
+      numericInput(
+        inputId = ns("axes"),
+        label = "CA dimension",
+        value = 1,
+        min = 1,
+        max = 10,
+        step = 1
+      ),
+      ## Input: select plot
+      radioButtons(
+        inputId = ns("plot_type"),
+        label = "Display",
+        choices = c(`Bertin plot` = "bertin", `Ford plot` = "ford"),
+        selected = "ford"
+      ),
+      conditionalPanel(
+        condition = "input.plot_type == 'ford'",
+        ns = ns,
+        checkboxInput(
+          inputId = ns("eppm"),
+          label = "EPPM",
+          value = FALSE
         ),
-        column(
-          width = 8,
-          ## Output: permutation summary
-          # verbatimTextOutput(outputId = ns("summary")),
-          fluidRow(
-            tabsetPanel(
-              id = ns("plot"),
-              type = "tabs",
-              tabPanel(
-                title = "Raw data",
-                value = "panel_raw",
-                style = "margin-top: 15px;",
-                ## Output: download
-                downloadButton(outputId = ns("export_plot_data"),
-                               label = "Export plot"),
-                ## Output: plot raw matrix
-                plotOutput(outputId = ns("plot_data"))
-              ),
-              tabPanel(
-                title = "Rearranged matrix",
-                value = "panel_permute",
-                style = "margin-top: 15px;",
-                ## Output: download
-                downloadButton(outputId = ns("export_plot_perm"),
-                               label = "Export plot"),
-                downloadButton(outputId = ns("export_table"),
-                               label = "Export matrix"),
-                ## Output: plot reordered matrix
-                plotOutput(outputId = ns("plot_permute"))
-              )
-            ) # tabsetPanel
-          )
+        checkboxInput(
+          inputId = ns("weights"),
+          label = "weights",
+          value = FALSE
         )
-      ) # fluidRow
-    ) # fluidPage
-  ) # tabPanel
+      )
+    ), # sidebarPanel
+    mainPanel(
+      ## Output: permutation summary
+      # verbatimTextOutput(outputId = ns("summary")),
+      tabsetPanel(
+        id = ns("plot"),
+        type = "tabs",
+        tabPanel(
+          title = "Rearranged matrix",
+          style = "margin-top: 15px;",
+          ## Output: download
+          downloadButton(outputId = ns("export_plot_perm"),
+                         label = "Export plot"),
+          downloadButton(outputId = ns("export_table"),
+                         label = "Export matrix"),
+          hr(),
+          ## Output: plot reordered matrix
+          plotOutput(outputId = ns("plot_permute"), height = "auto")
+        ),
+        tabPanel(
+          title = "Raw data",
+          style = "margin-top: 15px;",
+          ## Output: download
+          downloadButton(outputId = ns("export_plot_data"),
+                         label = "Export plot"),
+          hr(),
+          ## Output: plot raw matrix
+          plotOutput(outputId = ns("plot_raw"), height = "auto")
+        )
+      ) # tabsetPanel
+    ) # mainPanel
+  ) # sidebarLayout
 }
 
 # Server =======================================================================
@@ -98,64 +94,62 @@ module_seriate_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param user_data A [shiny::reactiveValues()] list with the
-#'  following elements: "`data`".
-#' @param user_settings A [shiny::reactiveValues()] list.
+#' @param x A reactive `data.frame` (typically returned by
+#'  [module_prepare_server()]).
+#' @return A reactive [`kairos:: AveragePermutationOrder-class`] object.
 #' @seealso [module_seriate_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
-module_seriate_server  <- function(id, user_data, user_settings) {
+module_seriate_server  <- function(id, x) {
+  stopifnot(is.reactive(x))
+
   moduleServer(id, function(input, output, session) {
     ## Reactive ----------------------------------------------------------------
-    data_seriate <- eventReactive(input$go_seriate, {
-      req(user_data$data)
+    data_seriate <- reactive({
+      req(x())
       margin <- NULL
       if (input$margin_row) margin <- c(margin, 1)
       if (input$margin_col) margin <- c(margin, 2)
-      kairos::seriate_average(user_data$data, margin = margin, axes = input$axes)
+      kairos::seriate_average(x(), margin = margin, axes = input$axes)
     })
     data_permute <- reactive({
-      req(user_data$data)
-      req(data_seriate())
-      kairos::permute(user_data$data, data_seriate())
+      req(x())
+      kairos::permute(x(), data_seriate())
     })
     fun_plot <- reactive({
       req(input$plot_type)
       switch(
         input$plot_type,
-        heat = tabula::plot_heatmap,
-        ford = tabula::plot_ford,
+        ford = function(x) tabula::plot_ford(x, weights = input$weights, EPPM = input$eppm),
         bertin = tabula::plot_bertin
       )
     })
-    plot_data <- reactive({
-      req(user_data$data)
-      fun_plot()(user_data$data)
+    plot_raw <- reactive({
+      req(x())
+      fun_plot()(x())
+      grDevices::recordPlot()
     })
     plot_permute <- reactive({
       req(data_permute())
       fun_plot()(data_permute())
+      grDevices::recordPlot()
     })
-    observeEvent(data_permute(), {
-      updateTabsetPanel(session, inputId = "plot", selected = "panel_permute")
-    })
+
     ## Render ------------------------------------------------------------------
-    output$summary <- renderPrint({
-      data_seriate()
-    })
-    output$plot_data <- renderPlot({
-      plot_data()
-    })
-    output$plot_permute <- renderPlot({
-      plot_permute()
-    })
+    output$plot_raw <- renderPlot(
+      { grDevices::replayPlot(plot_raw()) },
+      height = function() { getCurrentOutputInfo(session)$width() / 2 }
+    )
+    output$plot_permute <- renderPlot(
+      { grDevices::replayPlot(plot_permute()) },
+      height = function() { getCurrentOutputInfo(session)$width() / 2 }
+    )
     ## Download ----------------------------------------------------------------
-    output$export_plot_data <- module_export_plot(
-      "plot_matrix_raw", "matrix_raw", plot_data(), user_settings)
-    output$export_plot_perm <- module_export_plot(
-      "plot_matrix_permuted", "matrix_permuted", plot_permute(), user_settings)
-    output$export_table <- module_export_table(
-      "matrix_permuted", "matrix_permuted", data_permute())
+    output$export_plot_raw <- export_plot(plot_raw, name = "matrix_raw")
+    output$export_plot_perm <- export_plot(plot_permute, name = "matrix_permuted")
+    output$export_table <- export_table(permuted = data_permute, name = "matrix_permuted")
+
+    data_seriate
   })
 }
