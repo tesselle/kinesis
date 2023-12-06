@@ -13,6 +13,7 @@ shiny_ui <- function(request) {
       module_home_ui("home"),
       tabPanel(
         title = "Data",
+        icon = icon("upload"),
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -31,10 +32,12 @@ shiny_ui <- function(request) {
       ), # tabPanel
       tabPanel(
         title = "Statistics",
+        icon = icon("line-chart"),
         module_summary_ui("summary")
       ), # tabPanel
       tabPanel(
         title = "Analysis",
+        icon = icon("magnifying-glass"),
         module_multivar_ui("ca")
       ), # navbarMenu
       tabPanel(
@@ -43,7 +46,8 @@ shiny_ui <- function(request) {
         module_seriate_ui("seriate")
       ), # tabPanel
       header = module_header_ui("header"),
-      footer = module_footer_ui("footer")
+      footer = module_footer_ui("footer"),
+      collapsible = TRUE
     )
   )
 }

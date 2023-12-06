@@ -99,7 +99,7 @@ module_prepare_server <- function(id, x) {
     observe({
       updateCheckboxGroupInput(
         inputId = "select",
-        label = "Select columns to keep:",
+        label = "Columns to keep:",
         choices = colnames(x()),
         selected = colnames(x()),
         inline = TRUE
