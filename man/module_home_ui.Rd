@@ -16,6 +16,7 @@ About UI
 \code{\link[=module_home_server]{module_home_server()}}
 
 Other UI modules: 
+\code{\link{module_chi2_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_header_ui}()},
 \code{\link{module_import_ui}()},

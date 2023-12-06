@@ -16,6 +16,7 @@ shiny_server <- function(input, output, session) {
 
   ## Statistics
   janus::module_summary_server("summary", x = count)
+  janus::module_chi_server("chi2", x = count)
 
   ## Seriation
   ca_results <- janus::module_seriate_server("seriate", x = count)

@@ -30,10 +30,17 @@ shiny_ui <- function(request) {
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
-      tabPanel(
+      navbarMenu(
         title = "Statistics",
         icon = icon("line-chart"),
-        janus::module_summary_ui("summary")
+        tabPanel(
+          title = "Summary",
+          janus::module_summary_ui("summary")
+        ),
+        tabPanel(
+          title = "Chi-squared",
+          janus::module_chi2_ui("chi2")
+        )
       ), # tabPanel
       tabPanel(
         title = "Analysis",

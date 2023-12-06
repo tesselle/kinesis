@@ -2,6 +2,8 @@
 
 export(get_config)
 export(get_option)
+export(module_chi2_ui)
+export(module_chi_server)
 export(module_count_server)
 export(module_footer_server)
 export(module_footer_ui)

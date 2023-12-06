@@ -20,6 +20,7 @@ Data Summary Server
 \code{\link[=module_summary_ui]{module_summary_ui()}}
 
 Other server modules: 
+\code{\link{module_chi_server}()},
 \code{\link{module_count_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_header_server}()},

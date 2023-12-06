@@ -10,22 +10,29 @@ module_summary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  fluidRow(
-    column(
-      width = 8,
-      offset = 2,
-      downloadButton(outputId = ns("download"), "Download"),
-      ## Output: display data
-      h4("Mean"),
-      tableOutput(outputId = ns("mean")),
-      h4("Standard deviation"),
-      tableOutput(outputId = ns("sd")),
-      h4("Percentile table"),
-      tableOutput(outputId = ns("quantile")),
-      h4("Covariance"),
-      tableOutput(outputId = ns("cov"))
-    ) # column
-  ) # fluidRow
+  sidebarLayout(
+    sidebarPanel(
+      downloadButton(outputId = ns("download"), "Download")
+    ), # sidebarPanel
+    mainPanel(
+      tabsetPanel(
+        type = "tabs",
+        tabPanel(
+          title = "Summary statistics",
+          h5("Location"),
+          tableOutput(outputId = ns("location")),
+          h5("Spread"),
+          tableOutput(outputId = ns("spread")),
+          h5("Percentile table"),
+          tableOutput(outputId = ns("quantile"))
+        ),
+        tabPanel(
+          title = "Covariance",
+          tableOutput(outputId = ns("cov"))
+        )
+      ) # tabsetPanel
+    ) # mainPanel
+  ) # sidebarLayout
 }
 
 # Server =======================================================================
@@ -55,20 +62,26 @@ module_summary_server <- function(id, x) {
       )
       pc
     })
-    ## Mean
-    data_mean <- reactive({
+    ## Location
+    data_loc <- reactive({
       moy <- colMeans(x(), na.rm = FALSE)
-      matrix(moy, ncol = length(moy), dimnames = list(NULL, names(moy)))
+      matrix(moy, ncol = length(moy), dimnames = list("mean", names(moy)))
     })
-    ## Standard deviation
-    data_sd <- reactive({
-      apply(
+    ## Spread
+    data_spread <- reactive({
+      z <- apply(
         X = x(),
         MARGIN = 2,
-        FUN = stats::sd,
+        FUN = function(x, na.rm) {
+          c(stats::sd(x, na.rm = na.rm), stats::IQR(x, na.rm = na.rm),
+            stats::mad(x, na.rm = na.rm))
+        },
         na.rm = FALSE,
-        simplify = FALSE
+        simplify = TRUE
       )
+      colnames(z) <- colnames(x())
+      rownames(z) <- c("SD", "IQR", "MAD")
+      z
     })
     ## Covariance
     data_cov <- reactive({
@@ -76,16 +89,16 @@ module_summary_server <- function(id, x) {
     })
 
     ## Render table
+    output$location <- renderTable({data_loc()}, striped = TRUE, width = "100%", rownames = TRUE)
+    output$spread <- renderTable({data_spread()}, striped = TRUE, width = "100%", rownames = TRUE)
     output$quantile <- renderTable({data_percentiles()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$mean <- renderTable({data_mean()}, striped = TRUE, width = "100%")
-    output$sd <- renderTable({data_sd()}, striped = TRUE, width = "100%")
     output$cov <- renderTable({data_cov()}, width = "100%", rownames = TRUE)
 
     ## Download
     output$download <- export_table(
+      location = data_loc,
+      spread = data_spread,
       quantiles = data_percentiles,
-      mean = data_mean,
-      standard_deviation = data_sd,
       name = "summary"
     )
   })

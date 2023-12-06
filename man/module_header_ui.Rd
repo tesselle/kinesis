@@ -16,6 +16,7 @@ Header UI
 \code{\link[=module_header_server]{module_header_server()}}
 
 Other UI modules: 
+\code{\link{module_chi2_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_home_ui}()},
 \code{\link{module_import_ui}()},

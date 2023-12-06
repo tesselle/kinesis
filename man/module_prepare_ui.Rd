@@ -16,6 +16,7 @@ Prepare Data UI
 \code{\link[=module_prepare_server]{module_prepare_server()}}
 
 Other UI modules: 
+\code{\link{module_chi2_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_header_ui}()},
 \code{\link{module_home_ui}()},

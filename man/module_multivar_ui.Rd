@@ -19,6 +19,7 @@ Mutlivariate Analysis UI
 \code{\link[=module_multivar_server]{module_multivar_server()}}
 
 Other UI modules: 
+\code{\link{module_chi2_ui}()},
 \code{\link{module_footer_ui}()},
 \code{\link{module_header_ui}()},
 \code{\link{module_home_ui}()},

@@ -21,6 +21,7 @@ Count Data Server
 }
 \seealso{
 Other server modules: 
+\code{\link{module_chi_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_header_server}()},
 \code{\link{module_home_server}()},

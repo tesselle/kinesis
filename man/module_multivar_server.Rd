@@ -19,6 +19,7 @@ Multivariate Analysis Server
 \link{module_multivar_ui}
 
 Other server modules: 
+\code{\link{module_chi_server}()},
 \code{\link{module_count_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_header_server}()},

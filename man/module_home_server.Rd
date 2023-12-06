@@ -17,6 +17,7 @@ Home Server
 \code{\link[=module_home_ui]{module_home_ui()}}
 
 Other server modules: 
+\code{\link{module_chi_server}()},
 \code{\link{module_count_server}()},
 \code{\link{module_footer_server}()},
 \code{\link{module_header_server}()},
