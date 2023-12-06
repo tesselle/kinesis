@@ -4,17 +4,14 @@
 \alias{run_app}
 \title{Run an App}
 \usage{
-run_app(app = c("seriation"), browser = TRUE, display = "auto")
+run_app(app = c("seriation"), options = list(launch.browser = interactive()))
 }
 \arguments{
 \item{app}{A \code{\link{character}} string specifying the Shiny application
 to run (see details). Any unambiguous substring can be given.}
 
-\item{browser}{A \code{\link{logical}} scalar: should the app be run in
-the browser?}
-
-\item{display}{A \code{\link{character}} string specifying the mode in which
-to display the application (see \code{\link[shiny:runApp]{shiny::runApp()}}).}
+\item{options}{A \code{\link{list}} of named options that should be passed to the
+\code{\link[shiny:runApp]{shiny::runApp()}} call.}
 }
 \value{
 A \pkg{shiny} application object.

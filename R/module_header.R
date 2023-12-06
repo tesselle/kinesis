@@ -42,7 +42,7 @@ module_header_server  <- function(id, x) {
     })
 
     output$alert_config <- renderUI({
-      if (getOption("janus.config") == "production") return(NULL)
+      if (get_option("production")) return(NULL)
       div(
         class = "alert alert-warning",
         role = "alert",

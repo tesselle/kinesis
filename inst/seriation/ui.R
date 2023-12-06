@@ -10,7 +10,7 @@ shiny_ui <- function(request) {
     lang = "en",
     navbarPage(
       "seriation",
-      module_home_ui("home"),
+      janus::module_home_ui("home"),
       tabPanel(
         title = "Data",
         icon = icon("upload"),
@@ -18,35 +18,35 @@ shiny_ui <- function(request) {
           type = "tabs",
           tabPanel(
             title = "Import",
-            module_import_ui("import")
+            janus::module_import_ui("import")
           ), # tabPanel
           tabPanel(
             title = "Prepare",
-            module_prepare_ui("prepare")
+            janus::module_prepare_ui("prepare")
           ), # tabPanel
           tabPanel(
             title = "Missing values",
-            module_missing_ui("missing")
+            janus::module_missing_ui("missing")
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
       tabPanel(
         title = "Statistics",
         icon = icon("line-chart"),
-        module_summary_ui("summary")
+        janus::module_summary_ui("summary")
       ), # tabPanel
       tabPanel(
         title = "Analysis",
         icon = icon("magnifying-glass"),
-        module_multivar_ui("ca")
+        janus::module_multivar_ui("ca")
       ), # navbarMenu
       tabPanel(
         title = "Seriation",
         icon = icon("sort-amount-up"),
-        module_seriate_ui("seriate")
+        janus::module_seriate_ui("seriate")
       ), # tabPanel
-      header = module_header_ui("header"),
-      footer = module_footer_ui("footer"),
+      header = janus::module_header_ui("header"),
+      footer = janus::module_footer_ui("footer"),
       collapsible = TRUE
     )
   )

@@ -4,20 +4,26 @@
 \alias{get_config}
 \title{Read Configuration Values}
 \usage{
-get_config(app = c("seriation"), config = getOption("janus.config"))
+get_config(
+  config = Sys.getenv("JANUS_CONFIG_ACTIVE", "default"),
+  use_parent = TRUE
+)
 }
 \arguments{
-\item{app}{A \code{\link{character}} string specifying the Shiny application
-configuration to get . Any unambiguous substring can be given.}
-
 \item{config}{A \code{\link{character}} string specifying the name of configuration to
 read from.}
+
+\item{use_parent}{A \code{\link{logical}} scalar: should parent directories be scanned
+for configuration files if the specified config file isn't found?}
+
+\item{app}{A \code{\link{character}} string specifying the Shiny application
+configuration to get . Any unambiguous substring can be given.}
 }
 \value{
 A \code{\link{list}} of configuration values.
 }
 \description{
-A wrapper for \code{\link[config:get]{config::get()}}.
+Read Configuration Values
 }
 \author{
 N. Frerebeau

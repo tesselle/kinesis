@@ -1,6 +1,7 @@
 default:
-  name: seriation
+  production: FALSE
   verbose: TRUE
 
 production:
+  production: TRUE
   verbose: FALSE
