@@ -72,6 +72,10 @@ module_multivar_screeplot <- function(id) {
 
   tabPanel(
     title = "Screeplot",
+    ## Output: download
+    downloadButton(outputId = ns("export_screeplot"),
+                   label = "Export plot"),
+    hr(),
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
@@ -91,6 +95,10 @@ module_multivar_individuals <- function(id) {
 
   tabPanel(
     title = "Individuals",
+    ## Output: download
+    downloadButton(outputId = ns("export_plot_ind"),
+                   label = "Export plot"),
+    hr(),
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
@@ -113,6 +121,10 @@ module_multivar_variables <- function(id) {
 
   tabPanel(
     title = "Variables",
+    ## Output: download
+    downloadButton(outputId = ns("export_plot_var"),
+                   label = "Export plot"),
+    hr(),
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
@@ -203,6 +215,7 @@ module_multivar_server <- function(id, x) {
         labels = FALSE,
         limit = sum(eigen()[, 3] <= 99)
       )
+      grDevices::recordPlot()
     })
     plot_ind <- reactive({
       req(x())
@@ -221,6 +234,7 @@ module_multivar_server <- function(id, x) {
         pch = if (input$highlight == "observation") c(16, 17) else 16,
         col = khroma::color(input$col, names = FALSE, force = TRUE)(256)
       )
+      grDevices::recordPlot()
     })
     plot_var <- reactive({
       req(x())
@@ -239,6 +253,7 @@ module_multivar_server <- function(id, x) {
         pch = if (input$highlight == "observation") c(16, 17) else 16,
         col = khroma::color(input$col, names = FALSE, force = TRUE)(256)
       )
+      grDevices::recordPlot()
     })
     info_ind <- reactive({
       req(x())
@@ -274,15 +289,15 @@ module_multivar_server <- function(id, x) {
       dt
     })
     output$screeplot <- renderPlot(
-      { plot_eigen() },
+      { grDevices::replayPlot(plot_eigen()) },
       height = function() { getCurrentOutputInfo(session)$width() }
     )
     output$plot_ind <- renderPlot(
-      { plot_ind() },
+      { grDevices::replayPlot(plot_ind()) },
       height = function() { getCurrentOutputInfo(session)$width() }
     )
     output$plot_var <- renderPlot(
-      { plot_var() },
+      { grDevices::replayPlot(plot_var()) },
       height = function() { getCurrentOutputInfo(session)$width() }
     )
     output$info_ind <- renderTable({
@@ -305,5 +320,10 @@ module_multivar_server <- function(id, x) {
         addDist = FALSE
       )
     }, striped = TRUE, width = "100%", rownames = FALSE)
+
+    ## Download ----------------------------------------------------------------
+    output$export_plot_ind <- export_plot(plot_ind, name = "map_individuals")
+    output$export_plot_var <- export_plot(plot_var, name = "map_variables")
+    output$export_screeplot <- export_plot(plot_eigen, name = "screeplot")
   })
 }

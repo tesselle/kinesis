@@ -64,7 +64,6 @@ module_seriate_ui <- function(id) {
         type = "tabs",
         tabPanel(
           title = "Rearranged matrix",
-          style = "margin-top: 15px;",
           ## Output: download
           downloadButton(outputId = ns("export_plot_perm"),
                          label = "Export plot"),
@@ -76,7 +75,6 @@ module_seriate_ui <- function(id) {
         ),
         tabPanel(
           title = "Raw data",
-          style = "margin-top: 15px;",
           ## Output: download
           downloadButton(outputId = ns("export_plot_data"),
                          label = "Export plot"),
@@ -145,6 +143,7 @@ module_seriate_server  <- function(id, x) {
       { grDevices::replayPlot(plot_permute()) },
       height = function() { getCurrentOutputInfo(session)$width() / 2 }
     )
+
     ## Download ----------------------------------------------------------------
     output$export_plot_raw <- export_plot(plot_raw, name = "matrix_raw")
     output$export_plot_perm <- export_plot(plot_permute, name = "matrix_permuted")
