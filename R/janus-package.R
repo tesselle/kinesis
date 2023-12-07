@@ -30,7 +30,8 @@
 
 #' @import shiny
 #' @import bslib
-#' @importFrom dimensio ca
+#' @importFrom dimensio pca
+#' @importFrom isopleuros ternary_grid ternary_points ternary_plot
 #' @importFrom kairos permute seriate_average
 #' @importFrom tabula plot_bertin plot_ford
 NULL

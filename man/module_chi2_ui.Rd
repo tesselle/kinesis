@@ -22,9 +22,11 @@ Other UI modules:
 \code{\link{module_import_ui}()},
 \code{\link{module_missing_ui}()},
 \code{\link{module_multivar_ui}()},
+\code{\link{module_pca_ui}()},
 \code{\link{module_prepare_ui}()},
 \code{\link{module_seriate_ui}()},
-\code{\link{module_summary_ui}()}
+\code{\link{module_summary_ui}()},
+\code{\link{module_ternary_ui}()}
 }
 \concept{UI modules}
 \keyword{internal}

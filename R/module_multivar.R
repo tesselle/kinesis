@@ -52,7 +52,7 @@ module_multivar_ui <- function(id) {
       hr(),
       selectInput(
         inputId = ns("highlight"),
-        label = "Symbol size",
+        label = "Highlight",
         choices = c("none" = "", "contribution", "cos2"),
         selected = "observation",
         multiple = FALSE,
@@ -150,9 +150,6 @@ module_multivar_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ranges_ind <- reactiveValues(x = NULL, y = NULL)
-    ranges_var <- reactiveValues(x = NULL, y = NULL)
-
     ## Observe -----------------------------------------------------------------
     observeEvent(axes(), {
       updateSelectInput(session, inputId = "axis1", choices = axes())
@@ -239,16 +236,22 @@ module_multivar_server <- function(id, x) {
     plot_var <- reactive({
       req(x())
       req(info_var())
+
+      high_lab <- input$highlight
+      high_var <- info_var()[[high_lab]]
+
       scatterD3::scatterD3(
         x = info_var()[[1]], y = info_var()[[2]],
         xlab = dimensio:::print_variance(x(), axis1()),
         ylab = dimensio:::print_variance(x(), axis2()),
-        # col_var = info_var()[[input$highlight]],
-        # col_lab = input$highlight,
-        size_var = info_var()[[input$highlight]],
-        size_lab = input$highlight,
+        col_var = if (inherits(x(), "PCA")) high_var else NULL,
+        col_lab = high_lab,
+        size_var = if (inherits(x(), "CA")) high_var else NULL,
+        size_lab = high_lab,
         symbol_var = info_var()$supplementary,
         symbol_lab = "observation",
+        type_var = if (inherits(x(), "PCA")) "arrow" else NULL,
+        unit_circle = inherits(x(), "PCA") && dimensio:::is_scaled(x()),
         lab = if (input$lab_col) rownames(info_var()) else NULL,
         labels_positions = "auto",
         fixed = TRUE
@@ -257,10 +260,10 @@ module_multivar_server <- function(id, x) {
 
     ## Render ------------------------------------------------------------------
     output$title <- renderUI({
-      txt <- ""
-      if (inherits(x(), "PCA")) txt <- "Principal Components Analysis"
-      if (inherits(x(), "CA")) txt <- "Correspondence Analysis"
-      h5(txt)
+      title <- ""
+      if (inherits(x(), "PCA")) title <- "Principal Components Analysis"
+      if (inherits(x(), "CA")) title <- "Correspondence Analysis"
+      h5(title)
     })
     output$variance <- DT::renderDataTable({
       dt <- eigen()

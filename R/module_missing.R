@@ -12,12 +12,19 @@ module_missing_ui <- function(id) {
 
   sidebarLayout(
     sidebarPanel(
+      ## Input: zero as missing
+      checkboxInput(
+        inputId = ns("zero"),
+        label = "Zero as missing value",
+        value = FALSE
+      ),
       ## Input: remove missing
       radioButtons(
         inputId = ns("remove"),
         label = "Remove missing values:",
         choices = c(
           "Keep as is" = "none",
+          "Replace missing values with zeros" = "zero",
           "Remove rows with missing values" = "row",
           "Remove columns with missing values" = "col"
         )
@@ -62,9 +69,14 @@ module_missing_server <- function(id, x) {
     clean <- reactive({
       out <- x()
 
+      if (input$zero) {
+        out <- arkhe::replace_zero(out, value = NA)
+      }
+
       fun <- switch(
         input$remove,
         none = function(x) { x },
+        zero = function(x) arkhe::replace_NA(x, value = 0),
         row = function(x) arkhe::remove_NA(x, margin = 1, all = FALSE),
         col = function(x) arkhe::remove_NA(x, margin = 2, all = FALSE)
       )

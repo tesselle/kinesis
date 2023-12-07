@@ -28,9 +28,11 @@ Other server modules:
 \code{\link{module_import_server}()},
 \code{\link{module_missing_server}()},
 \code{\link{module_multivar_server}()},
+\code{\link{module_pca_server}()},
 \code{\link{module_prepare_server}()},
 \code{\link{module_seriate_server}()},
-\code{\link{module_summary_server}()}
+\code{\link{module_summary_server}()},
+\code{\link{module_ternary_server}()}
 }
 \concept{server modules}
 \keyword{internal}
