@@ -23,6 +23,7 @@ Imports:
     grDevices,
     kairos (>= 2.0.2),
     khroma (>= 1.11.0),
+    scatterD3,
     shiny (>= 1.6.0),
     stats,
     tabula (>= 3.0.1),

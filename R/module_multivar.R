@@ -30,34 +30,38 @@ module_multivar_ui <- function(id) {
         multiple = FALSE,
       ),
       checkboxInput(
-        inputId = ns("supplement"),
+        inputId = ns("supplementary"),
         label = "Supplementary observations",
         value = TRUE
       ),
-      # checkboxInput(
-      #   inputId = ns("labels"),
-      #   label = "Draw labels",
-      #   value = FALSE
-      # ),
-      selectizeInput(
-        inputId = ns("highlight"),
-        label = "Highlight",
-        choices = c("observation", "contribution", "cos2"),
-        selected = "observation",
-        multiple = FALSE,
+      checkboxInput(
+        inputId = ns("lab_row"),
+        label = "Label individuals",
+        value = FALSE
+      ),
+      checkboxInput(
+        inputId = ns("lab_col"),
+        label = "Label variables",
+        value = FALSE
+      ),
+      checkboxInput(
+        inputId = ns("ellipses"),
+        label = "Ellipses (95%)",
+        value = FALSE
       ),
       hr(),
-      sliderInput(
-        inputId = ns("cex"),
+      selectInput(
+        inputId = ns("highlight"),
         label = "Symbol size",
-        min = 1, max = 6, value = c(1, 3),
-        step = 0.5
-      ),
-      color_picker(id, "col")
+        choices = c("none" = "", "contribution", "cos2"),
+        selected = "observation",
+        multiple = FALSE,
+      )
     ), # sidebarPanel
     mainPanel(
       tabsetPanel(
         type = "tabs",
+        module_multivar_results(id),
         module_multivar_individuals(id),
         module_multivar_variables(id),
         module_multivar_screeplot(id)
@@ -89,29 +93,36 @@ module_multivar_screeplot <- function(id) {
   ) # tabPanel
 }
 
+module_multivar_results <- function(id) {
+  # Create a namespace function using the provided id
+  ns <- NS(id)
+
+  tabPanel(
+    title = "Results",
+    fluidRow(
+      div(
+        class = "col-lg-6 col-md-1",
+        h5("Individuals factor map"),
+        hr(),
+        scatterD3::scatterD3Output(outputId = ns("plot_ind"))
+      ),
+      div(
+        class = "col-lg-6 col-md-1",
+        h5("Variables factor map"),
+        hr(),
+        scatterD3::scatterD3Output(outputId = ns("plot_var"))
+      )
+    )
+  ) # tabPanel
+}
+
 module_multivar_individuals <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
   tabPanel(
     title = "Individuals",
-    ## Output: download
-    downloadButton(outputId = ns("export_plot_ind"),
-                   label = "Export plot"),
-    hr(),
-    fluidRow(
-      div(
-        class = "col-lg-6 col-md-1",
-        plotOutput(outputId = ns("plot_ind"),
-                   click = ns("click_ind"), dblclick = ns("dblclick_ind"),
-                   brush = brushOpts(id = ns("brush_ind"), resetOnNew = TRUE),
-                   height = "auto")
-      ),
-      div(
-        class = "col-lg-6 col-md-1",
-        tableOutput(outputId = ns("info_ind"))
-      )
-    )
+    DT::dataTableOutput(outputId = ns("info_ind"))
   ) # tabPanel
 }
 
@@ -121,23 +132,7 @@ module_multivar_variables <- function(id) {
 
   tabPanel(
     title = "Variables",
-    ## Output: download
-    downloadButton(outputId = ns("export_plot_var"),
-                   label = "Export plot"),
-    hr(),
-    fluidRow(
-      div(
-        class = "col-lg-6 col-md-1",
-        plotOutput(outputId = ns("plot_var"),
-                   click = ns("click_var"), dblclick = ns("dblclick_var"),
-                   brush = brushOpts(id = ns("brush_var"), resetOnNew = TRUE),
-                   height = "auto")
-      ),
-      div(
-        class = "col-lg-6 col-md-1",
-        tableOutput(outputId = ns("info_var"))
-      )
-    )
+    DT::dataTableOutput(outputId = ns("info_var"))
   ) # tabPanel
 }
 
@@ -165,26 +160,6 @@ module_multivar_server <- function(id, x) {
     observeEvent(axis1(), {
       choices <- axes()[-axis1()]
       updateSelectInput(session, inputId = "axis2", choices = choices)
-    })
-    observeEvent(input$dblclick_ind, {
-      brush <- input$brush_ind
-      if (!is.null(brush)) {
-        ranges_ind$x <- c(brush$xmin, brush$xmax)
-        ranges_ind$y <- c(brush$ymin, brush$ymax)
-      } else {
-        ranges_ind$x <- NULL
-        ranges_ind$y <- NULL
-      }
-    })
-    observeEvent(input$dblclick_var, {
-      brush <- input$brush_var
-      if (!is.null(brush)) {
-        ranges_var$x <- c(brush$xmin, brush$xmax)
-        ranges_var$y <- c(brush$ymin, brush$ymax)
-      } else {
-        ranges_var$x <- NULL
-        ranges_var$y <- NULL
-      }
     })
 
     ## Reactive ----------------------------------------------------------------
@@ -217,58 +192,66 @@ module_multivar_server <- function(id, x) {
       )
       grDevices::recordPlot()
     })
-    plot_ind <- reactive({
-      req(x())
-      dimensio::viz_rows(
-        x = x(),
-        axes = c(axis1(), axis2()),
-        active = TRUE,
-        sup = input$supplement,
-        labels = FALSE,
-        highlight = input$highlight,
-        xlim = ranges_ind$x,
-        ylim = ranges_ind$y,
-        legend = list(x = "topleft"),
-        ## FIXME: temporary workaround (must be fixed in dimensio)
-        cex = if (input$highlight == "observation") input$cex[1] else input$cex,
-        pch = if (input$highlight == "observation") c(16, 17) else 16,
-        col = khroma::color(input$col, names = FALSE, force = TRUE)(256)
-      )
-      grDevices::recordPlot()
-    })
-    plot_var <- reactive({
-      req(x())
-      dimensio::viz_columns(
-        x = x(),
-        axes = c(axis1(), axis2()),
-        active = TRUE,
-        sup = input$supplement,
-        labels = FALSE,
-        highlight = input$highlight,
-        xlim = ranges_var$x,
-        ylim = ranges_var$y,
-        legend = list(x = "topleft"),
-        ## FIXME: temporary workaround (must be fixed in dimensio)
-        cex = if (input$highlight == "observation") input$cex[1] else input$cex,
-        pch = if (input$highlight == "observation") c(16, 17) else 16,
-        col = khroma::color(input$col, names = FALSE, force = TRUE)(256)
-      )
-      grDevices::recordPlot()
-    })
+
     info_ind <- reactive({
       req(x())
-      dimensio::augment(
-        x = x(),
-        margin = 1,
-        axes = c(axis1(), axis2())
-      )
+      z <- dimensio::augment(x = x(), margin = 1, axes = c(axis1(), axis2()))
+      z <- arkhe::assign_rownames(z, 3)
+      if (any(z$supplementary)) {
+        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
+      } else {
+        z$supplementary <- NULL
+      }
+      z
     })
     info_var <- reactive({
       req(x())
-      dimensio::augment(
-        x = x(),
-        margin = 2,
-        axes = c(axis1(), axis2())
+      z <- dimensio::augment(x = x(), margin = 2, axes = c(axis1(), axis2()))
+      z <- arkhe::assign_rownames(z, 3)
+      if (any(z$supplementary)) {
+        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
+      } else {
+        z$supplementary <- NULL
+      }
+      z
+    })
+
+    plot_ind <- reactive({
+      req(x())
+      req(info_ind())
+      scatterD3::scatterD3(
+        x = info_ind()[[1]], y = info_ind()[[2]],
+        xlab = dimensio:::print_variance(x(), axis1()),
+        ylab = dimensio:::print_variance(x(), axis2()),
+        # col_var = info_ind()[[input$highlight]],
+        # col_lab = input$highlight,
+        size_var = info_ind()[[input$highlight]],
+        size_lab = input$highlight,
+        symbol_var = info_ind()$supplementary,
+        symbol_lab = "observation",
+        lab = if (input$lab_row) rownames(info_ind()) else NULL,
+        labels_positions = "auto",
+        ellipses = input$ellipses,
+        ellipses_level = 0.95,
+        fixed = TRUE
+      )
+    })
+    plot_var <- reactive({
+      req(x())
+      req(info_var())
+      scatterD3::scatterD3(
+        x = info_var()[[1]], y = info_var()[[2]],
+        xlab = dimensio:::print_variance(x(), axis1()),
+        ylab = dimensio:::print_variance(x(), axis2()),
+        # col_var = info_var()[[input$highlight]],
+        # col_lab = input$highlight,
+        size_var = info_var()[[input$highlight]],
+        size_lab = input$highlight,
+        symbol_var = info_var()$supplementary,
+        symbol_lab = "observation",
+        lab = if (input$lab_col) rownames(info_var()) else NULL,
+        labels_positions = "auto",
+        fixed = TRUE
       )
     })
 
@@ -292,38 +275,12 @@ module_multivar_server <- function(id, x) {
       { grDevices::replayPlot(plot_eigen()) },
       height = function() { getCurrentOutputInfo(session)$width() }
     )
-    output$plot_ind <- renderPlot(
-      { grDevices::replayPlot(plot_ind()) },
-      height = function() { getCurrentOutputInfo(session)$width() }
-    )
-    output$plot_var <- renderPlot(
-      { grDevices::replayPlot(plot_var()) },
-      height = function() { getCurrentOutputInfo(session)$width() }
-    )
-    output$info_ind <- renderTable({
-      xy <- names(info_ind())
-      tbl <- nearPoints(
-        df = info_ind(),
-        coordinfo = input$click_ind,
-        xvar = xy[1], yvar = xy[2],
-        threshold = 10, maxpoints = 5,
-        addDist = FALSE
-      )
-    }, striped = TRUE, width = "100%", rownames = FALSE)
-    output$info_var <- renderTable({
-      xy <- names(info_var())
-      tbl <- nearPoints(
-        df = info_var(),
-        coordinfo = input$click_var,
-        xvar = xy[1], yvar = xy[2],
-        threshold = 10, maxpoints = 5,
-        addDist = FALSE
-      )
-    }, striped = TRUE, width = "100%", rownames = FALSE)
+    output$plot_ind <- scatterD3::renderScatterD3({ plot_ind() })
+    output$plot_var <- scatterD3::renderScatterD3({ plot_var() })
+    output$info_ind <- DT::renderDataTable({ DT::datatable(info_ind()) })
+    output$info_var <- DT::renderDataTable({ DT::datatable(info_var()) })
 
     ## Download ----------------------------------------------------------------
-    output$export_plot_ind <- export_plot(plot_ind, name = "map_individuals")
-    output$export_plot_var <- export_plot(plot_var, name = "map_variables")
     output$export_screeplot <- export_plot(plot_eigen, name = "screeplot")
   })
 }
