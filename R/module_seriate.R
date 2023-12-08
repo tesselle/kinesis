@@ -109,10 +109,19 @@ module_seriate_server  <- function(id, x) {
       margin <- NULL
       if (input$margin_row) margin <- c(margin, 1)
       if (input$margin_col) margin <- c(margin, 2)
-      kairos::seriate_average(x(), margin = margin, axes = input$axes)
+
+      tryCatch({
+        kairos::seriate_average(x(), margin = margin, axes = input$axes)
+      }, warning = function(w) {
+        showNotification(ui = w, type = "warning")
+        return(NULL)
+      }, error = function(e) {
+        showNotification(ui = e, type = "error")
+        return(NULL)
+      }, silent = TRUE)
     })
     data_permute <- reactive({
-      req(x())
+      req(data_seriate())
       kairos::permute(x(), data_seriate())
     })
     fun_plot <- reactive({
