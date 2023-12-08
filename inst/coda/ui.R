@@ -5,7 +5,7 @@
 #' @noRd
 shiny_ui <- function(request) {
   fluidPage(
-    includeCSS(system.file("style.css", package = "janus")),
+    includeCSS(system.file("static", "style.css", package = "janus")),
     theme = bslib::bs_theme(),
     lang = "en",
     navbarPage(

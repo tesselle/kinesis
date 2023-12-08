@@ -4,3 +4,11 @@
   border-width: 0px 1px 1px 1px;
   padding: 10px;
 }
+
+.logo a {
+  text-decoration: none;
+}
+.logo img {
+  height: 64px;
+  display: inline;
+}

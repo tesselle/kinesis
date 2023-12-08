@@ -14,34 +14,69 @@ module_home_ui <- function(id) {
     "Home",
     sidebarLayout(
       sidebarPanel(
-        tags$p(
-          "This app is a part of the", tags$strong("tesselle"), "project,",
-          "a collection of packages for research and teaching in archaeology.",
-          "Learn more at",
-          tags$a(href = url_tesselle(), rel = "external", title = "tesselle", "tesselle.org"),
-          "."
-        ),
-        tags$p(
-          "This program is free software: you can redistribute it and/or
-              modify it under the terms of the GNU General Public License as
-              published by the Free Software Foundation, either version 3 of
-              the License, or (at your option) any later version."
-        ),
-        tags$p(
-          "This program is distributed in the hope that it will be useful,
-              but WITHOUT ANY WARRANTY; without even the implied warranty of
-              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-              GNU General Public License for more details."
-        ),
-        tags$br(),
-        tags$p("To cite in publications use:"),
-        cite_markdown()
+        h5("Workflow"),
+        # tags$br(),
         # h4("Bookmarking"),
         # bookmarkButton(),
         # tags$p(textOutput(outputId = ns("last_saved")))
       ), # sidebarPanel
       mainPanel(
-
+        tabsetPanel(
+          tabPanel(
+            title = "How to use",
+            h3("Overview"),
+            tags$p(
+              "This program is distributed in the hope that it will be useful,
+              but WITHOUT ANY WARRANTY."
+            ),
+            h3("Citation"),
+            tags$p(
+              "If you use this application in your research, you must report
+              and cite it properly to ensure transparency of your results.
+              Moreover, authors and maintainers of this project are more likely to
+              continue their work if they see that it's being used and valued
+              by the research community."
+            ),
+            tags$p("To cite in your publications, please use:"),
+            cite_markdown(),
+            tags$p(
+              class = "logo",
+              tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
+                     tags$img(src = "static/logo-archeosciences.svg")),
+              tags$a(href = "https://www.huma-num.fr", rel = "external",
+                     tags$img(src = "static/logo-humanum.svg"))
+            )
+          ),
+          tabPanel(
+            title = "About",
+            h3("What is", tags$i("tesselle"), "?"),
+            tags$img(src="static/tesselle.png", alt="Smiley face", style="float:right;width:150px;margin:0 10px;"),
+            tags$p(
+              "This app is a part of the", tags$strong("tesselle"), "project,",
+              "a collection of packages for research and teaching in archaeology.
+              The", tags$strong("tesselle"), "packages focus on quantitative
+              analysis methods developed for archaeology. They can be used to
+              explore and analyze common data types in archaeology: count data,
+              compositional data and chronological data."
+            ),
+            tags$p(
+              "For more information and relevant links see:",
+              tags$a(href = url_tesselle(), rel = "external", "tesselle.org.")
+            ),
+            # h3("Who is", tags$i("tesselle"), "for?"),
+            h3("License"),
+            tags$p(
+              "This app is distributed as a free and open source",
+              tags$a(href = url_tesselle("janus"), rel = "external", "R package.")
+            ),
+            tags$p(
+              "You can redistribute it and/or modify it under the terms of the
+              GNU General Public License as published by the Free Software
+              Foundation, either version 3 of the License, or (at your option)
+              any later version."
+            )
+          )
+        )
       ) # mainPanel
     ) # sidebarLayout
   ) # tabPanel

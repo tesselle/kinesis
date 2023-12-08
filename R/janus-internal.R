@@ -4,8 +4,13 @@
   if (!is.null(x) && length(x) != 0) x else y
 }
 
-url_tesselle <- function(keyword = "janus") {
-  sprintf("https://www.tesselle.org/?mtm_campaign=shiny&mtm_kwd=%s", keyword)
+url_tesselle <- function(package = NULL, campaign = TRUE) {
+  mtm <- if (campaign) "?mtm_campaign=shiny" else ""
+  if (is.null(package)) {
+    sprintf("https://www.tesselle.org/%s", mtm)
+  } else {
+    sprintf("https://packages.tesselle.org/%s/%s", package, mtm)
+  }
 }
 
 cite_markdown <- function(x = NULL) {

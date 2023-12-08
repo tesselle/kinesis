@@ -24,7 +24,7 @@ shiny_server <- function(input, output, session) {
   ## CA
   janus::module_multivar_server("ca", x = ca_results)
 
-  janus::module_home_server("about")
+  janus::module_home_server("home")
   janus::module_header_server("header", x = count)
   janus::module_footer_server("footer")
   session$onSessionEnded(stopApp)
