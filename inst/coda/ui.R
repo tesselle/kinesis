@@ -13,7 +13,6 @@ shiny_ui <- function(request) {
       janus::module_home_ui("home"),
       tabPanel(
         title = "Data",
-        icon = icon("upload"),
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -36,7 +35,6 @@ shiny_ui <- function(request) {
       ), # tabPanel
       navbarMenu(
         title = "Statistics",
-        icon = icon("line-chart"),
         tabPanel(
           title = "Classical statistics",
           janus::module_summary_ui("summary")
@@ -63,7 +61,6 @@ shiny_ui <- function(request) {
       ), # tabPanel
       navbarMenu(
         title = "Analysis",
-        icon = icon("magnifying-glass"),
         tabPanel(
           title = "PCA",
           janus::module_pca_ui("pca")

@@ -13,7 +13,6 @@ shiny_ui <- function(request) {
       janus::module_home_ui("home"),
       tabPanel(
         title = "Data",
-        icon = icon("upload"),
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -32,7 +31,6 @@ shiny_ui <- function(request) {
       ), # tabPanel
       navbarMenu(
         title = "Statistics",
-        icon = icon("line-chart"),
         tabPanel(
           title = "Summary",
           janus::module_summary_ui("summary")
@@ -44,12 +42,10 @@ shiny_ui <- function(request) {
       ), # tabPanel
       tabPanel(
         title = "Analysis",
-        icon = icon("magnifying-glass"),
         janus::module_multivar_ui("ca")
       ), # navbarMenu
       tabPanel(
         title = "Seriation",
-        icon = icon("sort-amount-up"),
         janus::module_seriate_ui("seriate")
       ), # tabPanel
       header = janus::module_header_ui("header"),
