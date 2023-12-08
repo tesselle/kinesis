@@ -20,7 +20,7 @@ shiny_server <- function(input, output, session) {
 
   ## Graphs
   janus::module_coda_plot_server("barplot", coda)
-  janus::module_ternary_server("ternary", coda)
+  janus::module_ternary_server("ternary", x = clean)
 
   ## Log-ratio
   clogratio <- janus::module_logratio_server("clr", coda, method = "clr")

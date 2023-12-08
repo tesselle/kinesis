@@ -12,7 +12,7 @@ module_ternary_ui <- function(id) {
 
   sidebarLayout(
     sidebarPanel(
-      ## Input: select variables
+      ## Input: select axes
       selectizeInput(
         inputId = ns("axis1"),
         label = "Component X",
@@ -35,22 +35,83 @@ module_ternary_ui <- function(id) {
         multiple = FALSE,
       ),
       hr(),
+      ## Input: select group
+      selectizeInput(
+        inputId = ns("group"),
+        label = "Group",
+        choices = NULL,
+        selected = NULL,
+        multiple = FALSE,
+      ),
+      select_color(
+        inputId = ns("col"),
+        type = "qualitative"
+      ),
+      ## Input: select 4th variable
+      # selectizeInput(
+      #   inputId = ns("highlight"),
+      #   label = "Highlight",
+      #   choices = NULL,
+      #   selected = NULL,
+      #   multiple = FALSE,
+      # ),
+      hr(),
       ## Input: add points
       checkboxInput(
         inputId = ns("points"),
         label = "Show points",
         value = TRUE
       ),
+      ## Input: add density
+      checkboxInput(
+        inputId = ns("density"),
+        label = "Density contour",
+        value = FALSE
+      ),
+      ## Input: add ellipses
+      radioButtons(
+        inputId = ns("wrap"),
+        label = "Wrap:",
+        choices = c(
+          "None" = "none",
+          "Tolerance ellipse" = "tol",
+          "Confidence ellipse" = "conf",
+          "Convex hull" = "hull"
+        )
+      ),
+      sliderInput(
+        inputId = ns("level"),
+        label = "Ellipse level",
+        min = 0.1, max = 1,
+        value = 0.95, step = 0.05
+      ),
       ## Input: add a grid
       checkboxInput(
         inputId = ns("grid"),
         label = "Grid",
-        value = FALSE
+        value = TRUE
+      ),
+      ## Input: add a legend
+      checkboxInput(
+        inputId = ns("legend"),
+        label = "Legend",
+        value = TRUE
       ),
       downloadButton(outputId = ns("export"), label = "Export plot")
     ), # sidebarPanel
     mainPanel(
-      plotOutput(outputId = ns("plot"), height = "auto")
+      fluidRow(
+        div(
+          class = "col-lg-6 col-md-1",
+          plotOutput(outputId = ns("plot"), height = "auto",
+                     click = ns("click"), dblclick = ns("dblclick"),
+                     brush = brushOpts(id = ns("brush"), resetOnNew = TRUE))
+        ),
+        div(
+          class = "col-lg-6 col-md-1",
+          tableOutput(outputId = ns("info"))
+        )
+      )
     ) # mainPanel
   ) # sidebarLayout
 }
@@ -69,50 +130,132 @@ module_ternary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ranges <- reactiveValues(x = NULL, y = NULL, z = NULL)
+
     ## Observe -----------------------------------------------------------------
-    observeEvent(x(), {
-      choices <- colnames(x())
+    observeEvent(data_quanti(), {
+      choices <- colnames(data_quanti())
       updateSelectInput(session, inputId = "axis1", choices = choices)
-      updateSelectInput(session, inputId = "axis2", choices = choices)
-      updateSelectInput(session, inputId = "axis3", choices = choices)
     })
     observeEvent(input$axis1, {
-      choices <- setdiff(colnames(x()), input$axis1)
+      choices <- setdiff(colnames(data_quanti()), input$axis1)
       updateSelectInput(session, inputId = "axis2", choices = choices)
       updateSelectInput(session, inputId = "axis3", choices = choices)
     })
     observeEvent(input$axis2, {
-      choices <- setdiff(colnames(x()), c(input$axis1, input$axis2))
+      choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
       updateSelectInput(session, inputId = "axis3", choices = choices)
+    })
+    observeEvent(data_quali(), {
+      choices <- c(none = "", colnames(data_quali()))
+      updateSelectInput(session, inputId = "group", choices = choices)
+    })
+    observeEvent(input$dblclick, {
+      brush <- input$brush
+      if (!is.null(brush)) {
+        lim <- isopleuros::coordinates_cartesian(
+          x = c(brush$xmin, brush$xmax),
+          y = c(brush$ymin, brush$ymax)
+        )
+        ranges$x <- lim$x
+        ranges$y <- lim$y
+        ranges$z <- lim$z
+      } else {
+        ranges$x <- NULL
+        ranges$y <- NULL
+        ranges$z <- NULL
+      }
     })
 
     ## Reactive ----------------------------------------------------------------
+    is_quanti <- reactive({
+      req(x())
+      arkhe::detect(x(), margin = 2, f = is.numeric)
+    })
+    data_quali <- reactive({
+      if (sum(!is_quanti()) < 1) return(NULL)
+      x()[, !is_quanti(), drop = FALSE]
+    })
+    data_quanti <- reactive({
+      if (sum(is_quanti()) < 3) return(NULL)
+      x()[, is_quanti(), drop = FALSE]
+    })
+    data_tern <- reactive({
+      data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
+    })
+    data_info <- reactive({
+      req(data_tern())
+      z <- isopleuros::coordinates_ternary(data_tern())
+      names(z) <- c(".x", ".y") # Safety
+      z <- cbind(data_tern(), z)
+      z <- nearPoints(as.data.frame(z), input$click, xvar = ".x", yvar = ".y")
+      z[, -ncol(z) + c(1, 0)]
+    })
     plot_ternary <- reactive({
-      req(input$axis1)
-      req(input$axis2)
-      req(input$axis3)
+      ## Select data
+      tern <- data_tern()
+      n <- nrow(tern)
 
-      ## Add grid?
-      do_grid <- function(...) return(NULL)
-      if (input$grid) {
-        do_grid <- function(...) isopleuros::ternary_grid(...)
+      ## Graphical parameters
+      grp <- rep("", n)
+      col <- rep("black", n)
+      pch <- rep(16, n)
+      if (is_set(input$group)) {
+        grp <- as.factor(data_quali()[, input$group])
+        col <- get_color(input$col, n = nlevels(grp))[grp]
       }
 
-      tern <- x()[, c(input$axis1, input$axis2, input$axis3)]
+      ## Build plot
+      graphics::par(mar = c(1, 1, 1, 1))
       isopleuros::ternary_plot(
         x = NULL,
         xlab = input$axis1,
         ylab = input$axis2,
         zlab = input$axis3,
-        panel.first = do_grid()
+        xlim = ranges$x,
+        ylim = ranges$y,
+        zlim = ranges$z
       )
-      if (input$points) isopleuros::ternary_points(tern)
+      if (input$grid) {
+        isopleuros::ternary_grid()
+      }
+      if (input$density) {
+        isopleuros::ternary_density(tern)
+      }
+      if (input$points) {
+        isopleuros::ternary_points(tern, col = col, pch = pch)
+      }
+      fun_wrap <- switch(
+        input$wrap,
+        tol = function(x, ...) isopleuros::ternary_tolerance(x, level = input$level, ...),
+        conf = function(x, ...) isopleuros::ternary_confidence(x, level = input$level, ...),
+        hull = function(x, ...) isopleuros::ternary_hull(x, ...),
+        function(...) invisible()
+      )
+      for (i in split(seq_len(n), f = grp)) {
+        z <- tern[i, , drop = FALSE]
+        if (nrow(z) < 3) next
+        fun_wrap(z, lty = 1, border = col[i])
+      }
+      if (input$legend && nlevels(grp) > 1) {
+        graphics::legend(
+          x = "topright",
+          legend = levels(grp),
+          pch = unique(pch),
+          col = unique(col),
+          bty = "n"
+        )
+      }
       grDevices::recordPlot()
     })
+
     ## Output ------------------------------------------------------------------
     output$plot <- renderPlot({
       grDevices::replayPlot(plot_ternary())
-    }, height = function() { getCurrentOutputInfo(session)$width() / 2 } )
+    }, height = function() { getCurrentOutputInfo(session)$width() } )
+    output$info <- renderTable({
+      data_info()
+    }, striped = TRUE, rownames = TRUE, width = "100%")
 
     ## Download ----------------------------------------------------------------
     output$export <- export_plot(plot_ternary, name = "screeplot")
