@@ -21,7 +21,7 @@ Imports:
     dimensio (>= 0.5.0),
     DT,
     grDevices,
-    isopleuros (>= 1.0.0),
+    isopleuros (>= 1.1.0),
     kairos (>= 2.0.2),
     khroma (>= 1.11.0),
     nexus (>= 0.1.0),

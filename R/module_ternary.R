@@ -185,10 +185,12 @@ module_ternary_server <- function(id, x) {
     })
     data_info <- reactive({
       req(data_tern())
-      z <- isopleuros::coordinates_ternary(data_tern())
-      names(z) <- c(".x", ".y") # Safety
-      z <- cbind(data_tern(), z)
-      z <- nearPoints(as.data.frame(z), input$click, xvar = ".x", yvar = ".y")
+      cart <- isopleuros::coordinates_ternary(data_tern())
+      tern <- isopleuros::coordinates_cartesian(cart)
+      names(cart) <- c(".x", ".y") # Safety
+      names(tern) <- colnames(data_tern())
+      z <- data.frame(tern, cart)
+      z <- nearPoints(z, input$click, xvar = ".x", yvar = ".y")
       z[, -ncol(z) + c(1, 0)]
     })
     plot_ternary <- reactive({
