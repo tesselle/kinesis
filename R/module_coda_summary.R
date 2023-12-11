@@ -28,8 +28,18 @@ module_coda_summary_ui <- function(id) {
         ),
         tabPanel(
           title = "Variation matrix",
-          plotOutput(outputId = ns("dendrogram")),
-          tableOutput(outputId = ns("variation"))
+          fluidRow(
+            div(
+              class = "col-lg-6 col-md-1",
+              plotOutput(outputId = ns("dendrogram"), height = "auto")
+            ),
+            div(
+              class = "col-lg-6 col-md-1"
+            )
+          ),
+          fluidRow(
+            tableOutput(outputId = ns("variation"))
+          )
         )
       ) # tabsetPanel
     ) # mainPanel
@@ -74,10 +84,17 @@ module_coda_summary_server <- function(id, x) {
     })
 
     ## Clustering
-    plot_clust <- reactive({
-      d <- stats::as.dist(data_var())
-      h <- stats::hclust(d, method = "ward.D2")
-      plot(h, main = "", sub = "", xlab = "", ylab = "Total variation", las = 1)
+    # plot_clust <- reactive({
+    #   d <- stats::as.dist(data_var())
+    #   h <- stats::hclust(d, method = "ward.D2")
+    #   plot(h, main = "", sub = "", xlab = "", ylab = "Total variation", las = 1)
+    #   grDevices::recordPlot()
+    # })
+
+    plot_heatmap <- reactive({
+      stats::heatmap(data_var(), distfun = as.dist,
+                     hclustfun = function(x) hclust(x, method = "ward.D2"),
+                     symm = TRUE, scale = "none")
       grDevices::recordPlot()
     })
 
@@ -88,8 +105,8 @@ module_coda_summary_server <- function(id, x) {
 
     ## Render plot
     output$dendrogram <- renderPlot({
-      grDevices::replayPlot(plot_clust())
-    })
+      grDevices::replayPlot(plot_heatmap())
+    }, height = function() { getCurrentOutputInfo(session)$width() } )
 
     ## Download
     output$download <- export_table(
