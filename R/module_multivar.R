@@ -216,12 +216,16 @@ module_multivar_server <- function(id, x) {
     plot_ind <- reactive({
       req(x())
       req(info_ind())
+
+      grp <- x()@rows@groups
+      if (length(grp) == 0 || all(is.na(grp))) grp <- NULL
+
       scatterD3::scatterD3(
         x = info_ind()[[1]], y = info_ind()[[2]],
         xlab = dimensio:::print_variance(x(), axis1()),
         ylab = dimensio:::print_variance(x(), axis2()),
-        # col_var = info_ind()[[input$highlight]],
-        # col_lab = input$highlight,
+        col_var = grp,
+        col_lab = "Group",
         size_var = info_ind()[[input$highlight]],
         size_lab = input$highlight,
         symbol_var = info_ind()$supplementary,
