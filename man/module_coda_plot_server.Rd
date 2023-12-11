@@ -4,13 +4,13 @@
 \alias{module_coda_plot_server}
 \title{Bar Plot Server}
 \usage{
-module_coda_plot_server(id, user_data)
+module_coda_plot_server(id, x)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{user_data}{A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.}
+\item{x}{A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.}
 }
 \description{
 Bar Plot Server
