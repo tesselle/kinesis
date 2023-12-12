@@ -4,14 +4,11 @@
 \alias{module_header_server}
 \title{Header Server}
 \usage{
-module_header_server(id, x)
+module_header_server(id)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
-
-\item{x}{A reactive \code{data.frame} (typically returned by
-\code{\link[=module_import_server]{module_import_server()}}).}
 }
 \description{
 Header Server

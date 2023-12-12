@@ -115,6 +115,10 @@ module_import_server <- function(id) {
     ## Read data file
     data <- reactive({
       assert_csv(file())
+
+      id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
+      on.exit(removeNotification(id), add = TRUE)
+
       read_table(
         path = file(),
         header = input$header,

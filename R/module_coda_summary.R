@@ -92,8 +92,8 @@ module_coda_summary_server <- function(id, x) {
     # })
 
     plot_heatmap <- reactive({
-      stats::heatmap(data_var(), distfun = as.dist,
-                     hclustfun = function(x) hclust(x, method = "ward.D2"),
+      stats::heatmap(data_var(), distfun = stats::as.dist,
+                     hclustfun = function(x) stats::hclust(x, method = "ward.D2"),
                      symm = TRUE, scale = "none")
       grDevices::recordPlot()
     })

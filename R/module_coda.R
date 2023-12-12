@@ -97,7 +97,7 @@ module_coda_server <- function(id, x) {
       req(x())
 
       tryCatch({
-        nexus::as_composition(from = x(), auto = FALSE)
+        nexus::as_composition(from = x(), auto = FALSE, verbose = get_option("verbose"))
       }, warning = function(w) {
         showNotification(ui = w, type = "warning")
         return(NULL)
