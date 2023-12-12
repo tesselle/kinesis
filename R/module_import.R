@@ -157,8 +157,12 @@ read_table <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
                         comment.char = comment.char)
     },
     error = function(e) {
-      ## Return a safeError if a parsing error occurs
-      stop(safeError(e))
+      showModal(modalDialog(
+        conditionMessage(e),
+        title = "Data import failed!",
+        easyClose = TRUE
+      ))
+      return(NULL)
     }
   )
 }
