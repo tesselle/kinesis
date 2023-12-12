@@ -62,10 +62,10 @@ module_missing_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    keep_row <- reactive({
-      apply(X = x(), MARGIN = 1, FUN = function(x) !any(is.na(x)))
-    })
+    ## A notification ID
+    id <- NULL
 
+    ## Clean data
     clean <- reactive({
       out <- x()
 
@@ -84,6 +84,25 @@ module_missing_server <- function(id, x) {
       fun(out)
     })
 
+    ## Send notification
+    bindEvent(
+      observe({
+        if (anyNA(clean())) {
+          ## If there's currently a notification, don't add another
+          if (!is.null(id)) return()
+          ## Save the ID for removal later
+          id <<- showNotification(ui = "Missing values detected!",
+                                  duration = NULL, id = "missing",
+                                  type = "warning")
+        } else if (!is.null(id)) {
+          removeNotification(id)
+          id <<- NULL
+        }
+      }),
+      clean()
+    )
+
+    ## Render tables
     output$summary_row <- renderTable({
       req(clean())
       count_missing(clean(), margin = 1)

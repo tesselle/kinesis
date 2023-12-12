@@ -16,7 +16,7 @@ shiny_server <- function(input, output, session) {
   janus::module_ternary_server("ternary", x = clean)
 
   janus::module_home_server("home")
-  janus::module_header_server("header", x = clean)
+  janus::module_header_server("header")
   janus::module_footer_server("footer")
   session$onSessionEnded(stopApp)
 }

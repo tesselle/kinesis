@@ -11,8 +11,7 @@ module_header_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    uiOutput(outputId = ns("alert_config")),
-    uiOutput(outputId = ns("alert_missing"))
+    uiOutput(outputId = ns("alert_config"))
   )
 }
 
@@ -21,26 +20,12 @@ module_header_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by
-#'  [module_import_server()]).
 #' @seealso [module_header_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
-module_header_server  <- function(id, x) {
-  stopifnot(is.reactive(x))
-
+module_header_server  <- function(id) {
   moduleServer(id, function(input, output, session) {
-    alert_missing <- reactive({
-      invalidateLater(100, session)
-      if (!anyNA(x())) return(NULL)
-      div(
-        class = "alert alert-warning",
-        role = "alert",
-        "Missing values detected!"
-      )
-    })
-
     output$alert_config <- renderUI({
       if (get_option("production")) return(NULL)
       div(
@@ -49,6 +34,5 @@ module_header_server  <- function(id, x) {
         "This application is under development, so you shouldn't use it for anything serious!"
       )
     })
-    output$alert_missing <- renderUI(alert_missing())
   })
 }

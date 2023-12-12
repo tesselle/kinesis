@@ -33,7 +33,7 @@ shiny_server <- function(input, output, session) {
   janus::module_multivar_server("pca", pca_results)
 
   janus::module_home_server("home")
-  janus::module_header_server("header", x = coda)
+  janus::module_header_server("header")
   janus::module_footer_server("footer")
   session$onSessionEnded(stopApp)
 }
