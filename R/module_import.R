@@ -20,12 +20,12 @@ module_import_ui <- function(id) {
         accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
       ),
       tags$p(
-      helpText("Select the location of, and the CSV file you want to upload."),
-      helpText("Please check the default settings below and adjust them to your data."),
-      helpText("This application only supports data encoded in UFT-8."),
+        helpText("Select the location of, and the CSV file you want to upload."),
+        helpText("Please check the default settings below and adjust them to your data."),
+        helpText("This application only supports data encoded in UFT-8."),
       ),
       tags$p(
-      helpText("It assumes that you keep your data tidy: each variable must be saved in its own column and each observation (sample) must be saved in its own row.")
+        helpText("It assumes that you keep your data tidy: each variable must be saved in its own column and each observation (sample) must be saved in its own row.")
       ),
       tags$hr(),
       ## Input: lines of the data to skip
@@ -74,6 +74,12 @@ module_import_ui <- function(id) {
         inputId = ns("na.strings"),
         label = "String to be interpreted as missing value:",
         value = ""
+      ),
+      ## Input: comment
+      textInput(
+        inputId = ns("comment"),
+        label = "Character to be interpreted as comment:",
+        value = "#"
       )
     ), # sidebarPanel
     mainPanel(
@@ -95,20 +101,43 @@ module_import_ui <- function(id) {
 #' @export
 module_import_server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    ## Get file path
+    file <- reactive({
+      query <- parseQueryString(session$clientData$url_search)
+
+      if (!is.null(query[['data']])) {
+        url(as.character(query[['data']]))
+      } else {
+        input$file$datapath
+      }
+    })
+
     ## Read data file
     data <- reactive({
-      req(input$file)
-      df <- load_file(
-        path = input$file$datapath,
+      assert_csv(file())
+      read_table(
+        path = file(),
         header = input$header,
         sep = input$sep,
         dec = input$dec,
         quote = input$quote,
         rownames = if (input$rownames) 1 else NULL,
         na.strings = input$na.strings,
-        skip = if (!is.na(input$skip)) input$skip else 0
+        skip = if (!is.na(input$skip)) input$skip else 0,
+        comment.char = input$comment
       )
     })
+
+    ## Send notification
+    bindEvent(
+      observe({
+        if (is.data.frame(data()) && all(dim(data()) > 0)) {
+          msg <- "Data successfully imported!"
+          showNotification(ui = msg, type = "message")
+        }
+      }),
+      data()
+    )
 
     ## Render table
     output$table <- DT::renderDataTable({ data() })
@@ -117,16 +146,19 @@ module_import_server <- function(id) {
   })
 }
 
-load_file <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
-                      rownames = NULL, na.strings = "NA", skip = 0) {
+read_table <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
+                       rownames = NULL, na.strings = "NA", skip = 0,
+                       comment.char = "#") {
   tryCatch(
     {
       utils::read.table(file = path, header = header, sep = sep, dec = dec,
                         quote = quote, row.names = rownames,
-                        na.strings = na.strings, skip = skip)
+                        na.strings = na.strings, skip = skip,
+                        comment.char = comment.char)
     },
     error = function(e) {
-      stop(safeError(e)) # Return a safeError if a parsing error occurs
+      ## Return a safeError if a parsing error occurs
+      stop(safeError(e))
     }
   )
 }

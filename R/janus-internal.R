@@ -17,6 +17,10 @@ url_tesselle <- function(package = NULL, campaign = TRUE) {
   }
 }
 
+assert_csv <- function(x) {
+  validate(need(x, message = "Import a CSV file first."))
+}
+
 cite_markdown <- function(x = NULL) {
   x <- c("janus", x)
   lapply(
