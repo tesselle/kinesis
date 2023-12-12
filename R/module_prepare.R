@@ -10,73 +10,53 @@ module_prepare_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  fluidRow(
-    column(
-      width = 4,
-      accordion(
-        id = ns("prepare_accordion"),
-        open = FALSE,
-        accordion_panel(
-          title = "1. Select columns",
-          value = "select",
-          checkboxGroupInput(
-            inputId = ns("select"),
-            label = NULL,
-            choices = NULL,
-            selected = NULL,
-            width = "100%"
-          )
-        ),
-        accordion_panel(
-          title = tooltip(
-            span("2. Remove data", icon("circle-question")),
-            "Remove any non informative data.",
-            placement = "auto"
-          ),
-          value = "remove",
-          ## Input: remove zero
-          checkboxInput(
-            inputId = ns("remove_zero_row"),
-            label = "Remove rows with zero",
-            value = FALSE
-          ),
-          checkboxInput(
-            inputId = ns("remove_zero_column"),
-            label = "Remove columns with zero",
-            value = FALSE
-          ),
-          ## Input: remove constant
-          checkboxInput(
-            inputId = ns("remove_constant_column"),
-            label = "Remove constant columns",
-            value = FALSE
-          ),
-          hr(),
-          ## Input: remove all?
-          checkboxInput(
-            inputId = ns("all"),
-            label = "Remove only if all values meet the condition",
-            value = TRUE,
-            width = "100%"
-          )
-        ),
-        accordion_panel(
-          title = tooltip(
-            span("3. Filter rows", icon("circle-question")),
-            "Remove data points that fall outside a specification.",
-            placement = "auto"
-          ),
-          value = "filter",
-          uiOutput(outputId = ns("filter"))
-        )
-      )
-    ), # column
-    column(
-      width = 8,
+  sidebarLayout(
+    sidebarPanel(
+      h5("1. Select columns"),
+      checkboxGroupInput(
+        inputId = ns("select"),
+        label = NULL,
+        choices = NULL,
+        selected = NULL,
+        width = "100%"
+      ),
+      hr(),
+      h5("2. Remove data"),
+      helpText("Remove any non informative data."),
+      ## Input: remove zero
+      checkboxInput(
+        inputId = ns("remove_zero_row"),
+        label = "Remove rows with zero",
+        value = FALSE
+      ),
+      checkboxInput(
+        inputId = ns("remove_zero_column"),
+        label = "Remove columns with zero",
+        value = FALSE
+      ),
+      ## Input: remove constant
+      checkboxInput(
+        inputId = ns("remove_constant_column"),
+        label = "Remove constant columns",
+        value = FALSE
+      ),
+      ## Input: remove all?
+      checkboxInput(
+        inputId = ns("all"),
+        label = "Remove only if all values meet the condition",
+        value = TRUE,
+        width = "100%"
+      ),
+      hr(),
+      h5("3. Filter rows"),
+      helpText("Remove data points that fall outside a specification."),
+      uiOutput(outputId = ns("filter"))
+    ), # sidebarPanel
+    mainPanel(
       ## Output: display data
       DT::dataTableOutput(outputId = ns("table"))
     ) # column
-  ) # fluidRow
+  ) # sidebarLayout
 }
 
 # Server =======================================================================
@@ -95,20 +75,24 @@ module_prepare_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select data
+    ## Build UI
     observe({
+      freezeReactiveValue(input, "select")
       updateCheckboxGroupInput(
         inputId = "select",
-        label = "Columns to keep:",
+        label = "Columns to remove:",
         choices = colnames(x()),
-        selected = colnames(x()),
+        selected = NULL,
         inline = TRUE
       )
     })
-    data_select <- bindEvent(
-      reactive({ x()[, input$select, drop = FALSE] }),
-      input$select
-    )
+
+    ## Select data
+    data_select <- reactive({
+      assert_csv(x())
+      j <- !(colnames(x()) %in% input$select)
+      x()[, j, drop = FALSE]
+    })
 
     ## Remove data
     data_clean <- reactive({
@@ -136,11 +120,10 @@ module_prepare_server <- function(id, x) {
 
     ## Filter rows
     data_filter <- reactive({
-      parts <- colnames(data_clean())
       each_var <- lapply(
-        X = parts,
+        X = colnames(data_clean()),
         FUN = function(j, x, val) {
-          ok <- filter_var(x = x[[j]], val = input[[j]])
+          ok <- filter_var(x = x[[j]], val = val[[j]])
           ok %||% TRUE
         },
         x = data_clean(),
@@ -154,12 +137,11 @@ module_prepare_server <- function(id, x) {
     ## Render filters
     output$filter <- renderUI({
       req(data_clean())
-      index <- arkhe::detect(x = data_clean(), f = is.numeric,
-                             margin = 2, negate = TRUE)
-      quali <- data_clean()[, index, drop = FALSE]
+      quali <- arkhe::discard(x = data_clean(), f = is.numeric,
+                              margin = 2, verbose = get_option("verbose"))
       n <- ncol(quali)
-
       if (n == 0) return(NULL)
+
       parts <- colnames(quali)
       ui <- vector(mode = "list", length = n)
       for (j in seq_len(n)) {
@@ -169,10 +151,6 @@ module_prepare_server <- function(id, x) {
 
       ui
     })
-    # FIXME: trouver une meilleure approche que forcer l'execution.
-    # La difficulté vient de l'usage de renderUI() qui n'est pas évaluée
-    # tant que l'utilisateur n'affiche pas cette portion d'interface.
-    outputOptions(output, name = "filter", suspendWhenHidden = FALSE)
 
     ## Render table
     output$table <-  DT::renderDataTable({ data_filter() })
