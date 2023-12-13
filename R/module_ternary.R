@@ -7,7 +7,7 @@
 #' @keywords internal
 #' @export
 module_ternary_ui <- function(id) {
-  # Create a namespace function using the provided id
+  ## Create a namespace function using the provided id
   ns <- NS(id)
 
   sidebarLayout(
@@ -97,16 +97,16 @@ module_ternary_ui <- function(id) {
         inputId = ns("legend"),
         label = "Legend",
         value = TRUE
-      ),
-      downloadButton(outputId = ns("export"), label = "Export plot")
+      )
     ), # sidebarPanel
     mainPanel(
       fluidRow(
         div(
           class = "col-lg-6 col-md-1",
-          plotOutput(outputId = ns("plot"), height = "auto",
-                     click = ns("click"), dblclick = ns("dblclick"),
-                     brush = brushOpts(id = ns("brush"), resetOnNew = TRUE))
+          output_plot(id = ns("ternplot"), height = "auto",
+                      click = ns("click"), dblclick = ns("dblclick"),
+                      brush = brushOpts(id = ns("brush"), resetOnNew = TRUE),
+                      title = "Ternary plot")
         ),
         div(
           class = "col-lg-6 col-md-1",
@@ -194,6 +194,8 @@ module_ternary_server <- function(id, x) {
       z <- nearPoints(z, input$click, xvar = ".x", yvar = ".y")
       z[, -ncol(z) + c(1, 0)]
     })
+
+    ## Build plot ---
     plot_ternary <- reactive({
       ## Select data
       tern <- data_tern()
@@ -252,15 +254,12 @@ module_ternary_server <- function(id, x) {
       grDevices::recordPlot()
     })
 
-    ## Output ------------------------------------------------------------------
-    output$plot <- renderPlot({
-      grDevices::replayPlot(plot_ternary())
-    }, height = function() { getCurrentOutputInfo(session)$width() } )
+    ## Render plot -----
+    render_plot("ternplot", x = plot_ternary)
+
+    ## Render table -----
     output$info <- renderTable({
       data_info()
     }, striped = TRUE, rownames = TRUE, width = "100%")
-
-    ## Download ----------------------------------------------------------------
-    output$export <- export_plot(plot_ternary, name = "screeplot")
   })
 }

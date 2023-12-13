@@ -52,7 +52,7 @@ logratioUI <- function(id) {
         width = 8,
         fluidRow(
           ## Output: plot
-          plotOutput(outputId = ns("plot"), height = "auto")
+          output_plot(id = ns("plot"), height = "auto", title = "Density")
         ),
         fluidRow(
           ## Output: table
@@ -79,7 +79,7 @@ module_logratio_server <- function(id, x, method) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Compute
+    ## Compute -----
     logratio <- reactive({
       trans <- switch (
         method,
@@ -100,14 +100,14 @@ module_logratio_server <- function(id, x, method) {
       }, silent = TRUE)
     })
 
-    ## Plot
+    ## Plot -----
     plot_log <- reactive({
       req(logratio())
       plot(logratio())
       grDevices::recordPlot()
     })
 
-    ## Graph
+    ## Graph -----
     plot_graph <- reactive({
       req(logratio())
       if (inherits(logratio(), "CLR")) return(NULL)
@@ -116,7 +116,7 @@ module_logratio_server <- function(id, x, method) {
       grDevices::recordPlot()
     })
 
-    ## Render title
+    ## Render title -----
     output$title <- renderUI({
       title <- ""
       title <- switch(
@@ -129,7 +129,7 @@ module_logratio_server <- function(id, x, method) {
       h5(title)
     })
 
-    ## Render settings
+    ## Render settings -----
     output$settings <- renderUI({
       if (!(method == "alr" || method == "plr")) return(NULL)
       label <- switch (
@@ -146,7 +146,7 @@ module_logratio_server <- function(id, x, method) {
       )
     })
 
-    ## Render table
+    ## Render table -----
     output$table <- DT::renderDataTable({
       req(logratio())
       dt <- DT::datatable(logratio())
@@ -154,18 +154,16 @@ module_logratio_server <- function(id, x, method) {
       dt
     })
 
-    ## Render plot
-    output$plot <- renderPlot({
-      grDevices::replayPlot(plot_log())
-    }, height = function() { getCurrentOutputInfo(session)$width() / 2 } )
+    ## Render plot -----
+    render_plot("plot", x = plot_log, height = function() { getCurrentOutputInfo(session)$width() / 2 })
 
-    ## Render graph
+    ## Render graph -----
     output$graph <- renderPlot({
       req(plot_graph())
       grDevices::replayPlot(plot_graph())
     }, height = function() { getCurrentOutputInfo(session)$width() } )
 
-    ## Download
+    ## Download -----
     output$download_table <- export_table(
       log_ratio = logratio,
       name = method

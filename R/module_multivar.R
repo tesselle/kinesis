@@ -84,7 +84,7 @@ module_multivar_screeplot <- function(id) {
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
-        plotOutput(outputId = ns("screeplot"), height = "auto")
+        output_plot(id = ns("screeplot"), height = "auto", title = "Screeplot")
       ),
       div(
         class = "col-lg-6 col-md-1",
@@ -103,15 +103,23 @@ module_multivar_results <- function(id) {
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
-        h5("Individuals factor map"),
-        hr(),
-        scatterD3::scatterD3Output(outputId = ns("plot_ind"))
+        bslib::card(
+          bslib::card_header(
+            "Individuals factor map",
+            class = "d-flex justify-content-between"
+          ),
+          scatterD3::scatterD3Output(outputId = ns("plot_ind"))
+        )
       ),
       div(
         class = "col-lg-6 col-md-1",
-        h5("Variables factor map"),
-        hr(),
-        scatterD3::scatterD3Output(outputId = ns("plot_var"))
+        bslib::card(
+          bslib::card_header(
+            "Variables factor map",
+            class = "d-flex justify-content-between"
+          ),
+          scatterD3::scatterD3Output(outputId = ns("plot_var"))
+        )
       )
     )
   ) # tabPanel
@@ -270,6 +278,14 @@ module_multivar_server <- function(id, x) {
       if (inherits(x(), "CA")) title <- "Correspondence Analysis"
       h5(title)
     })
+    ## Render screeplot -----
+    render_plot("screeplot", x = plot_eigen)
+
+    ## Render factor maps -----
+    output$plot_ind <- scatterD3::renderScatterD3({ plot_ind() })
+    output$plot_var <- scatterD3::renderScatterD3({ plot_var() })
+
+    ## Render tables -----
     output$variance <- DT::renderDataTable({
       dt <- eigen()
       dt$cumulative <- dt$cumulative / 100
@@ -279,16 +295,7 @@ module_multivar_server <- function(id, x) {
       dt <- DT::formatPercentage(dt, columns = 3, digits = 2)
       dt
     })
-    output$screeplot <- renderPlot(
-      { grDevices::replayPlot(plot_eigen()) },
-      height = function() { getCurrentOutputInfo(session)$width() }
-    )
-    output$plot_ind <- scatterD3::renderScatterD3({ plot_ind() })
-    output$plot_var <- scatterD3::renderScatterD3({ plot_var() })
     output$info_ind <- DT::renderDataTable({ DT::datatable(info_ind()) })
     output$info_var <- DT::renderDataTable({ DT::datatable(info_var()) })
-
-    ## Download ----------------------------------------------------------------
-    output$export_screeplot <- export_plot(plot_eigen, name = "screeplot")
   })
 }

@@ -27,11 +27,10 @@ module_coda_plot_ui <- function(id) {
       select_color(
         inputId = ns("col"),
         type = "qualitative"
-      ),
-      downloadButton(outputId = ns("export"), label = "Export plot")
+      )
     ), # sidebarPanel
     mainPanel(
-      plotOutput(outputId = ns("plot"), height = "auto")
+      output_plot(id = ns("plot"), height = "auto", title = "Barplot")
     ) # mainPanel
   ) # sidebarLayout
 }
@@ -55,7 +54,7 @@ module_coda_plot_server <- function(id, x) {
       updateSelectInput(session, inputId = "order", choices = colnames(x()))
     })
 
-    ## Reactive ----------------------------------------------------------------
+    ## Build barplot -----
     plot_bar <- reactive({
       col <- get_color(input$col, n = ncol(x()))
 
@@ -63,12 +62,7 @@ module_coda_plot_server <- function(id, x) {
       grDevices::recordPlot()
     })
 
-    ## Output ------------------------------------------------------------------
-    output$plot <- renderPlot({
-      grDevices::replayPlot(plot_bar())
-    }, height = function() { getCurrentOutputInfo(session)$width() / 2 } )
-
-    ## Download ----------------------------------------------------------------
-    output$export <- export_plot(plot_bar, name = "barplot")
+    ## Render barplot -----
+    render_plot("plot", x = plot_bar, height = function() { getCurrentOutputInfo(session)$width() / 2 })
   })
 }

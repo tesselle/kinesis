@@ -31,7 +31,7 @@ module_coda_summary_ui <- function(id) {
           fluidRow(
             div(
               class = "col-lg-6 col-md-1",
-              plotOutput(outputId = ns("dendrogram"), height = "auto")
+              output_plot(id = ns("dendrogram"), height = "auto", title = "Heatmap")
             ),
             div(
               class = "col-lg-6 col-md-1"
@@ -104,9 +104,7 @@ module_coda_summary_server <- function(id, x) {
     output$variation <- renderTable({data_var()}, striped = TRUE, width = "100%", rownames = TRUE)
 
     ## Render plot
-    output$dendrogram <- renderPlot({
-      grDevices::replayPlot(plot_heatmap())
-    }, height = function() { getCurrentOutputInfo(session)$width() } )
+    render_plot("dendrogram", x = plot_heatmap)
 
     ## Download
     output$download <- export_table(

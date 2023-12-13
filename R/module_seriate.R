@@ -35,26 +35,19 @@ module_seriate_ui <- function(id) {
         step = 1
       ),
       ## Input: select plot
-      radioButtons(
-        inputId = ns("plot_type"),
-        label = "Display",
-        choices = c(`Bertin plot` = "bertin", `Ford plot` = "ford"),
-        selected = "ford"
+      checkboxInput(
+        inputId = ns("eppm"),
+        label = "EPPM",
+        value = FALSE
       ),
-      conditionalPanel(
-        condition = "input.plot_type == 'ford'",
-        ns = ns,
-        checkboxInput(
-          inputId = ns("eppm"),
-          label = "EPPM",
-          value = FALSE
-        ),
-        checkboxInput(
-          inputId = ns("weights"),
-          label = "weights",
-          value = FALSE
-        )
-      )
+      checkboxInput(
+        inputId = ns("weights"),
+        label = "weights",
+        value = FALSE
+      ),
+      ## Output: download
+      downloadButton(outputId = ns("export_table"),
+                     label = "Export matrix")
     ), # sidebarPanel
     mainPanel(
       ## Output: permutation summary
@@ -64,23 +57,13 @@ module_seriate_ui <- function(id) {
         type = "tabs",
         tabPanel(
           title = "Rearranged matrix",
-          ## Output: download
-          downloadButton(outputId = ns("export_plot_perm"),
-                         label = "Export plot"),
-          downloadButton(outputId = ns("export_table"),
-                         label = "Export matrix"),
-          hr(),
           ## Output: plot reordered matrix
-          plotOutput(outputId = ns("plot_permute"), height = "auto")
+          output_plot(id = ns("plot_permute"), height = "auto", title = "Ford plot")
         ),
         tabPanel(
           title = "Raw data",
-          ## Output: download
-          downloadButton(outputId = ns("export_plot_data"),
-                         label = "Export plot"),
-          hr(),
           ## Output: plot raw matrix
-          plotOutput(outputId = ns("plot_raw"), height = "auto")
+          output_plot(id = ns("plot_raw"), height = "auto", title = "Ford plot")
         )
       ) # tabsetPanel
     ) # mainPanel
@@ -103,7 +86,7 @@ module_seriate_server  <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Reactive ----------------------------------------------------------------
+    ## Seriate -----
     data_seriate <- reactive({
       req(x())
       margin <- NULL
@@ -120,17 +103,16 @@ module_seriate_server  <- function(id, x) {
         return(NULL)
       }, silent = TRUE)
     })
+
+    ## Permute -----
     data_permute <- reactive({
       req(data_seriate())
       kairos::permute(x(), data_seriate())
     })
+
+    ## Plot -----
     fun_plot <- reactive({
-      req(input$plot_type)
-      switch(
-        input$plot_type,
-        ford = function(x) tabula::plot_ford(x, weights = input$weights, EPPM = input$eppm),
-        bertin = tabula::plot_bertin
-      )
+      function(x) tabula::plot_ford(x, weights = input$weights, EPPM = input$eppm)
     })
     plot_raw <- reactive({
       req(x())
@@ -143,19 +125,11 @@ module_seriate_server  <- function(id, x) {
       grDevices::recordPlot()
     })
 
-    ## Render ------------------------------------------------------------------
-    output$plot_raw <- renderPlot(
-      { grDevices::replayPlot(plot_raw()) },
-      height = function() { getCurrentOutputInfo(session)$width() / 2 }
-    )
-    output$plot_permute <- renderPlot(
-      { grDevices::replayPlot(plot_permute()) },
-      height = function() { getCurrentOutputInfo(session)$width() / 2 }
-    )
+    ## Render plot -----
+    render_plot("plot_raw", x = plot_raw, height = function() { getCurrentOutputInfo(session)$width() / 2 })
+    render_plot("plot_permute", x = plot_permute, height = function() { getCurrentOutputInfo(session)$width() / 2 })
 
-    ## Download ----------------------------------------------------------------
-    output$export_plot_raw <- export_plot(plot_raw, name = "matrix_raw")
-    output$export_plot_perm <- export_plot(plot_permute, name = "matrix_permuted")
+    ## Download -----
     output$export_table <- export_table(permuted = data_permute, name = "matrix_permuted")
 
     data_seriate

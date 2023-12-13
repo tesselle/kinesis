@@ -17,28 +17,6 @@ get_color <- function(palette, n) {
   khroma::color(palette, name = FALSE, force = TRUE)(n)
 }
 
-#' Download Plot
-#'
-#' Save and Download a graphic (pdf).
-#' @param plot A reactive plot to be saved.
-#' @param name A [`character`] string specifying the name of the file
-#'  (without extension and the leading dot).
-#' @keywords internal
-#' @noRd
-export_plot <- function(object, name = "plot", width = 7, height = 7) {
-  stopifnot(is.reactive(object))
-
-  downloadHandler(
-    filename = paste0(name, ".pdf"),
-    content = function(file) {
-      grDevices::pdf(file, width = width, height = height)
-      grDevices::replayPlot(object())
-      grDevices::dev.off()
-    },
-    contentType = "application/pdf"
-  )
-}
-
 #' Download Multiple CSV Files
 #'
 #' Save and Download a [`data.frame`] (csv).
