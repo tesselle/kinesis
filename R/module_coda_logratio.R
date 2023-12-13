@@ -36,31 +36,33 @@ logratioUI <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tagList(
-    fluidRow(
-      column(
-        width = 4,
-        wellPanel(
-          uiOutput(outputId = ns("title")),
-          uiOutput(outputId = ns("settings")),
-          downloadButton(outputId = ns("download_table"), "Download table")
-        ), # wellPanel
-        ## Output: graph
-        plotOutput(outputId = ns("graph"), height = "auto")
-      ), # column
-      column(
-        width = 8,
-        fluidRow(
+  fluidRow(
+    column(
+      width = 4,
+      wellPanel(
+        uiOutput(outputId = ns("title")),
+        uiOutput(outputId = ns("settings")),
+        downloadButton(outputId = ns("download_table"), "Download table")
+      ), # wellPanel
+      ## Output: graph
+      plotOutput(outputId = ns("graph"), height = "auto")
+    ), # column
+    column(
+      width = 8,
+      tabsetPanel(
+        tabPanel(
+          title = "Plot",
           ## Output: plot
           output_plot(id = ns("plot"), height = "auto", title = "Density")
         ),
-        fluidRow(
+        tabPanel(
+          title = "Table",
           ## Output: table
           DT::dataTableOutput(outputId = ns("table"))
-        ) # mainPanel
-      ) # column
-    ) # fluidRow
-  ) # tagList
+        )
+      ) # mainPanel
+    ) # column
+  ) # fluidRow
 }
 
 # Server =======================================================================
@@ -95,13 +97,10 @@ module_logratio_server <- function(id, x, method) {
         multiple = FALSE,
       )
     })
-    # FIXME: trouver une meilleure approche que forcer l'execution.
-    # La difficulté vient de l'usage de renderUI() qui n'est pas évaluée
-    # tant que l'utilisateur n'affiche pas cette portion d'interface.
-    outputOptions(output, name = "settings", suspendWhenHidden = FALSE)
 
     ## Compute -----
     logratio <- reactive({
+      req(x())
       trans <- switch (
         method,
         clr = function(x) nexus::transform_clr(x),
@@ -110,15 +109,9 @@ module_logratio_server <- function(id, x, method) {
         plr = function(x) nexus::transform_plr(x, pivot = input$pivot)
       )
 
-      tryCatch({
-        trans(x())
-      }, warning = function(w) {
-        showNotification(ui = conditionMessage(w), type = "warning")
-        return(NULL)
-      }, error = function(e) {
-        showNotification(ui = conditionMessage(e), type = "error")
-        return(NULL)
-      }, silent = TRUE)
+      ratio <- try(trans(x()), silent = get_option("verbose"))
+      if (inherits(ratio, "try-error")) return(NULL)
+      ratio
     })
 
     ## Plot -----
