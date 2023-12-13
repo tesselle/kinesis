@@ -15,14 +15,14 @@ module_multivar_ui <- function(id) {
     sidebarPanel(
       uiOutput(outputId = ns("title")),
       ## Input: display options
-      selectizeInput(
+      selectInput(
         inputId = ns("axis1"),
         label = "Horizontal axis",
         choices = NULL,
         selected = NULL,
         multiple = FALSE
       ),
-      selectizeInput(
+      selectInput(
         inputId = ns("axis2"),
         label = "Vertical axis",
         choices = NULL,
@@ -50,12 +50,13 @@ module_multivar_ui <- function(id) {
         value = FALSE
       ),
       hr(),
-      selectInput(
+      selectizeInput(
         inputId = ns("highlight"),
         label = "Highlight",
         choices = c("none" = "", "contribution", "cos2"),
         selected = "observation",
         multiple = FALSE,
+        options = list(plugins = "clear_button")
       )
     ), # sidebarPanel
     mainPanel(

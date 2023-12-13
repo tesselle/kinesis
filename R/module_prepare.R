@@ -137,8 +137,12 @@ module_prepare_server <- function(id, x) {
     ## Render filters
     output$filter <- renderUI({
       req(data_clean())
-      quali <- arkhe::discard(x = data_clean(), f = is.numeric,
-                              margin = 2, verbose = get_option("verbose"))
+      quali <- arkhe::discard(
+        x = data_clean(),
+        f = is.numeric,
+        margin = 2,
+        verbose = get_option("verbose")
+      )
       n <- ncol(quali)
       if (n == 0) return(NULL)
 
@@ -167,8 +171,9 @@ make_filter <- function(session, x, var) {
                 min = rng[1], max = rng[2], value = rng)
   } else if (is.character(x)) {
     levs <- unique(x)
-    selectInput(inputId = ns(var), label = var, width = "100%",
-                choices = levs, selected = levs, multiple = TRUE)
+    selectizeInput(inputId = ns(var), label = var, width = "100%",
+                   choices = levs, selected = levs, multiple = TRUE,
+                   options = list(plugins = "remove_button"))
   } else {
     ## Not supported
     NULL

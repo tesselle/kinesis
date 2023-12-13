@@ -13,21 +13,21 @@ module_ternary_ui <- function(id) {
   sidebarLayout(
     sidebarPanel(
       ## Input: select axes
-      selectizeInput(
+      selectInput(
         inputId = ns("axis1"),
         label = "Component X",
         choices = NULL,
         selected = NULL,
         multiple = FALSE
       ),
-      selectizeInput(
+      selectInput(
         inputId = ns("axis2"),
         label = "Component Y",
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
       ),
-      selectizeInput(
+      selectInput(
         inputId = ns("axis3"),
         label = "Component Z",
         choices = NULL,
@@ -42,13 +42,14 @@ module_ternary_ui <- function(id) {
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
+        options = list(plugins = "clear_button")
       ),
       select_color(
         inputId = ns("col"),
         type = "qualitative"
       ),
       ## Input: select 4th variable
-      # selectizeInput(
+      # selectInput(
       #   inputId = ns("highlight"),
       #   label = "Highlight",
       #   choices = NULL,
