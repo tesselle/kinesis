@@ -27,9 +27,15 @@ shiny_server <- function(input, output, session) {
   alogratio <- janus::module_logratio_server("alr", coda, method = "alr")
   ilogratio <- janus::module_logratio_server("ilr", coda, method = "ilr")
   plogratio <- janus::module_logratio_server("plr", coda, method = "plr")
+  ratio <- list(
+    clr = clogratio,
+    alr = alogratio,
+    ilr = ilogratio,
+    plr = plogratio
+  )
 
   ## PCA
-  pca_results <- janus::module_pca_server("pca", clogratio)
+  pca_results <- janus::module_pca_server("pca", x = ratio)
   janus::module_multivar_server("pca", pca_results)
 
   janus::module_home_server("home")

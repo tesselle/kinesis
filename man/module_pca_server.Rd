@@ -10,7 +10,7 @@ module_pca_server(id, x)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{x}{A list of \code{data.frame}.}
+\item{x}{A list of reactive \code{data.frame}.}
 }
 \value{
 A reactive \code{\link[dimensio:PCA-class]{dimensio::PCA}} object.

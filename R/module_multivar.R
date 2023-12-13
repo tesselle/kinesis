@@ -161,11 +161,13 @@ module_multivar_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Observe -----------------------------------------------------------------
     observeEvent(axes(), {
-      updateSelectInput(session, inputId = "axis1", choices = axes())
+      freezeReactiveValue(input, "axis1")
+      updateSelectInput(inputId = "axis1", choices = axes())
     })
     observeEvent(axis1(), {
       choices <- axes()[-axis1()]
-      updateSelectInput(session, inputId = "axis2", choices = choices)
+      freezeReactiveValue(input, "axis2")
+      updateSelectInput(inputId = "axis2", choices = choices)
     })
 
     ## Reactive ----------------------------------------------------------------

@@ -13,7 +13,17 @@ module_pca_ui <- function(id) {
   fluidRow(
     fluidRow(
       div(
-        style="display: inline-block; vertical-align:middle; width: 150px;",
+        style="display: inline-block; vertical-align:bottom; width: 150px;",
+        selectInput(
+          inputId = ns("data"),
+          label = "Dataset",
+          choices = NULL,
+          selected = NULL,
+          multiple = FALSE
+        )
+      ),
+      div(
+        style="display: inline-block; vertical-align:bottom; width: 150px;",
         checkboxInput(
           inputId = ns("center"),
           label = "Center",
@@ -26,10 +36,10 @@ module_pca_ui <- function(id) {
         )
       ),
       div(
-        style="display: inline-block; vertical-align:middle; width: 150px;",
+        style="display: inline-block; vertical-align:bottom; width: 150px;",
         actionButton(
           inputId = ns("go"),
-          label = "Compute"
+          label = "(Re)Compute"
         )
       )
     ),
@@ -44,29 +54,44 @@ module_pca_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A list of `data.frame`.
+#' @param x A list of reactive `data.frame`.
 #' @return A reactive [`dimensio::PCA-class`] object.
 #' @seealso [module_pca_ui()]
 #' @family server modules
 #' @keywords internal
 #' @export
 module_pca_server <- function(id, x) {
-  stopifnot(is.reactive(x))
+  # stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Reactive ----------------------------------------------------------------
-    results <- reactive({
-      req(x())
-      dimensio::pca(
-        object = x(),
-        center = input$center,
-        scale = input$scale,
-        rank = input$rank,
-        sup_row = input$sup_row,
-        sup_col = input$sup_col
-      )
-    }) |>
-      bindEvent(input$go)
+    ## Build UI -----
+    observe({
+      freezeReactiveValue(input, "data")
+      updateSelectInput(inputId = "data", choices = names(x))
+    })
+
+    ## Get data -----
+    data <- reactive({
+      validate(need(input$data, "Select a dataset."))
+      x[[input$data]]()
+    })
+
+    ## Compute PCA -----
+    results <- bindEvent(
+      reactive({
+        validate(need(data(), "Check log-ratio transformation."))
+
+        dimensio::pca(
+          object = data(),
+          center = input$center,
+          scale = input$scale,
+          rank = input$rank,
+          sup_row = input$sup_row,
+          sup_col = input$sup_col
+        )
+      }),
+      input$go
+    )
 
     results
   })

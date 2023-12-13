@@ -79,6 +79,27 @@ module_logratio_server <- function(id, x, method) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Render settings -----
+    output$settings <- renderUI({
+      if (!(method == "alr" || method == "plr")) return(NULL)
+      label <- switch (
+        method,
+        alr = "Rationing part:",
+        plr = "Pivotal variable:"
+      )
+      selectizeInput(
+        inputId = session$ns("pivot"),
+        label = label,
+        choices = colnames(x()),
+        selected = NULL,
+        multiple = FALSE,
+      )
+    })
+    # FIXME: trouver une meilleure approche que forcer l'execution.
+    # La difficulté vient de l'usage de renderUI() qui n'est pas évaluée
+    # tant que l'utilisateur n'affiche pas cette portion d'interface.
+    outputOptions(output, name = "settings", suspendWhenHidden = FALSE)
+
     ## Compute -----
     logratio <- reactive({
       trans <- switch (
@@ -92,10 +113,10 @@ module_logratio_server <- function(id, x, method) {
       tryCatch({
         trans(x())
       }, warning = function(w) {
-        showNotification(ui = w, type = "warning")
+        showNotification(ui = conditionMessage(w), type = "warning")
         return(NULL)
       }, error = function(e) {
-        showNotification(ui = e, type = "error")
+        showNotification(ui = conditionMessage(e), type = "error")
         return(NULL)
       }, silent = TRUE)
     })
@@ -127,23 +148,6 @@ module_logratio_server <- function(id, x, method) {
         plr = "Pivot Log-Ratio"
       )
       h5(title)
-    })
-
-    ## Render settings -----
-    output$settings <- renderUI({
-      if (!(method == "alr" || method == "plr")) return(NULL)
-      label <- switch (
-        method,
-        alr = "Rationing part:",
-        plr = "Pivotal variable:"
-      )
-      selectizeInput(
-        inputId = session$ns("pivot"),
-        label = label,
-        choices = colnames(x()),
-        selected = NULL,
-        multiple = FALSE,
-      )
     })
 
     ## Render table -----
