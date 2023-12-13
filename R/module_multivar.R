@@ -30,11 +30,6 @@ module_multivar_ui <- function(id) {
         multiple = FALSE,
       ),
       checkboxInput(
-        inputId = ns("supplementary"),
-        label = "Supplementary observations",
-        value = TRUE
-      ),
-      checkboxInput(
         inputId = ns("lab_row"),
         label = "Label individuals",
         value = FALSE
@@ -69,29 +64,6 @@ module_multivar_ui <- function(id) {
       ) # tabsetPanel
     ) # mainPanel
   ) # sidebarLayout
-}
-
-module_multivar_screeplot <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  tabPanel(
-    title = "Screeplot",
-    ## Output: download
-    downloadButton(outputId = ns("export_screeplot"),
-                   label = "Export plot"),
-    hr(),
-    fluidRow(
-      div(
-        class = "col-lg-6 col-md-1",
-        output_plot(id = ns("screeplot"), height = "auto", title = "Screeplot")
-      ),
-      div(
-        class = "col-lg-6 col-md-1",
-        DT::dataTableOutput(outputId = ns("variance"))
-      )
-    )
-  ) # tabPanel
 }
 
 module_multivar_results <- function(id) {
@@ -145,6 +117,29 @@ module_multivar_variables <- function(id) {
   ) # tabPanel
 }
 
+module_multivar_screeplot <- function(id) {
+  # Create a namespace function using the provided id
+  ns <- NS(id)
+
+  tabPanel(
+    title = "Screeplot",
+    ## Output: download
+    downloadButton(outputId = ns("export_screeplot"),
+                   label = "Export plot"),
+    hr(),
+    fluidRow(
+      div(
+        class = "col-lg-6 col-md-1",
+        output_plot(id = ns("screeplot"), height = "auto", title = "Screeplot")
+      ),
+      div(
+        class = "col-lg-6 col-md-1",
+        DT::dataTableOutput(outputId = ns("variance"))
+      )
+    )
+  ) # tabPanel
+}
+
 # Server =======================================================================
 #' Multivariate Analysis Server
 #'
@@ -159,7 +154,7 @@ module_multivar_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Observe -----------------------------------------------------------------
+    ## Build UI -----
     observeEvent(axes(), {
       freezeReactiveValue(input, "axis1")
       updateSelectInput(inputId = "axis1", choices = axes())
@@ -168,12 +163,6 @@ module_multivar_server <- function(id, x) {
       choices <- axes()[-axis1()]
       freezeReactiveValue(input, "axis2")
       updateSelectInput(inputId = "axis2", choices = choices)
-    })
-
-    ## Reactive ----------------------------------------------------------------
-    eigen <- reactive({
-      req(x())
-      dimensio::get_eigenvalues(x())
     })
 
     axes <- reactive({
@@ -190,6 +179,12 @@ module_multivar_server <- function(id, x) {
       as.numeric(input$axis2)
     })
 
+    ## Eigenvalues -----
+    eigen <- reactive({
+      req(x())
+      dimensio::get_eigenvalues(x())
+    })
+
     plot_eigen <- reactive({
       req(x())
       dimensio::screeplot(
@@ -201,20 +196,10 @@ module_multivar_server <- function(id, x) {
       grDevices::recordPlot()
     })
 
+    ## Individuals -----
     info_ind <- reactive({
       req(x())
       z <- dimensio::augment(x = x(), margin = 1, axes = c(axis1(), axis2()))
-      z <- arkhe::assign_rownames(z, 3)
-      if (any(z$supplementary)) {
-        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
-      } else {
-        z$supplementary <- NULL
-      }
-      z
-    })
-    info_var <- reactive({
-      req(x())
-      z <- dimensio::augment(x = x(), margin = 2, axes = c(axis1(), axis2()))
       z <- arkhe::assign_rownames(z, 3)
       if (any(z$supplementary)) {
         z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
@@ -248,6 +233,20 @@ module_multivar_server <- function(id, x) {
         fixed = TRUE
       )
     })
+
+    ## Variables -----
+    info_var <- reactive({
+      req(x())
+      z <- dimensio::augment(x = x(), margin = 2, axes = c(axis1(), axis2()))
+      z <- arkhe::assign_rownames(z, 3)
+      if (any(z$supplementary)) {
+        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
+      } else {
+        z$supplementary <- NULL
+      }
+      z
+    })
+
     plot_var <- reactive({
       req(x())
       req(info_var())
@@ -273,13 +272,14 @@ module_multivar_server <- function(id, x) {
       )
     })
 
-    ## Render ------------------------------------------------------------------
+    ## Render title -----
     output$title <- renderUI({
       title <- ""
       if (inherits(x(), "PCA")) title <- "Principal Components Analysis"
       if (inherits(x(), "CA")) title <- "Correspondence Analysis"
       h5(title)
     })
+
     ## Render screeplot -----
     render_plot("screeplot", x = plot_eigen)
 
@@ -297,7 +297,17 @@ module_multivar_server <- function(id, x) {
       dt <- DT::formatPercentage(dt, columns = 3, digits = 2)
       dt
     })
-    output$info_ind <- DT::renderDataTable({ DT::datatable(info_ind()) })
-    output$info_var <- DT::renderDataTable({ DT::datatable(info_var()) })
+    output$info_ind <- DT::renderDataTable({
+      info <- dimensio::summary(x(), margin = 1)@results
+      dt <- DT::datatable(info)
+      dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
+      dt
+    })
+    output$info_var <- DT::renderDataTable({
+      info <- dimensio::summary(x(), margin = 2)@results
+      dt <- DT::datatable(info)
+      dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
+      dt
+    })
   })
 }

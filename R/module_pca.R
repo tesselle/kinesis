@@ -37,6 +37,24 @@ module_pca_ui <- function(id) {
       ),
       div(
         style="display: inline-block; vertical-align:bottom; width: 150px;",
+        selectizeInput(
+          inputId = ns("sup_row"),
+          label = "Supplementary individuals",
+          choices = NULL, selected = NULL, multiple = TRUE,
+          options = list(plugins = "remove_button")
+        )
+      ),
+      div(
+        style="display: inline-block; vertical-align:bottom; width: 150px;",
+        selectizeInput(
+          inputId = ns("sup_col"),
+          label = "Supplementary variables",
+          choices = NULL, selected = NULL, multiple = TRUE,
+          options = list(plugins = "remove_button")
+        )
+      ),
+      div(
+        style="display: inline-block; vertical-align:bottom; width: 150px;",
         actionButton(
           inputId = ns("go"),
           label = "(Re)Compute"
@@ -69,25 +87,44 @@ module_pca_server <- function(id, x) {
       freezeReactiveValue(input, "data")
       updateSelectInput(inputId = "data", choices = names(x))
     })
+    bindEvent(
+      observe({
+        freezeReactiveValue(input, "sup_row")
+        updateSelectInput(inputId = "sup_row", choices = rownames(data()))
+        freezeReactiveValue(input, "sup_col")
+        updateSelectInput(inputId = "sup_col", choices = colnames(data()))
+      }),
+      data()
+    )
 
     ## Get data -----
     data <- reactive({
       validate(need(input$data, "Select a dataset."))
       x[[input$data]]()
     })
+    sup_row <- reactive({
+      i <- match(input$sup_row, rownames(data()))
+      if (anyNA(i)) return(NULL)
+      i
+    })
+    sup_col <- reactive({
+      i <- match(input$sup_row, colnames(data()))
+      if (anyNA(i)) return(NULL)
+      i
+    })
 
     ## Compute PCA -----
     results <- bindEvent(
       reactive({
-        validate(need(data(), "Check log-ratio transformation."))
+        validate(need(data(), "Check your data."))
 
         dimensio::pca(
           object = data(),
           center = input$center,
           scale = input$scale,
           rank = input$rank,
-          sup_row = input$sup_row,
-          sup_col = input$sup_col
+          sup_row = sup_row(),
+          sup_col = sup_col()
         )
       }),
       input$go
