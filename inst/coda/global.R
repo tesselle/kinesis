@@ -9,4 +9,4 @@ rm(list = ls())
 
 ## Set Shiny settings ==========================================================
 options(shiny.maxRequestSize = 30*1024^2)
-enableBookmarking(store = "server")
+enableBookmarking(store = janus::get_option("bookmark"))

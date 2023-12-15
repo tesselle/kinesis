@@ -8,6 +8,10 @@ is_set <- function(x) {
   !is.null(x) && x != ""
 }
 
+assert_csv <- function(x) {
+  validate(need(x, message = "Import a CSV file first."))
+}
+
 url_tesselle <- function(package = NULL, campaign = TRUE) {
   mtm <- if (campaign) "?mtm_campaign=shiny" else ""
   if (is.null(package)) {
@@ -17,22 +21,33 @@ url_tesselle <- function(package = NULL, campaign = TRUE) {
   }
 }
 
-assert_csv <- function(x) {
-  validate(need(x, message = "Import a CSV file first."))
-}
-
-cite_markdown <- function(x = NULL) {
+cite_package <- function(x = NULL) {
   x <- c("janus", x)
   lapply(
     X = x,
     FUN = function(x) {
       bib <- format(utils::citation(x), style = "text")
-      markdown(bib)
+      txt <- paste0(vapply(X = bib, FUN = markdown, FUN.VALUE = character(1)))
+      HTML(txt)
     }
   )
 }
 
-info_markdown <- function() {
+cite_article <- function(author, year, doi, text = FALSE) {
+  url <- sprintf("https://doi.org/%s", doi)
+  link <- tags$a(year, href = url, target = "_blank", .noWS = "outside")
+
+  if (text) {
+    tags$span(author, "(", link, ")")
+  } else {
+    tags$span(
+      paste0("(", author, ", "), link, ")",
+      .noWS = c("after-begin", "before-end")
+    )
+  }
+}
+
+info_session <- function() {
   info <- paste0(utils::capture.output(utils::sessionInfo()), collapse = "\n")
   markdown(sprintf("```\n%s\n```", info))
 }

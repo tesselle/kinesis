@@ -29,7 +29,7 @@ module_home_ui <- function(id) {
               "This program is distributed in the hope that it will be useful,
               but WITHOUT ANY WARRANTY."
             ),
-            h3("Citation"),
+            h3("How to cite"),
             tags$p(
               "If you use this application in your research, you must report
               and cite it properly to ensure transparency of your results.
@@ -38,7 +38,7 @@ module_home_ui <- function(id) {
               by the research community."
             ),
             tags$p("To cite in your publications, please use:"),
-            cite_markdown(),
+            cite_package(),
             tags$p(
               class = "logo",
               tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
@@ -49,8 +49,9 @@ module_home_ui <- function(id) {
           ),
           tabPanel(
             title = "About",
-            h3("What is", tags$i("tesselle"), "?"),
-            tags$img(src="static/tesselle.png", alt="Smiley face", style="float:right;width:150px;margin:0 10px;"),
+            h3("What is", tags$i("tesselle", .noWS = "after"), "?"),
+            tags$img(src="static/tesselle.png", alt="tesselle logo",
+                     style="float:right;width:150px;margin:0 10px;"),
             tags$p(
               "This app is a part of the", tags$strong("tesselle"), "project,",
               "a collection of packages for research and teaching in archaeology.
@@ -61,13 +62,15 @@ module_home_ui <- function(id) {
             ),
             tags$p(
               "For more information and relevant links see:",
-              tags$a(href = url_tesselle(), rel = "external", "tesselle.org.")
+              tags$a("tesselle.org", href = url_tesselle(),
+                     target = "_blank", rel = "external", .noWS = "after"), "."
             ),
             # h3("Who is", tags$i("tesselle"), "for?"),
             h3("License"),
             tags$p(
               "This app is distributed as a free and open source",
-              tags$a(href = url_tesselle("janus"), rel = "external", "R package.")
+              tags$a("R package", href = url_tesselle("janus"),
+                     target = "_blank", rel = "external", .noWS = "after"), "."
             ),
             tags$p(
               "You can redistribute it and/or modify it under the terms of the

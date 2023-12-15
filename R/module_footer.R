@@ -17,10 +17,10 @@ module_footer_ui <- function(id) {
       actionLink(inputId = ns("session"), label = "Session info"),
       HTML(" &middot; "),
       tags$a(href = "https://github.com/tesselle/janus",
-             rel = "external", title = "Code", "Source code"),
+             target = "_blank", rel = "external", "Source code"),
       HTML(" &middot; "),
       tags$a(href = "https://github.com/tesselle/janus/issues",
-             rel = "external", title = "Issue", "Report a bug or request")
+             target = "_blank", rel = "external", "Report a bug or request")
     )
   )
 }
@@ -41,7 +41,7 @@ module_footer_server  <- function(id) {
       showModal(
         modalDialog(
           title = "Session Info",
-          info_markdown(),
+          info_session(),
           size = "xl",
           easyClose = TRUE,
           footer = modalButton("Close")

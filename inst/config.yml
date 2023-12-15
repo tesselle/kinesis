@@ -1,7 +1,14 @@
 default:
-  production: FALSE
-  verbose: TRUE
-
-production:
   production: TRUE
   verbose: FALSE
+  bookmark: disable
+
+test:
+  production: FALSE
+  verbose: TRUE
+  bookmark: disable
+
+online:
+  production: TRUE
+  verbose: FALSE
+  bookmark: server
