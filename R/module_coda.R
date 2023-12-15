@@ -14,12 +14,14 @@ module_coda_ui <- function(id) {
     column(
       width = 4,
       wellPanel(
+        helpText("Define the unique identifier (eg. laboratory codes) of each observation."),
         selectizeInput(
           inputId = ns("codes"),
           label = "Unique identifiers",
           choices = NULL,
           selected = NULL,
           multiple = FALSE,
+          options = list(plugins = "clear_button")
         ),
         helpText("Duplicated sample names will be interpreted as repeated measurements."),
         selectizeInput(
@@ -28,6 +30,7 @@ module_coda_ui <- function(id) {
           choices = NULL,
           selected = NULL,
           multiple = FALSE,
+          options = list(plugins = "clear_button")
         ),
         helpText("Empty strings can be used to specify that a sample does not belong to any group."),
         selectizeInput(
@@ -36,6 +39,7 @@ module_coda_ui <- function(id) {
           choices = NULL,
           selected = NULL,
           multiple = FALSE,
+          options = list(plugins = "clear_button")
         )
       ), # wellPanel
       ## Output: display description

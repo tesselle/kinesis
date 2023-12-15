@@ -15,7 +15,6 @@ shiny_server <- function(input, output, session) {
   coda <- janus::module_coda_server("coda", x = clean)
 
   ## Statistics
-  janus::module_summary_server("summary", coda)
   janus::module_coda_summary_server("coda_summary", coda)
 
   ## Graphs

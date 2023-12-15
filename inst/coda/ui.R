@@ -34,16 +34,9 @@ shiny_ui <- function(request) {
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
-      navbarMenu(
+      tabPanel(
         title = "Statistics",
-        tabPanel(
-          title = "Classical statistics",
-          janus::module_summary_ui("summary")
-        ), # tabPanel
-        tabPanel(
-          title = "Compositional statistics",
-          janus::module_coda_summary_ui("coda_summary")
-        ) # tabPanel
+        janus::module_coda_summary_ui("coda_summary")
       ), # tabPanel
       navbarMenu(
         title = "Graph",
