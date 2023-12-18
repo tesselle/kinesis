@@ -12,7 +12,12 @@ output_plot <- function(id, ..., title = "Card title") {
   gear <- bslib::popover(
     icon("gear"),
     title = "Tools",
-    "xx"
+    placement = "auto",
+    actionButton(
+      inputId = ns("download"),
+      label = "Download",
+      icon = icon("download")
+    )
   )
 
   bslib::card(
@@ -20,14 +25,8 @@ output_plot <- function(id, ..., title = "Card title") {
       title, gear,
       class = "d-flex justify-content-between"
     ),
-    plotOutput(outputId = ns("plot"), ...),
-    bslib::card_footer(
-      actionButton(
-        inputId = ns("download"),
-        label = "Download",
-        icon = icon("download")
-      )
-    )
+    plotOutput(outputId = ns("plot"), ...)
+    # bslib::card_footer()
   )
 }
 

@@ -65,7 +65,7 @@ module_missing_server <- function(id, x) {
     ## A notification ID
     id <- NULL
 
-    ## Clean data
+    ## Clean data -----
     clean <- reactive({
       out <- x()
 
@@ -84,7 +84,7 @@ module_missing_server <- function(id, x) {
       fun(out)
     })
 
-    ## Send notification
+    ## Send notification -----
     bindEvent(
       observe({
         if (anyNA(clean())) {
@@ -102,16 +102,19 @@ module_missing_server <- function(id, x) {
       clean()
     )
 
-    ## Render tables
-    output$summary_row <- renderTable({
+    ## Count missing values -----
+    na_row <- reactive({
       req(clean())
       count_missing(clean(), margin = 1)
-    }, striped = TRUE, width = "100%")
-
-    output$summary_column <- renderTable({
+    })
+    na_col <- reactive({
       req(clean())
       count_missing(clean(), margin = 2)
-    }, striped = TRUE, width = "100%")
+    })
+
+    ## Render tables -----
+    output$summary_row <- render_table(na_row)
+    output$summary_column <- render_table(na_col)
 
     clean
   })

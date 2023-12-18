@@ -259,8 +259,6 @@ module_ternary_server <- function(id, x) {
     render_plot("ternplot", x = plot_ternary)
 
     ## Render table -----
-    output$info <- renderTable({
-      data_info()
-    }, striped = TRUE, rownames = TRUE, width = "100%")
+    output$info <- render_table(data_info)
   })
 }

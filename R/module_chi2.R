@@ -95,9 +95,9 @@ module_chi_server <- function(id, x) {
     })
 
     ## Render table
-    output$expected <- renderTable({chi2_exp()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$residuals <- renderTable({chi2_res()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$stdres <- renderTable({chi2_std()}, striped = TRUE, width = "100%", rownames = TRUE)
+    output$expected <- render_table(chi2_exp)
+    output$residuals <- render_table(chi2_res)
+    output$stdres <- render_table(chi2_std)
 
     ## Download
     output$download <- export_table(

@@ -163,11 +163,11 @@ module_coda_summary_server <- function(id, x) {
     })
 
     ## Render table -----
-    output$location <- renderTable({data_loc()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
-    output$spread <- renderTable({data_spread()}, striped = TRUE, rownames = TRUE, digits = 3)
-    output$quantile <- renderTable({data_quant()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
-    output$covariance <- renderTable({data_cov()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
-    output$variation <- renderTable({data_var()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
+    output$location <- render_table(data_loc)
+    output$spread <- render_table(data_spread, width = "auto")
+    output$quantile <- render_table(data_quant)
+    output$covariance <- render_table(data_cov)
+    output$variation <- render_table(data_var)
 
     ## Render plot -----
     render_plot("dendrogram", x = plot_heatmap)

@@ -92,10 +92,10 @@ module_summary_server <- function(id, x) {
     })
 
     ## Render table -----
-    output$location <- renderTable({data_loc()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$spread <- renderTable({data_spread()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$quantile <- renderTable({data_percentiles()}, striped = TRUE, width = "100%", rownames = TRUE)
-    output$cov <- renderTable({data_cov()}, width = "100%", rownames = TRUE)
+    output$location <- render_table(data_loc)
+    output$spread <- render_table(data_spread)
+    output$quantile <- render_table(data_percentiles)
+    output$cov <- render_table(data_cov)
 
     ## Download -----
     output$download <- export_table(
