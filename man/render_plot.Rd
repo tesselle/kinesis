@@ -4,7 +4,7 @@
 \alias{render_plot}
 \title{Plot Server}
 \usage{
-render_plot(id, x, width = "auto", height = NULL)
+render_plot(id, x, width = "auto", height = NULL, ratio = 1)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -13,6 +13,9 @@ UI function.}
 \item{x}{A reactive recorded plot to be saved (see \code{\link[grDevices:recordplot]{grDevices::recordPlot()}}).}
 
 \item{width, height}{Height and width specification (see \code{\link[shiny:renderPlot]{shiny::renderPlot()}}).}
+
+\item{ratio}{A length-one \code{\link{numeric}} vector giving the \eqn{x/y} ratio.
+Only used if \code{height} is \code{NULL}.}
 }
 \description{
 Plot Server

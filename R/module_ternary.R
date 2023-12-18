@@ -45,10 +45,6 @@ module_ternary_ui <- function(id) {
         multiple = FALSE,
         options = list(plugins = "clear_button")
       ),
-      select_color(
-        inputId = ns("col"),
-        type = "qualitative"
-      ),
       ## Input: select 4th variable
       # selectInput(
       #   inputId = ns("highlight"),
@@ -104,10 +100,22 @@ module_ternary_ui <- function(id) {
       fluidRow(
         div(
           class = "col-lg-6 col-md-1",
-          output_plot(id = ns("ternplot"), height = "auto",
-                      click = ns("click"), dblclick = ns("dblclick"),
-                      brush = brushOpts(id = ns("brush"), resetOnNew = TRUE),
-                      title = "Ternary plot")
+          output_plot(
+            id = ns("ternplot"),
+            tools = list(
+              select_color(
+                inputId = ns("col"),
+                type = "qualitative"
+              ),
+              select_pch(inputId = ns("pch")),
+              select_cex(inputId = ns("cex"))
+            ),
+            height = "auto",
+            click = ns("click"),
+            dblclick = ns("dblclick"),
+            brush = brushOpts(id = ns("brush"), resetOnNew = TRUE),
+            title = "Ternary plot"
+          )
         ),
         div(
           class = "col-lg-6 col-md-1",
@@ -205,7 +213,8 @@ module_ternary_server <- function(id, x) {
       ## Graphical parameters
       grp <- rep("", n)
       col <- rep("black", n)
-      pch <- rep(16, n)
+      pch <- rep(as.numeric(input$pch), n)
+      cex <- as.numeric(input$cex)
       if (is_set(input$group)) {
         grp <- as.factor(data_quali()[, input$group])
         col <- get_color(input$col, n = nlevels(grp))[grp]
@@ -229,7 +238,7 @@ module_ternary_server <- function(id, x) {
         isopleuros::ternary_density(tern)
       }
       if (input$points) {
-        isopleuros::ternary_points(tern, col = col, pch = pch)
+        isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex)
       }
       fun_wrap <- switch(
         input$wrap,

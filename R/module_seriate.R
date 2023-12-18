@@ -126,8 +126,8 @@ module_seriate_server  <- function(id, x) {
     })
 
     ## Render plot -----
-    render_plot("plot_raw", x = plot_raw, height = function() { getCurrentOutputInfo(session)$width() / 2 })
-    render_plot("plot_permute", x = plot_permute, height = function() { getCurrentOutputInfo(session)$width() / 2 })
+    render_plot("plot_raw", x = plot_raw, ratio = 0.5)
+    render_plot("plot_permute", x = plot_permute, ratio = 0.5)
 
     ## Download -----
     output$export_table <- export_table(permuted = data_permute, name = "matrix_permuted")

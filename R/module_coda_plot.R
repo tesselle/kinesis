@@ -24,14 +24,18 @@ module_coda_plot_ui <- function(id) {
         inputId = ns("decreasing"),
         label = "Decreasing order",
         value = FALSE
-      ),
-      select_color(
-        inputId = ns("col"),
-        type = "qualitative"
       )
     ), # sidebarPanel
     mainPanel(
-      output_plot(id = ns("plot"), height = "auto", title = "Barplot")
+      output_plot(
+        id = ns("plot"),
+        tools = select_color(
+          inputId = ns("pal_qualitative"),
+          type = "qualitative"
+        ),
+        height = "auto",
+        title = "Barplot"
+      )
     ) # mainPanel
   ) # sidebarLayout
 }
@@ -50,20 +54,25 @@ module_coda_plot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Observe -----------------------------------------------------------------
-    observeEvent(x(), {
-      updateSelectInput(session, inputId = "order", choices = colnames(x()))
-    })
-
     ## Build barplot -----
+    bindEvent(
+      observe({
+        freezeReactiveValue(input, "order")
+        updateSelectInput(inputId = "order", choices = colnames(x()))
+      }),
+      x()
+    )
+    plot_pal <- reactive({
+      get_color(input$pal_qualitative, NCOL(x()))
+    })
     plot_bar <- reactive({
-      col <- get_color(input$col, n = ncol(x()))
-
-      nexus::barplot(x(), order = input$order, decreasing = input$decreasing)
+      req(x())
+      nexus::barplot(x(), order = input$order, decreasing = input$decreasing,
+                     col = plot_pal())
       grDevices::recordPlot()
     })
 
     ## Render barplot -----
-    render_plot("plot", x = plot_bar, height = function() { getCurrentOutputInfo(session)$width() / 2 })
+    render_plot("plot", x = plot_bar, ratio = 0.5)
   })
 }

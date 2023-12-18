@@ -2,10 +2,11 @@
 #' Plot UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @param tools A (list of) input elements.
 #' @param ... Further parameters to be passed to [shiny::plotOutput()].
 #' @family plot modules
 #' @keywords internal
-output_plot <- function(id, ..., title = "Card title") {
+output_plot <- function(id, ..., tools = NULL, title = "Card title") {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -13,6 +14,7 @@ output_plot <- function(id, ..., title = "Card title") {
     icon("gear"),
     title = "Tools",
     placement = "auto",
+    tools,
     actionButton(
       inputId = ns("download"),
       label = "Download",
@@ -37,9 +39,11 @@ output_plot <- function(id, ..., title = "Card title") {
 #'  UI function.
 #' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
 #' @param width,height Height and width specification (see [shiny::renderPlot()]).
+#' @param ratio A length-one [`numeric`] vector giving the \eqn{x/y} ratio.
+#'  Only used if `height` is `NULL`.
 #' @family plot modules
 #' @keywords internal
-render_plot <- function(id, x, width = "auto", height = NULL) {
+render_plot <- function(id, x, width = "auto", height = NULL, ratio = 1) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -47,7 +51,7 @@ render_plot <- function(id, x, width = "auto", height = NULL) {
     output$plot <- renderPlot(
       grDevices::replayPlot(x()),
       width = width,
-      height = height %||% function() { getCurrentOutputInfo(session)$width() }
+      height = height %||% function() { getCurrentOutputInfo(session)$width() * ratio }
     )
 
     ## Download modal
