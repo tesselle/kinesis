@@ -2,11 +2,12 @@
 #' About UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @param package A [`character`] string specifying the app name.
 #' @seealso [module_home_server()]
 #' @family UI modules
 #' @keywords internal
 #' @export
-module_home_ui <- function(id) {
+module_home_ui <- function(id, name = NULL) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -38,7 +39,7 @@ module_home_ui <- function(id) {
               by the research community."
             ),
             tags$p("To cite in your publications, please use:"),
-            cite_package(),
+            cite_package(name),
             tags$p(
               class = "logo",
               tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",

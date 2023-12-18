@@ -1,4 +1,4 @@
-#' Matrix Seriation Shiny App User Interface Object
+#' Ternary Plot Shiny App User Interface Object
 #'
 #' @author N. Frerebeau
 #' @keywords internal
@@ -10,8 +10,8 @@ shiny_ui <- function(request) {
     collapsible = TRUE,
     lang = "en",
     navbarPage(
-      "seriation",
-      janus::module_home_ui("home"),
+      "isopleuros",
+      janus::module_home_ui("home", name = "isopleuros"),
       tabPanel(
         title = "Data",
         tabsetPanel(
@@ -30,24 +30,9 @@ shiny_ui <- function(request) {
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
-      navbarMenu(
-        title = "Statistics",
-        tabPanel(
-          title = "Summary",
-          janus::module_summary_ui("summary")
-        ),
-        tabPanel(
-          title = "Chi-squared",
-          janus::module_chi2_ui("chi2")
-        )
-      ), # tabPanel
       tabPanel(
-        title = "Analysis",
-        janus::module_multivar_ui("ca")
-      ), # navbarMenu
-      tabPanel(
-        title = "Seriation",
-        janus::module_seriate_ui("seriate")
+        title = "Plot",
+        janus::module_ternary_ui("ternary")
       ), # tabPanel
       header = janus::module_header_ui("header"),
       footer = janus::module_footer_ui("footer")

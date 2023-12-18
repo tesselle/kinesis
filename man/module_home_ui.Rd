@@ -4,10 +4,12 @@
 \alias{module_home_ui}
 \title{About UI}
 \usage{
-module_home_ui(id)
+module_home_ui(id, name = NULL)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
+
+\item{package}{A \code{\link{character}} string specifying the app name.}
 }
 \description{
 About UI

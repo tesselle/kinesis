@@ -10,8 +10,8 @@ shiny_ui <- function(request) {
     collapsible = TRUE,
     lang = "en",
     navbarPage(
-      "coda",
-      janus::module_home_ui("home"),
+      "nexus",
+      janus::module_home_ui("home", name = "nexus"),
       tabPanel(
         title = "Data",
         tabsetPanel(

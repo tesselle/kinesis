@@ -21,15 +21,16 @@ url_tesselle <- function(package = NULL, campaign = TRUE) {
   }
 }
 
-cite_package <- function(x = NULL) {
+cite_package <- function(x = NULL, which = 1) {
   x <- c("janus", x)
   lapply(
     X = x,
-    FUN = function(x) {
-      bib <- format(utils::citation(x), style = "text")
+    FUN = function(x, which) {
+      bib <- format(utils::citation(x), style = "text")[which]
       txt <- paste0(vapply(X = bib, FUN = markdown, FUN.VALUE = character(1)))
       HTML(txt)
-    }
+    },
+    which = which
   )
 }
 

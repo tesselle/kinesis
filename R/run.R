@@ -9,10 +9,10 @@
 #'  [`shiny::runApp()`] call.
 #' @details
 #'  \tabular{ll}{
-#'   **Application name** \tab  **Keyword** \cr
-#'   Compositional Data Analysis \tab `coda` \cr
-#'   Matrix Seriation \tab `seriation` \cr
-#'   Ternary Plot \tab `ternary` \cr
+#'   **Application name**        \tab  **Keyword** \cr
+#'   Matrix Seriation            \tab `kairos`     \cr
+#'   Compositional Data Analysis \tab `nexus`      \cr
+#'   Ternary Plot                \tab `isopleuros` \cr
 #'  }
 #' @examples
 #' \dontrun{
@@ -22,7 +22,7 @@
 #' @family shiny apps
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("seriation", "coda", "ternary"),
+run_app <- function(app = c("kairos", "nexus", "isopleuros"),
                     options = list(launch.browser = interactive())) {
   app <- match.arg(app, several.ok = FALSE)
   appDir <- system.file(app, package = "janus")
