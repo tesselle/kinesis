@@ -12,6 +12,7 @@ module_ternary_ui <- function(id) {
 
   sidebarLayout(
     sidebarPanel(
+      h5("Ternary plot"),
       ## Input: select axes
       selectInput(
         inputId = ns("axis1"),

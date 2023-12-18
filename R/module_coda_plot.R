@@ -12,6 +12,7 @@ module_coda_plot_ui <- function(id) {
 
   sidebarLayout(
     sidebarPanel(
+      h5("Compositional barplot"),
       selectInput(
         inputId = ns("order"),
         label = "Order",

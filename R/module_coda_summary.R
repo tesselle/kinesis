@@ -28,14 +28,31 @@ module_coda_summary_ui <- function(id) {
           title = "Summary statistics",
           h5("Center"),
           tableOutput(outputId = ns("location")),
+          h5("Spread"),
+          helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", TRUE)),
+          tableOutput(outputId = ns("spread")),
           h5("Percentile table"),
           tableOutput(outputId = ns("quantile"))
         ),
         tabPanel(
           title = "Univariate statistics",
-          actionButton(inputId = ns("hist_back"), label = "Back"),
-          actionButton(inputId = ns("hist_next"), label = "Next"),
-          output_plot(id = ns("hist"), height = "auto", title = "Histogram")
+          fluidRow(
+            div(
+              class = "col-lg-6 col-md-1",
+              output_plot(id = ns("hist"), height = "auto", title = "Histogram")
+            ),
+            div(
+              class = "col-lg-6 col-md-1",
+              tags$p("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", TRUE)),
+              selectInput(
+                inputId = ns("hist_select"),
+                label = "Select a part",
+                choices = NULL,
+                selected = NULL,
+                multiple = FALSE
+              )
+            )
+          )
         ),
         tabPanel(
           title = "CLR covariance",
@@ -64,54 +81,65 @@ module_coda_summary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    data <- reactive({
+      validate(need(!anyNA(x()), "Your data must not contain missing values."))
+      x()
+    })
     ## Location -----
     data_loc <- reactive({
-      req(x())
-      if (nexus::any_assigned(x())) {
-        index <- nexus::get_groups(x())
-        nexus::aggregate(x(), by = index, FUN = nexus::mean, na.rm = FALSE)
+      req(data())
+      if (nexus::any_assigned(data())) {
+        index <- nexus::get_groups(data())
+        nexus::aggregate(data(), by = index, FUN = nexus::mean, na.rm = FALSE)
       } else {
-        m <- nexus::mean(x(), na.rm = FALSE)
+        m <- nexus::mean(data(), na.rm = FALSE)
         matrix(m, nrow = 1, dimnames = list("center", names(m)))
       }
     })
 
+    ## Spread -----
+    data_spread <- reactive({
+      req(data())
+      ## Metric variance by group
+      if (nexus::any_assigned(data())) {
+        index <- nexus::get_groups(data())
+        s <- nexus::aggregate(data(), by = index, FUN = nexus::metric_var)
+      } else {
+        m <- nexus::metric_var(data())
+        s <- matrix(m, nrow = 1, dimnames = list("", NULL))
+      }
+      colnames(s) <- c("metric variance")
+      s
+    })
+
     ## Percentiles -----
     data_quant <- reactive({
-      req(x())
-      nexus::quantile(x(), probs = seq(0, 1, 0.25))
+      req(data())
+      nexus::quantile(data(), probs = seq(0, 1, 0.25))
     })
 
-    ## Histograms -----
-    max <- 6
-    chunk <- reactive({
-      d <- seq_len(ncol(x()))
-      split(d, ceiling(d / max))
+    ## Histogram -----
+    observeEvent(data(), {
+      choices <- colnames(data())
+      freezeReactiveValue(input, "hist_select")
+      updateSelectInput(inputId = "hist_select", choices = choices)
     })
-    index <- reactiveVal(1) # Set the initial subset index
-    observeEvent(input$hist_next, {
-      index((index() %% length(chunk())) + 1)
-    })
-    observeEvent(input$hist_back, {
-      index(((index() - 2) %% length(chunk())) + 1)
-    })
-
     plot_hist <- reactive({
-      req(x())
-      nexus::hist(x()[, chunk()[[index()]], drop = FALSE], ncol = 3)
+      req(data())
+      nexus::hist(data()[, input$hist_select, drop = FALSE], ncol = 1)
       grDevices::recordPlot()
     })
 
     ## CLR covariance -----
     data_cov <- reactive({
-      req(x())
-      nexus::covariance(x(), center = TRUE)
+      req(data())
+      nexus::covariance(data(), center = TRUE)
     })
 
     ## Variation matrix -----
     data_var <- reactive({
-      req(x())
-      nexus::variation(x())
+      req(data())
+      nexus::variation(data())
     })
 
     ## Clustering -----
@@ -136,17 +164,19 @@ module_coda_summary_server <- function(id, x) {
 
     ## Render table -----
     output$location <- renderTable({data_loc()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
+    output$spread <- renderTable({data_spread()}, striped = TRUE, rownames = TRUE, digits = 3)
     output$quantile <- renderTable({data_quant()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
     output$covariance <- renderTable({data_cov()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
     output$variation <- renderTable({data_var()}, striped = TRUE, width = "100%", rownames = TRUE, digits = 3)
 
     ## Render plot -----
     render_plot("dendrogram", x = plot_heatmap)
-    render_plot("hist", x = plot_hist, height = function() { getCurrentOutputInfo(session)$width() / 2 })
+    render_plot("hist", x = plot_hist)
 
     ## Download -----
     output$download <- export_table(
       location = data_loc,
+      spread = data_spread,
       quantiles = data_quant,
       covariance = data_cov,
       variation = data_var,

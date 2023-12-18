@@ -50,24 +50,13 @@ module_summary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Percentiles
-    data_percentiles <- reactive({
-      probs <- seq(0, 1, 0.25)
-      pc <- apply(
-        X = x(),
-        MARGIN = 2,
-        FUN = stats::quantile,
-        probs = probs,
-        na.rm = TRUE
-      )
-      pc
-    })
-    ## Location
+    ## Location -----
     data_loc <- reactive({
       moy <- colMeans(x(), na.rm = FALSE)
       matrix(moy, ncol = length(moy), dimnames = list("mean", names(moy)))
     })
-    ## Spread
+
+    ## Spread -----
     data_spread <- reactive({
       z <- apply(
         X = x(),
@@ -83,18 +72,32 @@ module_summary_server <- function(id, x) {
       rownames(z) <- c("SD", "IQR", "MAD")
       z
     })
-    ## Covariance
+
+    ## Percentiles -----
+    data_percentiles <- reactive({
+      probs <- seq(0, 1, 0.25)
+      pc <- apply(
+        X = x(),
+        MARGIN = 2,
+        FUN = stats::quantile,
+        probs = probs,
+        na.rm = TRUE
+      )
+      pc
+    })
+
+    ## Covariance -----
     data_cov <- reactive({
       stats::cov(x())
     })
 
-    ## Render table
+    ## Render table -----
     output$location <- renderTable({data_loc()}, striped = TRUE, width = "100%", rownames = TRUE)
     output$spread <- renderTable({data_spread()}, striped = TRUE, width = "100%", rownames = TRUE)
     output$quantile <- renderTable({data_percentiles()}, striped = TRUE, width = "100%", rownames = TRUE)
     output$cov <- renderTable({data_cov()}, width = "100%", rownames = TRUE)
 
-    ## Download
+    ## Download -----
     output$download <- export_table(
       location = data_loc,
       spread = data_spread,
