@@ -35,6 +35,16 @@ module_ternary_ui <- function(id) {
         selected = NULL,
         multiple = FALSE,
       ),
+      checkboxInput(
+        inputId = ns("center"),
+        label = "Center",
+        value = FALSE
+      ),
+      checkboxInput(
+        inputId = ns("scale"),
+        label = "Scale",
+        value = FALSE
+      ),
       hr(),
       ## Input: select group
       selectizeInput(
@@ -45,14 +55,6 @@ module_ternary_ui <- function(id) {
         multiple = FALSE,
         options = list(plugins = "clear_button")
       ),
-      ## Input: select 4th variable
-      # selectInput(
-      #   inputId = ns("highlight"),
-      #   label = "Highlight",
-      #   choices = NULL,
-      #   selected = NULL,
-      #   multiple = FALSE,
-      # ),
       hr(),
       ## Input: add points
       checkboxInput(
@@ -195,7 +197,12 @@ module_ternary_server <- function(id, x) {
     })
     data_info <- reactive({
       req(data_tern())
-      cart <- isopleuros::coordinates_ternary(data_tern())
+      cart <- isopleuros::coordinates_ternary(
+        x = data_tern(),
+        center = input$center,
+        scale = input$scale
+      )
+      cart <- cart[c("x", "y")]
       tern <- isopleuros::coordinates_cartesian(cart)
       names(cart) <- c(".x", ".y") # Safety
       names(tern) <- colnames(data_tern())
@@ -210,13 +217,19 @@ module_ternary_server <- function(id, x) {
       tern <- data_tern()
       n <- nrow(tern)
 
+      ## Compute center and scale
+      no_scale <- !input$center && !input$scale
+      z <- isopleuros::coordinates_ternary(tern, center = input$center,
+                                           scale = input$scale)
+
       ## Graphical parameters
       grp <- rep("", n)
       col <- rep("black", n)
       pch <- rep(as.numeric(input$pch), n)
       cex <- as.numeric(input$cex)
+
       if (is_set(input$group)) {
-        grp <- as.factor(data_quali()[, input$group])
+        grp <- factor(data_quali()[, input$group], exclude = NULL)
         col <- get_color(input$col, n = nlevels(grp))[grp]
       }
 
@@ -229,33 +242,48 @@ module_ternary_server <- function(id, x) {
         zlab = input$axis3,
         xlim = ranges$x,
         ylim = ranges$y,
-        zlim = ranges$z
+        zlim = ranges$z,
+        center = z$center,
+        scale = z$scale
       )
+
+      ## Add grid
       if (input$grid) {
-        isopleuros::ternary_grid()
+        isopleuros::ternary_grid(center = z$center, scale = z$scale)
       }
-      if (input$density) {
-        isopleuros::ternary_density(tern)
+
+      if (no_scale) {
+        ## Density contours
+        if (input$density) {
+          isopleuros::ternary_density(tern)
+        }
+
+        ## Envelope
+        fun_wrap <- switch(
+          input$wrap,
+          tol = function(x, ...) isopleuros::ternary_tolerance(x, level = input$level, ...),
+          conf = function(x, ...) isopleuros::ternary_confidence(x, level = input$level, ...),
+          hull = function(x, ...) isopleuros::ternary_hull(x, ...),
+          function(...) invisible()
+        )
+        for (i in split(seq_len(n), f = grp)) {
+          z <- tern[i, , drop = FALSE]
+          if (nrow(z) < 3) next
+          fun_wrap(z, lty = 1, border = col[i])
+        }
       }
+
+      ## Add points
       if (input$points) {
-        isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex)
+        isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex,
+                                   center = z$center, scale = z$scale)
       }
-      fun_wrap <- switch(
-        input$wrap,
-        tol = function(x, ...) isopleuros::ternary_tolerance(x, level = input$level, ...),
-        conf = function(x, ...) isopleuros::ternary_confidence(x, level = input$level, ...),
-        hull = function(x, ...) isopleuros::ternary_hull(x, ...),
-        function(...) invisible()
-      )
-      for (i in split(seq_len(n), f = grp)) {
-        z <- tern[i, , drop = FALSE]
-        if (nrow(z) < 3) next
-        fun_wrap(z, lty = 1, border = col[i])
-      }
+
+      ## Add legend
       if (input$legend && nlevels(grp) > 1) {
         graphics::legend(
           x = "topright",
-          legend = levels(grp),
+          legend = unique(grp),
           pch = unique(pch),
           col = unique(col),
           bty = "n"
