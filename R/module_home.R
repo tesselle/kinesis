@@ -79,9 +79,9 @@ module_home_ui <- function(id, name = NULL) {
           tabPanel(
             title = "Save",
             h4("Bookmarking"),
-            tags$p(textOutput(outputId = ns("bookmarking"))),
-            bookmarkButton(),
-            tags$p(textOutput(outputId = ns("last_saved")))
+            uiOutput(outputId = ns("bookmarking")),
+            uiOutput(outputId = ns("last_saved")),
+            bookmarkButton()
           )
         )
       ) # mainPanel
@@ -138,13 +138,13 @@ module_home_server <- function(id) {
       cat(msg, sep = "\n")
     })
 
-    output$bookmarking <- renderText({
+    output$bookmarking <- renderUI({
       book <- janus::get_option("bookmark") != "disable"
-      sprintf("Bookmarking is %s.", ifelse(book, "enabled", "disabled"))
+      tags$p("Bookmarking is", tags$strong(ifelse(book, "enabled", "disabled")))
     })
-    output$last_saved <- renderText({
+    output$last_saved <- renderUI({
       req(saved())
-      paste("Last saved at", saved())
+      tags$p("Last saved at", saved())
     })
   })
 }

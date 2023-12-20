@@ -11,4 +11,4 @@ test:
 online:
   production: TRUE
   verbose: FALSE
-  bookmark: server
+  bookmark: disable
