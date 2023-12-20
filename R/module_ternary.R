@@ -114,8 +114,6 @@ module_ternary_ui <- function(id) {
             ),
             height = "auto",
             click = ns("click"),
-            dblclick = ns("dblclick"),
-            brush = brushOpts(id = ns("brush"), resetOnNew = TRUE),
             title = "Ternary plot"
           )
         ),
@@ -142,44 +140,7 @@ module_ternary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ranges <- reactiveValues(x = NULL, y = NULL, z = NULL)
-
-    ## Observe -----------------------------------------------------------------
-    observeEvent(data_quanti(), {
-      choices <- colnames(data_quanti())
-      updateSelectInput(session, inputId = "axis1", choices = choices)
-    })
-    observeEvent(input$axis1, {
-      choices <- setdiff(colnames(data_quanti()), input$axis1)
-      updateSelectInput(session, inputId = "axis2", choices = choices)
-      updateSelectInput(session, inputId = "axis3", choices = choices)
-    })
-    observeEvent(input$axis2, {
-      choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
-      updateSelectInput(session, inputId = "axis3", choices = choices)
-    })
-    observeEvent(data_quali(), {
-      choices <- c(none = "", colnames(data_quali()))
-      updateSelectInput(session, inputId = "group", choices = choices)
-    })
-    observeEvent(input$dblclick, {
-      brush <- input$brush
-      if (!is.null(brush)) {
-        lim <- isopleuros::coordinates_cartesian(
-          x = c(brush$xmin, brush$xmax),
-          y = c(brush$ymin, brush$ymax)
-        )
-        ranges$x <- lim$x
-        ranges$y <- lim$y
-        ranges$z <- lim$z
-      } else {
-        ranges$x <- NULL
-        ranges$y <- NULL
-        ranges$z <- NULL
-      }
-    })
-
-    ## Reactive ----------------------------------------------------------------
+    ## Subset data -----
     is_quanti <- reactive({
       req(x())
       arkhe::detect(x(), margin = 2, f = is.numeric)
@@ -192,9 +153,42 @@ module_ternary_server <- function(id, x) {
       if (sum(is_quanti()) < 3) return(NULL)
       x()[, is_quanti(), drop = FALSE]
     })
+    bindEvent(
+      observe({
+        choices <- colnames(data_quanti())
+        updateSelectInput(session, inputId = "axis1", choices = choices)
+      }),
+      data_quanti()
+    )
+    bindEvent(
+      observe({
+        choices <- setdiff(colnames(data_quanti()), input$axis1)
+        updateSelectInput(session, inputId = "axis2", choices = choices)
+        updateSelectInput(session, inputId = "axis3", choices = choices)
+      }),
+      input$axis1
+    )
+    bindEvent(
+      observe({
+        choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
+        updateSelectInput(session, inputId = "axis3", choices = choices)
+      }),
+      input$axis2
+    )
+    bindEvent(
+      observe({
+        choices <- c(none = "", colnames(data_quali()))
+        updateSelectInput(session, inputId = "group", choices = choices)
+      }),
+      data_quali()
+    )
+
+    ## Get ternary data -----
     data_tern <- reactive({
-      data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
+      tern <- data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
+      tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
     })
+
     data_info <- reactive({
       req(data_tern())
       cart <- isopleuros::coordinates_ternary(
@@ -203,15 +197,15 @@ module_ternary_server <- function(id, x) {
         scale = input$scale
       )
       cart <- cart[c("x", "y")]
-      tern <- isopleuros::coordinates_cartesian(cart)
       names(cart) <- c(".x", ".y") # Safety
-      names(tern) <- colnames(data_tern())
-      z <- data.frame(tern, cart)
+
+      z <- data.frame(data_tern(), cart)
       z <- nearPoints(z, input$click, xvar = ".x", yvar = ".y")
       z[, -ncol(z) + c(1, 0)]
     })
 
-    ## Build plot ---
+
+    ## Build plot -----
     plot_ternary <- reactive({
       ## Select data
       tern <- data_tern()
@@ -219,8 +213,6 @@ module_ternary_server <- function(id, x) {
 
       ## Compute center and scale
       no_scale <- !input$center && !input$scale
-      z <- isopleuros::coordinates_ternary(tern, center = input$center,
-                                           scale = input$scale)
 
       ## Graphical parameters
       grp <- rep("", n)
@@ -229,22 +221,21 @@ module_ternary_server <- function(id, x) {
       cex <- as.numeric(input$cex)
 
       if (is_set(input$group)) {
-        grp <- factor(data_quali()[, input$group], exclude = NULL)
+        grp <- data_quali()[, input$group]
+        grp <- factor(grp, levels = unique(grp), exclude = NULL)
         col <- get_color(input$col, n = nlevels(grp))[grp]
       }
 
       ## Build plot
       graphics::par(mar = c(1, 1, 1, 1))
-      isopleuros::ternary_plot(
-        x = NULL,
+      z <- isopleuros::ternary_plot(
+        x = tern,
+        type = "n",
         xlab = input$axis1,
         ylab = input$axis2,
         zlab = input$axis3,
-        xlim = ranges$x,
-        ylim = ranges$y,
-        zlim = ranges$z,
-        center = z$center,
-        scale = z$scale
+        center = input$center,
+        scale = input$scale
       )
 
       ## Add grid
@@ -283,7 +274,7 @@ module_ternary_server <- function(id, x) {
       if (input$legend && nlevels(grp) > 1) {
         graphics::legend(
           x = "topright",
-          legend = unique(grp),
+          legend = levels(grp),
           pch = unique(pch),
           col = unique(col),
           bty = "n"
