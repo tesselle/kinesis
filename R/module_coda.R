@@ -14,28 +14,34 @@ module_coda_ui <- function(id) {
     column(
       width = 4,
       wellPanel(
-        helpText("Define the unique identifier (eg. laboratory codes) of each observation."),
         selectizeInput(
           inputId = ns("codes"),
-          label = "Unique identifiers",
+          label = bslib::tooltip(
+            span("Unique identifiers", icon("info-circle")),
+            "Define the unique identifier (eg. laboratory codes) of each observation."
+          ),
           choices = NULL,
           selected = NULL,
           multiple = FALSE,
           options = list(plugins = "clear_button")
         ),
-        helpText("Duplicated sample names will be interpreted as repeated measurements."),
         selectizeInput(
           inputId = ns("samples"),
-          label = "Sample names",
+          label = bslib::tooltip(
+            span("Sample names", icon("info-circle")),
+            "Duplicated sample names will be interpreted as repeated measurements."
+          ),
           choices = NULL,
           selected = NULL,
           multiple = FALSE,
           options = list(plugins = "clear_button")
         ),
-        helpText("Empty strings can be used to specify that a sample does not belong to any group."),
         selectizeInput(
           inputId = ns("groups"),
-          label = "Reference groups",
+          label = bslib::tooltip(
+            span("Groups", icon("info-circle")),
+            "Empty strings will be interpreted as unassigned samples."
+          ),
           choices = NULL,
           selected = NULL,
           multiple = FALSE,

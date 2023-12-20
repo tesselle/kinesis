@@ -27,12 +27,12 @@ shiny_ui <- function(request) {
           tabPanel(
             title = "Missing values",
             janus::module_missing_ui("missing")
-          ), # tabPanel
-          tabPanel(
-            title = "Composition",
-            janus::module_coda_ui("coda")
           ) # tabPanel
         ) # tabsetPanel
+      ), # tabPanel
+      tabPanel(
+        title = "Composition",
+        janus::module_coda_ui("coda")
       ), # tabPanel
       tabPanel(
         title = "Statistics",
