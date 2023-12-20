@@ -16,10 +16,6 @@ module_home_ui <- function(id, name = NULL) {
     sidebarLayout(
       sidebarPanel(
         h5("Workflow"),
-        # tags$br(),
-        # h4("Bookmarking"),
-        # bookmarkButton(),
-        # tags$p(textOutput(outputId = ns("last_saved")))
       ), # sidebarPanel
       mainPanel(
         tabsetPanel(
@@ -79,6 +75,13 @@ module_home_ui <- function(id, name = NULL) {
               Foundation, either version 3 of the License, or (at your option)
               any later version."
             )
+          ),
+          tabPanel(
+            title = "Save",
+            h4("Bookmarking"),
+            tags$p(textOutput(outputId = ns("bookmarking"))),
+            bookmarkButton(),
+            tags$p(textOutput(outputId = ns("last_saved")))
           )
         )
       ) # mainPanel
@@ -97,38 +100,51 @@ module_home_ui <- function(id, name = NULL) {
 #' @export
 module_home_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    ## Render ------------------------------------------------------------------
+    ## Render -----
     output$session <- renderPrint({ utils::sessionInfo() })
 
-    ## Bookmark ----------------------------------------------------------------
-    # onBookmark(function(state) {
-    #   saved_time <- Sys.time()
-    #
-    #   msg <- sprintf("Last saved at %s.", saved_time)
-    #   showNotification(
-    #     ui = msg,
-    #     duration = 5,
-    #     closeButton = TRUE,
-    #     type = "message",
-    #     session = session
-    #   )
-    #   cat(msg, "\n")
-    #
-    #   # state is a mutable reference object,
-    #   # we can add arbitrary values to it.
-    #   state$values$time <- saved_time
-    # })
-    ## Bookmark ----------------------------------------------------------------
-    # onRestore(function(state) {
-    #   msg <- sprintf("Restoring from state bookmarked at %s.", state$values$time)
-    #   showNotification(
-    #     ui = msg,
-    #     duration = 5,
-    #     closeButton = TRUE,
-    #     type = "message",
-    #     session = session
-    #   )
-    #   cat(msg, sep = "\n")
-    # })
+    ## Bookmark -----
+    saved <- reactiveVal()
+
+    onBookmark(function(state) {
+      saved(Sys.time())
+
+      msg <- sprintf("Last saved at %s.", saved())
+      showNotification(
+        ui = msg,
+        duration = 5,
+        closeButton = TRUE,
+        type = "message",
+        session = session
+      )
+      cat(msg, "\n")
+
+      # state is a mutable reference object,
+      # we can add arbitrary values to it.
+      state$values$time <- saved()
+    })
+
+    onRestore(function(state) {
+      saved(state$values$time)
+
+      msg <- sprintf("Restoring from state bookmarked at %s.", state$values$time)
+      showNotification(
+        ui = msg,
+        duration = 5,
+        closeButton = TRUE,
+        type = "message",
+        session = session
+      )
+      cat(msg, sep = "\n")
+    })
+
+    output$bookmarking <- renderText({
+      book <- janus::get_option("bookmark") != "disable"
+      sprintf("Bookmarking is %s.", ifelse(book, "enabled", "disabled"))
+    })
+    output$last_saved <- renderText({
+      req(saved())
+      paste("Last saved at", saved())
+    })
   })
 }
