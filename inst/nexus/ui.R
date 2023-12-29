@@ -7,7 +7,6 @@ shiny_ui <- function(request) {
   fluidPage(
     includeCSS(system.file("static", "style.css", package = "janus")),
     theme = bslib::bs_theme(),
-    collapsible = TRUE,
     lang = "en",
     navbarPage(
       "nexus",
@@ -64,7 +63,8 @@ shiny_ui <- function(request) {
         ) # tabPanel
       ), # navbarMenu
       header = janus::module_header_ui("header"),
-      footer = janus::module_footer_ui("footer")
+      footer = janus::module_footer_ui("footer"),
+      collapsible = TRUE
     )
   )
 }
