@@ -20,48 +20,62 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 
 ## Overview
 
-A collection of [**shiny**](https://shiny.rstudio.com) application that
+A collection of [**shiny**](https://shiny.rstudio.com) applications that
 provides graphical user interfaces for the
 [tesselle](https://www.tesselle.org) packages.
 
     To cite kinesis in publications use:
 
-      Frerebeau N (2023). _kinesis: 'Shiny' Applications for the tesselle R
+      Frerebeau N (2023). _kinesis: 'Shiny' Applications for the 'tesselle'
       Packages_. Université Bordeaux Montaigne, Pessac, France. R package
-      version 0.0.0.9002, <https://packages.tesselle.org/kinesis/>.
+      version 0.0.0.9003, <https://packages.tesselle.org/kinesis/>.
 
     A BibTeX entry for LaTeX users is
 
       @Manual{,
         author = {Nicolas Frerebeau},
-        title = {{kinesis: 'Shiny' Applications for the tesselle R Packages}},
+        title = {{kinesis: 'Shiny' Applications for the 'tesselle' Packages}},
         year = {2023},
         organization = {Université Bordeaux Montaigne},
         address = {Pessac, France},
-        note = {R package version 0.0.0.9002},
+        note = {R package version 0.0.0.9003},
         url = {https://packages.tesselle.org/kinesis/},
       }
 
     This package is a part of the tesselle project
     <https://www.tesselle.org>.
 
-## Installation
+## Remote use
 
-You can install the latest version of **kinesis** from [our
+The applications are deployed on the [Huma-Num](https://www.huma-num.fr)
+Shiny server: <https://analytics.huma-num.fr/tesselle/home/>.
+
+## Local use
+
+### Installation
+
+You can install the released version of **kinesis** from [our
 repository](https://tesselle.r-universe.dev) with:
 
 ``` r
 install.packages("kinesis", repos = "https://tesselle.r-universe.dev")
 ```
 
-## Usage
+And the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("tesselle/kinesis")
+```
+
+### Usage
 
 ``` r
 ## Load the package
 library(kinesis)
 
 ## Run the app for matrix seriation
-run_app("seriation")
+run_app("kairos")
 ```
 
 ## Contributing
