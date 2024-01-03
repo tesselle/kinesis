@@ -2,11 +2,11 @@
 #' Ternary Plot UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [module_ternary_server()]
-#' @family UI modules
+#' @seealso [ternary_server()]
+#' @family plot modules
 #' @keywords internal
 #' @export
-module_ternary_ui <- function(id) {
+ternary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -132,11 +132,11 @@ module_ternary_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame`.
-#' @seealso [module_ternary_ui()]
-#' @family server modules
+#' @seealso [ternary_ui()]
+#' @family plot modules
 #' @keywords internal
 #' @export
-module_ternary_server <- function(id, x) {
+ternary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {

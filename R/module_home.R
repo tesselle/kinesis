@@ -3,11 +3,11 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @param package A [`character`] string specifying the app name.
-#' @seealso [module_home_server()]
-#' @family UI modules
+#' @seealso [home_server()]
+#' @family page modules
 #' @keywords internal
 #' @export
-module_home_ui <- function(id, name = NULL) {
+home_ui <- function(id, name = NULL) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -89,16 +89,58 @@ module_home_ui <- function(id, name = NULL) {
   ) # tabPanel
 }
 
+#' Header UI
+#'
+#' @param id A [`character`] vector to be used for the namespace.
+#' @seealso [header_server()]
+#' @family page modules
+#' @keywords internal
+#' @export
+header_ui <- function(id) {
+  # Create a namespace function using the provided id
+  ns <- NS(id)
+
+  list(
+    uiOutput(outputId = ns("alert_config"))
+  )
+}
+
+#' Footer UI
+#'
+#' @param id A [`character`] vector to be used for the namespace.
+#' @param package A [`character`] string giving the name of the app.
+#' @seealso [footer_server()]
+#' @family page modules
+#' @keywords internal
+#' @export
+footer_ui <- function(id) {
+  # Create a namespace function using the provided id
+  ns <- NS(id)
+
+  tags$footer(
+    style = "margin-top: 1em; width: 100%; text-align: center;",
+    tags$p(
+      actionLink(inputId = ns("session"), label = "Session info"),
+      HTML(" &middot; "),
+      tags$a(href = "https://github.com/tesselle/kinesis",
+             target = "_blank", rel = "external", "Source code"),
+      HTML(" &middot; "),
+      tags$a(href = "https://github.com/tesselle/kinesis/issues",
+             target = "_blank", rel = "external", "Report a bug or request")
+    )
+  )
+}
+
 # Server =======================================================================
 #' Home Server
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @seealso [module_home_ui()]
-#' @family server modules
+#' @seealso [home_ui()]
+#' @family page modules
 #' @keywords internal
 #' @export
-module_home_server <- function(id) {
+home_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ## Render -----
     output$session <- renderPrint({ utils::sessionInfo() })
@@ -145,6 +187,51 @@ module_home_server <- function(id) {
     output$last_saved <- renderUI({
       req(saved())
       tags$p("Last saved at", saved())
+    })
+  })
+}
+
+#' Header Server
+#'
+#' @param id An ID string that corresponds with the ID used to call the module's
+#'  UI function.
+#' @seealso [header_ui()]
+#' @family page modules
+#' @keywords internal
+#' @export
+header_server  <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    output$alert_config <- renderUI({
+      if (get_option("production")) return(NULL)
+      div(
+        class = "alert alert-warning",
+        role = "alert",
+        "This application is under development, so you shouldn't use it for anything serious!"
+      )
+    })
+  })
+}
+
+#' Footer Server
+#'
+#' @param id An ID string that corresponds with the ID used to call the module's
+#'  UI function.
+#' @seealso [footer_ui()]
+#' @family page modules
+#' @keywords internal
+#' @export
+footer_server  <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    observeEvent(input$session, {
+      showModal(
+        modalDialog(
+          title = "Session Info",
+          info_session(),
+          size = "xl",
+          easyClose = TRUE,
+          footer = modalButton("Close")
+        )
+      )
     })
   })
 }

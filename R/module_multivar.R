@@ -3,11 +3,11 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @return A tab that can be passed to [shiny::tabsetPanel()].
-#' @seealso [module_multivar_server()]
-#' @family UI modules
+#' @seealso [multivariate_server()]
+#' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-module_multivar_ui <- function(id) {
+multivariate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -57,16 +57,16 @@ module_multivar_ui <- function(id) {
     mainPanel(
       tabsetPanel(
         type = "tabs",
-        module_multivar_results(id),
-        module_multivar_individuals(id),
-        module_multivar_variables(id),
-        module_multivar_screeplot(id)
+        multivariate_results(id),
+        multivariate_individuals(id),
+        multivariate_variables(id),
+        multivariate_screeplot(id)
       ) # tabsetPanel
     ) # mainPanel
   ) # sidebarLayout
 }
 
-module_multivar_results <- function(id) {
+multivariate_results <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -97,7 +97,7 @@ module_multivar_results <- function(id) {
   ) # tabPanel
 }
 
-module_multivar_individuals <- function(id) {
+multivariate_individuals <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -108,7 +108,7 @@ module_multivar_individuals <- function(id) {
   ) # tabPanel
 }
 
-module_multivar_variables <- function(id) {
+multivariate_variables <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -119,7 +119,7 @@ module_multivar_variables <- function(id) {
   ) # tabPanel
 }
 
-module_multivar_screeplot <- function(id) {
+multivariate_screeplot <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -144,11 +144,11 @@ module_multivar_screeplot <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`dimensio::MultivariateAnalysis-class`] object.
-#' @seealso [module_multivar_ui]
-#' @family server modules
+#' @seealso [multivariate_ui]
+#' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-module_multivar_server <- function(id, x) {
+multivariate_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {

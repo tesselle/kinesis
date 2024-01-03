@@ -10,46 +10,32 @@ shiny_ui <- function(request) {
     lang = "en",
     navbarPage(
       "kairos",
-      kinesis::module_home_ui("home", name = "kairos"),
+      kinesis::home_ui("home", name = "kairos"),
       tabPanel(
         title = "Data",
-        tabsetPanel(
-          type = "tabs",
-          tabPanel(
-            title = "Import",
-            kinesis::module_import_ui("import")
-          ), # tabPanel
-          tabPanel(
-            title = "Prepare",
-            kinesis::module_prepare_ui("prepare")
-          ), # tabPanel
-          tabPanel(
-            title = "Missing values",
-            kinesis::module_missing_ui("missing")
-          ) # tabPanel
-        ) # tabsetPanel
+        kinesis::data_ui("data")
       ), # tabPanel
       navbarMenu(
         title = "Statistics",
         tabPanel(
           title = "Summary",
-          kinesis::module_summary_ui("summary")
+          kinesis::summary_ui("summary")
         ),
         tabPanel(
           title = "Chi-squared",
-          kinesis::module_chi2_ui("chi2")
+          kinesis::chi2_ui("chi2")
         )
       ), # tabPanel
       tabPanel(
         title = "Analysis",
-        kinesis::module_multivar_ui("ca")
+        kinesis::multivariate_ui("ca")
       ), # navbarMenu
       tabPanel(
         title = "Seriation",
-        kinesis::module_seriate_ui("seriate")
+        kinesis::seriate_ui("seriate")
       ), # tabPanel
-      header = kinesis::module_header_ui("header"),
-      footer = kinesis::module_footer_ui("footer"),
+      header = kinesis::header_ui("header"),
+      footer = kinesis::footer_ui("footer"),
       collapsible = TRUE
     )
   )

@@ -3,13 +3,12 @@
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by
-#'  [module_import_server()]).
+#' @param x A reactive `data.frame` (typically returned by [data_server()]).
 #' @return A reactive [`data.frame`].
-#' @family server modules
+#' @family count data modules
 #' @keywords internal
 #' @export
-module_count_server <- function(id, x) {
+count_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {

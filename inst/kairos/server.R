@@ -8,24 +8,21 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  clean <- kinesis::module_import_server("import") |>
-    kinesis::module_prepare_server("prepare", x = _) |>
-    kinesis::module_missing_server("missing", x = _)
-
-  count <- kinesis::module_count_server("count", x = clean)
+  data <- kinesis::data_server("data")
+  count <- kinesis::count_server("count", x = data)
 
   ## Statistics
-  kinesis::module_summary_server("summary", x = count)
-  kinesis::module_chi_server("chi2", x = count)
+  kinesis::summary_server("summary", x = count)
+  kinesis::chi2_server("chi2", x = count)
 
   ## Seriation
-  ca_results <- kinesis::module_seriate_server("seriate", x = count)
+  ca_results <- kinesis::seriate_server("seriate", x = count)
 
   ## CA
-  kinesis::module_multivar_server("ca", x = ca_results)
+  kinesis::multivariate_server("ca", x = ca_results)
 
-  kinesis::module_home_server("home")
-  kinesis::module_header_server("header")
-  kinesis::module_footer_server("footer")
+  kinesis::home_server("home")
+  kinesis::header_server("header")
+  kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
 }

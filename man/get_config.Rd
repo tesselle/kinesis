@@ -5,7 +5,7 @@
 \title{Read Configuration Values}
 \usage{
 get_config(
-  config = Sys.getenv("kinesis_CONFIG_ACTIVE", "default"),
+  config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
   use_parent = TRUE
 )
 }

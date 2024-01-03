@@ -8,24 +8,21 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  clean <- kinesis::module_import_server("import") |>
-    kinesis::module_prepare_server("prepare", x = _) |>
-    kinesis::module_missing_server("missing", x = _)
-
-  coda <- kinesis::module_coda_server("coda", x = clean)
+  data <- kinesis::data_server("data")
+  coda <- kinesis::coda_server("coda", x = data)
 
   ## Statistics
-  kinesis::module_coda_summary_server("coda_summary", coda)
+  kinesis::coda_summary_server("coda_summary", coda)
 
   ## Graphs
-  kinesis::module_coda_plot_server("barplot", x = coda)
-  kinesis::module_ternary_server("ternary", x = clean)
+  kinesis::coda_plot_server("barplot", x = coda)
+  kinesis::ternary_server("ternary", x = data)
 
   ## Log-ratio
-  clogratio <- kinesis::module_logratio_server("clr", coda, method = "clr")
-  alogratio <- kinesis::module_logratio_server("alr", coda, method = "alr")
-  ilogratio <- kinesis::module_logratio_server("ilr", coda, method = "ilr")
-  plogratio <- kinesis::module_logratio_server("plr", coda, method = "plr")
+  clogratio <- kinesis::logratio_server("clr", coda, method = "clr")
+  alogratio <- kinesis::logratio_server("alr", coda, method = "alr")
+  ilogratio <- kinesis::logratio_server("ilr", coda, method = "ilr")
+  plogratio <- kinesis::logratio_server("plr", coda, method = "plr")
   ratio <- list(
     clr = clogratio,
     alr = alogratio,
@@ -34,11 +31,11 @@ shiny_server <- function(input, output, session) {
   )
 
   ## PCA
-  pca_results <- kinesis::module_pca_server("pca", x = ratio)
-  kinesis::module_multivar_server("pca", pca_results)
+  pca_results <- kinesis::pca_server("pca", x = ratio)
+  kinesis::multivariate_server("pca", pca_results)
 
-  kinesis::module_home_server("home")
-  kinesis::module_header_server("header")
-  kinesis::module_footer_server("footer")
+  kinesis::home_server("home")
+  kinesis::header_server("header")
+  kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
 }

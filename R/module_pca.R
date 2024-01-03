@@ -6,11 +6,11 @@
 #'  zero centered?
 #' @param scale A [`logical`] scalar: should the variables be scaled to unit
 #'  variance?
-#' @seealso [module_pca_server()]
-#' @family UI modules
+#' @seealso [pca_server()]
+#' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-module_pca_ui <- function(id, center = TRUE, scale = TRUE) {
+pca_ui <- function(id, center = TRUE, scale = TRUE) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -66,7 +66,7 @@ module_pca_ui <- function(id, center = TRUE, scale = TRUE) {
       )
     ),
     fluidRow(
-      module_multivar_ui(id)
+      multivariate_ui(id)
     )
   )
 }
@@ -78,11 +78,11 @@ module_pca_ui <- function(id, center = TRUE, scale = TRUE) {
 #'  UI function.
 #' @param x A list of reactive `data.frame`.
 #' @return A reactive [`dimensio::PCA-class`] object.
-#' @seealso [module_pca_ui()]
-#' @family server modules
+#' @seealso [pca_ui()]
+#' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-module_pca_server <- function(id, x) {
+pca_server <- function(id, x) {
   # stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {

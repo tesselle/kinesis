@@ -2,11 +2,11 @@
 #' Compositional Data Summary UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [module_coda_summary_server()]
+#' @seealso [coda_summary_server()]
 #' @family coda modules
 #' @keywords internal
 #' @export
-module_coda_summary_ui <- function(id) {
+coda_summary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -73,11 +73,11 @@ module_coda_summary_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`nexus::CompositionMatrix-class`] object.
-#' @seealso [module_coda_summary_ui()]
+#' @seealso [coda_summary_ui()]
 #' @family coda modules
 #' @keywords internal
 #' @export
-module_coda_summary_server <- function(id, x) {
+coda_summary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {

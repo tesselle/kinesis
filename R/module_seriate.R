@@ -3,11 +3,11 @@
 #' Seriate UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [module_seriate_server()]
-#' @family UI modules
+#' @seealso [seriate_server()]
+#' @family chronology modules
 #' @keywords internal
 #' @export
-module_seriate_ui <- function(id) {
+seriate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -75,14 +75,13 @@ module_seriate_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by
-#'  [module_prepare_server()]).
-#' @return A reactive [`kairos:: AveragePermutationOrder-class`] object.
-#' @seealso [module_seriate_ui()]
-#' @family server modules
+#' @param x A reactive `data.frame` (typically returned by [data_server()]).
+#' @return A reactive [`kairos::AveragePermutationOrder-class`] object.
+#' @seealso [seriate_ui()]
+#' @family chronology modules
 #' @keywords internal
 #' @export
-module_seriate_server  <- function(id, x) {
+seriate_server  <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
