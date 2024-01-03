@@ -66,7 +66,7 @@ module_home_ui <- function(id, name = NULL) {
             h3("License"),
             tags$p(
               "This app is distributed as a free and open source",
-              tags$a("R package", href = url_tesselle("janus"),
+              tags$a("R package", href = url_tesselle("kinesis"),
                      target = "_blank", rel = "external", .noWS = "after"), "."
             ),
             tags$p(
@@ -139,7 +139,7 @@ module_home_server <- function(id) {
     })
 
     output$bookmarking <- renderUI({
-      book <- janus::get_option("bookmark") != "disable"
+      book <- kinesis::get_option("bookmark") != "disable"
       tags$p("Bookmarking is", tags$strong(ifelse(book, "enabled", "disabled")))
     })
     output$last_saved <- renderUI({

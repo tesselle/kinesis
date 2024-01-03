@@ -5,36 +5,36 @@
 #' @noRd
 shiny_ui <- function(request) {
   fluidPage(
-    includeCSS(system.file("static", "style.css", package = "janus")),
+    includeCSS(system.file("static", "style.css", package = "kinesis")),
     theme = bslib::bs_theme(),
     lang = "en",
     navbarPage(
       "isopleuros",
-      janus::module_home_ui("home", name = "isopleuros"),
+      kinesis::module_home_ui("home", name = "isopleuros"),
       tabPanel(
         title = "Data",
         tabsetPanel(
           type = "tabs",
           tabPanel(
             title = "Import",
-            janus::module_import_ui("import")
+            kinesis::module_import_ui("import")
           ), # tabPanel
           tabPanel(
             title = "Prepare",
-            janus::module_prepare_ui("prepare")
+            kinesis::module_prepare_ui("prepare")
           ), # tabPanel
           tabPanel(
             title = "Missing values",
-            janus::module_missing_ui("missing")
+            kinesis::module_missing_ui("missing")
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
       tabPanel(
         title = "Plot",
-        janus::module_ternary_ui("ternary")
+        kinesis::module_ternary_ui("ternary")
       ), # tabPanel
-      header = janus::module_header_ui("header"),
-      footer = janus::module_footer_ui("footer"),
+      header = kinesis::module_header_ui("header"),
+      footer = kinesis::module_footer_ui("footer"),
       collapsible = TRUE
     )
   )

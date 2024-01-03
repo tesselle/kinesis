@@ -25,7 +25,7 @@
 run_app <- function(app = c("kairos", "nexus", "isopleuros"),
                     options = list(launch.browser = interactive())) {
   app <- match.arg(app, several.ok = FALSE)
-  appDir <- system.file(app, package = "janus")
+  appDir <- system.file(app, package = "kinesis")
 
   if (appDir == "")
     stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
@@ -33,8 +33,8 @@ run_app <- function(app = c("kairos", "nexus", "isopleuros"),
   obj <- shiny::shinyAppDir(appDir = appDir, options = options)
 
   ## Bundling the options inside the shinyApp object
-  janus_options <- get_config()
-  obj$appOptions$janus_options <- janus_options
+  kinesis_options <- get_config()
+  obj$appOptions$kinesis_options <- kinesis_options
 
   obj
 }
@@ -51,10 +51,10 @@ run_app <- function(app = c("kairos", "nexus", "isopleuros"),
 #' @author N. Frerebeau
 #' @keywords internal
 #' @export
-get_config <- function(config = Sys.getenv("JANUS_CONFIG_ACTIVE", "default"),
+get_config <- function(config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
                        use_parent = TRUE) {
 
-  file <- system.file("config.yml", package = "janus", mustWork = FALSE)
+  file <- system.file("config.yml", package = "kinesis", mustWork = FALSE)
   config::get(value = NULL, config = config, file = file,
               use_parent = use_parent)
 }
@@ -69,8 +69,8 @@ get_config <- function(config = Sys.getenv("JANUS_CONFIG_ACTIVE", "default"),
 #' @export
 get_option <- function(name = NULL, default = NULL) {
   if (is.null(name)) {
-    shiny::getShinyOption("janus_options")
+    shiny::getShinyOption("kinesis_options")
   } else {
-    shiny::getShinyOption("janus_options")[[name]] %||% default
+    shiny::getShinyOption("kinesis_options")[[name]] %||% default
   }
 }

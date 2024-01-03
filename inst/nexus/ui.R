@@ -5,65 +5,65 @@
 #' @noRd
 shiny_ui <- function(request) {
   fluidPage(
-    includeCSS(system.file("static", "style.css", package = "janus")),
+    includeCSS(system.file("static", "style.css", package = "kinesis")),
     theme = bslib::bs_theme(),
     lang = "en",
     navbarPage(
       "nexus",
-      janus::module_home_ui("home", name = "nexus"),
+      kinesis::module_home_ui("home", name = "nexus"),
       tabPanel(
         title = "Data",
         tabsetPanel(
           type = "tabs",
           tabPanel(
             title = "Import",
-            janus::module_import_ui("import")
+            kinesis::module_import_ui("import")
           ), # tabPanel
           tabPanel(
             title = "Prepare",
-            janus::module_prepare_ui("prepare")
+            kinesis::module_prepare_ui("prepare")
           ), # tabPanel
           tabPanel(
             title = "Missing values",
-            janus::module_missing_ui("missing")
+            kinesis::module_missing_ui("missing")
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
       tabPanel(
         title = "Composition",
-        janus::module_coda_ui("coda")
+        kinesis::module_coda_ui("coda")
       ), # tabPanel
       tabPanel(
         title = "Statistics",
-        janus::module_coda_summary_ui("coda_summary")
+        kinesis::module_coda_summary_ui("coda_summary")
       ), # tabPanel
       navbarMenu(
         title = "Graph",
         tabPanel(
           title = "Bar plot",
-          janus::module_coda_plot_ui("barplot")
+          kinesis::module_coda_plot_ui("barplot")
         ), # tabPanel
         tabPanel(
           title = "Ternary plot",
-          janus::module_ternary_ui("ternary")
+          kinesis::module_ternary_ui("ternary")
         ) # tabPanel
       ), # navbarMenu
       tabPanel(
         title = "Transform",
-        janus::module_logratio_ui()
+        kinesis::module_logratio_ui()
       ), # tabPanel
       navbarMenu(
         title = "Analysis",
         tabPanel(
           title = "PCA",
-          janus::module_pca_ui("pca", scale = FALSE)
+          kinesis::module_pca_ui("pca", scale = FALSE)
         ), # tabPanel
         tabPanel(
           title = "Outlier detection"
         ) # tabPanel
       ), # navbarMenu
-      header = janus::module_header_ui("header"),
-      footer = janus::module_footer_ui("footer"),
+      header = kinesis::module_header_ui("header"),
+      footer = kinesis::module_footer_ui("footer"),
       collapsible = TRUE
     )
   )

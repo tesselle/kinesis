@@ -1,6 +1,6 @@
 #' @details
 #'  \tabular{ll}{
-#'   **Package:** \tab janus \cr
+#'   **Package:** \tab kinesis \cr
 #'   **Type:** \tab Package \cr
 #'   **Version:** \tab 0.0.0.9000 \cr
 #'   **License:** \tab GPL-3 \cr
@@ -22,8 +22,8 @@
 #'  Université Bordeaux Montaigne\cr
 #'  F-33607 Pessac cedex\cr
 #'  France
-#' @name janus-package
-#' @aliases janus-package janus
+#' @name kinesis-package
+#' @aliases kinesis-package kinesis
 #' @docType package
 #' @keywords internal
 "_PACKAGE"

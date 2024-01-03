@@ -22,7 +22,7 @@ url_tesselle <- function(package = NULL, campaign = TRUE) {
 }
 
 cite_package <- function(x = NULL, which = 1) {
-  x <- c("janus", x)
+  x <- c("kinesis", x)
   lapply(
     X = x,
     FUN = function(x, which) {

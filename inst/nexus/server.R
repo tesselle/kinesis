@@ -8,24 +8,24 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  clean <- janus::module_import_server("import") |>
-    janus::module_prepare_server("prepare", x = _) |>
-    janus::module_missing_server("missing", x = _)
+  clean <- kinesis::module_import_server("import") |>
+    kinesis::module_prepare_server("prepare", x = _) |>
+    kinesis::module_missing_server("missing", x = _)
 
-  coda <- janus::module_coda_server("coda", x = clean)
+  coda <- kinesis::module_coda_server("coda", x = clean)
 
   ## Statistics
-  janus::module_coda_summary_server("coda_summary", coda)
+  kinesis::module_coda_summary_server("coda_summary", coda)
 
   ## Graphs
-  janus::module_coda_plot_server("barplot", x = coda)
-  janus::module_ternary_server("ternary", x = clean)
+  kinesis::module_coda_plot_server("barplot", x = coda)
+  kinesis::module_ternary_server("ternary", x = clean)
 
   ## Log-ratio
-  clogratio <- janus::module_logratio_server("clr", coda, method = "clr")
-  alogratio <- janus::module_logratio_server("alr", coda, method = "alr")
-  ilogratio <- janus::module_logratio_server("ilr", coda, method = "ilr")
-  plogratio <- janus::module_logratio_server("plr", coda, method = "plr")
+  clogratio <- kinesis::module_logratio_server("clr", coda, method = "clr")
+  alogratio <- kinesis::module_logratio_server("alr", coda, method = "alr")
+  ilogratio <- kinesis::module_logratio_server("ilr", coda, method = "ilr")
+  plogratio <- kinesis::module_logratio_server("plr", coda, method = "plr")
   ratio <- list(
     clr = clogratio,
     alr = alogratio,
@@ -34,11 +34,11 @@ shiny_server <- function(input, output, session) {
   )
 
   ## PCA
-  pca_results <- janus::module_pca_server("pca", x = ratio)
-  janus::module_multivar_server("pca", pca_results)
+  pca_results <- kinesis::module_pca_server("pca", x = ratio)
+  kinesis::module_multivar_server("pca", pca_results)
 
-  janus::module_home_server("home")
-  janus::module_header_server("header")
-  janus::module_footer_server("footer")
+  kinesis::module_home_server("home")
+  kinesis::module_header_server("header")
+  kinesis::module_footer_server("footer")
   session$onSessionEnded(stopApp)
 }

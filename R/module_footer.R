@@ -16,10 +16,10 @@ module_footer_ui <- function(id) {
     tags$p(
       actionLink(inputId = ns("session"), label = "Session info"),
       HTML(" &middot; "),
-      tags$a(href = "https://github.com/tesselle/janus",
+      tags$a(href = "https://github.com/tesselle/kinesis",
              target = "_blank", rel = "external", "Source code"),
       HTML(" &middot; "),
-      tags$a(href = "https://github.com/tesselle/janus/issues",
+      tags$a(href = "https://github.com/tesselle/kinesis/issues",
              target = "_blank", rel = "external", "Report a bug or request")
     )
   )

@@ -1,4 +1,4 @@
-# janus 0.0.0.9000
+# kinesis 0.0.0.9000
 ## Internals
 * Import **arkhe** (>= 1.4.0).
 * Import **dimensio** (>= 0.5.0).

@@ -8,15 +8,15 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  clean <- janus::module_import_server("import") |>
-    janus::module_prepare_server("prepare", x = _) |>
-    janus::module_missing_server("missing", x = _)
+  clean <- kinesis::module_import_server("import") |>
+    kinesis::module_prepare_server("prepare", x = _) |>
+    kinesis::module_missing_server("missing", x = _)
 
   ## Ternary Plot
-  janus::module_ternary_server("ternary", x = clean)
+  kinesis::module_ternary_server("ternary", x = clean)
 
-  janus::module_home_server("home")
-  janus::module_header_server("header")
-  janus::module_footer_server("footer")
+  kinesis::module_home_server("home")
+  kinesis::module_header_server("header")
+  kinesis::module_footer_server("footer")
   session$onSessionEnded(stopApp)
 }

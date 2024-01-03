@@ -5,27 +5,27 @@
 #' @noRd
 shiny_ui <- function(request) {
   fluidPage(
-    includeCSS(system.file("static", "style.css", package = "janus")),
+    includeCSS(system.file("static", "style.css", package = "kinesis")),
     theme = bslib::bs_theme(),
     lang = "en",
     navbarPage(
       "kairos",
-      janus::module_home_ui("home", name = "kairos"),
+      kinesis::module_home_ui("home", name = "kairos"),
       tabPanel(
         title = "Data",
         tabsetPanel(
           type = "tabs",
           tabPanel(
             title = "Import",
-            janus::module_import_ui("import")
+            kinesis::module_import_ui("import")
           ), # tabPanel
           tabPanel(
             title = "Prepare",
-            janus::module_prepare_ui("prepare")
+            kinesis::module_prepare_ui("prepare")
           ), # tabPanel
           tabPanel(
             title = "Missing values",
-            janus::module_missing_ui("missing")
+            kinesis::module_missing_ui("missing")
           ) # tabPanel
         ) # tabsetPanel
       ), # tabPanel
@@ -33,23 +33,23 @@ shiny_ui <- function(request) {
         title = "Statistics",
         tabPanel(
           title = "Summary",
-          janus::module_summary_ui("summary")
+          kinesis::module_summary_ui("summary")
         ),
         tabPanel(
           title = "Chi-squared",
-          janus::module_chi2_ui("chi2")
+          kinesis::module_chi2_ui("chi2")
         )
       ), # tabPanel
       tabPanel(
         title = "Analysis",
-        janus::module_multivar_ui("ca")
+        kinesis::module_multivar_ui("ca")
       ), # navbarMenu
       tabPanel(
         title = "Seriation",
-        janus::module_seriate_ui("seriate")
+        kinesis::module_seriate_ui("seriate")
       ), # tabPanel
-      header = janus::module_header_ui("header"),
-      footer = janus::module_footer_ui("footer"),
+      header = kinesis::module_header_ui("header"),
+      footer = kinesis::module_footer_ui("footer"),
       collapsible = TRUE
     )
   )

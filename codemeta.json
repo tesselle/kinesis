@@ -4,11 +4,11 @@
     "http://schema.org"
   ],
   "@type": "SoftwareSourceCode",
-  "identifier": "janus",
+  "identifier": "kinesis",
   "description": "A collection of 'shiny' applications for the tesselle R\n    packages.",
-  "name": "janus: 'Shiny' Applications for the tesselle R Packages",
-  "codeRepository": "https://github.com/tesselle/janus",
-  "issueTracker": "https://github.com/tesselle/janus/issues",
+  "name": "kinesis: 'Shiny' Applications for the tesselle R Packages",
+  "codeRepository": "https://github.com/tesselle/kinesis",
+  "issueTracker": "https://github.com/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.0.0.9000",
   "programmingLanguage": {
@@ -157,13 +157,13 @@
       "name": "utils"
     }
   ],
-  "readme": "https://github.com/tesselle/janus/blob/master/README.md",
+  "readme": "https://github.com/tesselle/kinesis/blob/master/README.md",
   "fileSize": "213.55KB",
   "developmentStatus": "https://www.repostatus.org/#wip",
   "keywords": [
     "shiny-apps",
     "r-package"
   ],
-  "releaseNotes": "https://github.com/tesselle/janus/blob/master/NEWS.md",
-  "relatedLink": "https://packages.tesselle.org/janus/"
+  "releaseNotes": "https://github.com/tesselle/kinesis/blob/master/NEWS.md",
+  "relatedLink": "https://packages.tesselle.org/kinesis/"
 }
