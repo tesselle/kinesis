@@ -56,7 +56,7 @@ shiny_ui <- function(request) {
         title = "Analysis",
         tabPanel(
           title = "PCA",
-          janus::module_pca_ui("pca")
+          janus::module_pca_ui("pca", scale = FALSE)
         ), # tabPanel
         tabPanel(
           title = "Outlier detection"

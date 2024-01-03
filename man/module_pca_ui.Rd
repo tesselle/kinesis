@@ -4,10 +4,16 @@
 \alias{module_pca_ui}
 \title{Principal Components Analysis UI}
 \usage{
-module_pca_ui(id)
+module_pca_ui(id, center = TRUE, scale = TRUE)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
+
+\item{center}{A \code{\link{logical}} scalar: should the variables be shifted to be
+zero centered?}
+
+\item{scale}{A \code{\link{logical}} scalar: should the variables be scaled to unit
+variance?}
 }
 \description{
 Principal Components Analysis UI

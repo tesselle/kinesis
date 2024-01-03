@@ -2,11 +2,15 @@
 #' Principal Components Analysis UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @param center A [`logical`] scalar: should the variables be shifted to be
+#'  zero centered?
+#' @param scale A [`logical`] scalar: should the variables be scaled to unit
+#'  variance?
 #' @seealso [module_pca_server()]
 #' @family UI modules
 #' @keywords internal
 #' @export
-module_pca_ui <- function(id) {
+module_pca_ui <- function(id, center = TRUE, scale = TRUE) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -27,12 +31,12 @@ module_pca_ui <- function(id) {
         checkboxInput(
           inputId = ns("center"),
           label = "Center",
-          value = TRUE
+          value = center
         ),
         checkboxInput(
           inputId = ns("scale"),
           label = "Scale",
-          value = TRUE
+          value = scale
         )
       ),
       div(

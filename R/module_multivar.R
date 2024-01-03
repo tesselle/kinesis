@@ -103,6 +103,7 @@ module_multivar_individuals <- function(id) {
 
   tabPanel(
     title = "Individuals",
+    output_plot(id = ns("contrib_ind"), height = "auto", title = "Contributions"),
     DT::dataTableOutput(outputId = ns("info_ind"))
   ) # tabPanel
 }
@@ -113,6 +114,7 @@ module_multivar_variables <- function(id) {
 
   tabPanel(
     title = "Variables",
+    output_plot(id = ns("contrib_var"), height = "auto", title = "Contributions"),
     DT::dataTableOutput(outputId = ns("info_var"))
   ) # tabPanel
 }
@@ -123,10 +125,6 @@ module_multivar_screeplot <- function(id) {
 
   tabPanel(
     title = "Screeplot",
-    ## Output: download
-    downloadButton(outputId = ns("export_screeplot"),
-                   label = "Export plot"),
-    hr(),
     fluidRow(
       div(
         class = "col-lg-6 col-md-1",
@@ -199,6 +197,7 @@ module_multivar_server <- function(id, x) {
     ## Individuals -----
     info_ind <- reactive({
       req(x())
+
       z <- dimensio::augment(x = x(), margin = 1, axes = c(axis1(), axis2()))
       z <- arkhe::assign_rownames(z, 3)
       if (any(z$supplementary)) {
@@ -232,6 +231,15 @@ module_multivar_server <- function(id, x) {
         ellipses_level = 0.95,
         fixed = TRUE
       )
+    })
+
+    contrib_ind <- reactive({
+      req(x())
+
+      graphics::par(mfrow = c(1, 2))
+      dimensio::viz_contributions(x = x(), margin = 1, axes = axis1())
+      dimensio::viz_contributions(x = x(), margin = 1, axes = axis2())
+      grDevices::recordPlot()
     })
 
     ## Variables -----
@@ -272,6 +280,15 @@ module_multivar_server <- function(id, x) {
       )
     })
 
+    contrib_var <- reactive({
+      req(x())
+
+      graphics::par(mfrow = c(1, 2))
+      dimensio::viz_contributions(x = x(), margin = 2, axes = axis1())
+      dimensio::viz_contributions(x = x(), margin = 2, axes = axis2())
+      grDevices::recordPlot()
+    })
+
     ## Render title -----
     output$title <- renderUI({
       title <- ""
@@ -280,7 +297,9 @@ module_multivar_server <- function(id, x) {
       h5(title)
     })
 
-    ## Render screeplot -----
+    ## Render plots -----
+    render_plot("contrib_ind", x = contrib_ind, ratio = 0.5)
+    render_plot("contrib_var", x = contrib_var, ratio = 0.5)
     render_plot("screeplot", x = plot_eigen)
 
     ## Render factor maps -----
@@ -298,14 +317,16 @@ module_multivar_server <- function(id, x) {
       dt
     })
     output$info_ind <- DT::renderDataTable({
-      info <- dimensio::summary(x(), margin = 1)@results
-      dt <- DT::datatable(info)
+      req(x())
+      info <- dimensio::summary(x(), margin = 1)
+      dt <- DT::datatable(info@results)
       dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
       dt
     })
     output$info_var <- DT::renderDataTable({
-      info <- dimensio::summary(x(), margin = 2)@results
-      dt <- DT::datatable(info)
+      req(x())
+      info <- dimensio::summary(x(), margin = 2)
+      dt <- DT::datatable(info@results)
       dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
       dt
     })
