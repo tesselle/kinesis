@@ -53,8 +53,25 @@ module_coda_ui <- function(id) {
     ), # column
     column(
       width = 8,
-      ## Output: display table
-      DT::dataTableOutput(outputId = ns("table"))
+      tabsetPanel(
+        tabPanel(
+          title = "Detection limits",
+          ## Output: set detection limits
+          helpText(
+            "Define the detection limit for each part below.",
+            "Zeros (i.e. non-detected data) will be replaced by a fraction of this limit",
+            cite_article("Martin-Fernandez et al.", year = "2003", doi = "10.1023/A:1023866030544")
+          ),
+          numericInput(inputId = ns("delta"), label = "Fraction",
+                       value = 2 / 3, min = 0, max = 1),
+          uiOutput(outputId = ns("limits"))
+        ),
+        tabPanel(
+          title = "Compositions",
+          ## Output: display table
+          DT::dataTableOutput(outputId = ns("table"))
+        )
+      )
     ) # column
   ) # fluidRow
 }
@@ -75,7 +92,7 @@ module_coda_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select variables
+    ## Select variables -----
     observeEvent(x(), {
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
       choices <- colnames(x())[!index_numeric]
@@ -103,6 +120,7 @@ module_coda_server <- function(id, x) {
       )
     })
 
+    ## Coerce to compositions -----
     coda <- reactive({
       req(x())
 
@@ -117,6 +135,7 @@ module_coda_server <- function(id, x) {
       }, silent = TRUE)
     })
 
+    ## Add metadata -----
     meta <- reactive({
       req(coda())
       out <- coda()
@@ -142,11 +161,42 @@ module_coda_server <- function(id, x) {
       }, silent = FALSE)
     })
 
-    clean <- reactive({
-      # TODO: detection limit
-      meta()
+    ## Render filters -----
+    output$limits <- renderUI({
+      req(meta())
+
+      n <- ncol(coda())
+      if (n == 0) return(NULL)
+
+      parts <- colnames(meta())
+      ids <- paste("limit", parts, sep = "_")
+      lab <- paste(parts, "(%)", sep = " ")
+      ui <- vector(mode = "list", length = n)
+      for (j in seq_len(n)) {
+        ui[[j]] <- tags$div(
+          style = "display: inline-block;",
+          numericInput(inputId = session$ns(ids[j]), label = lab[j],
+                       value = 0, min = 0, max = 100)
+        )
+      }
+
+      ui
     })
 
+    ## Impute zeros -----
+    clean <- reactive({
+      req(meta())
+
+      parts <- colnames(meta())
+      ids <- paste("limit", parts, sep = "_")
+      limits <- lapply(X = ids, FUN = function(i, x) x[[i]], x = input)
+
+      if (any(lengths(limits) == 0) || all(limits == 0)) return(meta())
+      limits <- unlist(limits) / 100
+      nexus::replace_zero(meta(), value = limits, delta = input$delta)
+    })
+
+    ## Render metadata -----
     list_group <- reactive({
       grp <- nexus::get_groups(clean())
       grp <- grp[!is.na(grp)]
@@ -198,12 +248,11 @@ module_coda_server <- function(id, x) {
       )
     })
 
-    ## Render table
+    ## Render tables -----
     output$table <- DT::renderDataTable({
       req(clean())
       dt <- DT::datatable(nexus::as_features(clean()), rownames = FALSE)
-      dt <- DT::formatPercentage(dt, columns = seq_len(ncol(clean())) + 3,
-                                 digits = 1)
+      dt <- DT::formatPercentage(dt, columns = seq_len(ncol(clean())) + 3, digits = 1)
       dt
     })
 
