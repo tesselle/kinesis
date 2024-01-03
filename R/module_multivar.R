@@ -318,15 +318,15 @@ module_multivar_server <- function(id, x) {
     })
     output$info_ind <- DT::renderDataTable({
       req(x())
-      info <- dimensio::summary(x(), margin = 1)
-      dt <- DT::datatable(info@results)
+      info <- dimensio::summary(x(), margin = 1)@results
+      dt <- DT::datatable(info)
       dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
       dt
     })
     output$info_var <- DT::renderDataTable({
       req(x())
-      info <- dimensio::summary(x(), margin = 2)
-      dt <- DT::datatable(info@results)
+      info <- dimensio::summary(x(), margin = 2)@results
+      dt <- DT::datatable(info)
       dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
       dt
     })
