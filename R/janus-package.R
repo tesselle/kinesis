@@ -30,8 +30,16 @@
 
 #' @import shiny
 #' @import bslib
-#' @importFrom dimensio pca
-#' @importFrom isopleuros ternary_grid ternary_points ternary_plot
+NULL
+
+#' @importFrom arkhe assign_rownames count detect discard keep_cols
+#' remove_constant remove_NA remove_zero replace_NA replace_zero
+#' @importFrom dimensio augment ca get_eigenvalues pca screeplot summary
+#' viz_contributions
+#' @importFrom isopleuros coordinates_ternary ternary_confidence ternary_density
+#' ternary_grid ternary_hull ternary_points ternary_plot ternary_tolerance
 #' @importFrom kairos permute seriate_average
+#' @importFrom khroma color info
+#' @import nexus
 #' @importFrom tabula plot_bertin plot_ford
 NULL
