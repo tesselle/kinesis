@@ -34,15 +34,20 @@ cite_package <- function(x = NULL, which = 1) {
   )
 }
 
-cite_article <- function(author, year, doi, text = FALSE) {
-  url <- sprintf("https://doi.org/%s", doi)
-  link <- tags$a(year, href = url, target = "_blank", .noWS = "outside")
+cite_article <- function(author, year, doi = NULL, text = TRUE, after = "") {
+  right <- paste0(")", after)
+  if (is.null(doi)) {
+    link <- year
+  } else {
+    url <- sprintf("https://doi.org/%s", doi)
+    link <- tags$a(year, href = url, target = "_blank", .noWS = "outside")
+  }
 
   if (text) {
-    tags$span(author, "(", link, ")")
+    tags$span(author, "(", link, right)
   } else {
     tags$span(
-      paste0("(", author, ", "), link, ")",
+      paste0("(", author, ", "), link, right,
       .noWS = c("after-begin", "before-end")
     )
   }
@@ -75,5 +80,24 @@ render_table <- function(x, ..., striped = TRUE, hover = FALSE, bordered = FALSE
     colnames = TRUE,
     digits = digits,
     ...
+run_with_notification <- function(expr) {
+  warn <- err <- NULL
+  res <- withCallingHandlers(
+    tryCatch(
+      expr,
+      error = function(e) {
+        err <<- conditionMessage(e)
+        return(NULL)
+      }
+    ),
+    warning = function(w) {
+      warn <<- append(warn, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
+
+  if (!is.null(err)) showNotification(ui = err, type = "error")
+  if (!is.null(warn)) showNotification(ui = warn, type = "warning")
+
+  res
 }

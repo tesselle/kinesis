@@ -13,6 +13,7 @@ shiny_server <- function(input, output, session) {
 
   ## Statistics
   kinesis::coda_summary_server("coda_summary", coda)
+  kinesis::coda_outliers_server("outliers", coda)
 
   ## Graphs
   kinesis::coda_plot_server("barplot", x = coda)

@@ -60,7 +60,7 @@ coda_ui <- function(id) {
           helpText(
             "Define the detection limit for each part below.",
             "Zeros (i.e. non-detected data) will be replaced by a fraction of this limit",
-            cite_article("Martin-Fernandez et al.", year = "2003", doi = "10.1023/A:1023866030544")
+            cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", FALSE, after = ".")
           ),
           numericInput(inputId = ns("delta"), label = "Fraction",
                        value = 2 / 3, min = 0, max = 1),

@@ -26,7 +26,8 @@ shiny_ui <- function(request) {
           kinesis::coda_summary_ui("coda_summary")
         ), # tabPanel
         tabPanel(
-          title = "Outliers"
+          title = "Outliers",
+          kinesis::coda_outliers_ui("outliers")
         ) # tabPanel
       ), # navbarMenu
       navbarMenu(

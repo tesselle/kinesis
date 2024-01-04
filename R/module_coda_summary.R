@@ -29,7 +29,7 @@ coda_summary_ui <- function(id) {
           h5("Center"),
           tableOutput(outputId = ns("location")),
           h5("Spread"),
-          helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", TRUE)),
+          helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", after = ".")),
           tableOutput(outputId = ns("spread")),
           h5("Percentile table"),
           tableOutput(outputId = ns("quantile"))
@@ -43,7 +43,7 @@ coda_summary_ui <- function(id) {
             ),
             div(
               class = "col-lg-6 col-md-1",
-              tags$p("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", TRUE)),
+              helpText("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", after = ".")),
               selectInput(
                 inputId = ns("hist_select"),
                 label = "Select a part",
@@ -56,10 +56,12 @@ coda_summary_ui <- function(id) {
         ),
         tabPanel(
           title = "CLR covariance",
+          helpText("See", cite_article("Aitchison", "1986", after = ".")),
           tableOutput(outputId = ns("covariance"))
         ),
         tabPanel(
           title = "Variation matrix",
+          helpText("See", cite_article("Aitchison", "1986", after = ".")),
           tableOutput(outputId = ns("variation"))
         )
       ) # tabsetPanel
@@ -81,10 +83,12 @@ coda_summary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Validate -----
     data <- reactive({
       validate(need(!anyNA(x()), "Your data must not contain missing values."))
       x()
     })
+
     ## Location -----
     data_loc <- reactive({
       req(data())

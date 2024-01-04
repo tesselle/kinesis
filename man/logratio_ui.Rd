@@ -16,6 +16,8 @@ Log-Ratio UI
 \code{\link[=logratio_server]{logratio_server()}}
 
 Other coda modules: 
+\code{\link{coda_outliers_server}()},
+\code{\link{coda_outliers_ui}()},
 \code{\link{coda_plot_server}()},
 \code{\link{coda_plot_ui}()},
 \code{\link{coda_server}()},
