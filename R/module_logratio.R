@@ -152,7 +152,7 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Render plot -----
-    render_plot("plot", x = plot_log, height = function() { getCurrentOutputInfo(session)$width() / 2 })
+    render_plot("plot", x = plot_log, ratio = 0.5)
 
     ## Render graph -----
     output$graph <- renderPlot({

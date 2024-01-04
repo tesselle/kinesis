@@ -92,15 +92,16 @@ seriate_server  <- function(id, x) {
       if (input$margin_row) margin <- c(margin, 1)
       if (input$margin_col) margin <- c(margin, 2)
 
-      tryCatch({
-        kairos::seriate_average(x(), margin = margin, axes = input$axes)
-      }, warning = function(w) {
-        showNotification(ui = w, type = "warning")
-        return(NULL)
-      }, error = function(e) {
-        showNotification(ui = e, type = "error")
-        return(NULL)
-      }, silent = TRUE)
+      run_with_notification(
+        {
+          kairos::seriate_average(
+            object = x(),
+            margin = margin,
+            axes = input$axes
+          )
+        },
+        what = "Seriate"
+      )
     })
 
     ## Permute -----

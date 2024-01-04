@@ -122,42 +122,37 @@ coda_server <- function(id, x) {
     ## Coerce to compositions -----
     coda <- reactive({
       req(x())
-
-      tryCatch({
-        nexus::as_composition(from = x(), auto = FALSE, verbose = get_option("verbose"))
-      }, warning = function(w) {
-        showNotification(ui = w, type = "warning")
-        return(NULL)
-      }, error = function(e) {
-        showNotification(ui = e, type = "error")
-        return(NULL)
-      }, silent = TRUE)
+      run_with_notification(
+        {
+          nexus::as_composition(
+            from = x(),
+            auto = FALSE,
+            verbose = get_option("verbose")
+          )
+        },
+        what = "Composition"
+      )
     })
 
     ## Add metadata -----
     meta <- reactive({
       req(coda())
-      out <- coda()
-      tryCatch({
-        if (input$codes != "") {
-          nexus::set_identifiers(out) <- x()[, input$codes, drop = TRUE]
-        }
-        if (input$samples != "") {
-          nexus::set_samples(out) <- x()[, input$samples, drop = TRUE]
-        }
-        if (input$groups != "") {
-          nexus::set_groups(out) <- x()[, input$groups, drop = TRUE]
-        }
-        return(out)
-      }, warning = function(w) {
-        showNotification(ui = w, type = "warning")
-        return(NULL)
-      }, error = function(e) {
-        if (!inherits(e, "shiny.silent.error")) { # Ignore silent error
-          showNotification(ui = e, type = "error")
-        }
-        return(NULL)
-      }, silent = FALSE)
+      run_with_notification(
+        {
+          out <- coda()
+          if (input$codes != "") {
+            nexus::set_identifiers(out) <- x()[, input$codes, drop = TRUE]
+          }
+          if (input$samples != "") {
+            nexus::set_samples(out) <- x()[, input$samples, drop = TRUE]
+          }
+          if (input$groups != "") {
+            nexus::set_groups(out) <- x()[, input$groups, drop = TRUE]
+          }
+          return(out)
+        },
+        what = "Metadata"
+      )
     })
 
     ## Render filters -----

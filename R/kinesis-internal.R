@@ -58,13 +58,15 @@ info_session <- function() {
   markdown(sprintf("```\n%s\n```", info))
 }
 
-run_with_notification <- function(expr) {
+run_with_notification <- function(expr, what = NULL) {
   warn <- err <- NULL
   res <- withCallingHandlers(
     tryCatch(
       expr,
       error = function(e) {
-        err <<- conditionMessage(e)
+        if (!inherits(e, "shiny.silent.error")) { # Ignore silent error
+          err <<- conditionMessage(e)
+        }
         return(NULL)
       }
     ),
@@ -74,8 +76,14 @@ run_with_notification <- function(expr) {
     }
   )
 
-  if (!is.null(err)) showNotification(ui = err, type = "error")
-  if (!is.null(warn)) showNotification(ui = warn, type = "warning")
+  notif <- function(text, what = NULL, how = "default") {
+    # text <- paste0(text, collapse = "\n")
+    if (!is.null(what)) text <- sprintf("**%s**\n%s", what, text)
+    showNotification(ui = markdown(text, hardbreaks = TRUE), type = how)
+  }
+
+  if (!is.null(err)) notif(text = err, what = what, how = "error")
+  if (!is.null(warn)) notif(text = warn, what = what, how = "warning")
 
   res
 }
