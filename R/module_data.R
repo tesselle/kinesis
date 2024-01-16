@@ -139,7 +139,15 @@ prepare_ui <- function(id) {
         width = "100%"
       ),
       hr(),
-      h5("2. Remove data"),
+      h5("2. Clean data"),
+      ## Input: remove whitespace
+      checkboxInput(
+        inputId = ns("remove_whitespace"),
+        label = "Remove leading/trailing whitespace",
+        value = TRUE
+      ),
+      hr(),
+      h5("3. Remove data"),
       helpText("Remove any non informative data."),
       ## Input: remove zero
       checkboxInput(
@@ -166,7 +174,7 @@ prepare_ui <- function(id) {
         width = "100%"
       ),
       hr(),
-      h5("3. Filter rows"),
+      h5("4. Filter rows"),
       helpText("Remove data points that fall outside a specification."),
       uiOutput(outputId = ns("filter"))
     ), # sidebarPanel
@@ -340,21 +348,28 @@ prepare_server <- function(id, x) {
     data_clean <- reactive({
       out <- data_select()
 
+      ## Remove whitespace
+      if (isTRUE(input$remove_whitespace)) {
+        out <- arkhe::clean_whitespace(out, squish = TRUE)
+      }
+
       ## Remove rows
       ## If only zeros
       if (isTRUE(input$remove_zero_row)) {
-        out <- arkhe::remove_zero(out, margin = 1, all = input$all)
+        out <- arkhe::remove_zero(out, margin = 1, all = input$all,
+                                  verbose = get_option("verbose"))
       }
 
       ## Remove columns
       ## If only zeros
       if (isTRUE(input$remove_zero_column)) {
-        out <- arkhe::remove_zero(out, margin = 2, all = input$all)
+        out <- arkhe::remove_zero(out, margin = 2, all = input$all,
+                                  verbose = get_option("verbose"))
       }
 
       ## If constant
       if (isTRUE(input$remove_constant_column)) {
-        out <- arkhe::remove_constant(out)
+        out <- arkhe::remove_constant(out, verbose = get_option("verbose"))
       }
 
       out
@@ -365,12 +380,13 @@ prepare_server <- function(id, x) {
       each_var <- lapply(
         X = colnames(data_clean()),
         FUN = function(j, x, val) {
-          ok <- filter_var(x = x[[j]], val = val[[j]])
+          ok <- filter_var(x = x[[j]], val = paste0("filter_", val[[j]]))
           ok %||% TRUE
         },
         x = data_clean(),
         val = input
       )
+      print(each_var)
       keep <- Reduce(f = `&`, x = each_var)
       if (all(!keep)) return(data_clean())
       data_clean()[keep, , drop = FALSE]
@@ -435,8 +451,10 @@ missing_server <- function(id, x) {
         input$remove,
         none = function(x) { x },
         zero = function(x) arkhe::replace_NA(x, value = 0),
-        row = function(x) arkhe::remove_NA(x, margin = 1, all = FALSE),
-        col = function(x) arkhe::remove_NA(x, margin = 2, all = FALSE)
+        row = function(x) arkhe::remove_NA(x, margin = 1, all = FALSE,
+                                           verbose = get_option("verbose")),
+        col = function(x) arkhe::remove_NA(x, margin = 2, all = FALSE,
+                                           verbose = get_option("verbose"))
       )
 
       fun(out)
@@ -507,7 +525,8 @@ make_filter <- function(session, x, var) {
                 min = rng[1], max = rng[2], value = rng)
   } else if (is.character(x)) {
     levs <- unique(x)
-    selectizeInput(inputId = ns(var), label = var, width = "100%",
+    selectizeInput(inputId = ns(paste0("filter_", var)),
+                   label = var, width = "100%",
                    choices = levs, selected = levs, multiple = TRUE,
                    options = list(plugins = "remove_button"))
   } else {
