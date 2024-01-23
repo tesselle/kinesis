@@ -3,10 +3,11 @@
 \docType{package}
 \name{kinesis-package}
 \alias{kinesis-package}
-\alias{_PACKAGE}
 \alias{kinesis}
 \title{kinesis: 'Shiny' Applications for the 'tesselle' Packages}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 A collection of 'shiny' applications for the 'tesselle' packages.
 }
 \details{
@@ -31,6 +32,7 @@ Useful links:
 
 \tabular{ll}{
 Nicolas Frerebeau \tab \emph{Université Bordeaux Montaigne, France} \cr
+Brice Lebrun \tab \emph{Université Bordeaux Montaigne, France} \cr
 }
 
 \strong{Package maintainer}
