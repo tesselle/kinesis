@@ -386,7 +386,6 @@ prepare_server <- function(id, x) {
         x = data_clean(),
         val = input
       )
-      print(each_var)
       keep <- Reduce(f = `&`, x = each_var)
       if (all(!keep)) return(data_clean())
       data_clean()[keep, , drop = FALSE]
