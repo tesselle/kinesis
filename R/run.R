@@ -41,8 +41,6 @@ run_app <- function(app = c("kairos", "nexus", "isopleuros"),
 
 #' Read Configuration Values
 #'
-#' @param app A [`character`] string specifying the Shiny application
-#'  configuration to get . Any unambiguous substring can be given.
 #' @param config A [`character`] string specifying the name of configuration to
 #'  read from.
 #' @param use_parent A [`logical`] scalar: should parent directories be scanned

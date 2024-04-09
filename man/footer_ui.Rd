@@ -8,8 +8,6 @@ footer_ui(id)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
-
-\item{package}{A \code{\link{character}} string giving the name of the app.}
 }
 \description{
 Footer UI

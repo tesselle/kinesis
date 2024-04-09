@@ -1,7 +1,6 @@
 # UI ===========================================================================
 #' Log-Ratio UI
 #'
-#' @param id A [`character`] vector to be used for the namespace.
 #' @seealso [logratio_server()]
 #' @family coda modules
 #' @keywords internal

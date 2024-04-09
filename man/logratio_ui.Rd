@@ -6,9 +6,6 @@
 \usage{
 logratio_ui()
 }
-\arguments{
-\item{id}{A \code{\link{character}} vector to be used for the namespace.}
-}
 \description{
 Log-Ratio UI
 }

@@ -15,9 +15,6 @@ read from.}
 
 \item{use_parent}{A \code{\link{logical}} scalar: should parent directories be scanned
 for configuration files if the specified config file isn't found?}
-
-\item{app}{A \code{\link{character}} string specifying the Shiny application
-configuration to get . Any unambiguous substring can be given.}
 }
 \value{
 A \code{\link{list}} of configuration values.

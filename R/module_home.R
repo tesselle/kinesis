@@ -2,7 +2,6 @@
 #' About UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @param package A [`character`] string specifying the app name.
 #' @seealso [home_server()]
 #' @family page modules
 #' @keywords internal
@@ -108,7 +107,6 @@ header_ui <- function(id) {
 #' Footer UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @param package A [`character`] string giving the name of the app.
 #' @seealso [footer_server()]
 #' @family page modules
 #' @keywords internal
