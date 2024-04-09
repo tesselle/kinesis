@@ -24,6 +24,7 @@ coda_outliers_ui <- function(id) {
         min = 0.025, max = 0.995,
         value = 0.975, step = 0.005
       ),
+      actionButton(inputId = ns("go"), label = "(Re)Detect"),
       downloadButton(outputId = ns("download"), "Download results")
     ), # sidebarPanel
     mainPanel(
@@ -71,22 +72,25 @@ coda_outliers_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Detect outliers -----
-    out <- reactive({
-      req(x())
+    out <- bindEvent(
+      reactive({
+        validate(need(x(), "Check your data."))
 
-      run_with_notification(
-        {
-          nexus::outliers(
-            x(),
-            groups = nexus::get_groups(x()),
-            robust = input$robust,
-            method = c("mve", "mcd"),
-            quantile = input$quantile
-          )
-        },
-        what = "Outliers detection"
-      )
-    })
+        run_with_notification(
+          {
+            nexus::outliers(
+              x(),
+              groups = nexus::get_groups(x()),
+              robust = input$robust,
+              method = c("mve", "mcd"),
+              quantile = input$quantile
+            )
+          },
+          what = "Outliers detection"
+        )
+      }),
+      input$go
+    )
 
     ## Select group -----
     bindEvent(
