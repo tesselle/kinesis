@@ -5,7 +5,12 @@
 }
 
 is_set <- function(x) {
-  !is.null(x) && x != ""
+  !is.null(x) && length(x) != 0 && x != ""
+}
+
+get_value <- function(x) {
+  if (!is_set(x)) return(NULL)
+  x
 }
 
 assert_csv <- function(x) {
