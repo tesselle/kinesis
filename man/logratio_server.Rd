@@ -4,7 +4,7 @@
 \alias{logratio_server}
 \title{Log-Ratio Server}
 \usage{
-logratio_server(id, x, method)
+logratio_server(id, x)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's

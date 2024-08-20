@@ -1,52 +1,30 @@
 # UI ===========================================================================
 #' Log-Ratio UI
 #'
+#' @param id A [`character`] vector to be used for the namespace.
 #' @seealso [logratio_server()]
 #' @family coda modules
 #' @keywords internal
 #' @export
-logratio_ui <- function() {
-  navset_tab(
-    nav_panel(
-      title = "CLR",
-      value = "panel_clr",
-      logratioUI("clr")
-    ),
-    nav_panel(
-      title = "ALR",
-      value = "panel_alr",
-      logratioUI("alr")
-    ),
-    nav_panel(
-      title = "ILR",
-      value = "panel_ilr",
-      logratioUI("ilr")
-    ),
-    nav_panel(
-      title = "PLR",
-      value = "panel_plr",
-      logratioUI("plr")
-    )
-  ) # navset_tab
-}
-
-logratioUI <- function(id) {
-  # Create a namespace function using the provided id
+logratio_ui <- function(id) {
+  ## Create a namespace function using the provided id
   ns <- NS(id)
 
   layout_sidebar(
-    width = "20%",
     sidebar = sidebar(
-      uiOutput(outputId = ns("title")),
+      width = "20%",
+      radioButtons(
+        inputId = ns("ratio"),
+        label = "Log-ratio:",
+        choices = c("CLR", "ALR", "ILR", "PLR")
+      ),
       uiOutput(outputId = ns("settings")),
       downloadButton(outputId = ns("download_table"), "Download table"),
       ## Output: graph
       plotOutput(outputId = ns("graph"))
     ), # sidebar
     ## Output: plot
-    output_plot(id = ns("plot"), height = "100%", title = "Density"),
-    ## Output: table
-    DT::dataTableOutput(outputId = ns("table"))
+    output_plot(id = ns("plot"), height = "100%", title = textOutput(outputId = ns("title"))),
   ) # layout_sidebar
 }
 
@@ -62,17 +40,17 @@ logratioUI <- function(id) {
 #' @family coda modules
 #' @keywords internal
 #' @export
-logratio_server <- function(id, x, method) {
+logratio_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Render settings -----
     output$settings <- renderUI({
-      if (!(method == "alr" || method == "plr")) return(NULL)
+      if (!(input$ratio == "ALR" || input$ratio == "PLR")) return(NULL)
       label <- switch (
-        method,
-        alr = "Rationing part:",
-        plr = "Pivotal variable:"
+        input$ratio,
+        ALR = "Rationing part:",
+        PLR = "Pivotal variable:"
       )
       selectizeInput(
         inputId = session$ns("pivot"),
@@ -87,11 +65,11 @@ logratio_server <- function(id, x, method) {
     logratio <- reactive({
       req(x())
       trans <- switch (
-        method,
-        clr = function(x) nexus::transform_clr(x),
-        alr = function(x) nexus::transform_alr(x, j = input$pivot),
-        ilr = function(x) nexus::transform_ilr(x),
-        plr = function(x) nexus::transform_plr(x, pivot = input$pivot)
+        input$ratio,
+        CLR = function(x) nexus::transform_clr(x),
+        ALR = function(x) nexus::transform_alr(x, j = input$pivot),
+        ILR = function(x) nexus::transform_ilr(x),
+        PLR = function(x) nexus::transform_plr(x, pivot = input$pivot)
       )
 
       ratio <- try(trans(x()), silent = get_option("verbose"))
@@ -101,7 +79,7 @@ logratio_server <- function(id, x, method) {
 
     ## Plot -----
     plot_log <- reactive({
-      req(logratio())
+      validate(need(logratio(), "Check your data."))
       plot(logratio())
       grDevices::recordPlot()
     })
@@ -116,25 +94,19 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Render title -----
-    output$title <- renderUI({
-      title <- ""
-      title <- switch(
-        method,
-        clr = "Centered Log-Ratio",
-        alr = "Additive Log-Ratio",
-        ilr = "Isometric Log-Ratio",
-        plr = "Pivot Log-Ratio"
+    output$title <- renderText({
+      switch(
+        input$ratio,
+        CLR = "Centered Log-Ratio",
+        ALR = "Additive Log-Ratio",
+        ILR = "Isometric Log-Ratio",
+        PLR = "Pivot Log-Ratio",
+        ""
       )
-      h5(title)
     })
 
     ## Render table -----
-    output$table <- DT::renderDataTable({
-      req(logratio())
-      dt <- DT::datatable(logratio())
-      dt <- DT::formatRound(dt, columns = seq_len(ncol(logratio())), digits = 3)
-      dt
-    })
+    # TODO?
 
     ## Render plot -----
     render_plot("plot", x = plot_log)
@@ -148,7 +120,7 @@ logratio_server <- function(id, x, method) {
     ## Download -----
     output$download_table <- export_table(
       log_ratio = logratio,
-      name = method
+      name = input$ratio
     )
 
     logratio

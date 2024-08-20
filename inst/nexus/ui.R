@@ -42,7 +42,7 @@ shiny_ui <- function(request) {
       ),
       nav_panel(
         title = "Transform",
-        kinesis::logratio_ui()
+        kinesis::logratio_ui("logratio")
       ),
       nav_menu(
         title = "Analysis",

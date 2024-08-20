@@ -4,7 +4,10 @@
 \alias{logratio_ui}
 \title{Log-Ratio UI}
 \usage{
-logratio_ui()
+logratio_ui(id)
+}
+\arguments{
+\item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
 \description{
 Log-Ratio UI

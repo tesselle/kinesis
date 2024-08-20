@@ -21,19 +21,10 @@ shiny_server <- function(input, output, session) {
   kinesis::ternary_server("ternary", x = data)
 
   ## Log-ratio
-  clogratio <- kinesis::logratio_server("clr", coda, method = "clr")
-  alogratio <- kinesis::logratio_server("alr", coda, method = "alr")
-  ilogratio <- kinesis::logratio_server("ilr", coda, method = "ilr")
-  plogratio <- kinesis::logratio_server("plr", coda, method = "plr")
-  ratio <- list(
-    clr = clogratio,
-    alr = alogratio,
-    ilr = ilogratio,
-    plr = plogratio
-  )
+  ratio <- kinesis::logratio_server("logratio", coda)
 
   ## PCA
-  pca_results <- kinesis::pca_server("pca", x = clogratio)
+  pca_results <- kinesis::pca_server("pca", x = ratio)
   kinesis::multivariate_server("pca", pca_results)
 
   kinesis::home_server("home")
