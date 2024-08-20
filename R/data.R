@@ -426,7 +426,7 @@ prepare_server <- function(id, x) {
     ## Render description -----
     output$description <- renderUI({
       req(data_filter())
-      descr <- utils::capture.output(nexus::describe(data_filter()))
+      descr <- utils::capture.output(arkhe::describe(data_filter()))
       markdown(descr)
     })
 

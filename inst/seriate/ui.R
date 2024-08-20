@@ -4,38 +4,45 @@
 #' @keywords internal
 #' @noRd
 shiny_ui <- function(request) {
-  page_fillable(
+  bslib::page_fillable(
     includeCSS(system.file("static", "style.css", package = "kinesis")),
     lang = "en",
-    page_navbar(
+    bslib::page_navbar(
       title = "seriate",
       kinesis::home_ui("home", name = "kairos"),
-      nav_panel(
+      bslib::nav_panel(
         title = "Import",
         kinesis::import_ui("import")
       ),
-      nav_panel(
+      bslib::nav_panel(
         title = "Prepare",
         kinesis::prepare_ui("prepare")
       ),
-      nav_menu(
+      bslib::nav_menu(
         title = "Statistics",
-        nav_panel(
+        bslib::nav_panel(
           title = "Summary",
           kinesis::summary_ui("summary")
         ),
-        nav_panel(
+        bslib::nav_panel(
           title = "Chi-squared",
           kinesis::chi2_ui("chi2")
         )
       ),
-      nav_panel(
+      bslib::nav_panel(
         title = "Analysis",
         kinesis::multivariate_ui("ca")
       ), # navbarMenu
-      nav_panel(
+      bslib::nav_panel(
         title = "Seriation",
         kinesis::seriate_ui("seriate")
+      ),
+      bslib::nav_spacer(),
+      bslib::nav_menu(
+        title = "Links",
+        align = "right",
+        bslib::nav_item(link_tesselle),
+        bslib::nav_item(link_github)
       ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),

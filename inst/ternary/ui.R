@@ -4,30 +4,30 @@
 #' @keywords internal
 #' @noRd
 shiny_ui <- function(request) {
-  page_fillable(
+  bslib::page_fillable(
     includeCSS(system.file("static", "style.css", package = "kinesis")),
     lang = "en",
-    page_navbar(
+    bslib::page_navbar(
       title = "ternary",
       kinesis::home_ui("home", name = "isopleuros"),
-      nav_panel(
+      bslib::nav_panel(
         title = "Import",
         kinesis::import_ui("import")
       ),
-      nav_panel(
+      bslib::nav_panel(
         title = "Prepare",
         kinesis::prepare_ui("prepare")
       ),
-      nav_panel(
+      bslib::nav_panel(
         title = "Plot",
         kinesis::ternary_ui("ternary")
       ),
-      nav_spacer(),
-      nav_menu(
+      bslib::nav_spacer(),
+      bslib::nav_menu(
         title = "Links",
         align = "right",
-        nav_item(link_tesselle),
-        nav_item(link_github)
+        bslib::nav_item(link_tesselle),
+        bslib::nav_item(link_github)
       ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),
