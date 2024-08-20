@@ -60,7 +60,7 @@ seriate_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by [data_server()]).
+#' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @return A reactive [`kairos::AveragePermutationOrder-class`] object.
 #' @seealso [seriate_ui()]
 #' @family chronology modules

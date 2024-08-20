@@ -38,7 +38,7 @@ summary_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by [data_server()]).
+#' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @seealso [summary_ui()]
 #' @family statistic modules
 #' @keywords internal

@@ -34,7 +34,6 @@ logratio_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`nexus::CompositionMatrix-class`] object.
-#' @param method A [`character`] string specifying the log-ratio to be computed.
 #' @return A reactive [`nexus::LogRatio-class`] object.
 #' @seealso [logratio_ui()]
 #' @family coda modules

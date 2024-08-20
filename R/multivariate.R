@@ -212,7 +212,7 @@ multivariate_server <- function(id, x) {
         col = if (is_set(input$highlight)) get_color(input$col) else "black",
         pch = as.numeric(input$pch),
         cex = as.numeric(input$cex),
-        panel.first = grid()
+        panel.first = graphics::grid()
       )
 
       ## Envelope
@@ -237,7 +237,7 @@ multivariate_server <- function(id, x) {
         axes = c(axis1(), axis2()),
         active = TRUE, sup = TRUE,
         labels = input$lab_col,
-        panel.first = grid()
+        panel.first = graphics::grid()
       )
       grDevices::recordPlot()
     })
