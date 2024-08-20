@@ -5,7 +5,7 @@
 \title{Run an App}
 \usage{
 run_app(
-  app = c("kairos", "nexus", "isopleuros"),
+  app = c("seriate", "source", "ternary"),
   options = list(launch.browser = interactive())
 )
 }
@@ -25,9 +25,9 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 \details{
 \tabular{ll}{
 \strong{Application name}        \tab  \strong{Keyword} \cr
-Matrix Seriation            \tab \code{kairos}     \cr
-Compositional Data Analysis \tab \code{nexus}      \cr
-Ternary Plot                \tab \code{isopleuros} \cr
+Matrix Seriation            \tab \code{seriate}    \cr
+Compositional Data Analysis \tab \code{source}     \cr
+Ternary Plot                \tab \code{ternary}    \cr
 }
 }
 \examples{

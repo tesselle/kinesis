@@ -24,26 +24,16 @@ A collection of [**shiny**](https://shiny.rstudio.com) applications that
 provides graphical user interfaces for the
 [tesselle](https://www.tesselle.org) packages.
 
-    To cite kinesis in publications use:
+------------------------------------------------------------------------
 
-      Frerebeau N (2023). _kinesis: 'Shiny' Applications for the 'tesselle'
-      Packages_. Université Bordeaux Montaigne, Pessac, France. R package
-      version 0.0.0.9003, <https://packages.tesselle.org/kinesis/>.
+To cite kinesis in publications use:
 
-    A BibTeX entry for LaTeX users is
+Frerebeau N (2023). *kinesis: ‘Shiny’ Applications for the ‘tesselle’
+Packages*. Université Bordeaux Montaigne, Pessac, France. R package
+version 0.0.0.9003, <https://packages.tesselle.org/kinesis/>.
 
-      @Manual{,
-        author = {Nicolas Frerebeau},
-        title = {{kinesis: 'Shiny' Applications for the 'tesselle' Packages}},
-        year = {2023},
-        organization = {Université Bordeaux Montaigne},
-        address = {Pessac, France},
-        note = {R package version 0.0.0.9003},
-        url = {https://packages.tesselle.org/kinesis/},
-      }
-
-    This package is a part of the tesselle project
-    <https://www.tesselle.org>.
+This package is a part of the tesselle project
+<https://www.tesselle.org>.
 
 ## Remote use
 
@@ -75,7 +65,7 @@ remotes::install_github("tesselle/kinesis")
 library(kinesis)
 
 ## Run the app for matrix seriation
-run_app("kairos")
+run_app("seriate")
 ```
 
 ## Contributing

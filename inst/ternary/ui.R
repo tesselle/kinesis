@@ -8,7 +8,7 @@ shiny_ui <- function(request) {
     includeCSS(system.file("static", "style.css", package = "kinesis")),
     lang = "en",
     page_navbar(
-      title = "isopleuros",
+      title = "ternary",
       kinesis::home_ui("home", name = "isopleuros"),
       nav_panel(
         title = "Import",

@@ -1,5 +1,5 @@
 Package: kinesis
-Title: 'Shiny' Applications for the 'tesselle' Packages
+Title: 'shiny' Applications for the 'tesselle' Packages
 Version: 0.0.0.9003
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
