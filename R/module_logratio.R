@@ -6,62 +6,48 @@
 #' @keywords internal
 #' @export
 logratio_ui <- function() {
-  tabsetPanel(
-    type = "tabs",
-    tabPanel(
+  navset_tab(
+    nav_panel(
       title = "CLR",
       value = "panel_clr",
       logratioUI("clr")
-    ), # tabPanel
-    tabPanel(
+    ),
+    nav_panel(
       title = "ALR",
       value = "panel_alr",
       logratioUI("alr")
-    ), # tabPanel
-    tabPanel(
+    ),
+    nav_panel(
       title = "ILR",
       value = "panel_ilr",
       logratioUI("ilr")
-    ), # tabPanel
-    tabPanel(
+    ),
+    nav_panel(
       title = "PLR",
       value = "panel_plr",
       logratioUI("plr")
     )
-  ) # tabsetPanel
+  ) # navset_tab
 }
 
 logratioUI <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  fluidRow(
-    column(
-      width = 4,
-      wellPanel(
-        uiOutput(outputId = ns("title")),
-        uiOutput(outputId = ns("settings")),
-        downloadButton(outputId = ns("download_table"), "Download table")
-      ), # wellPanel
+  layout_sidebar(
+    width = "20%",
+    sidebar = sidebar(
+      uiOutput(outputId = ns("title")),
+      uiOutput(outputId = ns("settings")),
+      downloadButton(outputId = ns("download_table"), "Download table"),
       ## Output: graph
-      plotOutput(outputId = ns("graph"), height = "auto")
-    ), # column
-    column(
-      width = 8,
-      tabsetPanel(
-        tabPanel(
-          title = "Plot",
-          ## Output: plot
-          output_plot(id = ns("plot"), height = "auto", title = "Density")
-        ),
-        tabPanel(
-          title = "Table",
-          ## Output: table
-          DT::dataTableOutput(outputId = ns("table"))
-        )
-      ) # mainPanel
-    ) # column
-  ) # fluidRow
+      plotOutput(outputId = ns("graph"))
+    ), # sidebar
+    ## Output: plot
+    output_plot(id = ns("plot"), height = "100%", title = "Density"),
+    ## Output: table
+    DT::dataTableOutput(outputId = ns("table"))
+  ) # layout_sidebar
 }
 
 # Server =======================================================================
@@ -151,13 +137,13 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Render plot -----
-    render_plot("plot", x = plot_log, ratio = 0.5)
+    render_plot("plot", x = plot_log)
 
     ## Render graph -----
     output$graph <- renderPlot({
       req(plot_graph())
       grDevices::replayPlot(plot_graph())
-    }, height = function() { getCurrentOutputInfo(session)$width() } )
+    })
 
     ## Download -----
     output$download_table <- export_table(

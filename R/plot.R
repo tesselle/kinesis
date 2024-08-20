@@ -10,7 +10,7 @@ output_plot <- function(id, ..., tools = NULL, title = "Card title") {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  gear <- bslib::popover(
+  gear <- popover(
     icon("gear"),
     title = "Tools",
     placement = "auto",
@@ -22,13 +22,16 @@ output_plot <- function(id, ..., tools = NULL, title = "Card title") {
     )
   )
 
-  bslib::card(
-    bslib::card_header(
+  card(
+    full_screen = TRUE,
+    card_header(
       title, gear,
       class = "d-flex justify-content-between"
     ),
-    plotOutput(outputId = ns("plot"), ...)
-    # bslib::card_footer()
+    card_body(
+      plotOutput(outputId = ns("plot"), ...)
+    )
+    # card_footer()
   )
 }
 
@@ -74,8 +77,10 @@ select_color <- function(inputId, type = NULL) {
   )
 }
 
-get_color <- function(palette, n) {
-  khroma::color(palette, name = FALSE, force = TRUE)(n)
+get_color <- function(palette, n = NULL) {
+  fun <- khroma::color(palette, name = FALSE, force = TRUE)
+  if (is.null(n)) n <- attr(fun, "max")
+  fun(n)
 }
 
 # Server =======================================================================
@@ -84,21 +89,15 @@ get_color <- function(palette, n) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
-#' @param width,height Height and width specification (see [shiny::renderPlot()]).
-#' @param ratio A length-one [`numeric`] vector giving the \eqn{x/y} ratio.
-#'  Only used if `height` is `NULL`.
+#' @param ... Further parameters to be passed to [shiny::renderPlot()].
 #' @family widgets
 #' @keywords internal
-render_plot <- function(id, x, width = "auto", height = NULL, ratio = 1) {
+render_plot <- function(id, x, ...) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Plot
-    output$plot <- renderPlot(
-      grDevices::replayPlot(x()),
-      width = width,
-      height = height %||% function() { getCurrentOutputInfo(session)$width() * ratio }
-    )
+    output$plot <- renderPlot(grDevices::replayPlot(x()), ...)
 
     ## Download modal
     bindEvent(

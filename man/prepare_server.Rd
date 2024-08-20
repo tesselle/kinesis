@@ -10,8 +10,7 @@ prepare_server(id, x)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{x}{A reactive \code{data.frame} (typically returned by
-\code{\link[=import_server]{import_server()}}).}
+\item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 }
 \value{
 A reactive \code{data.frame}.
@@ -23,12 +22,8 @@ Prepare Data Server
 \code{\link[=prepare_ui]{prepare_ui()}}
 
 Other generic modules: 
-\code{\link{data_server}()},
-\code{\link{data_ui}()},
 \code{\link{import_server}()},
 \code{\link{import_ui}()},
-\code{\link{missing_server}()},
-\code{\link{missing_ui}()},
 \code{\link{prepare_ui}()}
 }
 \concept{generic modules}

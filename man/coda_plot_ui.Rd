@@ -2,7 +2,7 @@
 % Please edit documentation in R/module_coda_plot.R
 \name{coda_plot_ui}
 \alias{coda_plot_ui}
-\title{Bar Plot UI}
+\title{Compositional Bar Plot UI}
 \usage{
 coda_plot_ui(id)
 }
@@ -10,7 +10,7 @@ coda_plot_ui(id)
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
 \description{
-Bar Plot UI
+Compositional Bar Plot UI
 }
 \seealso{
 \code{\link[=coda_plot_server]{coda_plot_server()}}

@@ -10,63 +10,46 @@ coda_summary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  fluidRow(
-    column(
-      width = 4,
-      wellPanel(
-        style = "margin-bottom: 15px;",
-        h5("Compositional statistics"),
-        downloadButton(outputId = ns("download"), "Download tables")
-      ), # wellPanel
-      output_plot(id = ns("dendrogram"), height = "auto", title = "Variation matrix")
-    ), # column
-    column(
-      width = 8,
-      tabsetPanel(
-        type = "tabs",
-        tabPanel(
-          title = "Summary statistics",
-          h5("Center"),
-          tableOutput(outputId = ns("location")),
-          h5("Spread"),
-          helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", after = ".")),
-          tableOutput(outputId = ns("spread")),
-          h5("Percentile table"),
-          tableOutput(outputId = ns("quantile"))
-        ),
-        tabPanel(
-          title = "Univariate statistics",
-          fluidRow(
-            div(
-              class = "col-lg-6 col-md-1",
-              output_plot(id = ns("hist"), height = "auto", title = "Histogram")
-            ),
-            div(
-              class = "col-lg-6 col-md-1",
-              helpText("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", after = ".")),
-              selectInput(
-                inputId = ns("hist_select"),
-                label = "Select a part",
-                choices = NULL,
-                selected = NULL,
-                multiple = FALSE
-              )
-            )
-          )
-        ),
-        tabPanel(
-          title = "CLR covariance",
-          helpText("See", cite_article("Aitchison", "1986", after = ".")),
-          tableOutput(outputId = ns("covariance"))
-        ),
-        tabPanel(
-          title = "Variation matrix",
-          helpText("See", cite_article("Aitchison", "1986", after = ".")),
-          tableOutput(outputId = ns("variation"))
-        )
-      ) # tabsetPanel
-    ) # column
-  ) # fluidRow
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
+      downloadButton(outputId = ns("download"), "Download tables"),
+      hr(),
+      h5("Univariate statistics"),
+      helpText("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", after = ".")),
+      selectInput(
+        inputId = ns("hist_select"),
+        label = "Select a part",
+        choices = NULL,
+        selected = NULL,
+        multiple = FALSE
+      ),
+      output_plot(id = ns("hist"), title = "Histogram")
+    ),
+    navset_tab(
+      nav_panel(
+        title = "Summary statistics",
+        h5("Center"),
+        tableOutput(outputId = ns("location")),
+        h5("Spread"),
+        helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", after = ".")),
+        tableOutput(outputId = ns("spread")),
+        h5("Percentile table"),
+        tableOutput(outputId = ns("quantile"))
+      ),
+      nav_panel(
+        title = "CLR covariance",
+        helpText("See", cite_article("Aitchison", "1986", after = ".")),
+        tableOutput(outputId = ns("covariance"))
+      ),
+      nav_panel(
+        title = "Variation matrix",
+        helpText("See", cite_article("Aitchison", "1986", after = ".")),
+        output_plot(id = ns("dendrogram"), title = "Variation matrix"),
+        tableOutput(outputId = ns("variation"))
+      )
+    ) # navset_card_underline
+  ) # layout_sidebar
 }
 
 # Server =======================================================================

@@ -8,7 +8,8 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  data <- kinesis::data_server("data")
+  data <- kinesis::import_server("import") |>
+    kinesis::prepare_server("prepare", x = _)
   coda <- kinesis::coda_server("coda", x = data)
 
   ## Statistics
@@ -32,7 +33,7 @@ shiny_server <- function(input, output, session) {
   )
 
   ## PCA
-  pca_results <- kinesis::pca_server("pca", x = ratio)
+  pca_results <- kinesis::pca_server("pca", x = clogratio)
   kinesis::multivariate_server("pca", pca_results)
 
   kinesis::home_server("home")

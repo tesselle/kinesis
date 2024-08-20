@@ -4,36 +4,39 @@
 #' @keywords internal
 #' @noRd
 shiny_ui <- function(request) {
-  fluidPage(
+  page_fillable(
     includeCSS(system.file("static", "style.css", package = "kinesis")),
-    theme = bslib::bs_theme(),
     lang = "en",
-    navbarPage(
-      "kairos",
+    page_navbar(
+      title = "kairos",
       kinesis::home_ui("home", name = "kairos"),
-      tabPanel(
-        title = "Data",
-        kinesis::data_ui("data")
-      ), # tabPanel
-      navbarMenu(
+      nav_panel(
+        title = "Import",
+        kinesis::import_ui("import")
+      ),
+      nav_panel(
+        title = "Prepare",
+        kinesis::prepare_ui("prepare")
+      ),
+      nav_menu(
         title = "Statistics",
-        tabPanel(
+        nav_panel(
           title = "Summary",
           kinesis::summary_ui("summary")
         ),
-        tabPanel(
+        nav_panel(
           title = "Chi-squared",
           kinesis::chi2_ui("chi2")
         )
-      ), # tabPanel
-      tabPanel(
+      ),
+      nav_panel(
         title = "Analysis",
         kinesis::multivariate_ui("ca")
       ), # navbarMenu
-      tabPanel(
+      nav_panel(
         title = "Seriation",
         kinesis::seriate_ui("seriate")
-      ), # tabPanel
+      ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),
       collapsible = TRUE

@@ -10,29 +10,27 @@ summary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
       downloadButton(outputId = ns("download"), "Download")
-    ), # sidebarPanel
-    mainPanel(
-      tabsetPanel(
-        type = "tabs",
-        tabPanel(
-          title = "Summary statistics",
-          h5("Location"),
-          tableOutput(outputId = ns("location")),
-          h5("Spread"),
-          tableOutput(outputId = ns("spread")),
-          h5("Percentile table"),
-          tableOutput(outputId = ns("quantile"))
-        ),
-        tabPanel(
-          title = "Covariance",
-          tableOutput(outputId = ns("cov"))
-        )
-      ) # tabsetPanel
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    navset_tab(
+      nav_panel(
+        title = "Summary statistics",
+        h5("Location"),
+        tableOutput(outputId = ns("location")),
+        h5("Spread"),
+        tableOutput(outputId = ns("spread")),
+        h5("Percentile table"),
+        tableOutput(outputId = ns("quantile"))
+      ),
+      nav_panel(
+        title = "Covariance",
+        tableOutput(outputId = ns("cov"))
+      )
+    ) # navset_tab
+  ) # layout_sidebar
 }
 
 # Server =======================================================================

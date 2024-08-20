@@ -1,5 +1,5 @@
 # UI ===========================================================================
-#' Bar Plot UI
+#' Compositional Bar Plot UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @seealso [coda_plot_server()]
@@ -10,9 +10,9 @@ coda_plot_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
-      h5("Compositional barplot"),
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
       selectInput(
         inputId = ns("order"),
         label = "Order",
@@ -25,19 +25,17 @@ coda_plot_ui <- function(id) {
         label = "Decreasing order",
         value = FALSE
       )
-    ), # sidebarPanel
-    mainPanel(
-      output_plot(
-        id = ns("plot"),
-        tools = select_color(
-          inputId = ns("pal_qualitative"),
-          type = "qualitative"
-        ),
-        height = "auto",
-        title = "Barplot"
-      )
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    output_plot(
+      id = ns("plot"),
+      tools = select_color(
+        inputId = ns("pal_qualitative"),
+        type = "qualitative"
+      ),
+      height = "100%",
+      title = "Barplot"
+    )
+  ) # layout_sidebar
 }
 
 # Server =======================================================================
@@ -73,6 +71,6 @@ coda_plot_server <- function(id, x) {
     })
 
     ## Render barplot -----
-    render_plot("plot", x = plot_bar, ratio = 0.5)
+    render_plot("plot", x = plot_bar)
   })
 }

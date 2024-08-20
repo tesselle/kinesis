@@ -16,11 +16,7 @@ Import Data UI
 \code{\link[=import_server]{import_server()}}
 
 Other generic modules: 
-\code{\link{data_server}()},
-\code{\link{data_ui}()},
 \code{\link{import_server}()},
-\code{\link{missing_server}()},
-\code{\link{missing_ui}()},
 \code{\link{prepare_server}()},
 \code{\link{prepare_ui}()}
 }

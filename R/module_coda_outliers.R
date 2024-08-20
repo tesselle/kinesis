@@ -10,13 +10,17 @@ coda_outliers_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
       h5("Outliers detection"),
-      checkboxInput(
-        inputId = ns("robust"),
-        label = "Use robust estimators",
-        value = FALSE
+      helpText("See", cite_article("Filzmoser & Hron", "2008", "10.1007/s11004-007-9141-5", after = ";"),
+               cite_article("Filzmoser, Hron & Reimann", "2012", "10.1016/j.cageo.2011.06.014", after = ".")),
+      radioButtons(
+        inputId = ns("method"),
+        label = "Multivariate location estimation",
+        choiceNames = c("Minimum volume ellipsoid", "Minimum covariance determinant"),
+        choiceValues = c("mve", "mcd")
       ),
       sliderInput(
         inputId = ns("quantile"),
@@ -26,34 +30,30 @@ coda_outliers_ui <- function(id) {
       ),
       actionButton(inputId = ns("go"), label = "(Re)Detect"),
       downloadButton(outputId = ns("download"), "Download results")
-    ), # sidebarPanel
-    mainPanel(
-      fluidRow(
-        div(
-          class = "col-lg-6 col-md-1",
-          output_plot(
-            id = ns("plot"),
-            height = "auto",
-            click = ns("click"),
-            title = "Plot"
-          )
+    ), # sidebar
+    layout_columns(
+      col_widths = "50%",
+      output_plot(
+        id = ns("plot"),
+        title = "Plot"
+      ),
+      div(
+        selectInput(
+          inputId = ns("group"),
+          label = "Select a group",
+          choices = NULL,
+          selected = NULL,
+          multiple = FALSE
         ),
-        div(
-          class = "col-lg-6 col-md-1",
-          helpText("See", cite_article("Filzmoser & Hron", "2008", "10.1007/s11004-007-9141-5", after = ";"),
-                   cite_article("Filzmoser, Hron & Reimann", "2012", "10.1016/j.cageo.2011.06.014", after = ".")),
-          selectInput(
-            inputId = ns("group"),
-            label = "Select a group",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE
-          ),
-          tableOutput(outputId = ns("info"))
-        )
-      ) # fluidRow
-    ) # mainPanel
-  ) # sidebarLayout
+        radioButtons(
+          inputId = ns("type"),
+          label = "Type of plot",
+          choices = c("dotchart", "distance", "qqplot")
+        ),
+        tableOutput(outputId = ns("info"))
+      )
+    ) # layout_columns
+  ) # layout_sidebar
 }
 
 # Server =======================================================================
@@ -81,8 +81,7 @@ coda_outliers_server <- function(id, x) {
             nexus::outliers(
               x(),
               groups = nexus::get_groups(x()),
-              robust = input$robust,
-              method = c("mve", "mcd"),
+              method = input$method,
               quantile = input$quantile
             )
           },
@@ -95,22 +94,20 @@ coda_outliers_server <- function(id, x) {
     ## Select group -----
     bindEvent(
       observe({
-        choices <- colnames(out())
+        grp <- get_groups(out())
+        choices <- seq_along(grp)
+        names(choices) <- names(grp)
         freezeReactiveValue(input, "group")
         updateSelectInput(inputId = "group", choices = choices)
       }),
       out()
     )
-    grp <- reactive({
-      req(out())
-      validate(need(input$group, "Please choose a group."))
-      out()[[input$group]]
-    })
 
     ## Plot -----
     plot <- reactive({
-      req(grp())
-      nexus::plot(grp(), qq = FALSE)
+      req(out())
+      validate(need(input$group, "Please choose a group."))
+      nexus::plot(out(), select = as.integer(input$group), type = input$type)
       grDevices::recordPlot()
     })
     render_plot("plot", x = plot)
@@ -120,14 +117,6 @@ coda_outliers_server <- function(id, x) {
       req(out())
       as.data.frame(out())
     })
-    info <- reactive({
-      req(grp())
-      z <- as.data.frame(grp())
-      z <- nearPoints(z, input$click, xvar = "index",
-                      yvar = paste0("dist_", input$group))
-      z
-    })
-    output$info <- render_table(info, rownames = FALSE)
 
     ## Download results -----
     output$download <- export_table(

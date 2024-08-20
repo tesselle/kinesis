@@ -11,8 +11,9 @@ seriate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
       ## Input: checkbox if permute rows
       checkboxInput(
         inputId = ns("margin_row"),
@@ -48,26 +49,10 @@ seriate_ui <- function(id) {
       ## Output: download
       downloadButton(outputId = ns("export_table"),
                      label = "Export matrix")
-    ), # sidebarPanel
-    mainPanel(
-      ## Output: permutation summary
-      # verbatimTextOutput(outputId = ns("summary")),
-      tabsetPanel(
-        id = ns("plot"),
-        type = "tabs",
-        tabPanel(
-          title = "Rearranged matrix",
-          ## Output: plot reordered matrix
-          output_plot(id = ns("plot_permute"), height = "auto", title = "Ford plot")
-        ),
-        tabPanel(
-          title = "Raw data",
-          ## Output: plot raw matrix
-          output_plot(id = ns("plot_raw"), height = "auto", title = "Ford plot")
-        )
-      ) # tabsetPanel
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    ## Output: plot reordered matrix
+    output_plot(id = ns("plot_permute"), height = "100%", title = "Rearranged matrix")
+  ) # layout_sidebar
 }
 
 # Server =======================================================================
@@ -111,23 +96,14 @@ seriate_server  <- function(id, x) {
     })
 
     ## Plot -----
-    fun_plot <- reactive({
-      function(x) tabula::plot_ford(x, weights = input$weights, EPPM = input$eppm)
-    })
-    plot_raw <- reactive({
-      req(x())
-      fun_plot()(x())
-      grDevices::recordPlot()
-    })
     plot_permute <- reactive({
       req(data_permute())
-      fun_plot()(data_permute())
+      tabula::plot_ford(data_permute(), weights = input$weights, EPPM = input$eppm)
       grDevices::recordPlot()
     })
 
     ## Render plot -----
-    render_plot("plot_raw", x = plot_raw, ratio = 0.5)
-    render_plot("plot_permute", x = plot_permute, ratio = 0.5)
+    render_plot("plot_permute", x = plot_permute)
 
     ## Download -----
     output$export_table <- export_table(permuted = data_permute, name = "matrix_permuted")

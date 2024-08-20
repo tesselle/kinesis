@@ -14,60 +14,41 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  fluidRow(
-    fluidRow(
-      div(
-        style="display: inline-block; vertical-align:bottom; width: 150px;",
-        selectInput(
-          inputId = ns("data"),
-          label = "Dataset",
-          choices = NULL,
-          selected = NULL,
-          multiple = FALSE
-        )
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
+      h5("Principal Components Analysis"),
+      checkboxInput(
+        inputId = ns("center"),
+        label = "Center",
+        value = center
       ),
-      div(
-        style="display: inline-block; vertical-align:bottom; width: 150px;",
-        checkboxInput(
-          inputId = ns("center"),
-          label = "Center",
-          value = center
-        ),
-        checkboxInput(
-          inputId = ns("scale"),
-          label = "Scale",
-          value = scale
-        )
+      checkboxInput(
+        inputId = ns("scale"),
+        label = "Scale",
+        value = scale
       ),
-      div(
-        style="display: inline-block; vertical-align:bottom; width: 150px;",
-        selectizeInput(
-          inputId = ns("sup_row"),
-          label = "Supplementary individuals",
-          choices = NULL, selected = NULL, multiple = TRUE,
-          options = list(plugins = "remove_button")
-        )
+      selectizeInput(
+        inputId = ns("sup_row"),
+        label = "Supplementary individuals",
+        choices = NULL, selected = NULL, multiple = TRUE,
+        options = list(plugins = "remove_button")
       ),
-      div(
-        style="display: inline-block; vertical-align:bottom; width: 150px;",
-        selectizeInput(
-          inputId = ns("sup_col"),
-          label = "Supplementary variables",
-          choices = NULL, selected = NULL, multiple = TRUE,
-          options = list(plugins = "remove_button")
-        )
+      selectizeInput(
+        inputId = ns("sup_col"),
+        label = "Supplementary variables",
+        choices = NULL, selected = NULL, multiple = TRUE,
+        options = list(plugins = "remove_button")
       ),
-      div(
-        style="display: inline-block; vertical-align:bottom; width: 150px;",
-        actionButton(
-          inputId = ns("go"),
-          label = "(Re)Compute"
-        )
+      actionButton(
+        inputId = ns("go"),
+        label = "(Re)Compute"
       )
-    ),
-    fluidRow(
-      multivariate_ui(id)
-    )
+    ), # sidebar
+    multivariate_ui(id),
+    border_radius = FALSE,
+    fillable = TRUE,
+    class = "p-0"
   )
 }
 
@@ -83,36 +64,28 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
 #' @keywords internal
 #' @export
 pca_server <- function(id, x) {
-  # stopifnot(is.reactive(x))
+  stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Build UI -----
-    observe({
-      freezeReactiveValue(input, "data")
-      updateSelectInput(inputId = "data", choices = names(x))
-    })
     bindEvent(
       observe({
         freezeReactiveValue(input, "sup_row")
-        updateSelectInput(inputId = "sup_row", choices = rownames(data()))
+        updateSelectInput(inputId = "sup_row", choices = rownames(x()))
         freezeReactiveValue(input, "sup_col")
-        updateSelectInput(inputId = "sup_col", choices = colnames(data()))
+        updateSelectInput(inputId = "sup_col", choices = colnames(x()))
       }),
-      data()
+      x()
     )
 
     ## Get data -----
-    data <- reactive({
-      validate(need(input$data, "Select a dataset."))
-      x[[input$data]]()
-    })
     sup_row <- reactive({
-      i <- match(input$sup_row, rownames(data()))
+      i <- match(input$sup_row, rownames(x()))
       if (anyNA(i)) return(NULL)
       i
     })
     sup_col <- reactive({
-      i <- match(input$sup_row, colnames(data()))
+      i <- match(input$sup_row, colnames(x()))
       if (anyNA(i)) return(NULL)
       i
     })
@@ -120,10 +93,10 @@ pca_server <- function(id, x) {
     ## Compute PCA -----
     results <- bindEvent(
       reactive({
-        validate(need(data(), "Check your data."))
+        validate(need(x(), "Check your data."))
 
         dimensio::pca(
-          object = data(),
+          object = x(),
           center = input$center,
           scale = input$scale,
           rank = input$rank,

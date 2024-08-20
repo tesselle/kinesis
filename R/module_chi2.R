@@ -10,30 +10,28 @@ chi2_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
       h5("Pearson's Chi-squared"),
       uiOutput(outputId = ns("results")),
       downloadButton(outputId = ns("download"), "Download")
-    ), # sidebarPanel
-    mainPanel(
-      tabsetPanel(
-        type = "tabs",
-        tabPanel(
-          title = "Expected",
-          tableOutput(outputId = ns("expected"))
-        ),
-        tabPanel(
-          title = "Residuals",
-          tableOutput(outputId = ns("residuals"))
-        ),
-        tabPanel(
-          title = "Standardized residuals",
-          tableOutput(outputId = ns("stdres"))
-        )
-      ) # tabsetPanel
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    navset_tab(
+      nav_panel(
+        title = "Expected",
+        tableOutput(outputId = ns("expected"))
+      ),
+      nav_panel(
+        title = "Residuals",
+        tableOutput(outputId = ns("residuals"))
+      ),
+      nav_panel(
+        title = "Standardized residuals",
+        tableOutput(outputId = ns("stdres"))
+      )
+    ) # navset_tab
+  ) # layout_sidebar
 }
 
 # Server =======================================================================

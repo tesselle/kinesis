@@ -11,9 +11,10 @@ multivariate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
-      uiOutput(outputId = ns("title")),
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
+      h5("Factor maps"),
       ## Input: display options
       selectInput(
         inputId = ns("axis1"),
@@ -39,10 +40,23 @@ multivariate_ui <- function(id) {
         label = "Label variables",
         value = FALSE
       ),
-      checkboxInput(
-        inputId = ns("ellipses"),
-        label = "Ellipses (95%)",
-        value = FALSE
+      hr(),
+      ## Input: add ellipses
+      radioButtons(
+        inputId = ns("wrap"),
+        label = "Wrap:",
+        choices = c(
+          "None" = "none",
+          "Tolerance ellipse" = "tol",
+          "Confidence ellipse" = "conf",
+          "Convex hull" = "hull"
+        )
+      ),
+      sliderInput(
+        inputId = ns("level"),
+        label = "Ellipse level",
+        min = 0.1, max = 0.99,
+        value = 0.95, step = 0.01
       ),
       hr(),
       selectizeInput(
@@ -53,89 +67,76 @@ multivariate_ui <- function(id) {
         multiple = FALSE,
         options = list(plugins = "clear_button")
       )
-    ), # sidebarPanel
-    mainPanel(
-      tabsetPanel(
-        type = "tabs",
-        multivariate_results(id),
-        multivariate_individuals(id),
-        multivariate_variables(id),
-        multivariate_screeplot(id)
-      ) # tabsetPanel
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    multivariate_results(id),
+    navset_tab(
+      multivariate_individuals(id),
+      multivariate_variables(id),
+      multivariate_screeplot(id)
+    ) # navset_tab
+  ) # layout_sidebar
 }
 
 multivariate_results <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tabPanel(
-    title = "Results",
-    fluidRow(
-      div(
-        class = "col-lg-6 col-md-1",
-        bslib::card(
-          bslib::card_header(
-            "Individuals factor map",
-            class = "d-flex justify-content-between"
-          ),
-          scatterD3::scatterD3Output(outputId = ns("plot_ind"))
-        )
+  layout_columns(
+    col_widths = "50%",
+    output_plot(
+      id = ns("plot_ind"),
+      tools = list(
+        select_color(
+          inputId = ns("col"),
+          type = "qualitative"
+        ),
+        select_pch(inputId = ns("pch")),
+        select_cex(inputId = ns("cex"))
       ),
-      div(
-        class = "col-lg-6 col-md-1",
-        bslib::card(
-          bslib::card_header(
-            "Variables factor map",
-            class = "d-flex justify-content-between"
-          ),
-          scatterD3::scatterD3Output(outputId = ns("plot_var"))
-        )
-      )
+      title = "Individuals factor map",
+      height = "100%"
+    ),
+    output_plot(
+      id = ns("plot_var"),
+      title = "Variables factor map",
+      height = "100%"
     )
-  ) # tabPanel
+  ) # layout_columns
 }
 
 multivariate_individuals <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tabPanel(
+  nav_panel(
     title = "Individuals",
-    output_plot(id = ns("contrib_ind"), height = "auto", title = "Contributions"),
     DT::dataTableOutput(outputId = ns("info_ind"))
-  ) # tabPanel
+  )
 }
 
 multivariate_variables <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tabPanel(
+  nav_panel(
     title = "Variables",
-    output_plot(id = ns("contrib_var"), height = "auto", title = "Contributions"),
+    output_plot(id = ns("contrib_var"), title = "Contributions"),
     DT::dataTableOutput(outputId = ns("info_var"))
-  ) # tabPanel
+  )
 }
 
 multivariate_screeplot <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  tabPanel(
+  nav_panel(
     title = "Screeplot",
-    fluidRow(
-      div(
-        class = "col-lg-6 col-md-1",
-        output_plot(id = ns("screeplot"), height = "auto", title = "Screeplot")
-      ),
-      div(
-        class = "col-lg-6 col-md-1",
-        DT::dataTableOutput(outputId = ns("variance"))
-      )
+    layout_columns(
+      col_widths = "50%",
+      output_plot(id = ns("screeplot"), title = "Screeplot"),
+      DT::dataTableOutput(outputId = ns("variance"))
     )
-  ) # tabPanel
+  )
 }
 
 # Server =======================================================================
@@ -195,89 +196,47 @@ multivariate_server <- function(id, x) {
     })
 
     ## Individuals -----
-    info_ind <- reactive({
-      req(x())
-
-      z <- dimensio::augment(x = x(), margin = 1, axes = c(axis1(), axis2()))
-      z <- arkhe::assign_rownames(z, 3)
-      if (any(z$supplementary)) {
-        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
-      } else {
-        z$supplementary <- NULL
-      }
-      z
-    })
-
     plot_ind <- reactive({
       req(x())
-      req(info_ind())
 
-      grp <- x()@rows@groups
-      if (length(grp) == 0 || all(is.na(grp))) grp <- NULL
-
-      scatterD3::scatterD3(
-        x = info_ind()[[1]], y = info_ind()[[2]],
-        xlab = dimensio:::print_variance(x(), axis1()),
-        ylab = dimensio:::print_variance(x(), axis2()),
-        col_var = grp,
-        col_lab = "Group",
-        size_var = info_ind()[[input$highlight]],
-        size_lab = input$highlight,
-        symbol_var = info_ind()$supplementary,
-        symbol_lab = "observation",
-        lab = if (input$lab_row) rownames(info_ind()) else NULL,
-        labels_positions = "auto",
-        ellipses = input$ellipses,
-        ellipses_level = 0.95,
-        fixed = TRUE
+      dimensio::viz_rows(
+        x = x(),
+        axes = c(axis1(), axis2()),
+        active = TRUE,
+        sup = TRUE,
+        labels = input$lab_row,
+        highlight = get_value(input$highlight),
+        col = if (is_set(input$highlight)) get_color(input$col) else "black",
+        pch = as.numeric(input$pch),
+        cex = as.numeric(input$cex),
+        panel.first = grid()
       )
-    })
 
-    contrib_ind <- reactive({
-      req(x())
+      ## Envelope
+      fun_wrap <- switch(
+        input$wrap,
+        tol = function(x, ...) dimensio::viz_tolerance(x, level = input$level, ...),
+        conf = function(x, ...) dimensio::viz_confidence(x, level = input$level, ...),
+        hull = function(x, ...) dimensio::viz_hull(x, ...),
+        function(...) invisible()
+      )
 
-      graphics::par(mfrow = c(1, 2))
-      dimensio::viz_contributions(x = x(), margin = 1, axes = axis1())
-      dimensio::viz_contributions(x = x(), margin = 1, axes = axis2())
+      fun_wrap(x = x(), margin = 1, axes = c(axis1(), axis2()))
       grDevices::recordPlot()
     })
 
     ## Variables -----
-    info_var <- reactive({
-      req(x())
-      z <- dimensio::augment(x = x(), margin = 2, axes = c(axis1(), axis2()))
-      z <- arkhe::assign_rownames(z, 3)
-      if (any(z$supplementary)) {
-        z$supplementary <- ifelse(z$supplementary, "Suppl.", "Active")
-      } else {
-        z$supplementary <- NULL
-      }
-      z
-    })
-
     plot_var <- reactive({
       req(x())
-      req(info_var())
 
-      high_lab <- input$highlight
-      high_var <- info_var()[[high_lab]]
-
-      scatterD3::scatterD3(
-        x = info_var()[[1]], y = info_var()[[2]],
-        xlab = dimensio:::print_variance(x(), axis1()),
-        ylab = dimensio:::print_variance(x(), axis2()),
-        col_var = if (inherits(x(), "PCA")) high_var else NULL,
-        col_lab = high_lab,
-        size_var = if (inherits(x(), "CA")) high_var else NULL,
-        size_lab = high_lab,
-        symbol_var = info_var()$supplementary,
-        symbol_lab = "observation",
-        type_var = if (inherits(x(), "PCA")) "arrow" else NULL,
-        unit_circle = inherits(x(), "PCA") && dimensio:::is_scaled(x()),
-        lab = if (input$lab_col) rownames(info_var()) else NULL,
-        labels_positions = "auto",
-        fixed = TRUE
+      dimensio::viz_variables(
+        x = x(),
+        axes = c(axis1(), axis2()),
+        active = TRUE, sup = TRUE,
+        labels = input$lab_col,
+        panel.first = grid()
       )
+      grDevices::recordPlot()
     })
 
     contrib_var <- reactive({
@@ -289,22 +248,11 @@ multivariate_server <- function(id, x) {
       grDevices::recordPlot()
     })
 
-    ## Render title -----
-    output$title <- renderUI({
-      title <- ""
-      if (inherits(x(), "PCA")) title <- "Principal Components Analysis"
-      if (inherits(x(), "CA")) title <- "Correspondence Analysis"
-      h5(title)
-    })
-
     ## Render plots -----
-    render_plot("contrib_ind", x = contrib_ind, ratio = 0.5)
-    render_plot("contrib_var", x = contrib_var, ratio = 0.5)
+    render_plot("plot_ind", x = plot_ind)
+    render_plot("plot_var", x = plot_var)
+    render_plot("contrib_var", x = contrib_var)
     render_plot("screeplot", x = plot_eigen)
-
-    ## Render factor maps -----
-    output$plot_ind <- scatterD3::renderScatterD3({ plot_ind() })
-    output$plot_var <- scatterD3::renderScatterD3({ plot_var() })
 
     ## Render tables -----
     output$variance <- DT::renderDataTable({

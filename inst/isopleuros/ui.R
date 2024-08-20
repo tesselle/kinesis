@@ -4,21 +4,31 @@
 #' @keywords internal
 #' @noRd
 shiny_ui <- function(request) {
-  fluidPage(
+  page_fillable(
     includeCSS(system.file("static", "style.css", package = "kinesis")),
-    theme = bslib::bs_theme(),
     lang = "en",
-    navbarPage(
-      "isopleuros",
+    page_navbar(
+      title = "isopleuros",
       kinesis::home_ui("home", name = "isopleuros"),
-      tabPanel(
-        title = "Data",
-        kinesis::data_ui("data")
-      ), # tabPanel
-      tabPanel(
+      nav_panel(
+        title = "Import",
+        kinesis::import_ui("import")
+      ),
+      nav_panel(
+        title = "Prepare",
+        kinesis::prepare_ui("prepare")
+      ),
+      nav_panel(
         title = "Plot",
         kinesis::ternary_ui("ternary")
-      ), # tabPanel
+      ),
+      nav_spacer(),
+      nav_menu(
+        title = "Links",
+        align = "right",
+        nav_item(link_tesselle),
+        nav_item(link_github)
+      ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),
       collapsible = TRUE

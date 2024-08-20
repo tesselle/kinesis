@@ -4,7 +4,7 @@
 \name{kinesis-package}
 \alias{kinesis-package}
 \alias{kinesis}
-\title{kinesis: 'Shiny' Applications for the 'tesselle' Packages}
+\title{kinesis: 'shiny' Applications for the 'tesselle' Packages}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

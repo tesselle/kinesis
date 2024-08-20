@@ -10,120 +10,147 @@ ternary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  sidebarLayout(
-    sidebarPanel(
-      h5("Ternary plot"),
-      ## Input: select axes
-      selectInput(
-        inputId = ns("axis1"),
-        label = "Component X",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE
-      ),
-      selectInput(
-        inputId = ns("axis2"),
-        label = "Component Y",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-      ),
-      selectInput(
-        inputId = ns("axis3"),
-        label = "Component Z",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-      ),
-      checkboxInput(
-        inputId = ns("center"),
-        label = "Center",
-        value = FALSE
-      ),
-      checkboxInput(
-        inputId = ns("scale"),
-        label = "Scale",
-        value = FALSE
-      ),
-      hr(),
-      ## Input: select group
-      selectizeInput(
-        inputId = ns("group"),
-        label = "Group",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-        options = list(plugins = "clear_button")
-      ),
-      hr(),
-      ## Input: add points
-      checkboxInput(
-        inputId = ns("points"),
-        label = "Show points",
-        value = TRUE
-      ),
-      ## Input: add density
-      checkboxInput(
-        inputId = ns("density"),
-        label = "Density contour",
-        value = FALSE
-      ),
-      ## Input: add ellipses
-      radioButtons(
-        inputId = ns("wrap"),
-        label = "Wrap:",
-        choices = c(
-          "None" = "none",
-          "Tolerance ellipse" = "tol",
-          "Confidence ellipse" = "conf",
-          "Convex hull" = "hull"
-        )
-      ),
-      sliderInput(
-        inputId = ns("level"),
-        label = "Ellipse level",
-        min = 0.1, max = 1,
-        value = 0.95, step = 0.05
-      ),
-      ## Input: add a grid
-      checkboxInput(
-        inputId = ns("grid"),
-        label = "Grid",
-        value = TRUE
-      ),
-      ## Input: add a legend
-      checkboxInput(
-        inputId = ns("legend"),
-        label = "Legend",
-        value = TRUE
-      )
-    ), # sidebarPanel
-    mainPanel(
-      fluidRow(
-        div(
-          class = "col-lg-6 col-md-1",
-          output_plot(
-            id = ns("ternplot"),
-            tools = list(
-              select_color(
-                inputId = ns("col"),
-                type = "qualitative"
-              ),
-              select_pch(inputId = ns("pch")),
-              select_cex(inputId = ns("cex"))
-            ),
-            height = "auto",
-            click = ns("click"),
-            title = "Ternary plot"
+  layout_sidebar(
+    sidebar = sidebar(
+      width = "20%",
+      accordion(
+        accordion_panel(
+          "Aesthetic mappings",
+          ## Input: select axes
+          selectInput(
+            inputId = ns("axis1"),
+            label = "Component X",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE
+          ),
+          selectInput(
+            inputId = ns("axis2"),
+            label = "Component Y",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE,
+          ),
+          selectInput(
+            inputId = ns("axis3"),
+            label = "Component Z",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE,
+          ),
+          ## Input: select group
+          selectizeInput(
+            inputId = ns("group"),
+            label = "Group",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE,
+            options = list(plugins = "clear_button")
           )
         ),
-        div(
-          class = "col-lg-6 col-md-1",
-          tableOutput(outputId = ns("info"))
+        accordion_panel(
+          "Layers",
+          ## Input: add points
+          checkboxInput(
+            inputId = ns("points"),
+            label = "Show points",
+            value = TRUE
+          ),
+          ## Input: add density
+          checkboxInput(
+            inputId = ns("density"),
+            label = "Density contour",
+            value = FALSE
+          )
+        ),
+        accordion_panel(
+          "Scales",
+          checkboxInput(
+            inputId = ns("center"),
+            label = "Center",
+            value = FALSE
+          ),
+          checkboxInput(
+            inputId = ns("scale"),
+            label = "Scale",
+            value = FALSE
+          )
+        ),
+        accordion_panel(
+          "Ellipses",
+          ## Input: add ellipses
+          radioButtons(
+            inputId = ns("wrap"),
+            label = "Wrap:",
+            choices = c(
+              "None" = "none",
+              "Tolerance ellipse" = "tol",
+              "Confidence ellipse" = "conf",
+              "Convex hull" = "hull"
+            )
+          ),
+          sliderInput(
+            inputId = ns("level"),
+            label = "Ellipse level",
+            min = 0.1, max = 0.99,
+            value = 0.95, step = 0.01
+          )
+        ),
+        accordion_panel(
+          "Annotations",
+          ## Input: add a grid
+          checkboxInput(
+            inputId = ns("grid"),
+            label = "Grid",
+            value = TRUE
+          ),
+          ## Input: add a legend
+          checkboxInput(
+            inputId = ns("legend"),
+            label = "Legend",
+            value = TRUE
+          )
         )
       )
-    ) # mainPanel
-  ) # sidebarLayout
+    ), # sidebar
+    output_plot(
+      id = ns("ternplot"),
+      tools = list(
+        select_color(
+          inputId = ns("col"),
+          type = "qualitative"
+        ),
+        select_pch(inputId = ns("pch")),
+        select_cex(inputId = ns("cex"))
+      ),
+      height = "100%",
+      click = ns("click"),
+      title = "Ternary plot"
+    )
+    # fluidRow(
+    #   div(
+    #     class = "col-lg-6 col-md-1",
+    #     output_plot(
+    #       id = ns("ternplot"),
+    #       tools = list(
+    #         select_color(
+    #           inputId = ns("col"),
+    #           type = "qualitative"
+    #         ),
+    #         select_pch(inputId = ns("pch")),
+    #         select_cex(inputId = ns("cex"))
+    #       ),
+    #       height = "auto",
+    #       click = ns("click"),
+    #       title = "Ternary plot"
+    #     )
+    #   ),
+    #   div(
+    #     class = "col-lg-6 col-md-1",
+    #     tableOutput(outputId = ns("info"))
+    #   )
+    # )
+  ) # layout_sidebar
 }
 
 # Server =======================================================================
