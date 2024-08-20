@@ -113,10 +113,10 @@ prepare_ui <- function(id) {
       width = "20%",
       accordion(
         accordion_panel(
-          "Keep",
+          "Select columns",
           checkboxGroupInput(
             inputId = ns("select"),
-            label = NULL,
+            label = "Keep:",
             choices = NULL,
             selected = NULL,
             width = "100%"
@@ -214,7 +214,7 @@ prepare_ui <- function(id) {
 #' @export
 import_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    ## Get file path
+    ## Get file path -----
     file <- reactive({
       query <- parseQueryString(session$clientData$url_search)
 
@@ -225,7 +225,7 @@ import_server <- function(id) {
       }
     })
 
-    ## Read data file
+    ## Read data file -----
     data <- reactive({
       assert_csv(file())
 
@@ -245,7 +245,7 @@ import_server <- function(id) {
       )
     })
 
-    ## Send notification
+    ## Send notification -----
     bindEvent(
       observe({
         if (is.data.frame(data()) && all(dim(data()) > 0)) {
@@ -256,7 +256,7 @@ import_server <- function(id) {
       data()
     )
 
-    ## Render table
+    ## Render table -----
     output$table <- DT::renderDataTable({ data() })
 
     data
@@ -282,7 +282,6 @@ prepare_server <- function(id, x) {
       freezeReactiveValue(input, "select")
       updateCheckboxGroupInput(
         inputId = "select",
-        label = "Columns to remove:",
         choices = colnames(x()),
         selected = colnames(x()),
         inline = TRUE
@@ -372,15 +371,12 @@ prepare_server <- function(id, x) {
     bindEvent(
       observe({
         if (anyNA(data_missing())) {
-          ## If there's currently a notification, don't add another
-          if (!is.null(id)) return()
           ## Save the ID for removal later
-          id <<- showNotification(ui = "Missing values detected!",
-                                  duration = NULL, id = "missing",
-                                  type = "warning")
-        } else if (!is.null(id)) {
-          removeNotification(id)
-          id <<- NULL
+          notif_missing <- showNotification(ui = "Missing values detected!",
+                                            duration = NULL, id = "missing",
+                                            type = "warning")
+        } else {
+          removeNotification("missing")
         }
       }),
       data_missing()

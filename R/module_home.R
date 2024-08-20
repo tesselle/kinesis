@@ -148,6 +148,7 @@ home_server <- function(id) {
 #' @export
 header_server  <- function(id) {
   moduleServer(id, function(input, output, session) {
+    ## Display alert -----
     output$alert_config <- renderUI({
       if (get_option("production")) return(NULL)
       div(
