@@ -87,7 +87,7 @@ import_ui <- function(id) {
         )
       ), # sidebar
       ## Output: display data
-      DT::dataTableOutput(outputId = ns("table")),
+      gt::gt_output(outputId = ns("table")),
       border = FALSE
     ), # layout_sidebar
     border_radius = FALSE,
@@ -194,7 +194,7 @@ prepare_ui <- function(id) {
         tableOutput(outputId = ns("missing"))
       ), # sidebar
       ## Output: display data
-      DT::dataTableOutput(outputId = ns("table"))
+      gt::gt_output(outputId = ns("table"))
     ), # layout_sidebar
     border_radius = FALSE,
     fillable = TRUE,
@@ -257,7 +257,12 @@ import_server <- function(id) {
     )
 
     ## Render table -----
-    output$table <- DT::renderDataTable({ data() })
+    output$table <- gt::render_gt({
+      data() |>
+        gt::gt(rownames_to_stub = input$rownames) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+    })
 
     data
   })
@@ -410,7 +415,12 @@ prepare_server <- function(id, x) {
     })
 
     ## Render table -----
-    output$table <-  DT::renderDataTable({ data_filter() })
+    output$table <- gt::render_gt({
+      data_filter() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+    })
     output$missing <- render_table({ table_missing })
 
     ## Render description -----

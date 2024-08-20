@@ -21,7 +21,7 @@ Imports:
     bslib (>= 0.8.0),
     config (>= 0.3.2),
     dimensio (>= 0.8.1),
-    DT (>= 0.33),
+    gt (>= 0.11.0),
     grDevices,
     isopleuros (>= 1.2.0),
     kairos (>= 2.1.1),

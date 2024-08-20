@@ -40,7 +40,7 @@ coda_ui <- function(id) {
         uiOutput(outputId = ns("limits"))
       ),
       ## Output: display table
-      DT::dataTableOutput(outputId = ns("table"))
+      gt::gt_output(outputId = ns("table"))
     ), # layout_sidebar
     border_radius = FALSE,
     fillable = TRUE,
@@ -126,14 +126,16 @@ coda_server <- function(id, x) {
     })
 
     ## Render tables -----
-    output$table <- DT::renderDataTable({
+    output$table <- gt::render_gt({
       req(clean())
       feat <- as.data.frame(clean())
       num <- arkhe::detect(x = feat, f = is.numeric, margin = 2, na.rm = TRUE)
 
-      dt <- DT::datatable(feat, rownames = TRUE)
-      dt <- DT::formatPercentage(dt, columns = which(num), digits = 2)
-      dt
+      feat |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_percent(columns = which(num), decimals = 2) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
     })
 
     clean

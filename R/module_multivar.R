@@ -68,8 +68,8 @@ multivariate_ui <- function(id) {
         options = list(plugins = "clear_button")
       )
     ), # sidebar
-    multivariate_results(id),
-    navset_tab(
+    navset_card_pill(
+      multivariate_results(id),
       multivariate_individuals(id),
       multivariate_variables(id),
       multivariate_screeplot(id)
@@ -81,27 +81,30 @@ multivariate_results <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_columns(
-    col_widths = "50%",
-    output_plot(
-      id = ns("plot_ind"),
-      tools = list(
-        select_color(
-          inputId = ns("col"),
-          type = "qualitative"
+  nav_panel(
+    title = "Results",
+    layout_columns(
+      col_widths = "50%",
+      output_plot(
+        id = ns("plot_ind"),
+        tools = list(
+          select_color(
+            inputId = ns("col"),
+            type = "qualitative"
+          ),
+          select_pch(inputId = ns("pch")),
+          select_cex(inputId = ns("cex"))
         ),
-        select_pch(inputId = ns("pch")),
-        select_cex(inputId = ns("cex"))
+        title = "Individuals factor map",
+        height = "100%"
       ),
-      title = "Individuals factor map",
-      height = "100%"
-    ),
-    output_plot(
-      id = ns("plot_var"),
-      title = "Variables factor map",
-      height = "100%"
-    )
-  ) # layout_columns
+      output_plot(
+        id = ns("plot_var"),
+        title = "Variables factor map",
+        height = "100%"
+      )
+    ) # layout_columns
+  )
 }
 
 multivariate_individuals <- function(id) {
@@ -110,7 +113,7 @@ multivariate_individuals <- function(id) {
 
   nav_panel(
     title = "Individuals",
-    DT::dataTableOutput(outputId = ns("info_ind"))
+    gt::gt_output(outputId = ns("info_ind"))
   )
 }
 
@@ -121,7 +124,7 @@ multivariate_variables <- function(id) {
   nav_panel(
     title = "Variables",
     output_plot(id = ns("contrib_var"), title = "Contributions"),
-    DT::dataTableOutput(outputId = ns("info_var"))
+    gt::gt_output(outputId = ns("info_var"))
   )
 }
 
@@ -134,7 +137,7 @@ multivariate_screeplot <- function(id) {
     layout_columns(
       col_widths = "50%",
       output_plot(id = ns("screeplot"), title = "Screeplot"),
-      DT::dataTableOutput(outputId = ns("variance"))
+      gt::gt_output(outputId = ns("variance"))
     )
   )
 }
@@ -255,28 +258,30 @@ multivariate_server <- function(id, x) {
     render_plot("screeplot", x = plot_eigen)
 
     ## Render tables -----
-    output$variance <- DT::renderDataTable({
-      dt <- eigen()
-      dt$cumulative <- dt$cumulative / 100
-
-      dt <- DT::datatable(dt)
-      dt <- DT::formatRound(dt, columns = c(1, 2), digits = 3)
-      dt <- DT::formatPercentage(dt, columns = 3, digits = 2)
-      dt
+    output$variance <- gt::render_gt({
+      eigen() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(columns = 2, decimals = 3) |>
+        gt::fmt_percent(columns = c(3, 4), decimals = 2, scale_values = FALSE) |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
     })
-    output$info_ind <- DT::renderDataTable({
+    output$info_ind <- gt::render_gt({
       req(x())
       info <- dimensio::summary(x(), margin = 1)@results
-      dt <- DT::datatable(info)
-      dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
-      dt
+      info |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
     })
-    output$info_var <- DT::renderDataTable({
+    output$info_var <- gt::render_gt({
       req(x())
       info <- dimensio::summary(x(), margin = 2)@results
-      dt <- DT::datatable(info)
-      dt <- DT::formatRound(dt, columns = seq_len(ncol(info)), digits = 3)
-      dt
+      info |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
     })
   })
 }
