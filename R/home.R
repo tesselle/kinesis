@@ -23,6 +23,9 @@ home_ui <- function(id, name = NULL) {
           title = "How to use",
           h3("Overview"),
           tags$p(
+            get_option("description")
+          ),
+          tags$p(
             "This program is distributed in the hope that it will be useful,
               but WITHOUT ANY WARRANTY."
           ),

@@ -1,0 +1,7 @@
+default:
+  production: TRUE
+  verbose: FALSE
+
+test:
+  production: FALSE
+  verbose: TRUE

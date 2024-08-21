@@ -5,11 +5,15 @@
 \title{Read Configuration Values}
 \usage{
 get_config(
+  app,
   config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
   use_parent = TRUE
 )
 }
 \arguments{
+\item{app}{A \code{\link{character}} string specifying the Shiny application
+to run (see \code{\link[=run_app]{run_app()}}).}
+
 \item{config}{A \code{\link{character}} string specifying the name of configuration to
 read from.}
 

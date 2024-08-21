@@ -33,7 +33,7 @@ run_app <- function(app = c("seriate", "source", "ternary"),
   obj <- shiny::shinyAppDir(appDir = appDir, options = options)
 
   ## Bundling the options inside the shinyApp object
-  kinesis_options <- get_config()
+  kinesis_options <- get_config(app)
   obj$appOptions$kinesis_options <- kinesis_options
 
   obj
@@ -41,6 +41,8 @@ run_app <- function(app = c("seriate", "source", "ternary"),
 
 #' Read Configuration Values
 #'
+#' @param app A [`character`] string specifying the Shiny application
+#'  to run (see [run_app()]).
 #' @param config A [`character`] string specifying the name of configuration to
 #'  read from.
 #' @param use_parent A [`logical`] scalar: should parent directories be scanned
@@ -49,10 +51,10 @@ run_app <- function(app = c("seriate", "source", "ternary"),
 #' @author N. Frerebeau
 #' @keywords internal
 #' @export
-get_config <- function(config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
+get_config <- function(app, config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
                        use_parent = TRUE) {
 
-  file <- system.file("config.yml", package = "kinesis", mustWork = FALSE)
+  file <- system.file(app, "config.yml", package = "kinesis", mustWork = FALSE)
   config::get(value = NULL, config = config, file = file,
               use_parent = use_parent)
 }
