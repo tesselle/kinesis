@@ -16,7 +16,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       h5("Principal Components Analysis"),
       checkboxInput(
         inputId = ns("center"),

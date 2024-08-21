@@ -13,7 +13,7 @@ multivariate_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       h5("Factor maps"),
       ## Input: display options
       selectInput(

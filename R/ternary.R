@@ -12,7 +12,7 @@ ternary_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       accordion(
         accordion_panel(
           "Aesthetic mappings",

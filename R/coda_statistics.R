@@ -12,7 +12,7 @@ coda_summary_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       downloadButton(outputId = ns("download"), "Download tables"),
       hr(),
       h5("Univariate statistics"),

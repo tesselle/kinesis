@@ -12,7 +12,7 @@ chi2_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       h5("Pearson's Chi-squared"),
       uiOutput(outputId = ns("results")),
       downloadButton(outputId = ns("download"), "Download")

@@ -13,7 +13,7 @@ seriate_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       ## Input: checkbox if permute rows
       checkboxInput(
         inputId = ns("margin_row"),

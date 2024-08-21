@@ -12,7 +12,7 @@ coda_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
       selectizeInput(
         inputId = ns("groups"),
         label = tooltip(
@@ -27,8 +27,8 @@ coda_ui <- function(id) {
     ), # sidebar
     layout_sidebar(
       sidebar = sidebar(
-        "Detection limits",
-        width = "20%",
+        width = 400,
+        h5("Detection limits"),
         ## Output: set detection limits
         helpText(
           "Define the detection limit for each compositionnal part below.",
@@ -40,7 +40,8 @@ coda_ui <- function(id) {
         uiOutput(outputId = ns("limits"))
       ),
       ## Output: display table
-      gt::gt_output(outputId = ns("table"))
+      gt::gt_output(outputId = ns("table")),
+      border = FALSE
     ), # layout_sidebar
     border_radius = FALSE,
     fillable = TRUE,

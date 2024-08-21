@@ -14,7 +14,7 @@ home_ui <- function(id, name = NULL) {
     title = "Home",
     layout_sidebar(
       sidebar = sidebar(
-        width = "20%",
+        width = 400,
         h5("Workflow"),
       ), # sidebar
       navset_card_pill(
