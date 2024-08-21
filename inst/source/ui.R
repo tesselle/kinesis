@@ -10,16 +10,9 @@ shiny_ui <- function(request) {
     bslib::page_navbar(
       title = "source",
       kinesis::home_ui("home", name = "nexus"),
-      bslib::nav_menu(
+      bslib::nav_panel(
         title = "Data",
-        bslib::nav_panel(
-          title = "Import",
-          kinesis::import_ui("import")
-        ),
-        bslib::nav_panel(
-          title = "Prepare",
-          kinesis::prepare_ui("prepare")
-        )
+        kinesis::import_ui("import")
       ),
       bslib::nav_panel(
         title = "Composition",

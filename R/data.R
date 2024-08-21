@@ -12,7 +12,8 @@ import_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      width = "20%",
+      width = 400,
+      h5("Import"),
       ## Input: select a file
       fileInput(
         inputId = ns("file"),
@@ -22,74 +23,67 @@ import_ui <- function(id) {
       ),
       tags$p(
         helpText("Select the location of, and the CSV file you want to upload."),
-        helpText("Please check the default settings and adjust them to your data."),
+        helpText("Please check the default settings below and adjust them to your data."),
         helpText("This application only supports data encoded in UFT-8."),
       ),
       tags$p(
         helpText("It assumes that you keep your data tidy: each variable must be saved in its own column and each observation (sample) must be saved in its own row.")
+      ),
+      ## Input: checkbox if file has header
+      checkboxInput(
+        inputId = ns("header"),
+        label = "Header",
+        value = TRUE
+      ),
+      ## Input: checkbox if file has row names
+      checkboxInput(
+        inputId = ns("rownames"),
+        label = "Row names",
+        value = FALSE
+      ),
+      ## Input: select decimal
+      radioButtons(
+        inputId = ns("dec"),
+        label = "Decimal",
+        choices = c(Dot = ".", Comma = ","),
+        selected = "."
+      ),
+      ## Input: select separator
+      radioButtons(
+        inputId = ns("sep"),
+        label = "Separator",
+        choices = c(Comma = ",", Semicolon = ";", Tab = "\t"),
+        selected = ","
+      ),
+      ## Input: select quotes
+      radioButtons(
+        inputId = ns("quote"),
+        label = "Quote",
+        choices = c(None = "", "Double quote" = '"', "Single quote" = "'"),
+        selected = '"'
+      ),
+      ## Input: lines of the data to skip
+      numericInput(
+        inputId = ns("skip"),
+        label = "Lines of the data file to skip:",
+        value = 0,
+        min = 0,
+        step = 1
+      ),
+      ## Input: missing string
+      textInput(
+        inputId = ns("na.strings"),
+        label = "String to be interpreted as missing value:",
+        value = ""
+      ),
+      ## Input: comment
+      textInput(
+        inputId = ns("comment"),
+        label = "Character to be interpreted as comment:",
+        value = "#"
       )
     ), # sidebar
-    layout_sidebar(
-      sidebar = sidebar(
-        width = "20%",
-        ## Input: lines of the data to skip
-        numericInput(
-          inputId = ns("skip"),
-          label = "Lines of the data file to skip:",
-          value = 0,
-          min = 0,
-          step = 1
-        ),
-        ## Input: checkbox if file has header
-        checkboxInput(
-          inputId = ns("header"),
-          label = "Header",
-          value = TRUE
-        ),
-        ## Input: checkbox if file has row names
-        checkboxInput(
-          inputId = ns("rownames"),
-          label = "Row names",
-          value = FALSE
-        ),
-        ## Input: select decimal
-        radioButtons(
-          inputId = ns("dec"),
-          label = "Decimal",
-          choices = c(Dot = ".", Comma = ","),
-          selected = "."
-        ),
-        ## Input: select separator
-        radioButtons(
-          inputId = ns("sep"),
-          label = "Separator",
-          choices = c(Comma = ",", Semicolon = ";", Tab = "\t"),
-          selected = ","
-        ),
-        ## Input: select quotes
-        radioButtons(
-          inputId = ns("quote"),
-          label = "Quote",
-          choices = c(None = "", "Double quote" = '"', "Single quote" = "'"),
-          selected = '"'
-        ),
-        ## Input: missing string
-        textInput(
-          inputId = ns("na.strings"),
-          label = "String to be interpreted as missing value:",
-          value = ""
-        ),
-        ## Input: comment
-        textInput(
-          inputId = ns("comment"),
-          label = "Character to be interpreted as comment:",
-          value = "#"
-        )
-      ), # sidebar
-      ## Output: display data
-      gt::gt_output(outputId = ns("table")),
-      border = FALSE
-    ), # layout_sidebar
+    prepare_ui(ns("prepare")),
     border_radius = FALSE,
     fillable = TRUE,
     class = "p-0"
@@ -109,9 +103,10 @@ prepare_ui <- function(id) {
 
   layout_sidebar(
     sidebar = sidebar(
-      h5("Data manipulation"),
-      width = "20%",
+      width = 400,
+      h5("Prepare"),
       accordion(
+        open = FALSE,
         accordion_panel(
           "Select columns",
           checkboxGroupInput(
@@ -188,13 +183,15 @@ prepare_ui <- function(id) {
     ), # sidebar
     layout_sidebar(
       sidebar = sidebar(
+        width = 400,
+        open = FALSE,
         h5("Description"),
-        width = "20%",
         uiOutput(outputId = ns("description")),
         tableOutput(outputId = ns("missing"))
       ), # sidebar
       ## Output: display data
-      gt::gt_output(outputId = ns("table"))
+      gt::gt_output(outputId = ns("table")),
+      border = FALSE
     ), # layout_sidebar
     border_radius = FALSE,
     fillable = TRUE,
@@ -256,15 +253,10 @@ import_server <- function(id) {
       data()
     )
 
-    ## Render table -----
-    output$table <- gt::render_gt({
-      data() |>
-        gt::gt(rownames_to_stub = input$rownames) |>
-        gt::sub_missing() |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
-    })
+    ## Prepare data -----
+    clean <- prepare_server("prepare", data)
 
-    data
+    clean
   })
 }
 
@@ -487,7 +479,7 @@ count_missing <- function(x, margin = 1) {
   has_na <- total > 0
   if (!any(has_na)) return(NULL)
 
-  prop_na <- round(total[has_na] * 100 / ncol(x))
+  prop_na <- round(total[has_na] * 100 / sum(total))
   if (margin == 1) {
     id <- rownames(x)[has_na]
   } else {

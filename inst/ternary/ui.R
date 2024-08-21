@@ -11,12 +11,8 @@ shiny_ui <- function(request) {
       title = "ternary",
       kinesis::home_ui("home", name = "isopleuros"),
       bslib::nav_panel(
-        title = "Import",
+        title = "Data",
         kinesis::import_ui("import")
-      ),
-      bslib::nav_panel(
-        title = "Prepare",
-        kinesis::prepare_ui("prepare")
       ),
       bslib::nav_panel(
         title = "Plot",

@@ -8,8 +8,7 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  data <- kinesis::import_server("import") |>
-    kinesis::prepare_server("prepare", x = _)
+  data <- kinesis::import_server("import")
 
   ## Ternary Plot
   kinesis::ternary_server("ternary", x = data)
