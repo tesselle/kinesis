@@ -35,18 +35,18 @@ output_plot <- function(id, ..., tools = NULL, title = "Card title") {
   )
 }
 
-select_cex <- function(inputId, default = graphics::par("cex")) {
+select_cex <- function(inputId, default = c(1, 6)) {
   sliderInput(
     inputId = inputId,
     label = "Symbol size",
-    min = 0.5,
-    max = 5,
+    min = 0.2,
+    max = 9,
     value = default,
-    step = 0.5
+    step = 0.2
   )
 }
 
-select_pch <- function(inputId, default = 16) {
+select_pch <- function(inputId, default = c(16, 17, 15, 3, 7, 8)) {
   x <- c(square = 0, circle = 1, `triangle up` = 2, plus = 3, cross = 4,
          diamond = 5, `triangle down` = 6, `square cross` = 7, star = 8,
          `diamond plus` = 9, `circle plus` = 10, `triangles up and down` = 11,
@@ -54,12 +54,13 @@ select_pch <- function(inputId, default = 16) {
          `filled square` = 15, `filled circle` = 16, `filled triangle` = 17,
          `filled diamond` = 18, `solid circle` = 19, bullet = 20)
 
-  selectInput(
+  selectizeInput(
     inputId = inputId,
     label = "Symbol",
     choices = x,
     selected = default,
-    multiple = FALSE
+    multiple = TRUE,
+    options = list(plugins = "clear_button")
   )
 }
 
@@ -73,7 +74,7 @@ select_color <- function(inputId, type = NULL) {
     label = "Color palette",
     choices = x,
     selected = "discreterainbow",
-    multiple = FALSE,
+    multiple = FALSE
   )
 }
 
