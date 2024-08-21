@@ -4,13 +4,15 @@
 \alias{logratio_server}
 \title{Log-Ratio Server}
 \usage{
-logratio_server(id, x)
+logratio_server(id, x, method)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
 \item{x}{A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.}
+
+\item{method}{A \code{\link{character}} string specifying the log-ratio to be computed.}
 }
 \value{
 A reactive \code{\link[nexus:LogRatio-class]{nexus::LogRatio}} object.

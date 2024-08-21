@@ -33,9 +33,28 @@ shiny_ui <- function(request) {
           kinesis::ternary_ui("ternary")
         )
       ),
-      bslib::nav_panel(
+      bslib::nav_menu(
         title = "Transform",
-        kinesis::logratio_ui("logratio")
+        bslib::nav_panel(
+          title = "CLR",
+          value = "panel_clr",
+          kinesis::logratio_ui("clr")
+        ),
+        bslib::nav_panel(
+          title = "ALR",
+          value = "panel_alr",
+          kinesis::logratio_ui("alr")
+        ),
+        bslib::nav_panel(
+          title = "ILR",
+          value = "panel_ilr",
+          kinesis::logratio_ui("ilr")
+        ),
+        bslib::nav_panel(
+          title = "PLR",
+          value = "panel_plr",
+          kinesis::logratio_ui("plr")
+        )
       ),
       bslib::nav_menu(
         title = "Analysis",
