@@ -24,13 +24,17 @@ A collection of [**shiny**](https://shiny.rstudio.com) applications that
 provides graphical user interfaces for the
 [tesselle](https://www.tesselle.org) packages.
 
+This package is currently *experimental*. This means that it is
+functional, but interfaces and functionalities may change over time,
+testing and documentation may be lacking.
+
 ------------------------------------------------------------------------
 
 To cite kinesis in publications use:
 
-Frerebeau N (2023). *kinesis: ‘Shiny’ Applications for the ‘tesselle’
+Frerebeau N (2024). *kinesis: ‘shiny’ Applications for the ‘tesselle’
 Packages*. Université Bordeaux Montaigne, Pessac, France. R package
-version 0.0.0.9003, <https://packages.tesselle.org/kinesis/>.
+version 0.0.0.9004, <https://packages.tesselle.org/kinesis/>.
 
 This package is a part of the tesselle project
 <https://www.tesselle.org>.
