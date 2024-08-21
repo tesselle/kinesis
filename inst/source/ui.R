@@ -24,7 +24,7 @@ shiny_ui <- function(request) {
       ),
       bslib::nav_menu(
         title = "Plot",
-        nav_panel(
+        bslib::nav_panel(
           title = "Bar plot",
           kinesis::coda_plot_ui("barplot")
         ),
