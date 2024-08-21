@@ -37,13 +37,6 @@ shiny_ui <- function(request) {
         title = "Seriation",
         kinesis::seriate_ui("seriate")
       ),
-      bslib::nav_spacer(),
-      bslib::nav_menu(
-        title = "Links",
-        align = "right",
-        bslib::nav_item(link_tesselle),
-        bslib::nav_item(link_github)
-      ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),
       collapsible = TRUE

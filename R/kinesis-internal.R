@@ -18,9 +18,6 @@ assert_csv <- function(x) {
   validate(need(x, message = "Import a CSV file first."))
 }
 
-link_tesselle <- tags$a("tesselle", href = "https://www.tesselle.org/", target = "_blank")
-link_github <- tags$a(shiny::icon("github"), "GitHub", href = "https://github.com/tesselle", target = "_blank")
-
 url_tesselle <- function(package = NULL, campaign = TRUE) {
   mtm <- if (campaign) "?mtm_campaign=shiny" else ""
   if (is.null(package)) {
