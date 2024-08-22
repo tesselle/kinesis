@@ -132,7 +132,7 @@ coda_summary_server <- function(id, x) {
       nexus::covariance(data(), center = TRUE)
     })
 
-    ## CLR covariance -----
+    ## PIP -----
     data_pip <- reactive({
       req(data())
       nexus::pip(data())
@@ -187,26 +187,42 @@ coda_summary_server <- function(id, x) {
         gt::tab_header(title = "Percentile Table")
     })
     output$covariance <- gt::render_gt({
-      data_cov() |>
+      covar <- data_cov()
+      covar[lower.tri(covar, diag = FALSE)] <- NA
+
+      covar |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(decimals = 3) |>
+        gt::sub_missing(missing_text = "") |>
         gt::tab_header(title = "Centered Log-Ratio Covariance") |>
         gt::tab_source_note(source_note = gt::html(Aitchison1986))
     })
     output$pip <- gt::render_gt({
-      data_pip() |>
+      prop <- data_pip()
+      prop[lower.tri(prop, diag = TRUE)] <- NA
+
+      prop |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(decimals = 3) |>
+        gt::sub_missing(missing_text = "") |>
+        gt::tab_style_body(
+          fn = function(x) x >= 0.75,
+          style = gt::cell_fill(color = "#FFAABB")
+        ) |>
         gt::tab_header(title = "Proportionality Index of Parts") |>
         gt::tab_source_note(source_note = gt::html(Egozcue2023))
     })
     output$variation <- gt::render_gt({
-      data_var() |>
+      varia <- data_var()
+      varia[lower.tri(varia, diag = TRUE)] <- NA
+
+      varia |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(decimals = 3) |>
+        gt::sub_missing(missing_text = "") |>
         gt::tab_header(title = "Variation Matrix") |>
         gt::tab_source_note(source_note = gt::html(Aitchison1986))
     })
