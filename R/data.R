@@ -201,8 +201,18 @@ prepare_ui <- function(id) {
         showcase = icon("circle-question")
       )
     ),
-    ## Output: display data
-    gt::gt_output(outputId = ns("table")),
+    navset_tab(
+      nav_panel(
+        title = "Data",
+        ## Output: display data
+        gt::gt_output(outputId = ns("table"))
+      ),
+      nav_panel(
+        title = "Missing values",
+        ## Output: display data
+        output_plot(id = ns("missing"))
+      )
+    ),
     border_radius = FALSE,
     fillable = TRUE,
   ) # layout_sidebar
@@ -406,6 +416,18 @@ prepare_server <- function(id, x) {
       }),
       data_missing()
     )
+
+    ## Render plot -----
+    plot_missing <- reactive({
+      req(data_filter())
+      tabula::plot_heatmap(
+        object = is.na(data_filter()),
+        col = if (anyNA(data_filter())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
+        fixed_ratio = FALSE
+      )
+      grDevices::recordPlot()
+    })
+    render_plot("missing", x = plot_missing)
 
     ## Render table -----
     output$table <- gt::render_gt({
