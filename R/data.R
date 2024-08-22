@@ -357,20 +357,39 @@ prepare_server <- function(id, x) {
       fun(out)
     })
 
+    ## Render filters -----
+    output$filter <- renderUI({
+      req(data_missing())
+      n <- ncol(data_missing())
+      if (n == 0) return(NULL)
+
+      parts <- colnames(data_missing())
+      ui <- vector(mode = "list", length = n)
+      for (j in seq_len(n)) {
+        x <- data_missing()[, j, drop = TRUE]
+        ui[[j]] <- make_filter(session, x = x, var = parts[j])
+      }
+
+      ui
+    })
+
     ## Filter rows -----
     data_filter <- reactive({
+      out <- data_missing()
+
       each_var <- lapply(
-        X = colnames(data_missing()),
+        X = colnames(out),
         FUN = function(j, x, val) {
-          ok <- filter_var(x = x[[j]], val = paste0("filter_", val[[j]]))
+          ok <- filter_var(x = x[[j]], val = val[[paste0("filter_", j)]])
           ok %||% TRUE
         },
-        x = data_missing(),
+        x = out,
         val = input
       )
       keep <- Reduce(f = `&`, x = each_var)
-      if (all(!keep)) return(data_missing())
-      data_missing()[keep, , drop = FALSE]
+
+      if (all(!keep)) return(out)
+      out[keep, , drop = FALSE]
     })
 
     ## Send notification -----
@@ -387,28 +406,6 @@ prepare_server <- function(id, x) {
       }),
       data_missing()
     )
-
-    ## Render filters -----
-    output$filter <- renderUI({
-      req(data_missing())
-      quali <- arkhe::discard(
-        x = data_missing(),
-        f = is.numeric,
-        margin = 2,
-        verbose = get_option("verbose")
-      )
-      n <- ncol(quali)
-      if (n == 0) return(NULL)
-
-      parts <- colnames(quali)
-      ui <- vector(mode = "list", length = n)
-      for (j in seq_len(n)) {
-        x <- quali[, j, drop = TRUE]
-        ui[[j]] <- make_filter(session, x = x, var = parts[j])
-      }
-
-      ui
-    })
 
     ## Render table -----
     output$table <- gt::render_gt({
@@ -457,6 +454,7 @@ read_table <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
 make_filter <- function(session, x, var) {
   ns <- session$ns
   if (is.numeric(x)) {
+    return(NULL)
     rng <- range(x, na.rm = TRUE)
     sliderInput(inputId = ns(var), label = var, width = "100%",
                 min = rng[1], max = rng[2], value = rng)
