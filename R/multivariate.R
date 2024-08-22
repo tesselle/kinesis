@@ -84,7 +84,7 @@ multivariate_results <- function(id) {
   nav_panel(
     title = "Results",
     layout_columns(
-      col_widths = "50%",
+      col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
       output_plot(
         id = ns("plot_ind"),
         tools = list(
@@ -135,7 +135,7 @@ multivariate_screeplot <- function(id) {
   nav_panel(
     title = "Screeplot",
     layout_columns(
-      col_widths = "50%",
+      col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
       output_plot(id = ns("screeplot"), title = "Screeplot"),
       gt::gt_output(outputId = ns("variance"))
     )

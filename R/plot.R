@@ -3,10 +3,12 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @param tools A (list of) input elements.
+#' @param title A [`character`] string giving the card title.
+#' @param note A [`character`] string giving a note to be placed in the footer.
 #' @param ... Further parameters to be passed to [shiny::plotOutput()].
 #' @family widgets
 #' @keywords internal
-output_plot <- function(id, ..., tools = NULL, title = "Card title") {
+output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -30,8 +32,8 @@ output_plot <- function(id, ..., tools = NULL, title = "Card title") {
     ),
     card_body(
       plotOutput(outputId = ns("plot"), ...)
-    )
-    # card_footer()
+    ),
+    if (!is.null(note)) card_footer(note)
   )
 }
 

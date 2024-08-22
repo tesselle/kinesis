@@ -13,21 +13,22 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      helpText("Empty strings will be interpreted as unassigned samples."),
       selectizeInput(
         inputId = ns("groups"),
-        label = tooltip(
-          span("Groups", icon("info-circle")),
-          "Empty strings will be interpreted as unassigned samples."
-        ),
+        label = "Groups",
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
         options = list(plugins = "clear_button")
-      )
+      ),
+      hr(),
+      uiOutput(outputId = ns("description"))
     ), # sidebar
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
+        open = FALSE,
         h5("Detection limits"),
         ## Output: set detection limits
         helpText(
@@ -39,7 +40,7 @@ coda_ui <- function(id) {
                      value = 2 / 3, min = 0, max = 1),
         uiOutput(outputId = ns("limits"))
       ),
-      ## Output: display table
+      ## Output: display table,
       gt::gt_output(outputId = ns("table")),
       border = FALSE
     ), # layout_sidebar
@@ -126,17 +127,35 @@ coda_server <- function(id, x) {
       nexus::replace_zero(coda(), value = limits, delta = input$delta)
     })
 
+    ## Render description -----
+    output$description <- renderUI({
+      req(clean())
+      descr <- utils::capture.output(nexus::describe(clean()))
+      markdown(descr)
+    })
+
     ## Render tables -----
     output$table <- gt::render_gt({
       req(clean())
-      feat <- as.data.frame(clean())
-      num <- arkhe::detect(x = feat, f = is.numeric, margin = 2, na.rm = TRUE)
-
-      feat |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::fmt_percent(columns = which(num), decimals = 2) |>
+      if (nexus::any_assigned(clean())) {
+        tbl <- data.frame(group = nexus::get_groups(clean()), clean())
+        gt <- gt::gt(tbl, groupname_col="group", rownames_to_stub = TRUE)
+      } else {
+        gt <- clean() |>
+          as.data.frame() |>
+          gt::gt(rownames_to_stub = TRUE)
+      }
+      gt |>
+        gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+        gt::tab_style_body(
+          fn = function(x) is.na(x),
+          style = gt::cell_text(color = "red3")
+        ) |>
+        gt::tab_style_body(
+          fn = function(x) x == 0,
+          style = gt::cell_text(color = "orange")
+        )
     })
 
     clean

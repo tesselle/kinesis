@@ -107,6 +107,7 @@ prepare_ui <- function(id) {
       h5("Prepare"),
       accordion(
         open = FALSE,
+        multiple = FALSE,
         accordion_panel(
           "Select columns",
           checkboxGroupInput(
@@ -181,21 +182,29 @@ prepare_ui <- function(id) {
         )
       )
     ), # sidebar
-    layout_sidebar(
-      sidebar = sidebar(
-        width = 400,
-        open = FALSE,
-        h5("Description"),
-        uiOutput(outputId = ns("description")),
-        tableOutput(outputId = ns("missing"))
-      ), # sidebar
-      ## Output: display data
-      gt::gt_output(outputId = ns("table")),
-      border = FALSE
-    ), # layout_sidebar
+    ## Output: value box
+    layout_columns(
+      col_widths = breakpoints(
+        xs = c(12, 12),
+        md = c(6, 6),
+        lg = c(3, 3)
+      ),
+      fill = FALSE,
+      value_box(
+        title = "Sparcity",
+        value = textOutput(outputId = ns("value_sparcity")),
+        showcase = icon("table-cells")
+      ),
+      value_box(
+        title = "Missing values",
+        value = textOutput(outputId = ns("value_missing")),
+        showcase = icon("circle-question")
+      )
+    ),
+    ## Output: display data
+    gt::gt_output(outputId = ns("table")),
     border_radius = FALSE,
     fillable = TRUE,
-    class = "p-0"
   ) # layout_sidebar
 }
 
@@ -379,11 +388,6 @@ prepare_server <- function(id, x) {
       data_missing()
     )
 
-    table_missing <- reactive({
-      req(data_filter())
-      count_missing(data_filter(), margin = 2)
-    })
-
     ## Render filters -----
     output$filter <- renderUI({
       req(data_missing())
@@ -413,13 +417,16 @@ prepare_server <- function(id, x) {
         gt::sub_missing() |>
         gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
     })
-    output$missing <- render_table({ table_missing })
 
     ## Render description -----
-    output$description <- renderUI({
+    output$value_sparcity <- renderText({
       req(data_filter())
-      descr <- utils::capture.output(arkhe::describe(data_filter()))
-      markdown(descr)
+      spa <- arkhe::sparsity(data_filter())
+      paste0(round(spa * 100, 2), "%")
+    })
+    output$value_missing <- renderText({
+      req(data_filter())
+      sum(is.na(data_filter()))
     })
 
     data_filter
@@ -473,21 +480,4 @@ filter_var <- function(x, val) {
     ## No control, so don't filter
     TRUE
   }
-}
-count_missing <- function(x, margin = 1) {
-  total <- arkhe::count(x, f = is.na, margin = margin)
-  has_na <- total > 0
-  if (!any(has_na)) return(NULL)
-
-  prop_na <- round(total[has_na] * 100 / sum(total))
-  if (margin == 1) {
-    id <- rownames(x)[has_na]
-  } else {
-    id <- colnames(x)[has_na]
-  }
-  tbl_na <- data.frame(id, sprintf("%d (%g%%)", total[has_na], prop_na),
-                       row.names = which(has_na))
-  mar <- if (margin == 1) "Row" else "Column"
-  colnames(tbl_na) <- c(mar, "Missing values")
-  tbl_na
 }

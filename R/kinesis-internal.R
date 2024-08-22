@@ -40,23 +40,30 @@ cite_package <- function(x = NULL, which = 1) {
   )
 }
 
-cite_article <- function(author, year, doi = NULL, text = TRUE, after = "") {
+cite_article <- function(author, year, doi = NULL, text = TRUE,
+                         before = "", after = "", html = TRUE) {
   right <- paste0(")", after)
   if (is.null(doi)) {
-    link <- year
+    link <- tags$span(year, .noWS = "outside")
   } else {
     url <- sprintf("https://doi.org/%s", doi)
     link <- tags$a(year, href = url, target = "_blank", .noWS = "outside")
   }
 
   if (text) {
-    tags$span(author, "(", link, right)
+    cite <- tags$span(before, author, "(", link, right)
   } else {
-    tags$span(
+    cite <- tags$span(
       paste0("(", author, ", "), link, right,
       .noWS = c("after-begin", "before-end")
     )
   }
+  if (!html) cite <- as.character(cite)
+  cite
+}
+
+info_article <- function(...) {
+  cite_article(..., before = icon("info-circle"), after = ".")
 }
 
 info_session <- function() {

@@ -13,10 +13,7 @@ coda_summary_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      downloadButton(outputId = ns("download"), "Download tables"),
-      hr(),
       h5("Univariate statistics"),
-      helpText("See", cite_article("Filzmoser et al.", "2009", "10.1016/j.scitotenv.2009.08.008", after = ".")),
       selectInput(
         inputId = ns("hist_select"),
         label = "Select a part",
@@ -24,29 +21,41 @@ coda_summary_ui <- function(id) {
         selected = NULL,
         multiple = FALSE
       ),
-      output_plot(id = ns("hist"), title = "Histogram")
+      output_plot(
+        id = ns("hist"),
+        title = "Histogram",
+        note = info_article(author = "Filzmoser et al.", year = "2009",
+                            doi = "10.1016/j.scitotenv.2009.08.008")
+      )
     ),
+    h5("Multivariate statistics"),
     navset_tab(
       nav_panel(
-        title = "Summary statistics",
-        h5("Center"),
-        tableOutput(outputId = ns("location")),
-        h5("Spread"),
-        helpText("See", cite_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3", after = ".")),
-        tableOutput(outputId = ns("spread")),
-        h5("Percentile table"),
-        tableOutput(outputId = ns("quantile"))
+        title = "Location",
+        gt::gt_output(outputId = ns("mean")),
+        gt::gt_output(outputId = ns("quantile"))
+      ),
+      # nav_panel(
+      #   title = "Spread",
+      #   helpText(info_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3")),
+      #   gt::gt_output(outputId = ns("spread")),
+      # ),
+      nav_panel(
+        title = "Covariance",
+        gt::gt_output(outputId = ns("covariance"))
       ),
       nav_panel(
-        title = "CLR covariance",
-        helpText("See", cite_article("Aitchison", "1986", after = ".")),
-        tableOutput(outputId = ns("covariance"))
+        title = "PIP",
+        gt::gt_output(outputId = ns("pip"))
       ),
       nav_panel(
         title = "Variation matrix",
-        helpText("See", cite_article("Aitchison", "1986", after = ".")),
-        output_plot(id = ns("dendrogram"), title = "Variation matrix"),
-        tableOutput(outputId = ns("variation"))
+        layout_columns(
+          col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
+          output_plot(id = ns("heatmap")),
+          output_plot(id = ns("dendrogram"))
+        ),
+        gt::gt_output(outputId = ns("variation"))
       )
     ) # navset_card_underline
   ) # layout_sidebar
@@ -123,6 +132,12 @@ coda_summary_server <- function(id, x) {
       nexus::covariance(data(), center = TRUE)
     })
 
+    ## CLR covariance -----
+    data_pip <- reactive({
+      req(data())
+      nexus::pip(data())
+    })
+
     ## Variation matrix -----
     data_var <- reactive({
       req(data())
@@ -130,34 +145,75 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Clustering -----
-    # plot_clust <- reactive({
-    #   d <- stats::as.dist(data_var())
-    #   h <- stats::hclust(d, method = "ward.D2")
-    #   plot(h, main = "", sub = "", xlab = "", ylab = "Total variation", las = 1)
-    #   grDevices::recordPlot()
-    # })
-
-    ## Heatmap -----
-    plot_heatmap <- reactive({
-      stats::heatmap(
-        data_var(),
-        distfun = stats::as.dist,
-        hclustfun = function(x) stats::hclust(x, method = "ward.D2"),
-        symm = TRUE,
-        scale = "none"
-      )
+    plot_clust <- reactive({
+      d <- stats::as.dist(data_var())
+      h <- stats::hclust(d, method = "ward.D2")
+      plot(h, hang = -1, main = "", sub = "",
+           xlab = "", ylab = "Total variation", las = 1)
       grDevices::recordPlot()
     })
 
+    ## Heatmap -----
+    plot_heatmap <- reactive({
+      req(data_var())
+      tabula::plot_heatmap(data_var(), fixed_ratio = TRUE)
+      grDevices::recordPlot()
+    })
+
+    Aitchison1986 <- info_article(
+      author = "Aitchison", year = "1986", html = FALSE
+    )
+    Egozcue2023 <- info_article(
+      author = "Egozcue & Pawlowsky-Glahn", year = "2023",
+      doi = "10.57645/20.8080.02.7", html = FALSE
+    )
+
     ## Render table -----
-    output$location <- render_table(data_loc)
-    output$spread <- render_table(data_spread, width = "auto")
-    output$quantile <- render_table(data_quant)
-    output$covariance <- render_table(data_cov)
-    output$variation <- render_table(data_var)
+    output$mean <- gt::render_gt({
+      req(data())
+      data_loc() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = nexus::any_assigned(data())) |>
+        gt::fmt_percent(decimals = 3) |>
+        gt::sub_missing() |>
+        gt::tab_header(title = "Compositional Mean")
+    })
+    output$quantile <-  gt::render_gt({
+      data_quant() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_percent(decimals = 3) |>
+        gt::sub_missing() |>
+        gt::tab_header(title = "Percentile Table")
+    })
+    output$covariance <- gt::render_gt({
+      data_cov() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::tab_header(title = "Centered Log-Ratio Covariance") |>
+        gt::tab_source_note(source_note = gt::html(Aitchison1986))
+    })
+    output$pip <- gt::render_gt({
+      data_pip() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::tab_header(title = "Proportionality Index of Parts") |>
+        gt::tab_source_note(source_note = gt::html(Egozcue2023))
+    })
+    output$variation <- gt::render_gt({
+      data_var() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::tab_header(title = "Variation Matrix") |>
+        gt::tab_source_note(source_note = gt::html(Aitchison1986))
+    })
 
     ## Render plot -----
-    render_plot("dendrogram", x = plot_heatmap)
+    render_plot("heatmap", x = plot_heatmap)
+    render_plot("dendrogram", x = plot_clust)
     render_plot("hist", x = plot_hist)
 
     ## Download -----
