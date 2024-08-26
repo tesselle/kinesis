@@ -58,14 +58,14 @@ shiny_ui <- function(request) {
       ),
       bslib::nav_menu(
         title = "Analysis",
+        # bslib::nav_panel(
+        #   title = "Outliers",
+        #   kinesis::coda_outliers_ui("outliers")
+        # ),
         bslib::nav_panel(
-            title = "Outliers",
-            kinesis::coda_outliers_ui("outliers")
-          ),
-        bslib::nav_panel(
-            title = "PCA",
-            kinesis::pca_ui("pca", scale = FALSE)
-          )
+          title = "PCA",
+          kinesis::pca_ui("pca", scale = FALSE)
+        )
       ),
       header = kinesis::header_ui("header"),
       footer = kinesis::footer_ui("footer"),
