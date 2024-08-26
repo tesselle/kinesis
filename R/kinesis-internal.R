@@ -5,7 +5,7 @@
 }
 
 is_set <- function(x) {
-  !is.null(x) && length(x) != 0 && x != ""
+  !is.null(x) && length(x) != 0 && !all(x == "")
 }
 
 get_value <- function(x) {

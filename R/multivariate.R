@@ -52,20 +52,22 @@ multivariate_ui <- function(id) {
           "Convex hull" = "hull"
         )
       ),
-      sliderInput(
+      checkboxGroupInput(
         inputId = ns("level"),
         label = "Ellipse level",
-        min = 0.1, max = 0.99,
-        value = 0.95, step = 0.01
+        selected = "0.95",
+        choiceNames = c("68%", "95%", "99%"),
+        choiceValues = c("0.68", "0.95", "0.99")
       ),
       hr(),
-      selectizeInput(
-        inputId = ns("highlight"),
-        label = "Highlight",
-        choices = c("none" = "", "contribution", "cos2"),
-        selected = "observation",
-        multiple = FALSE,
-        options = list(plugins = "clear_button")
+      radioButtons(
+        inputId = ns("extra_quanti"),
+        label = "Quality assessment:",
+        choices = c(
+          "None" = "",
+          "Contribution" = "contribution",
+          "Cos2" = "cos2"
+        )
       )
     ), # sidebar
     navset_card_pill(
@@ -88,18 +90,20 @@ multivariate_results <- function(id) {
       output_plot(
         id = ns("plot_ind"),
         tools = list(
-          select_color(
-            inputId = ns("col"),
-            type = "qualitative"
-          ),
-          select_pch(inputId = ns("pch")),
-          select_cex(inputId = ns("cex"))
+          select_color(inputId = ns("col_ind")),
+          select_pch(inputId = ns("pch"), default = NULL),
+          select_cex(inputId = ns("cex"), default = c(1, 6))
         ),
         title = "Individuals factor map",
         height = "100%"
       ),
       output_plot(
         id = ns("plot_var"),
+        tools = list(
+          select_color(inputId = ns("col_var"), default = "YlOrBr"),
+          select_lty(inputId = ns("lty"), default = NULL),
+          select_cex(inputId = ns("lwd"), default = c(1, 1))
+        ),
         title = "Variables factor map",
         height = "100%"
       )
@@ -208,18 +212,19 @@ multivariate_server <- function(id, x) {
         active = TRUE,
         sup = TRUE,
         labels = input$lab_row,
-        highlight = get_value(input$highlight),
-        col = if (is_set(input$highlight)) get_color(input$col) else "black",
-        pch = as.numeric(input$pch),
-        cex = as.numeric(input$cex),
+        extra_quanti = get_value(input$extra_quanti),
+        color = get_color(input$col_ind),
+        symbol = if (is_set(input$pch)) as.integer(input$pch) else NULL,
+        size = input$cex,
         panel.first = graphics::grid()
       )
 
       ## Envelope
+      level <- as.numeric(input$level)
       fun_wrap <- switch(
         input$wrap,
-        tol = function(x, ...) dimensio::viz_tolerance(x, level = input$level, ...),
-        conf = function(x, ...) dimensio::viz_confidence(x, level = input$level, ...),
+        tol = function(x, ...) dimensio::viz_tolerance(x, level = level, ...),
+        conf = function(x, ...) dimensio::viz_confidence(x, level = level, ...),
         hull = function(x, ...) dimensio::viz_hull(x, ...),
         function(...) invisible()
       )
@@ -237,6 +242,10 @@ multivariate_server <- function(id, x) {
         axes = c(axis1(), axis2()),
         active = TRUE, sup = TRUE,
         labels = input$lab_col,
+        extra_quanti = get_value(input$extra_quanti),
+        color = get_color(input$col_var),
+        symbol = if (is_set(input$lty)) as.integer(input$lty) else NULL,
+        size = input$lwd,
         panel.first = graphics::grid()
       )
       grDevices::recordPlot()

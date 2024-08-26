@@ -66,7 +66,21 @@ select_pch <- function(inputId, default = c(16, 17, 15, 3, 7, 8)) {
   )
 }
 
-select_color <- function(inputId, type = NULL) {
+select_lty <- function(inputId, default = "solid") {
+  x <- c(solid = 1, dashed = 2, dotted = 3,
+         dotdash = 4, longdash = 5, twodash = 6)
+
+  selectizeInput(
+    inputId = inputId,
+    label = "Line type",
+    choices = x,
+    selected = default,
+    multiple = TRUE,
+    options = list(plugins = "clear_button")
+  )
+}
+
+select_color <- function(inputId, type = NULL, default = "discreterainbow") {
   x <- khroma::info()
   x <- tapply(X = x$palette, INDEX = x$type, FUN = function(x) as.list(x))
   if (!is.null(type)) x <- x[type]
@@ -75,7 +89,7 @@ select_color <- function(inputId, type = NULL) {
     inputId = inputId,
     label = "Color palette",
     choices = x,
-    selected = "discreterainbow",
+    selected = default,
     multiple = FALSE
   )
 }
