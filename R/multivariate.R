@@ -213,7 +213,7 @@ multivariate_server <- function(id, x) {
         sup = TRUE,
         labels = input$lab_row,
         extra_quanti = get_value(input$extra_quanti),
-        color = get_color(input$col_ind),
+        color = khroma::color(input$col_ind),
         symbol = if (is_set(input$pch)) as.integer(input$pch) else NULL,
         size = input$cex,
         panel.first = graphics::grid()
@@ -243,7 +243,7 @@ multivariate_server <- function(id, x) {
         active = TRUE, sup = TRUE,
         labels = input$lab_col,
         extra_quanti = get_value(input$extra_quanti),
-        color = get_color(input$col_var),
+        color = khroma::color(input$col_var),
         symbol = if (is_set(input$lty)) as.integer(input$lty) else NULL,
         size = input$lwd,
         panel.first = graphics::grid()

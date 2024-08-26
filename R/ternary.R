@@ -280,7 +280,7 @@ ternary_server <- function(id, x) {
       }
       if (is_set(input$symbol_color)) {
         symbol_color <- x()[, input$symbol_color, drop = TRUE]
-        col <- get_color(input$col, n = length(unique(symbol_color)))
+        col <- khroma::color(input$col)(length(unique(symbol_color)))
         if (is.double(symbol_color)) {
           col <- khroma::palette_color_continuous(colors = col)(symbol_color)
         } else {

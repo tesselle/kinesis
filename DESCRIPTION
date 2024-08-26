@@ -25,7 +25,7 @@ Imports:
     grDevices,
     isopleuros (>= 1.2.0),
     kairos (>= 2.1.1),
-    khroma (>= 1.13.0),
+    khroma (>= 1.14.0),
     nexus (>= 0.2.0),
     shiny (>= 1.9.1),
     stats,

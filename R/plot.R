@@ -94,12 +94,6 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
   )
 }
 
-get_color <- function(palette, n = NULL) {
-  fun <- khroma::color(palette, name = FALSE, force = TRUE)
-  if (is.null(n)) n <- attr(fun, "max")
-  fun(n)
-}
-
 # Server =======================================================================
 #' Plot Server
 #'

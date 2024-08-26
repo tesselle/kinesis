@@ -4,7 +4,7 @@
 \alias{output_plot}
 \title{Plot UI}
 \usage{
-output_plot(id, ..., tools = NULL, title = "Card title")
+output_plot(id, ..., tools = NULL, title = NULL, note = NULL)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
@@ -12,6 +12,10 @@ output_plot(id, ..., tools = NULL, title = "Card title")
 \item{...}{Further parameters to be passed to \code{\link[shiny:plotOutput]{shiny::plotOutput()}}.}
 
 \item{tools}{A (list of) input elements.}
+
+\item{title}{A \code{\link{character}} string giving the card title.}
+
+\item{note}{A \code{\link{character}} string giving a note to be placed in the footer.}
 }
 \description{
 Plot UI

@@ -60,13 +60,14 @@ coda_plot_server <- function(id, x) {
       }),
       x()
     )
-    plot_pal <- reactive({
-      get_color(input$pal_qualitative, NCOL(x()))
-    })
     plot_bar <- reactive({
       req(x())
-      nexus::barplot(x(), order = input$order, decreasing = input$decreasing,
-                     col = plot_pal())
+      nexus::barplot(
+        height = x(),
+        order = input$order,
+        decreasing = input$decreasing,
+        col = khroma::color(input$pal_qualitative)(NCOL(x()))
+      )
       grDevices::recordPlot()
     })
 
