@@ -192,13 +192,11 @@ prepare_ui <- function(id) {
       fill = FALSE,
       value_box(
         title = "Sparcity",
-        value = textOutput(outputId = ns("value_sparcity")),
-        showcase = icon("table-cells")
+        value = textOutput(outputId = ns("value_sparcity"))
       ),
       value_box(
         title = "Missing values",
-        value = textOutput(outputId = ns("value_missing")),
-        showcase = icon("circle-question")
+        value = textOutput(outputId = ns("value_missing"))
       )
     ),
     navset_tab(
