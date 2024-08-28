@@ -70,7 +70,6 @@ coda_server <- function(id, x) {
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
       choices <- colnames(x())[!index_numeric]
 
-      freezeReactiveValue(input, "groups")
       updateSelectizeInput(
         session,
         inputId = "groups",
@@ -88,7 +87,7 @@ coda_server <- function(id, x) {
           nexus::as_composition(
             from = x(),
             groups = get_value(input$groups),
-            verbose = get_option("verbose")
+            verbose = get_option("verbose", default = FALSE)
           )
         },
         what = "Composition"
@@ -103,7 +102,7 @@ coda_server <- function(id, x) {
       if (n == 0) return(NULL)
 
       parts <- colnames(coda())
-      ids <- paste("limit", parts, sep = "_")
+      ids <- paste0("limit_", parts)
       lab <- paste(parts, "(%)", sep = " ")
       ui <- vector(mode = "list", length = n)
       for (j in seq_len(n)) {
@@ -119,7 +118,7 @@ coda_server <- function(id, x) {
       req(coda())
 
       parts <- colnames(coda())
-      ids <- paste("limit", parts, sep = "_")
+      ids <- paste0("limit_", parts)
       limits <- lapply(X = ids, FUN = function(i, x) x[[i]], x = input)
 
       if (any(lengths(limits) == 0) || all(limits == 0)) return(coda())
