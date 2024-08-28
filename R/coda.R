@@ -13,10 +13,26 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      helpText("Empty strings will be interpreted as unassigned samples."),
+      helpText(
+        "You can use a qualitative variable to assign each sample to a group.",
+        "Missing values and empty strings will be interpreted as unassigned samples."
+      ),
       selectizeInput(
         inputId = ns("groups"),
         label = "Groups",
+        choices = NULL,
+        selected = NULL,
+        multiple = FALSE,
+        options = list(plugins = "clear_button")
+      ),
+      hr(),
+      helpText(
+        "If your data contain several observations for the same sample (e.g. repeated measurements),",
+        "you can use a qualitative variable to split the data into subsets and compute the compositional mean for each sample."
+      ),
+      selectizeInput(
+        inputId = ns("condense"),
+        label = "Condense",
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
@@ -32,9 +48,10 @@ coda_ui <- function(id) {
         h5("Detection limits"),
         ## Output: set detection limits
         helpText(
-          "Define the detection limit for each compositionnal part below.",
-          "Zeros (i.e. non-detected data) will be replaced by a fraction of this limit",
-          cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", FALSE, after = ".")
+          "If your data contains zeros, these can be considered as values below the detection limit (thus interpreted as small unknown values).",
+          "In this case, you can define the detection limit for each compositional part below.",
+          "If all limits are specified, zeros will be replaced by a fraction of these limits.",
+          "See", cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", T), "for computational details."
         ),
         numericInput(inputId = ns("delta"), label = "Fraction",
                      value = 2 / 3, min = 0, max = 1),
@@ -65,7 +82,7 @@ coda_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select variables -----
+    ## Select groups -----
     observeEvent(x(), {
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
       choices <- colnames(x())[!index_numeric]
@@ -76,13 +93,18 @@ coda_server <- function(id, x) {
         choices = c("", choices),
         selected = grep("^group[s]{0,1}$", choices, ignore.case = TRUE, value = TRUE)
       )
+      updateSelectizeInput(
+        session,
+        inputId = "condense",
+        choices = c("", choices)
+      )
     })
 
     ## Coerce to compositions -----
     coda <- reactive({
       req(x())
 
-      run_with_notification(
+      z <- run_with_notification(
         {
           nexus::as_composition(
             from = x(),
@@ -92,6 +114,12 @@ coda_server <- function(id, x) {
         },
         what = "Composition"
       )
+
+      if (isTruthy(input$condense)) {
+        z <- nexus::condense(z, by = x()[[input$condense]])
+      }
+
+      z
     })
 
     ## Render filters -----

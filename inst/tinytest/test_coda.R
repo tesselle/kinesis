@@ -12,7 +12,10 @@ imp <- nexus::replace_zero(nexus::as_composition(fake, groups = 1),
 x <- reactiveVal(fake)
 
 testServer(coda_server, args = list(x = x), {
-  session$setInputs(groups = "", delta = 2/3,
+  session$setInputs(groups = "", condense = "group")
+  expect_equal(NROW(coda()), 3)
+
+  session$setInputs(groups = "", condense = "", delta = 2/3,
                     limit_Ca = 0, limit_Fe = 0, limit_Na = 0)
   expect_error(valid(), "Compositional data must not contain zeros")
 
