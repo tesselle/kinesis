@@ -77,31 +77,30 @@ coda_summary_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Validate -----
     data <- reactive({
-      validate(need(!anyNA(x()), "Your data must not contain missing values."))
       x()
     })
 
     ## Location -----
     data_loc <- reactive({
-      req(data())
-      if (nexus::any_assigned(data())) {
-        index <- nexus::get_groups(data())
-        nexus::aggregate(data(), by = index, FUN = nexus::mean, na.rm = FALSE)
+      req(x())
+      if (nexus::any_assigned(x())) {
+        index <- nexus::get_groups(x())
+        nexus::aggregate(x(), by = index, FUN = nexus::mean, na.rm = FALSE)
       } else {
-        m <- nexus::mean(data(), na.rm = FALSE)
+        m <- nexus::mean(x(), na.rm = FALSE)
         matrix(m, nrow = 1, dimnames = list("center", names(m)))
       }
     })
 
     ## Spread -----
     data_spread <- reactive({
-      req(data())
+      req(x())
       ## Metric variance by group
-      if (nexus::any_assigned(data())) {
-        index <- nexus::get_groups(data())
-        s <- nexus::aggregate(data(), by = index, FUN = nexus::metric_var)
+      if (nexus::any_assigned(x())) {
+        index <- nexus::get_groups(x())
+        s <- nexus::aggregate(x(), by = index, FUN = nexus::metric_var)
       } else {
-        m <- nexus::metric_var(data())
+        m <- nexus::metric_var(x())
         s <- matrix(m, nrow = 1, dimnames = list("", NULL))
       }
       colnames(s) <- c("metric variance")
@@ -110,38 +109,38 @@ coda_summary_server <- function(id, x) {
 
     ## Percentiles -----
     data_quant <- reactive({
-      req(data())
-      nexus::quantile(data(), probs = seq(0, 1, 0.25))
+      req(x())
+      nexus::quantile(x(), probs = seq(0, 1, 0.25))
     })
 
     ## Histogram -----
-    observeEvent(data(), {
-      choices <- colnames(data())
+    observeEvent(x(), {
+      choices <- colnames(x())
       freezeReactiveValue(input, "hist_select")
       updateSelectInput(inputId = "hist_select", choices = choices)
     })
     plot_hist <- reactive({
-      req(data())
-      nexus::hist(data()[, input$hist_select, drop = FALSE], ncol = 1)
+      req(x())
+      nexus::hist(x()[, input$hist_select, drop = FALSE], ncol = 1)
       grDevices::recordPlot()
     })
 
     ## CLR covariance -----
     data_cov <- reactive({
-      req(data())
-      nexus::covariance(data(), center = TRUE)
+      req(x())
+      nexus::covariance(x(), center = TRUE)
     })
 
     ## PIP -----
     data_pip <- reactive({
-      req(data())
-      nexus::pip(data())
+      req(x())
+      nexus::pip(x())
     })
 
     ## Variation matrix -----
     data_var <- reactive({
-      req(data())
-      nexus::variation(data())
+      req(x())
+      nexus::variation(x())
     })
 
     ## Clustering -----
@@ -170,10 +169,10 @@ coda_summary_server <- function(id, x) {
 
     ## Render table -----
     output$mean <- gt::render_gt({
-      req(data())
+      req(x())
       data_loc() |>
         as.data.frame() |>
-        gt::gt(rownames_to_stub = nexus::any_assigned(data())) |>
+        gt::gt(rownames_to_stub = nexus::any_assigned(x())) |>
         gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
         gt::tab_header(title = "Compositional Mean")

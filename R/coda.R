@@ -108,7 +108,7 @@ coda_server <- function(id, x) {
       ui <- vector(mode = "list", length = n)
       for (j in seq_len(n)) {
         ui[[j]] <- numericInput(inputId = session$ns(ids[j]), label = lab[j],
-                       value = 0, min = 0, max = 100)
+                                value = 0, min = 0, max = 100)
       }
 
       ui
@@ -125,6 +125,13 @@ coda_server <- function(id, x) {
       if (any(lengths(limits) == 0) || all(limits == 0)) return(coda())
       limits <- unlist(limits) / 100
       nexus::replace_zero(coda(), value = limits, delta = input$delta)
+    })
+
+    ## Validate -----
+    valid <- reactive({
+      validate(need(!anyNA(clean()), "Compositional data must not contain missing values."))
+      validate(need(!any(clean() == 0), "Compositional data must not contain zeros."))
+      clean()
     })
 
     ## Render description -----
@@ -158,6 +165,6 @@ coda_server <- function(id, x) {
         )
     })
 
-    clean
+    valid
   })
 }

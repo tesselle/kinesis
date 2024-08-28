@@ -14,6 +14,7 @@ multivariate_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      open = FALSE,
       h5("Factor maps"),
       ## Input: display options
       selectInput(
@@ -38,7 +39,7 @@ multivariate_ui <- function(id) {
       checkboxInput(
         inputId = ns("lab_col"),
         label = "Label variables",
-        value = FALSE
+        value = TRUE
       ),
       hr(),
       ## Input: add ellipses

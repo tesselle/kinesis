@@ -60,6 +60,7 @@ logratio_server <- function(id, x, method) {
     ## Compute -----
     logratio <- reactive({
       req(x())
+
       trans <- switch (
         method,
         clr = function(x) nexus::transform_clr(x),
