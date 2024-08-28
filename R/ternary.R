@@ -146,8 +146,8 @@ ternary_ui <- function(id) {
       id = ns("ternplot"),
       tools = list(
         select_color(inputId = ns("col")),
-        select_pch(inputId = ns("pch")),
-        select_cex(inputId = ns("cex"))
+        select_pch(inputId = ns("pch"), default = NULL),
+        select_cex(inputId = ns("cex"), default = c(1, 6))
       ),
       height = "100%",
       click = ns("click"),
@@ -270,16 +270,16 @@ ternary_server <- function(id, x) {
       ## Graphical parameters
       col <- rep("black", n)
       border <- rep("black", n)
-      pch <- as.numeric(input$pch) %||% 16
-      cex <- as.numeric(input$cex) %||% 1
+      pch <- get_value(as.integer(input$pch))
+      cex <- get_value(as.integer(input$cex), 1)
 
-      if (is_set(input$group)) {
-        grp <- data_quali()[, input$group, drop = TRUE]
+      if (isTruthy(input$group)) {
+        grp <- data_quali()[[input$group]]
       } else {
         grp <- rep("", n)
       }
-      if (is_set(input$symbol_color)) {
-        symbol_color <- x()[, input$symbol_color, drop = TRUE]
+      if (isTruthy(input$symbol_color)) {
+        symbol_color <- x()[[input$symbol_color]]
         col <- khroma::color(input$col)(length(unique(symbol_color)))
         if (is.double(symbol_color)) {
           col <- khroma::palette_color_continuous(colors = col)(symbol_color)
@@ -288,14 +288,14 @@ ternary_server <- function(id, x) {
         }
         if (all(grp == symbol_color)) border <- col
       }
-      if (is_set(input$symbol_shape)) {
-        symbol_shape <- data_quali()[, input$symbol_shape, drop = TRUE]
+      if (isTruthy(input$symbol_shape)) {
+        symbol_shape <- data_quali()[[input$symbol_shape]]
         pch <- khroma::palette_shape(symbols = pch)(symbol_shape)
       } else {
-        pch <- pch[[1L]]
+        pch <- pch[[1L]] %||% 16
       }
-      if (is_set(input$symbol_size)) {
-        symbol_size <- data_quanti()[, input$symbol_size, drop = TRUE]
+      if (isTruthy(input$symbol_size)) {
+        symbol_size <- data_quanti()[[input$symbol_size]]
         cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)

@@ -4,12 +4,8 @@
   if (!is.null(x) && length(x) != 0) x else y
 }
 
-is_set <- function(x) {
-  !is.null(x) && length(x) != 0 && !all(x == "")
-}
-
-get_value <- function(x) {
-  if (!is_set(x)) return(NULL)
+get_value <- function(x, default = NULL) {
+  if (!isTruthy(x)) return(default)
   x
 }
 
