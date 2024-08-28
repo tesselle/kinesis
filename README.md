@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/tesselle/kinesis/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/kinesis/actions)
-[![codecov](https://codecov.io/gh/tesselle/kinesis/branch/master/graph/badge.svg)](https://codecov.io/gh/tesselle/kinesis)
+[![codecov](https://codecov.io/gh/tesselle/kinesis/graph/badge.svg?token=i2n7T978ex)](https://codecov.io/gh/tesselle/kinesis)
 
 <a href="https://tesselle.r-universe.dev/kinesis"
 class="pkgdown-devel"><img

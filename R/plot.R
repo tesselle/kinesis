@@ -25,6 +25,7 @@ output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
   )
 
   card(
+    id = ns("card"),
     full_screen = TRUE,
     card_header(
       title, gear,

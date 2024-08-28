@@ -13,18 +13,13 @@ get_value <- function(x) {
   x
 }
 
-
 assert_csv <- function(x) {
   validate(need(x, message = "Import a CSV file first."))
 }
 
-url_tesselle <- function(package = NULL, campaign = TRUE) {
-  mtm <- if (campaign) "?mtm_campaign=shiny" else ""
-  if (is.null(package)) {
-    sprintf("https://www.tesselle.org/%s", mtm)
-  } else {
-    sprintf("https://packages.tesselle.org/%s/%s", package, mtm)
-  }
+url_tesselle <- function(package = NULL) {
+  if (is.null(package)) return("https://www.tesselle.org/")
+  sprintf("https://packages.tesselle.org/%s/", package)
 }
 
 cite_package <- function(x = NULL, which = 1) {

@@ -159,7 +159,7 @@ prepare_ui <- function(id) {
           "Missing values",
           ## Input: zero as missing
           checkboxInput(
-            inputId = ns("zero"),
+            inputId = ns("zero_as_NA"),
             label = "Zero as missing value",
             value = FALSE
           ),
@@ -293,7 +293,6 @@ prepare_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Build UI -----
     observe({
-      freezeReactiveValue(input, "select")
       updateCheckboxGroupInput(
         inputId = "select",
         choices = colnames(x()),
@@ -305,11 +304,13 @@ prepare_server <- function(id, x) {
     ## Select data -----
     data_select <- reactive({
       assert_csv(x())
+      req(input$select)
       j <- match(input$select, colnames(x()))
-      x()[, j, drop = FALSE]
+      if (anyNA(j)) x() else x()[, j, drop = FALSE]
     })
 
     ## Remove data -----
+    verb <- get_option("verbose", FALSE)
     data_clean <- reactive({
       out <- data_select()
 
@@ -322,19 +323,19 @@ prepare_server <- function(id, x) {
       ## If only zeros
       if (isTRUE(input$remove_zero_row)) {
         out <- arkhe::remove_zero(out, margin = 1, all = input$all,
-                                  verbose = get_option("verbose"))
+                                  verbose = verb)
       }
 
       ## Remove columns
       ## If only zeros
       if (isTRUE(input$remove_zero_column)) {
         out <- arkhe::remove_zero(out, margin = 2, all = input$all,
-                                  verbose = get_option("verbose"))
+                                  verbose = verb)
       }
 
       ## If constant
       if (isTRUE(input$remove_constant_column)) {
-        out <- arkhe::remove_constant(out, verbose = get_option("verbose"))
+        out <- arkhe::remove_constant(out, verbose = verb)
       }
 
       out
@@ -344,22 +345,21 @@ prepare_server <- function(id, x) {
     data_missing <- reactive({
       out <- data_clean()
 
-      if (input$zero) out <- arkhe::replace_zero(out, value = NA)
+      if (isTRUE(input$zero_as_NA)) out <- arkhe::replace_zero(out, value = NA)
 
+      choice <- input$remove %||% ""
       fun <- switch(
-        input$remove,
-        none = function(x) { x },
+        choice,
         zero = function(x) {
           arkhe::replace_NA(x, value = 0)
         },
         row = function(x) {
-          arkhe::remove_NA(x, margin = 1, all = FALSE,
-                           verbose = get_option("verbose"))
+          arkhe::remove_NA(x, margin = 1, all = FALSE, verbose = verb)
         },
         col = function(x) {
-          arkhe::remove_NA(x, margin = 2, all = FALSE,
-                           verbose = get_option("verbose"))
-        }
+          arkhe::remove_NA(x, margin = 2, all = FALSE, verbose = verb)
+        },
+        function(x) { x }
       )
 
       fun(out)
@@ -403,7 +403,7 @@ prepare_server <- function(id, x) {
     ## Send notification -----
     bindEvent(
       observe({
-        if (anyNA(data_missing())) {
+        if (anyNA(data_filter())) {
           ## Save the ID for removal later
           notif_missing <- showNotification(ui = "Missing values detected!",
                                             duration = NULL, id = "missing",
@@ -412,7 +412,7 @@ prepare_server <- function(id, x) {
           removeNotification("missing")
         }
       }),
-      data_missing()
+      data_filter()
     )
 
     ## Render plot -----
@@ -429,6 +429,7 @@ prepare_server <- function(id, x) {
 
     ## Render table -----
     output$table <- gt::render_gt({
+      req(data_filter())
       data_filter() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::sub_missing() |>
@@ -471,16 +472,15 @@ read_table <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
     }
   )
 }
-make_filter <- function(session, x, var) {
+make_filter <- function(session, x, var, num = FALSE, char = TRUE, prefix = "filter_") {
   ns <- session$ns
-  if (is.numeric(x)) {
-    return(NULL)
+  if (is.numeric(x) && isTRUE(num)) {
     rng <- range(x, na.rm = TRUE)
-    sliderInput(inputId = ns(var), label = var, width = "100%",
+    sliderInput(inputId = ns(paste0(prefix, var)), label = var, width = "100%",
                 min = rng[1], max = rng[2], value = rng)
-  } else if (is.character(x)) {
+  } else if (is.character(x) && isTRUE(char)) {
     levs <- unique(x)
-    selectizeInput(inputId = ns(paste0("filter_", var)),
+    selectizeInput(inputId = ns(paste0(prefix, var)),
                    label = var, width = "100%",
                    choices = levs, selected = levs, multiple = TRUE,
                    options = list(plugins = "remove_button"))
