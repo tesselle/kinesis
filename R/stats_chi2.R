@@ -97,7 +97,7 @@ chi2_server <- function(id, x) {
     output$stdres <- render_table(chi2_std)
 
     ## Download
-    output$download <- export_table(
+    output$download <- export_multiple(
       expected = chi2_exp,
       residuals = chi2_res,
       name = "chi_squared"

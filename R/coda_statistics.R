@@ -232,7 +232,7 @@ coda_summary_server <- function(id, x) {
     render_plot("hist", x = plot_hist)
 
     ## Download -----
-    output$download <- export_table(
+    output$download <- export_multiple(
       location = data_loc,
       spread = data_spread,
       quantiles = data_quant,

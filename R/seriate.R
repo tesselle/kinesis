@@ -106,7 +106,7 @@ seriate_server  <- function(id, x) {
     render_plot("plot_permute", x = plot_permute)
 
     ## Download -----
-    output$export_table <- export_table(permuted = data_permute, name = "matrix_permuted")
+    output$export_table <- export_table(data_permute, name = "permuted")
 
     data_seriate
   })

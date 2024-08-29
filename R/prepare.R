@@ -48,6 +48,13 @@ prepare_ui <- function(id) {
           inputId = ns("go"),
           label = "Confirm"
         )
+      ),
+      card(
+        helpText("You can export your data for futur use."),
+        downloadButton(
+          outputId = ns("download"),
+          label = "Download"
+        )
       )
     ),
     navset_tab(
@@ -139,6 +146,9 @@ prepare_server <- function(id, x) {
       req(data_filter())
       sum(is.na(data_filter()))
     })
+
+    ## Dowload -----
+    output$download <- export_table(data_filter, "data")
 
     results <- bindEvent(reactive({ data_filter() }), input$go)
 

@@ -24,21 +24,61 @@ render_table <- function(x, ..., striped = TRUE, hover = FALSE, bordered = FALSE
   )
 }
 
-#' Download Multiple CSV Files
+#' Make File Name
+#'
+#' @param name A [`character`] string specifying the name of the file
+#'  (without extension and the leading dot).
+#' @param ext A [`character`] string specifying the file extension.
+#' @param project A [`character`] string specifying the name of the project.
+#' @family widgets
+#' @keywords internal
+#' @noRd
+file_name <- function(name, ext, project = NULL) {
+  project <- if (is.null(project)) "" else paste0(project, "_")
+  sprintf("%s%s_%s.%s", project, name, format(Sys.Date(), "%F"), ext)
+}
+
+#' Download a CSV File
 #'
 #' Save and Download a [`data.frame`] (csv).
+#' @param x A reactive [`data.frame`] to be saved.
+#' @param name A [`character`] string specifying the name of the file
+#'  (without extension and the leading dot).
+#' @family widgets
+#' @keywords internal
+#' @noRd
+export_table <- function(x, name) {
+  stopifnot(is.reactive(x))
+
+  downloadHandler(
+    filename = file_name(name, "csv"),
+    content = function(file) {
+      ## CSV file
+      utils::write.csv(
+        x = x(),
+        file = file,
+        fileEncoding = "utf-8"
+      )
+    },
+    contentType = "text/csv"
+  )
+}
+
+#' Download Multiple CSV Files
+#'
+#' Save and Download several [`data.frame`] (csv).
 #' @param ... Further named arguments ([`data.frame`] to be saved).
 #' @param name A [`character`] string specifying the name of the file
 #'  (without extension and the leading dot).
 #' @family widgets
 #' @keywords internal
 #' @noRd
-export_table <- function(..., name = "file") {
+export_multiple <- function(..., name = "archive") {
   tbl <- list(...)
   stopifnot(!is.null(names(tbl)))
 
   downloadHandler(
-    filename = sprintf("%s_%s.zip", format(Sys.Date(), "%F"), name),
+    filename = file_name(name, "zip"),
     content = function(file) {
       tmpdir <- tempdir()
 

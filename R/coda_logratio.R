@@ -116,10 +116,7 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Download -----
-    output$download_table <- export_table(
-      log_ratio = logratio,
-      name = method
-    )
+    output$download_table <- export_table(logratio, name = method)
 
     logratio
   })

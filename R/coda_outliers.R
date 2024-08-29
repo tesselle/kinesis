@@ -119,10 +119,7 @@ coda_outliers_server <- function(id, x) {
     })
 
     ## Download results -----
-    output$download <- export_table(
-      outliers = results,
-      name = "coda_outliers"
-    )
+    output$download <- export_table(results, name = "coda_outliers")
 
     out
   })

@@ -95,7 +95,7 @@ summary_server <- function(id, x) {
     output$cov <- render_table(data_cov)
 
     ## Download -----
-    output$download <- export_table(
+    output$download <- export_multiple(
       location = data_loc,
       spread = data_spread,
       quantiles = data_percentiles,

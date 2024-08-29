@@ -9,6 +9,23 @@ get_value <- function(x, default = NULL) {
   x
 }
 
+#' Get User Data
+#'
+#' @param session A \pkg{shiny} [session][shiny::session] object.
+#' @param name A [`character`] string specifying the name of an option to get.
+#'  If `NULL` (the default), all options are returned.
+#' @param default A value to be returned if the option is not currently set.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @noRd
+get_user <- function(session, name = NULL, default = NULL) {
+  if (is.null(name)) {
+    session$userData
+  } else {
+    session$userData[[name]] %||% default
+  }
+}
+
 assert_csv <- function(x) {
   validate(need(x, message = "Import a CSV file first."))
 }

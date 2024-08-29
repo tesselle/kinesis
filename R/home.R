@@ -26,9 +26,21 @@ home_ui <- function(id, name = NULL) {
             get_option("description")
           ),
           tags$p(
-            "This program is distributed in the hope that it will be useful,
-              but WITHOUT ANY WARRANTY."
+            "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY."
           ),
+          tags$p(
+            class = "logo",
+            tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
+                   tags$img(src = "static/logo-archeosciences.svg")),
+            tags$a(href = "https://www.huma-num.fr", rel = "external",
+                   tags$img(src = "static/logo-humanum.svg"))
+          ),
+          h3("Metadata"),
+          textInput(inputId = ns("user"), label = "User name"),
+          textInput(inputId = ns("project"), label = "Project ID")
+        ),
+        nav_panel(
+          title = "About",
           h3("How to cite"),
           tags$p(
             "If you use this application in your research, you must report
@@ -39,19 +51,7 @@ home_ui <- function(id, name = NULL) {
           ),
           tags$p("To cite in your publications, please use:"),
           cite_package(name),
-          tags$p(
-            class = "logo",
-            tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
-                   tags$img(src = "static/logo-archeosciences.svg")),
-            tags$a(href = "https://www.huma-num.fr", rel = "external",
-                   tags$img(src = "static/logo-humanum.svg"))
-          )
-        ),
-        nav_panel(
-          title = "About",
           h3("What is", tags$i("tesselle", .noWS = "after"), "?"),
-          tags$img(src="static/tesselle.png", alt="tesselle logo",
-                   style="float:right;width:150px;margin:0 10px;"),
           tags$p(
             "This app is a part of the", tags$strong("tesselle"), "project,",
             "a collection of packages for research and teaching in archaeology.
@@ -136,6 +136,10 @@ footer_ui <- function(id) {
 #' @export
 home_server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    ## User data -----
+    session$userData$user_name <- reactive({ input$user })
+    session$userData$project_name <- reactive({ input$project })
+
     ## Render -----
     output$session <- renderPrint({ utils::sessionInfo() })
   })
