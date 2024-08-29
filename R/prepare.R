@@ -29,9 +29,9 @@ prepare_ui <- function(id) {
     ## Output: value box
     layout_columns(
       col_widths = breakpoints(
-        xs = c(12, 12),
-        md = c(6, 6),
-        lg = c(3, 3)
+        xs = c(12, 12, 12),
+        md = c(6, 6, 6),
+        lg = c(3, 3, 6)
       ),
       fill = FALSE,
       value_box(
@@ -44,16 +44,20 @@ prepare_ui <- function(id) {
       ),
       card(
         helpText("If everything looks good with your data, click on 'confirm' and proceed to the next tab."),
-        actionButton(
-          inputId = ns("go"),
-          label = "Confirm"
-        )
-      ),
-      card(
-        helpText("You can export your data for futur use."),
-        downloadButton(
-          outputId = ns("download"),
-          label = "Download"
+        helpText("You can also export your data for futur use."),
+        layout_columns(
+          col_widths = breakpoints(
+            xs = c(12, 12),
+            lg = c(6, 6)
+          ),
+          actionButton(
+            inputId = ns("go"),
+            label = "Confirm"
+          ),
+          downloadButton(
+            outputId = ns("download"),
+            label = "Download"
+          )
         )
       )
     ),
@@ -150,7 +154,15 @@ prepare_server <- function(id, x) {
     ## Dowload -----
     output$download <- export_table(data_filter, "data")
 
-    results <- bindEvent(reactive({ data_filter() }), input$go)
+    ## Confirm -----
+    results <- bindEvent(
+      reactive({
+        msg <- "Ready to go!"
+        showNotification(ui = msg, type = "message")
+        data_filter()
+      }),
+      input$go
+    )
 
     results
   })
