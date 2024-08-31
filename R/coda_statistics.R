@@ -84,7 +84,7 @@ coda_summary_server <- function(id, x) {
     data_loc <- reactive({
       req(x())
       if (nexus::any_assigned(x())) {
-        index <- nexus::get_groups(x())
+        index <- nexus::group(x())
         nexus::aggregate(x(), by = index, FUN = nexus::mean, na.rm = FALSE)
       } else {
         m <- nexus::mean(x(), na.rm = FALSE)
@@ -97,7 +97,7 @@ coda_summary_server <- function(id, x) {
       req(x())
       ## Metric variance by group
       if (nexus::any_assigned(x())) {
-        index <- nexus::get_groups(x())
+        index <- nexus::group(x())
         s <- nexus::aggregate(x(), by = index, FUN = nexus::metric_var)
       } else {
         m <- nexus::metric_var(x())
