@@ -280,18 +280,35 @@ multivariate_server <- function(id, x) {
       info <- dimensio::summary(x(), margin = 1)@results
       info |>
         as.data.frame() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::fmt_number(decimals = 3) |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+        multivariate_summary()
     })
     output$info_var <- gt::render_gt({
       req(x())
       info <- dimensio::summary(x(), margin = 2)@results
       info |>
         as.data.frame() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::fmt_number(decimals = 3) |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+        multivariate_summary()
     })
   })
+}
+
+multivariate_summary <- function(x) {
+  gt::gt(x, rownames_to_stub = TRUE) |>
+    gt::fmt_number(decimals = 3) |>
+    gt::tab_spanner(
+      label = "Coordinates",
+      columns = gt::ends_with("coord"),
+      id = "coord"
+    ) |>
+    gt::tab_spanner(
+      label = "Contribution",
+      columns = gt::ends_with("contrib"),
+      id = "contrib"
+    ) |>
+    gt::tab_spanner(
+      label = "Squared cosinus",
+      columns = gt::ends_with("cos2"),
+      id = "cos2"
+    ) |>
+    gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
 }

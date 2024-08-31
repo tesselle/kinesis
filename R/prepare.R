@@ -52,7 +52,8 @@ prepare_ui <- function(id) {
           ),
           actionButton(
             inputId = ns("go"),
-            label = "Confirm"
+            label = "Confirm",
+            class = "btn btn-primary"
           ),
           downloadButton(
             outputId = ns("download"),
