@@ -13,23 +13,28 @@ coda_plot_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      checkboxInput(
+        inputId = ns("order_columns"),
+        label = "Sort columns",
+        value = FALSE
+      ),
       selectInput(
-        inputId = ns("order"),
-        label = "Order",
+        inputId = ns("order_rows"),
+        label = "Row order",
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
       ),
       checkboxInput(
         inputId = ns("decreasing"),
-        label = "Decreasing order",
+        label = "Decreasing row order",
         value = FALSE
       )
     ), # sidebar
     output_plot(
       id = ns("plot"),
       tools = select_color(
-        inputId = ns("pal_qualitative"),
+        inputId = ns("color_qualitative"),
         type = "qualitative"
       ),
       height = "100%",
@@ -55,18 +60,22 @@ coda_plot_server <- function(id, x) {
     ## Build barplot -----
     bindEvent(
       observe({
-        freezeReactiveValue(input, "order")
-        updateSelectInput(inputId = "order", choices = colnames(x()))
+        freezeReactiveValue(input, "order_rows")
+        choices <- c("", colnames(x()))
+        updateSelectInput(inputId = "order_rows", choices = choices)
       }),
       x()
     )
     plot_bar <- reactive({
       req(x())
+
+      col <- khroma::color(input$color_qualitative)
       nexus::barplot(
         height = x(),
-        order = input$order,
+        order_columns = input$order_columns,
+        order_rows = input$order_rows,
         decreasing = input$decreasing,
-        col = khroma::color(input$pal_qualitative)(NCOL(x()))
+        color = khroma::palette_color_discrete(col)
       )
       grDevices::recordPlot()
     })

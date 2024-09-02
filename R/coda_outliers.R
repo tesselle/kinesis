@@ -80,7 +80,7 @@ coda_outliers_server <- function(id, x) {
           {
             nexus::outliers(
               x(),
-              groups = nexus::group(x()),
+              groups = nexus::groups(x()),
               method = input$method,
               quantile = input$quantile
             )
@@ -94,7 +94,7 @@ coda_outliers_server <- function(id, x) {
     ## Select group -----
     bindEvent(
       observe({
-        grp <- nexus::group(out())
+        grp <- nexus::groups(out())
         choices <- seq_along(grp)
         names(choices) <- names(grp)
         freezeReactiveValue(input, "group")
