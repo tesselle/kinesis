@@ -13,6 +13,14 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      checkboxGroupInput(
+        inputId = ns("parts"),
+        label = "Compositional parts:",
+        choices = NULL,
+        selected = NULL,
+        width = "100%"
+      ),
+      hr(),
       helpText(
         "You can use a qualitative variable to assign each sample to a group.",
         "Missing values and empty strings will be interpreted as unassigned samples."
@@ -28,14 +36,14 @@ coda_ui <- function(id) {
       hr(),
       helpText(
         "If your data contain several observations for the same sample (e.g. repeated measurements),",
-        "you can use a qualitative variable to split the data into subsets and compute the compositional mean for each sample."
+        "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
       ),
       selectizeInput(
         inputId = ns("condense"),
         label = "Condense",
         choices = NULL,
         selected = NULL,
-        multiple = FALSE,
+        multiple = TRUE,
         options = list(plugins = "clear_button")
       ),
       hr(),
@@ -83,16 +91,26 @@ coda_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Select groups -----
-    observeEvent(x(), {
+    observe({
+      req(x())
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
-      choices <- colnames(x())[!index_numeric]
+      index_double <- arkhe::detect(x = x(), f = is.double, margin = 2)
+      choices <- colnames(x())[!index_double]
 
+      freezeReactiveValue(input, "parts")
+      updateCheckboxGroupInput(
+        inputId = "parts",
+        choices = colnames(x())[index_numeric],
+        selected = colnames(x())[index_double],
+        inline = TRUE
+      )
+      freezeReactiveValue(input, "groups")
       updateSelectizeInput(
         session,
         inputId = "groups",
-        choices = c("", choices),
-        selected = grep("^group[s]{0,1}$", choices, ignore.case = TRUE, value = TRUE)
+        choices = c("", choices)
       )
+      freezeReactiveValue(input, "condense")
       updateSelectizeInput(
         session,
         inputId = "condense",
@@ -108,6 +126,7 @@ coda_server <- function(id, x) {
         {
           nexus::as_composition(
             from = x(),
+            parts = input$parts,
             groups = get_value(input$groups),
             verbose = get_option("verbose", default = FALSE)
           )
@@ -116,7 +135,8 @@ coda_server <- function(id, x) {
       )
 
       if (isTruthy(input$condense)) {
-        z <- nexus::condense(z, by = x()[[input$condense]])
+        by <- as.data.frame(x())[, input$condense]
+        z <- nexus::condense(z, by = by)
       }
 
       z
