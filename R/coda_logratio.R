@@ -14,6 +14,11 @@ logratio_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       uiOutput(outputId = ns("title")),
+      checkboxInput(
+        inputId = ns("weights"),
+        label = "Weighted log-ratio",
+        value = FALSE
+      ),
       uiOutput(outputId = ns("settings")),
       downloadButton(outputId = ns("download_table"), "Download table"),
       ## Output: graph
@@ -63,8 +68,8 @@ logratio_server <- function(id, x, method) {
 
       trans <- switch (
         method,
-        clr = function(x) nexus::transform_clr(x),
-        alr = function(x) nexus::transform_alr(x, j = input$pivot),
+        clr = function(x) nexus::transform_clr(x, weights = input$weights),
+        alr = function(x) nexus::transform_alr(x, j = input$pivot, weights = input$weights),
         ilr = function(x) nexus::transform_ilr(x),
         plr = function(x) nexus::transform_plr(x, pivot = input$pivot)
       )
