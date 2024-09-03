@@ -12,8 +12,12 @@ imp <- nexus::replace_zero(nexus::as_composition(fake, groups = 1),
 x <- reactiveVal(fake)
 
 testServer(coda_server, args = list(x = x), {
-  session$setInputs(groups = "", condense = "group")
-  expect_equal(NROW(coda()), 3)
+  session$setInputs() # Needed because of freezeReactiveValue() (???)
+  session$setInputs(parts = c(2, 3), groups = "", condense = "")
+  expect_equal(dim(coda()), c(9L, 2L))
+
+  session$setInputs(parts = c(2, 3, 4), condense = "group")
+  expect_equal(dim(coda()), c(3L, 3L))
 
   session$setInputs(groups = "", condense = "", delta = 2/3,
                     limit_Ca = 0, limit_Fe = 0, limit_Na = 0)

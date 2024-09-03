@@ -90,7 +90,7 @@ coda_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select groups -----
+    ## Update UI -----
     observe({
       req(x())
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
@@ -106,13 +106,11 @@ coda_server <- function(id, x) {
       )
       freezeReactiveValue(input, "groups")
       updateSelectizeInput(
-        session,
         inputId = "groups",
         choices = c("", choices)
       )
       freezeReactiveValue(input, "condense")
       updateSelectizeInput(
-        session,
         inputId = "condense",
         choices = c("", choices)
       )
@@ -126,7 +124,7 @@ coda_server <- function(id, x) {
         {
           nexus::as_composition(
             from = x(),
-            parts = input$parts,
+            parts = get_value(input$parts),
             groups = get_value(input$groups),
             verbose = get_option("verbose", default = FALSE)
           )
@@ -135,10 +133,9 @@ coda_server <- function(id, x) {
       )
 
       if (isTruthy(input$condense)) {
-        by <- as.data.frame(x())[, input$condense]
+        by <- x()[, input$condense]
         z <- nexus::condense(z, by = by)
       }
-
       z
     })
 

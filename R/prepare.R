@@ -180,7 +180,7 @@ select_ui <- function(id) {
     width = "100%"
   )
 }
-select_server <- clean_server <- function(id, x) {
+select_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
