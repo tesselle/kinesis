@@ -78,9 +78,8 @@ coda_outliers_server <- function(id, x) {
 
         run_with_notification(
           {
-            nexus::outliers(
+            nexus::detect_outlier(
               x(),
-              groups = nexus::groups(x()),
               method = input$method,
               quantile = input$quantile
             )

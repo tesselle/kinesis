@@ -190,7 +190,7 @@ coda_server <- function(id, x) {
       req(clean())
       if (nexus::any_assigned(clean())) {
         tbl <- data.frame(group = nexus::groups(clean()), clean())
-        gt <- gt::gt(tbl, groupname_col="group", rownames_to_stub = TRUE)
+        gt <- gt::gt(tbl, groupname_col = "group", rownames_to_stub = TRUE)
       } else {
         gt <- clean() |>
           as.data.frame() |>

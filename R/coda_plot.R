@@ -29,7 +29,23 @@ coda_plot_ui <- function(id) {
         inputId = ns("decreasing"),
         label = "Decreasing row order",
         value = FALSE
-      )
+      ),
+      hr(),
+      checkboxInput(
+        inputId = ns("select_major"),
+        label = "Major elements",
+        value = TRUE
+      ),
+      checkboxInput(
+        inputId = ns("select_minor"),
+        label = "Minor elements",
+        value = TRUE
+      ),
+      checkboxInput(
+        inputId = ns("select_trace"),
+        label = "Trace elements",
+        value = TRUE
+      ),
     ), # sidebar
     output_plot(
       id = ns("plot"),
@@ -70,8 +86,21 @@ coda_plot_server <- function(id, x) {
       req(x())
 
       col <- khroma::color(input$color_qualitative)
+
+      elements <- logical(ncol(x()))
+      is_major <- nexus::is_element_major(x())
+      is_minor <- nexus::is_element_minor(x())
+      is_trace <- nexus::is_element_trace(x())
+
+      elements[which(is_major)] <- input$select_major
+      elements[which(is_minor)] <- input$select_minor
+      elements[which(is_trace)] <- input$select_trace
+
+      if (!any(elements)) elements <- NULL
+
       nexus::barplot(
         height = x(),
+        select = elements,
         order_columns = input$order_columns,
         order_rows = input$order_rows,
         decreasing = input$decreasing,
