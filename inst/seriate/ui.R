@@ -9,7 +9,7 @@ shiny_ui <- function(request) {
     lang = "en",
     bslib::page_navbar(
       title = "seriate",
-      kinesis::home_ui("home", name = "kairos"),
+      kinesis::home_ui("home"),
       bslib::nav_panel(
         title = "Data",
         kinesis::import_ui("import")

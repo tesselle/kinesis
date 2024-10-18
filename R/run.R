@@ -35,6 +35,7 @@ run_app <- function(app = c("seriate", "source", "ternary"),
   ## Bundling the options inside the shinyApp object
   kinesis_options <- get_config(app)
   obj$appOptions$kinesis_options <- kinesis_options
+  obj$appOptions$app_name <- app
 
   obj
 }
@@ -73,4 +74,8 @@ get_option <- function(name = NULL, default = NULL) {
   } else {
     shiny::getShinyOption("kinesis_options")[[name]] %||% default
   }
+}
+
+get_app_name <- function(...) {
+  shiny::getShinyOption("app_name")
 }

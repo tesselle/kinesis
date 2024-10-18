@@ -6,7 +6,7 @@
 #' @family page modules
 #' @keywords internal
 #' @export
-home_ui <- function(id, name = NULL) {
+home_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -16,68 +16,35 @@ home_ui <- function(id, name = NULL) {
       sidebar = sidebar(
         width = 400,
         h5("Workflow"),
+        help_workflow()
       ), # sidebar
       navset_card_pill(
         placement = "above",
         nav_panel(
-          title = "How to use",
-          h3("Overview"),
-          tags$p(
-            get_option("description")
-          ),
-          tags$p(
-            "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY."
-          ),
+          title = "Overview",
+          help_overview(),
+          help_warranty(),
           tags$p(
             class = "logo",
             tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
                    tags$img(src = "static/logo-archeosciences.svg")),
             tags$a(href = "https://www.huma-num.fr", rel = "external",
                    tags$img(src = "static/logo-humanum.svg"))
-          ),
-          h3("Metadata"),
-          textInput(inputId = ns("user"), label = "User name"),
-          textInput(inputId = ns("project"), label = "Project ID")
+          )
+        ),
+        nav_panel(
+          title = "How to cite",
+          help_cite()
         ),
         nav_panel(
           title = "About",
-          h3("How to cite"),
-          tags$p(
-            "If you use this application in your research, you must report
-              and cite it properly to ensure transparency of your results.
-              Moreover, authors and maintainers of this project are more likely to
-              continue their work if they see that it's being used and valued
-              by the research community."
-          ),
-          tags$p("To cite in your publications, please use:"),
-          cite_package(name),
-          h3("What is", tags$i("tesselle", .noWS = "after"), "?"),
-          tags$p(
-            "This app is a part of the", tags$strong("tesselle"), "project,",
-            "a collection of packages for research and teaching in archaeology.
-              The", tags$strong("tesselle"), "packages focus on quantitative
-              analysis methods developed for archaeology. They can be used to
-              explore and analyze common data types in archaeology: count data,
-              compositional data and chronological data."
-          ),
-          tags$p(
-            "For more information and relevant links see:",
-            tags$a("tesselle.org", href = url_tesselle(),
-                   target = "_blank", rel = "external", .noWS = "after"), "."
-          ),
-          # h3("Who is", tags$i("tesselle"), "for?"),
-          h3("License"),
-          tags$p(
-            "This app is distributed as a free and open source",
-            tags$a("R package", href = url_tesselle("kinesis"),
-                   target = "_blank", rel = "external", .noWS = "after"), "."
-          ),
-          tags$p(
-            "You can redistribute it and/or modify it under the terms of the
-              GNU General Public License as published by the Free Software
-              Foundation, either version 3 of the License, or (at your option)
-              any later version."
-          )
+          help_tesselle(),
+          help_license()
+        ),
+        nav_panel(
+          title = "Metadata",
+          textInput(inputId = ns("user"), label = "User name"),
+          textInput(inputId = ns("project"), label = "Project ID")
         )
       ) # navset_card_pill
     ) # layout_sidebar

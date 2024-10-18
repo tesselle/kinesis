@@ -9,7 +9,7 @@ shiny_ui <- function(request) {
     lang = "en",
     bslib::page_navbar(
       title = "source",
-      kinesis::home_ui("home", name = "nexus"),
+      kinesis::home_ui("home"),
       bslib::nav_panel(
         title = "Data",
         kinesis::import_ui("import")
@@ -17,21 +17,6 @@ shiny_ui <- function(request) {
       bslib::nav_panel(
         title = "Composition",
         kinesis::coda_ui("coda")
-      ),
-      bslib::nav_panel(
-        title = "Statistics",
-        kinesis::coda_summary_ui("coda_summary")
-      ),
-      bslib::nav_menu(
-        title = "Plot",
-        bslib::nav_panel(
-          title = "Bar plot",
-          kinesis::coda_plot_ui("barplot")
-        ),
-        bslib::nav_panel(
-          title = "Ternary plot",
-          kinesis::ternary_ui("ternary")
-        )
       ),
       bslib::nav_menu(
         title = "Transform",
@@ -54,6 +39,21 @@ shiny_ui <- function(request) {
           title = "PLR",
           value = "panel_plr",
           kinesis::logratio_ui("plr")
+        )
+      ),
+      bslib::nav_panel(
+        title = "Statistics",
+        kinesis::coda_summary_ui("coda_summary")
+      ),
+      bslib::nav_menu(
+        title = "Plot",
+        bslib::nav_panel(
+          title = "Bar plot",
+          kinesis::coda_plot_ui("barplot")
+        ),
+        bslib::nav_panel(
+          title = "Ternary plot",
+          kinesis::ternary_ui("ternary")
         )
       ),
       bslib::nav_menu(
