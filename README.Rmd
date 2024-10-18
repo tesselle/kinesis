@@ -17,11 +17,10 @@ Sys.setlocale("LC_MESSAGES", 'en_GB.UTF-8') # Force locale
 # kinesis <img width=120px src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/tesselle/kinesis/workflows/R-CMD-check/badge.svg)](https://github.com/tesselle/kinesis/actions)
+[![R-CMD-check](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/tesselle/kinesis/graph/badge.svg?token=i2n7T978ex)](https://codecov.io/gh/tesselle/kinesis)
 
 [![r-universe](https://tesselle.r-universe.dev/badges/kinesis)](https://tesselle.r-universe.dev/kinesis){.pkgdown-devel}
-
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 <!-- badges: end -->
 
@@ -48,7 +47,10 @@ The applications are deployed on the [Huma-Num](https://www.huma-num.fr) Shiny s
 You can install the released version of **kinesis** from [our repository](https://tesselle.r-universe.dev) with:
 
 ```{r universe-installation, eval=FALSE}
-install.packages("kinesis", repos = "https://tesselle.r-universe.dev")
+options(repos = c(CRAN = "https://cloud.r-project.org",
+                  tesselle = "https://tesselle.r-universe.dev"))
+
+install.packages("kinesis")
 ```
 
 And the development version from [GitHub](https://github.com/) with:
