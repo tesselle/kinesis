@@ -208,7 +208,7 @@ export_plot_server <- function(id, x, format) {
     })
 
     output[[format]] <- downloadHandler(
-      filename = function() { sprintf("%s.%s", name(), format) },
+      filename = function() { make_file_name(name(), format) },
       content = function(file) {
         device <- switch (
           format,

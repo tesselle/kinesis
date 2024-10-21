@@ -9,6 +9,22 @@ get_value <- function(x, default = NULL) {
   x
 }
 
+#' Make File Name
+#'
+#' @param name A [`character`] string specifying the name of the file
+#'  (without extension and the leading dot).
+#' @param ext A [`character`] string specifying the file extension.
+#' @param project A [`character`] string specifying the name of the project.
+#' @family widgets
+#' @keywords internal
+#' @noRd
+make_file_name <- function(name, ext, project = NULL) {
+  project <- if (is.null(project)) "" else paste0(project, "_")
+  time_stamp <- format(Sys.time(), "%y%m%d_%H%M%S")
+
+  sprintf("%s%s_%s.%s", project, name, time_stamp, ext)
+}
+
 #' Get User Data
 #'
 #' @param session A \pkg{shiny} [session][shiny::session] object.

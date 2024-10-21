@@ -20,7 +20,7 @@ logratio_ui <- function(id) {
         value = FALSE
       ),
       uiOutput(outputId = ns("settings")),
-      downloadButton(outputId = ns("download_table"), "Download table"),
+      downloadButton(outputId = ns("download_table"), "Download log-ratio"),
       ## Output: graph
       plotOutput(outputId = ns("graph"))
     ), # sidebar
@@ -121,7 +121,7 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Download -----
-    output$download_table <- export_table(logratio, name = method)
+    output$download_table <- export_table(logratio, name = paste0("coda_", method))
 
     logratio
   })

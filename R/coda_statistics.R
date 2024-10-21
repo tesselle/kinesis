@@ -13,6 +13,10 @@ coda_summary_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      downloadButton(
+        outputId = ns("download"),
+        label = "Download tables"
+      ),
       h5("Univariate statistics"),
       selectInput(
         inputId = ns("hist_select"),

@@ -24,23 +24,9 @@ render_table <- function(x, ..., striped = TRUE, hover = FALSE, bordered = FALSE
   )
 }
 
-#' Make File Name
-#'
-#' @param name A [`character`] string specifying the name of the file
-#'  (without extension and the leading dot).
-#' @param ext A [`character`] string specifying the file extension.
-#' @param project A [`character`] string specifying the name of the project.
-#' @family widgets
-#' @keywords internal
-#' @noRd
-file_name <- function(name, ext, project = NULL) {
-  project <- if (is.null(project)) "" else paste0(project, "_")
-  sprintf("%s%s_%s.%s", project, name, format(Sys.Date(), "%F"), ext)
-}
-
 #' Download a CSV File
 #'
-#' Save and Download a [`data.frame`] (csv).
+#' Save and Download a [`data.frame`] (CSV).
 #' @param x A reactive [`data.frame`] to be saved.
 #' @param name A [`character`] string specifying the name of the file
 #'  (without extension and the leading dot).
@@ -51,9 +37,8 @@ export_table <- function(x, name) {
   stopifnot(is.reactive(x))
 
   downloadHandler(
-    filename = file_name(name, "csv"),
+    filename = function() { make_file_name(name, "csv") },
     content = function(file) {
-      ## CSV file
       utils::write.csv(
         x = x(),
         file = file,
@@ -66,7 +51,7 @@ export_table <- function(x, name) {
 
 #' Download Multiple CSV Files
 #'
-#' Save and Download several [`data.frame`] (csv).
+#' Save and Download several [`data.frame`] (Zip).
 #' @param ... Further named arguments ([`data.frame`] to be saved).
 #' @param name A [`character`] string specifying the name of the file
 #'  (without extension and the leading dot).
@@ -78,11 +63,12 @@ export_multiple <- function(..., name = "archive") {
   stopifnot(!is.null(names(tbl)))
 
   downloadHandler(
-    filename = file_name(name, "zip"),
+    filename = function() { make_file_name(name, "zip") },
     content = function(file) {
       tmpdir <- tempdir()
+      on.exit(unlink(tmpdir))
 
-      ## CSV file
+      ## Write CSV files
       fs <- vapply(
         X = names(tbl),
         FUN = function(f) {
@@ -98,8 +84,8 @@ export_multiple <- function(..., name = "archive") {
         FUN.VALUE = character(1)
       )
 
-      ## Create ZIP-file
-      utils::zip(zipfile = file, files = fs, flags = "-j")
+      ## Create Zip file
+      utils::zip(zipfile = file, files = fs, flags = "-r9Xj")
     },
     contentType = "application/zip"
   )
