@@ -6,15 +6,7 @@ help_warranty <- function(...) {
   )
 }
 
-help_cite <- function(...) {
-  pkg <- switch (
-    get_app_name(),
-    seriate = "kairos",
-    source = "nexus",
-    ternary = "isopleuros",
-    NULL
-  )
-
+help_cite <- function(package) {
   list(
     tags$p(
       "If you use this application in your research, you must report",
@@ -24,7 +16,7 @@ help_cite <- function(...) {
       "by the research community."
     ),
     tags$p("To cite in your publications, please use:"),
-    cite_package(pkg)
+    cite_package(package)
   )
 }
 
@@ -65,38 +57,10 @@ help_tesselle <- function(...) {
   )
 }
 
-help_overview <- function(...) {
-  switch (
-    get_app_name(),
-    source = .help_overview_source(),
-    tags$p()
-  )
-}
-
-.help_overview_source <- function(...) {
-  list(
-    tags$p(
-      "Provenance studies rely on the identification of probable sources,",
-      "such that the variability between two sources is greater than",
-      "the internal variability of a single source",
-      "(the so-called", tags$em("provenance postulate", .noWS = "after"), ").",
-      "This assumes that a unique signature can be identified for each source",
-      "on the basis of several criteria."
-    ),
-    tags$p(
-      "This application is designed for chemical fingerprinting",
-      "and source tracking of ancient materials. It provides provides tools",
-      "for the exploration, visualization and analysis of compositional data",
-      "in the framework of",
-      cite_article(author = "Aitchison", year = "1986", after = ".")
-    )
-  )
-}
-
 help_workflow <- function(...) {
   def <- .help_workflow_panel()
   tab <- switch (
-    get_app_name(),
+    get_option("name"),
     source = c("Data", "Composition", "Transform", "Statistics", "Plot", "Analysis"),
     ternary = c("Data", "Plot"),
     "Data"

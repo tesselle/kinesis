@@ -2,11 +2,12 @@
 #' About UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @param package A [`character`] vector of package names to be cited.
 #' @seealso [home_server()]
 #' @family page modules
 #' @keywords internal
 #' @export
-home_ui <- function(id) {
+home_ui <- function(id, package) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -22,7 +23,8 @@ home_ui <- function(id) {
         placement = "above",
         nav_panel(
           title = "Overview",
-          help_overview(),
+          h3(get_option("title")),
+          HTML(get_option("description")),
           help_warranty(),
           tags$p(
             class = "logo",
@@ -34,7 +36,7 @@ home_ui <- function(id) {
         ),
         nav_panel(
           title = "How to cite",
-          help_cite()
+          help_cite(package)
         ),
         nav_panel(
           title = "About",

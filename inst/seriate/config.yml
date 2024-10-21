@@ -1,6 +1,8 @@
 default:
   production: TRUE
   verbose: FALSE
+  name: "seriate"
+  title: "Matrix Seriation"
 
 test:
   production: FALSE

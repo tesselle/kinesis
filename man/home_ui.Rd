@@ -4,10 +4,12 @@
 \alias{home_ui}
 \title{About UI}
 \usage{
-home_ui(id)
+home_ui(id, package)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
+
+\item{package}{A \code{\link{character}} vector of package names to be cited.}
 }
 \description{
 About UI

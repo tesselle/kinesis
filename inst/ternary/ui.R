@@ -9,7 +9,7 @@ shiny_ui <- function(request) {
     lang = "en",
     bslib::page_navbar(
       title = "ternary",
-      kinesis::home_ui("home"),
+      kinesis::home_ui("home", package = "isopleuros"),
       bslib::nav_panel(
         title = "Data",
         kinesis::import_ui("import")
