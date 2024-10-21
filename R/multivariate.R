@@ -86,6 +86,8 @@ multivariate_results <- function(id) {
 
   nav_panel(
     title = "Results",
+    helpText("Click and drag to select an area, then double-click to zoom in.",
+             "Double-click again to reset the zoom."),
     layout_columns(
       col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
       output_plot(
@@ -96,6 +98,11 @@ multivariate_results <- function(id) {
           select_cex(inputId = ns("cex"), default = c(1, 6))
         ),
         title = "Individuals factor map",
+        dblclick = ns("plot_ind_dblclick"),
+        brush = brushOpts(
+          id = ns("plot_ind_brush"),
+          resetOnNew = TRUE
+        ),
         height = "100%"
       ),
       output_plot(
@@ -106,6 +113,11 @@ multivariate_results <- function(id) {
           select_cex(inputId = ns("lwd"), default = c(1, 1))
         ),
         title = "Variables factor map",
+        dblclick = ns("plot_var_dblclick"),
+        brush = brushOpts(
+          id = ns("plot_var_brush"),
+          resetOnNew = TRUE
+        ),
         height = "100%"
       )
     ) # layout_columns
@@ -203,6 +215,26 @@ multivariate_server <- function(id, x) {
       grDevices::recordPlot()
     })
 
+    ## Interactive zoom -----
+    ## When a double-click happens, check if there's a brush on the plot.
+    ## If so, zoom to the brush bounds; if not, reset the zoom.
+    range_ind <- reactiveValues(x = NULL, y = NULL)
+    range_var <- reactiveValues(x = NULL, y = NULL)
+    bindEvent(
+      observe({
+        range_ind$x <- brush_xlim(input$plot_ind_brush)
+        range_ind$y <- brush_ylim(input$plot_ind_brush)
+      }),
+      input$plot_ind_dblclick
+    )
+    bindEvent(
+      observe({
+        range_var$x <- brush_xlim(input$plot_var_brush)
+        range_var$y <- brush_ylim(input$plot_var_brush)
+      }),
+      input$plot_var_dblclick
+    )
+
     ## Individuals -----
     plot_ind <- reactive({
       req(x())
@@ -217,6 +249,8 @@ multivariate_server <- function(id, x) {
         color = khroma::color(input$col_ind),
         symbol = get_value(as.integer(input$pch)),
         size = input$cex,
+        xlim = range_ind$x,
+        ylim = range_ind$y,
         panel.first = graphics::grid()
       )
 
@@ -247,6 +281,8 @@ multivariate_server <- function(id, x) {
         color = khroma::color(input$col_var),
         symbol = get_value(as.integer(input$lty)),
         size = input$lwd,
+        xlim = range_var$x,
+        ylim = range_var$y,
         panel.first = graphics::grid()
       )
       grDevices::recordPlot()

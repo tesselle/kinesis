@@ -38,6 +38,16 @@ output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
   )
 }
 
+brush_xlim <- function(e) {
+  if (is.null(e)) return(NULL)
+  c(e$xmin, e$xmax)
+}
+
+brush_ylim <- function(e) {
+  if (is.null(e)) return(NULL)
+  c(e$ymin, e$ymax)
+}
+
 select_cex <- function(inputId, default = c(1, 6)) {
   sliderInput(
     inputId = inputId,
