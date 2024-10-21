@@ -42,7 +42,12 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
       ),
       actionButton(
         inputId = ns("go"),
-        label = "(Re)Compute"
+        label = "(Re)Compute",
+        class = "btn btn-primary"
+      ),
+      downloadButton(
+        outputId = ns("download"),
+        label = "Download results"
       )
     ), # sidebar
     multivariate_ui(id),
@@ -85,7 +90,7 @@ pca_server <- function(id, x) {
       i
     })
     sup_col <- reactive({
-      i <- match(input$sup_row, colnames(x()))
+      i <- match(input$sup_col, colnames(x()))
       if (anyNA(i)) return(NULL)
       i
     })
@@ -105,6 +110,15 @@ pca_server <- function(id, x) {
         )
       }),
       input$go
+    )
+
+    ## Export -----
+    output$download <- downloadHandler(
+      filename = function() { make_file_name("pca", "zip") },
+      content = function(file) {
+        dimensio::export(results(), file = file, flags = "-r9Xj")
+      },
+      contentType = "application/zip"
     )
 
     results

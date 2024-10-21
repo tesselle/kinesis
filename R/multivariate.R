@@ -264,7 +264,12 @@ multivariate_server <- function(id, x) {
         function(...) invisible()
       )
 
-      fun_wrap(x = x(), margin = 1, axes = c(axis1(), axis2()))
+      fun_wrap(
+        x = x(),
+        margin = 1,
+        axes = c(axis1(), axis2()),
+        color = khroma::color(input$col_ind)
+      )
       grDevices::recordPlot()
     })
 
