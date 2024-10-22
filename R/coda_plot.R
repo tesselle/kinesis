@@ -14,24 +14,6 @@ coda_plot_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       checkboxInput(
-        inputId = ns("order_columns"),
-        label = "Sort columns",
-        value = FALSE
-      ),
-      selectInput(
-        inputId = ns("order_rows"),
-        label = "Row order",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-      ),
-      checkboxInput(
-        inputId = ns("decreasing"),
-        label = "Decreasing row order",
-        value = FALSE
-      ),
-      hr(),
-      checkboxInput(
         inputId = ns("select_major"),
         label = "Major elements",
         value = TRUE
@@ -46,6 +28,23 @@ coda_plot_ui <- function(id) {
         label = "Trace elements",
         value = TRUE
       ),
+      hr(),
+      checkboxInput(
+        inputId = ns("order_columns"),
+        label = "Sort columns",
+        value = FALSE
+      ),
+      selectizeInput(
+        inputId = ns("order_rows"),
+        label = "Row order",
+        choices = NULL, selected = NULL, multiple = FALSE,
+        options = list(plugins = "remove_button")
+      ),
+      checkboxInput(
+        inputId = ns("decreasing"),
+        label = "Decreasing row order",
+        value = FALSE
+      )
     ), # sidebar
     output_plot(
       id = ns("plot"),
@@ -73,19 +72,18 @@ coda_plot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Build barplot -----
     bindEvent(
       observe({
         freezeReactiveValue(input, "order_rows")
-        choices <- c("", colnames(x()))
-        updateSelectInput(inputId = "order_rows", choices = choices)
+        choices <- c("", colnames(data_bar()))
+        updateSelectizeInput(inputId = "order_rows", choices = choices)
       }),
-      x()
+      data_bar()
     )
-    plot_bar <- reactive({
-      req(x())
 
-      col <- khroma::color(input$color_qualitative)
+    ## Subset -----
+    data_bar <- reactive({
+      req(x())
 
       elements <- logical(ncol(x()))
       is_major <- nexus::is_element_major(x())
@@ -96,15 +94,23 @@ coda_plot_server <- function(id, x) {
       elements[which(is_minor)] <- input$select_minor
       elements[which(is_trace)] <- input$select_trace
 
-      if (!any(elements)) elements <- NULL
+      if (!any(elements)) return(x())
+      x()[, elements, drop = FALSE]
+    })
+
+    ## Build barplot -----
+    plot_bar <- reactive({
+      req(data_bar())
+
+      col <- khroma::color(input$color_qualitative)
+      pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
 
       nexus::barplot(
-        height = x(),
-        select = elements,
+        height = data_bar(),
         order_columns = input$order_columns,
-        order_rows = input$order_rows,
+        order_rows = get_value(input$order_rows),
         decreasing = input$decreasing,
-        color = khroma::palette_color_discrete(col)
+        color = pal
       )
       grDevices::recordPlot()
     })

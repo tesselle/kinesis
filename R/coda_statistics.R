@@ -39,11 +39,6 @@ coda_summary_ui <- function(id) {
         gt::gt_output(outputId = ns("mean")),
         gt::gt_output(outputId = ns("quantile"))
       ),
-      # nav_panel(
-      #   title = "Spread",
-      #   helpText(info_article("Hron & Kubacek", "2011", "10.1007/s00184-010-0299-3")),
-      #   gt::gt_output(outputId = ns("spread")),
-      # ),
       nav_panel(
         title = "Covariance",
         gt::gt_output(outputId = ns("covariance"))
@@ -79,11 +74,6 @@ coda_summary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Validate -----
-    data <- reactive({
-      x()
-    })
-
     ## Location -----
     data_loc <- reactive({
       req(x())
@@ -97,19 +87,7 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Spread -----
-    data_spread <- reactive({
-      req(x())
-      ## Metric variance by group
-      if (nexus::any_assigned(x())) {
-        index <- nexus::groups(x())
-        s <- nexus::aggregate(x(), by = index, FUN = nexus::variance_total)
-      } else {
-        m <- nexus::variance_total(x())
-        s <- matrix(m, nrow = 1, dimnames = list("", NULL))
-      }
-      colnames(s) <- c("metric variance")
-      s
-    })
+    # TODO
 
     ## Percentiles -----
     data_quant <- reactive({
@@ -118,14 +96,17 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Histogram -----
-    observeEvent(x(), {
-      choices <- colnames(x())
-      freezeReactiveValue(input, "hist_select")
-      updateSelectInput(inputId = "hist_select", choices = choices)
-    })
+    bindEvent(
+      observe({
+        choices <- colnames(x())
+        freezeReactiveValue(input, "hist_select")
+        updateSelectInput(inputId = "hist_select", choices = choices)
+      }),
+      x()
+    )
     plot_hist <- reactive({
       req(x())
-      nexus::hist(x()[, input$hist_select, drop = FALSE], ncol = 1)
+      nexus::hist(x(), select = input$hist_select)
       grDevices::recordPlot()
     })
 
@@ -238,7 +219,6 @@ coda_summary_server <- function(id, x) {
     ## Download -----
     output$download <- export_multiple(
       location = data_loc,
-      # spread = data_spread,
       quantiles = data_quant,
       covariance = data_cov,
       variation = data_var,
