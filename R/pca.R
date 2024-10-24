@@ -40,6 +40,9 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
+      uiOutput(
+        outputId = ns("warning"),
+      ),
       actionButton(
         inputId = ns("go"),
         label = "(Re)Compute",
@@ -76,9 +79,9 @@ pca_server <- function(id, x) {
     bindEvent(
       observe({
         freezeReactiveValue(input, "sup_row")
-        updateSelectInput(inputId = "sup_row", choices = rownames(x()))
+        updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
         freezeReactiveValue(input, "sup_col")
-        updateSelectInput(inputId = "sup_col", choices = colnames(x()))
+        updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
       }),
       x()
     )
@@ -98,7 +101,7 @@ pca_server <- function(id, x) {
     ## Compute PCA -----
     results <- bindEvent(
       reactive({
-        validate(need(x(), "Check your data."))
+        req(x())
 
         dimensio::pca(
           object = x(),
@@ -111,6 +114,27 @@ pca_server <- function(id, x) {
       }),
       input$go
     )
+
+    ## Warning -----
+    y <- bindEvent(
+      reactive({
+        x()
+      }),
+      input$go
+    )
+    output$warning <- renderUI({
+      req(x(), y())
+      x_raw <- serialize(x(), NULL)
+      y_raw <- serialize(y(), NULL)
+      if (!isTRUE(all.equal(x_raw, y_raw))) {
+        div(
+          class = "alert alert-warning",
+          role = "alert",
+          "Your data seems to have changed.",
+          "You should perform your analysis again."
+        )
+      }
+    })
 
     ## Export -----
     output$download <- downloadHandler(
