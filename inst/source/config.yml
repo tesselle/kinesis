@@ -4,15 +4,23 @@ default:
   name: "source"
   title: "Compositional Data Analysis"
   description: |
-    <p>Provenance studies rely on the identification of probable sources,
+    Provenance studies rely on the identification of probable sources,
     such that the variability between two sources is greater than the internal
-    variability of a single source (the so-called, <em>provenance postulate</em>).
+    variability of a single source (the so-called, *provenance postulate*).
     This assumes that a unique signature can be identified for each source on
-    the basis of several criteria.</p>
-    <p>This application is designed for chemical fingerprinting and source
+    the basis of several criteria.
+
+    This application is designed for chemical fingerprinting and source
     tracking of ancient materials. It provides provides tools for the
     exploration, visualization and analysis of compositional data in the
-    framework of Aitchison (1986).</p>
+    framework of Aitchison (1986).
+  workflow: |
+    * **Data.** Import your data and perform basic data cleansing and preparation steps.
+    * **Composition.** Coerce your data to compositions and define (reference) groups.
+    * **Transform.** Compute log-ratio transformations of compositional data.
+    * **Statistics.** Data summary and descriptive statistics.
+    * **Plot.** Visualize your data.
+    * **Analysis.** Perform multivariate data analysis.
 
 test:
   production: FALSE

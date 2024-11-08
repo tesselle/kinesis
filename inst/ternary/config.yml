@@ -4,10 +4,13 @@ default:
   name: "ternary"
   title: "Ternary Plot"
   description: |
-    <p>This app allows to create ternary plots. It provides functions to display
+    This app allows to create ternary plots. It provides functions to display
     the data in the ternary space, to add or tune graphical elements and to
     display statistical summaries. It also includes common ternary diagrams
-    useful for the archaeologist.<p>
+    useful for the archaeologist.
+  workflow: |
+    * **Data.** Import your data and perform basic data cleansing and preparation steps.
+    * **Plot.** Visualize your data in the ternary space.
 
 test:
   production: FALSE

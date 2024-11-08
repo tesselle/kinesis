@@ -17,14 +17,14 @@ home_ui <- function(id, package) {
       sidebar = sidebar(
         width = 400,
         h5("Workflow"),
-        help_workflow()
+        markdown(get_option("workflow")),
       ), # sidebar
       navset_card_pill(
         placement = "above",
         nav_panel(
           title = "Overview",
           h3(get_option("title")),
-          HTML(get_option("description")),
+          markdown(get_option("description")),
           help_warranty(),
           tags$p(
             class = "logo",

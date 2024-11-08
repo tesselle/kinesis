@@ -3,6 +3,21 @@ default:
   verbose: FALSE
   name: "seriate"
   title: "Matrix Seriation"
+  description: |
+    For a set of archaeological assemblages in tabular form, the problem of
+    seriation comes down to discovering a reordering of rows/columns *inferred*
+    to be chronological. This approach relies on a set of well-defined statistical
+    and archaeological assumptions (Dunnell 1970). This application allows to
+    perform matrix seriation based on correspondence analysis.
+
+    Correspondence analysis is an effective method for the seriation of
+    archaeological assemblages. The order of the rows and columns is given by
+    the coordinates along one dimension of the analysis, assumed to account for
+    temporal variation. Note that the direction of temporal change within the
+    correspondence analysis space is *arbitrary*: additional information is
+    needed to determine the actual order in time.
+  workflow: |
+    * **Data.** Import your data and perform basic data cleansing and preparation steps.
 
 test:
   production: FALSE

@@ -56,38 +56,3 @@ help_tesselle <- function(...) {
     # h3("Who is", tags$em("tesselle"), "for?")
   )
 }
-
-help_workflow <- function(...) {
-  def <- .help_workflow_panel()
-  tab <- switch (
-    get_option("name"),
-    source = c("Data", "Composition", "Transform", "Statistics", "Plot", "Analysis"),
-    ternary = c("Data", "Plot"),
-    "Data"
-  )
-
-  txt <- def[tab]
-  # dl <- mapply(
-  #   dt = names(txt),
-  #   dd = txt,
-  #   FUN = function(dt, dd) { list(tags$dt(dt), tags$dd(dd)) }
-  # )
-  # tags$dl(ol)
-  ol <- mapply(
-    dt = names(txt),
-    dd = txt,
-    FUN = function(dt, dd) { list(tags$li(tags$strong(dt, .noWS = "after"), ".", dd)) }
-  )
-  tags$ol(ol)
-}
-
-.help_workflow_panel <- function(...) {
-  list(
-    Data = "Import your data and perform basic data cleansing and preparation steps.",
-    Composition = "Coerce your data to compositions and define (reference) groups.",
-    Transform = "Compute log-ratio transformations of compositional data.",
-    Statistics = "Data summary and descriptive statistics.",
-    Plot = "Visualize your data.",
-    Analysis = "Perform multivariate data analysis."
-  )
-}
