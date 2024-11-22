@@ -1,0 +1,14 @@
+default:
+  production: TRUE
+  verbose: FALSE
+  name: "pca"
+  title: "Principal Components Analysis"
+  description: |
+    This app allows to computes a principal components analysis based on the
+    singular value decomposition.
+  workflow: |
+    * **Data.** Import your data and perform basic data cleansing and preparation steps.
+
+test:
+  production: FALSE
+  verbose: TRUE
