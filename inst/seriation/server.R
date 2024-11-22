@@ -18,7 +18,7 @@ shiny_server <- function(input, output, session) {
   ## Seriation
   ca_results <- kinesis::seriate_server("seriate", x = count)
 
-  ## CA
+  ## CA results
   kinesis::multivariate_server("ca", x = ca_results)
 
   kinesis::home_server("home")

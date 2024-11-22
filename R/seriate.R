@@ -85,7 +85,7 @@ seriate_server  <- function(id, x) {
             axes = input$axes
           )
         },
-        what = "Seriate"
+        what = "Seriation"
       )
     })
 

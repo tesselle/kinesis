@@ -1,7 +1,7 @@
 default:
   production: TRUE
   verbose: FALSE
-  name: "seriate"
+  name: "seriation"
   title: "Matrix Seriation"
   description: |
     For a set of archaeological assemblages in tabular form, the problem of
