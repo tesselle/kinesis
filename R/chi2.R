@@ -17,24 +17,18 @@ chi2_ui <- function(id) {
       uiOutput(outputId = ns("results")),
       downloadButton(outputId = ns("download"), "Download")
     ), # sidebar
-    # output_plot(
-    #   id = ns("matrigraph"),
-    #   title = "Matrigraph",
-    #   note = info_article(author = "Desachy", year = "2004",
-    #                       doi = "10.3406/pica.2004.2396")
-    # ),
     navset_tab(
       nav_panel(
         title = "Expected",
-        tableOutput(outputId = ns("expected"))
+        gt::gt_output(outputId = ns("expected"))
       ),
       nav_panel(
         title = "Residuals",
-        tableOutput(outputId = ns("residuals"))
+        gt::gt_output(outputId = ns("residuals"))
       ),
       nav_panel(
         title = "Standardized residuals",
-        tableOutput(outputId = ns("stdres"))
+        gt::gt_output(outputId = ns("stdres"))
       )
     ) # navset_tab
   ) # layout_sidebar
@@ -87,28 +81,45 @@ chi2_server <- function(id, x) {
     chi2_std <- reactive({
       chi2_test()$stdres
     })
-    ## Matrigraph -----
-    # chi2_plot <- reactive({
-    #   tabula::matrigraph(x())
-    #   grDevices::recordPlot()
-    # })
 
     ## Render results -----
     output$results <- renderUI({
       tags$ul(
         tags$li(sprintf("Statistic: %.0f", chi2_test()$statistic)),
+        tags$li(sprintf("Degrees of freedom: %.0f", chi2_test()$parameter)),
         tags$li(sprintf("p-value: %s", format.pval(chi2_test()$p.value, eps = .001))),
         tags$li(sprintf("Cramer's V: %.2f", chi2_test()$cramer))
       )
     })
 
     ## Render table -----
-    output$expected <- render_table(chi2_exp)
-    output$residuals <- render_table(chi2_res)
-    output$stdres <- render_table(chi2_std)
-
-    ## Render plot -----
-    # render_plot("matrigraph", x = chi2_plot)
+    output$expected <- gt::render_gt({
+      req(chi2_exp())
+      chi2_exp() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = FALSE)
+    })
+    output$residuals <- gt::render_gt({
+      req(chi2_res())
+      chi2_exp() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = FALSE)
+    })
+    output$stdres <- gt::render_gt({
+      req(chi2_std())
+      chi2_exp() |>
+        as.data.frame() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::fmt_number(decimals = 3) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = FALSE)
+    })
 
     ## Download -----
     output$download <- export_multiple(

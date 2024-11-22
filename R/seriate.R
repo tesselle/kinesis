@@ -13,6 +13,7 @@ seriate_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      h5("Permutation"),
       ## Input: checkbox if permute rows
       checkboxInput(
         inputId = ns("margin_row"),
@@ -34,6 +35,10 @@ seriate_ui <- function(id) {
         max = 10,
         step = 1
       ),
+      ## Output: download
+      downloadButton(outputId = ns("export_table"),
+                     label = "Export matrix"),
+      h5("Display"),
       ## Input: select plot
       checkboxInput(
         inputId = ns("eppm"),
@@ -45,9 +50,8 @@ seriate_ui <- function(id) {
         label = "weights",
         value = FALSE
       ),
-      ## Output: download
-      downloadButton(outputId = ns("export_table"),
-                     label = "Export matrix")
+      h5("Significance"),
+      uiOutput(outputId = ns("coef"))
     ), # sidebar
     ## Output: plot reordered matrix
     output_plot(id = ns("plot_permute"), height = "100%", title = "Rearranged matrix")
@@ -82,6 +86,11 @@ seriate_server  <- function(id, x, order) {
       kairos::as_seriation(order(), margin = margin, axes = input$axes)
     })
 
+    coef_seriate <- reactive({
+      req(data_seriate())
+      kairos::assess(data_seriate(), axes = input$axes, n = 0)
+    })
+
     ## Permute -----
     data_permute <- reactive({
       req(x())
@@ -98,6 +107,17 @@ seriate_server  <- function(id, x, order) {
 
     ## Render plot -----
     render_plot("plot_permute", x = plot_permute)
+
+    ## Render values -----
+    output$coef <- renderUI({
+      tags$div(
+        tags$ul(
+          tags$li(sprintf("Goodness of fit: %.3f", coef_seriate()$coef))
+        ),
+        info_article(author = "Porcic", year = "2013",
+                     doi = "10.1016/j.jas.2013.07.013")
+      )
+    })
 
     ## Download -----
     output$export_table <- export_table(data_permute, name = "permuted")
