@@ -165,7 +165,6 @@ ternary_ui <- function(id) {
       ),
       height = "100%"
     )
-    # tableOutput(outputId = ns("info"))
   ) # layout_sidebar
 }
 
@@ -265,21 +264,6 @@ ternary_server <- function(id, x) {
     data_tern <- reactive({
       tern <- data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
       tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
-    })
-
-    data_info <- reactive({
-      req(data_tern())
-      cart <- isopleuros::coordinates_ternary(
-        x = data_tern(),
-        center = input$center,
-        scale = input$scale
-      )
-      cart <- cart[c("x", "y")]
-      names(cart) <- c(".x", ".y") # Safety
-
-      z <- data.frame(data_tern(), cart)
-      z <- nearPoints(z, input$click, xvar = ".x", yvar = ".y")
-      z[, -ncol(z) + c(1, 0)]
     })
 
     ## Build plot -----
@@ -395,8 +379,5 @@ ternary_server <- function(id, x) {
 
     ## Render plot -----
     render_plot("ternplot", x = plot_ternary)
-
-    ## Render table -----
-    output$info <- render_table(data_info)
   })
 }

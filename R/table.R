@@ -1,29 +1,4 @@
 # Server =======================================================================
-#' Table Output
-#'
-#' A wrapper around [shiny::renderTable()].
-#' @param x A reactive [`data.frame`].
-#' @param ... Further arguments to be passed to [shiny::renderTable()].
-#' @importFrom shiny renderTable
-#' @keywords internal
-#' @noRd
-render_table <- function(x, ..., striped = TRUE, hover = FALSE, bordered = FALSE,
-                         width = "100%", rownames = TRUE, digits = 3) {
-  stopifnot(is.reactive(x))
-
-  renderTable(
-    expr = x(),
-    striped = striped,
-    hover = hover,
-    bordered = bordered,
-    width = width,
-    rownames = rownames,
-    colnames = TRUE,
-    digits = digits,
-    ...
-  )
-}
-
 #' Download a CSV File
 #'
 #' Save and Download a [`data.frame`] (CSV).
