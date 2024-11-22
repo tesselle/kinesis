@@ -19,6 +19,8 @@ Multivariate Analysis Server
 \link{multivariate_ui}
 
 Other multivariate analysis modules: 
+\code{\link{ca_server}()},
+\code{\link{ca_ui}()},
 \code{\link{multivariate_ui}()},
 \code{\link{pca_server}()},
 \code{\link{pca_ui}()}

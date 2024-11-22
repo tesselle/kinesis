@@ -10,6 +10,7 @@
 #' @details
 #'  \tabular{ll}{
 #'   **Application name**          \tab  **Keyword** \cr
+#'   Correspondence Analysis       \tab `ca`         \cr
 #'   Principal Components Analysis \tab `pca`        \cr
 #'   Matrix Seriation              \tab `seriate`    \cr
 #'   Compositional Data Analysis   \tab `source`     \cr
@@ -23,7 +24,7 @@
 #' @family shiny apps
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("seriate", "source", "ternary", "pca"),
+run_app <- function(app = c("seriate", "source", "ternary", "ca", "pca"),
                     options = list(launch.browser = interactive())) {
   app <- match.arg(app, several.ok = FALSE)
   appDir <- system.file(app, package = "kinesis")

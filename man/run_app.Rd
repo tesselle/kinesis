@@ -5,7 +5,7 @@
 \title{Run an App}
 \usage{
 run_app(
-  app = c("seriate", "source", "ternary", "pca"),
+  app = c("seriate", "source", "ternary", "ca", "pca"),
   options = list(launch.browser = interactive())
 )
 }
@@ -25,6 +25,7 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 \details{
 \tabular{ll}{
 \strong{Application name}          \tab  \strong{Keyword} \cr
+Correspondence Analysis       \tab \code{ca}         \cr
 Principal Components Analysis \tab \code{pca}        \cr
 Matrix Seriation              \tab \code{seriate}    \cr
 Compositional Data Analysis   \tab \code{source}     \cr
