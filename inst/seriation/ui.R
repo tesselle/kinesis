@@ -14,20 +14,13 @@ shiny_ui <- function(request) {
         title = "Data",
         kinesis::import_ui("import")
       ),
-      bslib::nav_menu(
-        title = "Statistics",
-        bslib::nav_panel(
-          title = "Summary",
-          kinesis::summary_ui("summary")
-        ),
-        bslib::nav_panel(
-          title = "Chi-squared",
-          kinesis::chi2_ui("chi2")
-        )
+      bslib::nav_panel(
+        title = "Chi-squared",
+        kinesis::chi2_ui("chi2")
       ),
       bslib::nav_panel(
         title = "Analysis",
-        kinesis::multivariate_ui("ca")
+        kinesis::ca_ui("ca")
       ), # navbarMenu
       bslib::nav_panel(
         title = "Seriation",

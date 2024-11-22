@@ -1,6 +1,5 @@
-
 # UI ===========================================================================
-#' Seriate UI
+#' CA Seriation UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @seealso [seriate_server()]
@@ -56,41 +55,36 @@ seriate_ui <- function(id) {
 }
 
 # Server =======================================================================
-#' Seriate Server
+#' CA Seriation Server
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @param order A reactive \R object (coercible by [kairos::as_seriation()]).
 #' @return A reactive [`kairos::AveragePermutationOrder-class`] object.
 #' @seealso [seriate_ui()]
 #' @family chronology modules
 #' @keywords internal
 #' @export
-seriate_server  <- function(id, x) {
+seriate_server  <- function(id, x, order) {
   stopifnot(is.reactive(x))
+  stopifnot(is.reactive(order))
 
   moduleServer(id, function(input, output, session) {
     ## Seriate -----
     data_seriate <- reactive({
-      req(x())
+      validate(need(order(), "Compute the seriation order first."))
+
       margin <- NULL
       if (input$margin_row) margin <- c(margin, 1)
       if (input$margin_col) margin <- c(margin, 2)
 
-      run_with_notification(
-        {
-          kairos::seriate_average(
-            object = x(),
-            margin = margin,
-            axes = input$axes
-          )
-        },
-        what = "Seriation"
-      )
+      kairos::as_seriation(order(), margin = margin, axes = input$axes)
     })
 
     ## Permute -----
     data_permute <- reactive({
+      req(x())
       req(data_seriate())
       kairos::permute(x(), data_seriate())
     })

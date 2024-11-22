@@ -2,7 +2,7 @@
 % Please edit documentation in R/seriate.R
 \name{seriate_ui}
 \alias{seriate_ui}
-\title{Seriate UI}
+\title{CA Seriation UI}
 \usage{
 seriate_ui(id)
 }
@@ -10,7 +10,7 @@ seriate_ui(id)
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
 \description{
-Seriate UI
+CA Seriation UI
 }
 \seealso{
 \code{\link[=seriate_server]{seriate_server()}}

@@ -17,6 +17,12 @@ chi2_ui <- function(id) {
       uiOutput(outputId = ns("results")),
       downloadButton(outputId = ns("download"), "Download")
     ), # sidebar
+    # output_plot(
+    #   id = ns("matrigraph"),
+    #   title = "Matrigraph",
+    #   note = info_article(author = "Desachy", year = "2004",
+    #                       doi = "10.3406/pica.2004.2396")
+    # ),
     navset_tab(
       nav_panel(
         title = "Expected",
@@ -48,7 +54,7 @@ chi2_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Chi-squared Test
+    ## Chi-squared Test -----
     chi2_test <- reactive({
       z <- stats::chisq.test(x = x())
 
@@ -81,8 +87,13 @@ chi2_server <- function(id, x) {
     chi2_std <- reactive({
       chi2_test()$stdres
     })
+    ## Matrigraph -----
+    # chi2_plot <- reactive({
+    #   tabula::matrigraph(x())
+    #   grDevices::recordPlot()
+    # })
 
-    ## Render results
+    ## Render results -----
     output$results <- renderUI({
       tags$ul(
         tags$li(sprintf("Statistic: %.0f", chi2_test()$statistic)),
@@ -91,12 +102,15 @@ chi2_server <- function(id, x) {
       )
     })
 
-    ## Render table
+    ## Render table -----
     output$expected <- render_table(chi2_exp)
     output$residuals <- render_table(chi2_res)
     output$stdres <- render_table(chi2_std)
 
-    ## Download
+    ## Render plot -----
+    # render_plot("matrigraph", x = chi2_plot)
+
+    ## Download -----
     output$download <- export_multiple(
       expected = chi2_exp,
       residuals = chi2_res,

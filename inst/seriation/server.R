@@ -9,17 +9,17 @@
 shiny_server <- function(input, output, session) {
   ## Data
   data <- kinesis::import_server("import")
-  count <- kinesis::count_server("count", x = data)
+  count <- kinesis::count_server("count", x = data) # Remove non-numeric columns
 
   ## Statistics
-  kinesis::summary_server("summary", x = count)
   kinesis::chi2_server("chi2", x = count)
 
-  ## Seriation
-  ca_results <- kinesis::seriate_server("seriate", x = count)
+  ## CA
+  ca_results <- kinesis::ca_server("ca", x = count)
+  kinesis::multivariate_server("ca", ca_results)
 
-  ## CA results
-  kinesis::multivariate_server("ca", x = ca_results)
+  ## Seriation
+  seriation <- kinesis::seriate_server("seriate", x = count, order = ca_results)
 
   kinesis::home_server("home")
   kinesis::header_server("header")
