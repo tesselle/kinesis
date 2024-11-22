@@ -86,47 +86,39 @@ pca_server <- function(id, x) {
       x()
     )
 
-    ## Get data -----
-    sup_row <- reactive({
-      i <- match(input$sup_row, rownames(x()))
-      if (anyNA(i)) return(NULL)
-      i
-    })
-    sup_col <- reactive({
-      i <- match(input$sup_col, colnames(x()))
-      if (anyNA(i)) return(NULL)
-      i
-    })
-
     ## Compute PCA -----
     results <- bindEvent(
       reactive({
         req(x())
-
-        dimensio::pca(
-          object = x(),
-          center = input$center,
-          scale = input$scale,
-          rank = input$rank,
-          sup_row = sup_row(),
-          sup_col = sup_col()
+        run_with_notification(
+          {
+            dimensio::pca(
+              object = x(),
+              center = input$center,
+              scale = input$scale,
+              rank = input$rank,
+              sup_row = arkhe::seek_rows(x(), names = input$sup_row),
+              sup_col = arkhe::seek_columns(x(), names = input$sup_col)
+            )
+          },
+          what = "PCA"
         )
       }),
       input$go
     )
 
     ## Warning -----
-    y <- bindEvent(
+    old_data <- bindEvent(
       reactive({
         x()
       }),
       input$go
     )
     output$warning <- renderUI({
-      req(x(), y())
-      x_raw <- serialize(x(), NULL)
-      y_raw <- serialize(y(), NULL)
-      if (!isTRUE(all.equal(x_raw, y_raw))) {
+      req(x(), old_data())
+      new_raw <- serialize(x(), NULL)
+      old_raw <- serialize(old_data(), NULL)
+      if (!isTRUE(all.equal(new_raw, old_raw))) {
         div(
           class = "alert alert-warning",
           role = "alert",

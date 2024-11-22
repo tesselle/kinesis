@@ -2,10 +2,6 @@
 #' Correspondence Analysis UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @param center A [`logical`] scalar: should the variables be shifted to be
-#'  zero centered?
-#' @param scale A [`logical`] scalar: should the variables be scaled to unit
-#'  variance?
 #' @seealso [ca_server()]
 #' @family multivariate analysis modules
 #' @keywords internal

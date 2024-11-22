@@ -8,12 +8,6 @@ ca_ui(id)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
-
-\item{center}{A \code{\link{logical}} scalar: should the variables be shifted to be
-zero centered?}
-
-\item{scale}{A \code{\link{logical}} scalar: should the variables be scaled to unit
-variance?}
 }
 \description{
 Correspondence Analysis UI
