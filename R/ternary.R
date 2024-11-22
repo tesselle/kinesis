@@ -132,6 +132,12 @@ ternary_ui <- function(id) {
             label = "Grid",
             value = TRUE
           ),
+          ## Input: add labels
+          checkboxInput(
+            inputId = ns("labels"),
+            label = "Labels",
+            value = FALSE
+          )
           ## Input: add a legend
           # TODO
           # checkboxInput(
@@ -142,6 +148,8 @@ ternary_ui <- function(id) {
         )
       )
     ), # sidebar
+    helpText("Click and drag to select an area, then double-click to zoom in.",
+             "Double-click again to reset the zoom."),
     output_plot(
       id = ns("ternplot"),
       tools = list(
@@ -149,9 +157,13 @@ ternary_ui <- function(id) {
         select_pch(inputId = ns("pch"), default = NULL),
         select_cex(inputId = ns("cex"), default = c(1, 6))
       ),
-      height = "100%",
-      click = ns("click"),
-      title = "Ternary plot"
+      title = "Ternary plot",
+      dblclick = ns("ternplot_dblclick"),
+      brush = brushOpts(
+        id = ns("ternplot_brush"),
+        resetOnNew = TRUE
+      ),
+      height = "100%"
     )
     # tableOutput(outputId = ns("info"))
   ) # layout_sidebar
@@ -237,6 +249,18 @@ ternary_server <- function(id, x) {
       data_quanti()
     )
 
+    ## Interactive zoom -----
+    ## When a double-click happens, check if there's a brush on the plot.
+    ## If so, zoom to the brush bounds; if not, reset the zoom.
+    range_ternplot <- reactiveValues(x = NULL, y = NULL)
+    bindEvent(
+      observe({
+        range_ternplot$x <- brush_xlim(input$ternplot_brush)
+        range_ternplot$y <- brush_ylim(input$ternplot_brush)
+      }),
+      input$ternplot_dblclick
+    )
+
     ## Get ternary data -----
     data_tern <- reactive({
       tern <- data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
@@ -301,11 +325,22 @@ ternary_server <- function(id, x) {
         cex <- min(cex)
       }
 
+      ## Window
+      range_coord <- list(x = NULL, y = NULL, z = NULL)
+      if (isTruthy(range_ternplot$x) && isTruthy(range_ternplot$y)) {
+        x_pts <- c(range_ternplot$x, mean(range_ternplot$x))
+        y_pts <- c(range_ternplot$y, sqrt(3) * diff(range_ternplot$y) / 2)
+        range_coord <- isopleuros::coordinates_cartesian(x = x_pts, y = y_pts)
+      }
+
       ## Build plot
       graphics::par(mar = c(1, 1, 1, 1))
       z <- isopleuros::ternary_plot(
         x = tern,
         type = "n",
+        xlim = range_coord$x,
+        ylim = range_coord$y,
+        zlim = range_coord$z,
         xlab = input$axis1,
         ylab = input$axis2,
         zlab = input$axis3,
@@ -344,6 +379,12 @@ ternary_server <- function(id, x) {
       if (input$points) {
         isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex,
                                    center = z$center, scale = z$scale)
+      }
+
+      ## Add labels
+      if (input$labels) {
+        isopleuros::ternary_labels(tern, center = z$center, scale = z$scale,
+                                   labels = rownames(tern), col = col)
       }
 
       ## Add legend
