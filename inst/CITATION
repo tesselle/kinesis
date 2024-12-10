@@ -1,7 +1,19 @@
+citHeader("To cite kinesis in publications use:")
+bibentry(
+  bibtype      = "Article",
+  key          = "frerebeau2024",
+  author       = person("Nicolas", "Frerebeau", role = "aut"),
+  title        = "{The tesselle Project: a Collection of R Packages for Research and Teaching in Archaeology}",
+  year         = "2024",
+  journal      = "Advances in Archaeological Practice",
+#  volume       = "12",
+#  number       = "3",
+  page         = "1-7",
+  doi          = "10.1017/aap.2024.10"
+)
 bibentry(
   bibtype      = "Manual",
-  header       = "To cite kinesis in publications use:",
-  footer       = "This package is a part of the tesselle project <https://www.tesselle.org>.",
+  key          = "R-kinesis",
   author       = person("Nicolas", "Frerebeau", role = "aut"),
   title        = "{kinesis: 'shiny' Applications for the 'tesselle' Packages}",
   year         = "2024",
@@ -10,3 +22,4 @@ bibentry(
   note         = sprintf("R package version %s", meta$Version),
   url          = "https://packages.tesselle.org/kinesis/"
 )
+citFooter("This package is a part of the tesselle project <https://www.tesselle.org>.")

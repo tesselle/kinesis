@@ -51,16 +51,15 @@ url_tesselle <- function(package = NULL) {
   sprintf("https://packages.tesselle.org/%s/", package)
 }
 
-cite_package <- function(x = NULL, which = 1) {
+cite_package <- function(x = NULL) {
   x <- c("kinesis", x)
   lapply(
     X = x,
-    FUN = function(x, which) {
-      bib <- format(utils::citation(x), style = "text")[which]
+    FUN = function(x) {
+      bib <- format(utils::citation(x), style = "text")
       txt <- paste0(vapply(X = bib, FUN = markdown, FUN.VALUE = character(1)))
       HTML(txt)
-    },
-    which = which
+    }
   )
 }
 

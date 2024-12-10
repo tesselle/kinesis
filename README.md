@@ -31,6 +31,11 @@ testing and documentation may be lacking.
 
 To cite kinesis in publications use:
 
+Frerebeau N (2024). “The tesselle Project: a Collection of R Packages
+for Research and Teaching in Archaeology.” *Advances in Archaeological
+Practice*. <doi:10.1017/aap.2024.10>
+<https://doi.org/10.1017/aap.2024.10>.
+
 Frerebeau N (2024). *kinesis: ‘shiny’ Applications for the ‘tesselle’
 Packages*. Université Bordeaux Montaigne, Pessac, France. R package
 version 0.0.0.9004, <https://packages.tesselle.org/kinesis/>.
