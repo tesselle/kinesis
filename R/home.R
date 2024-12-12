@@ -159,3 +159,14 @@ footer_server  <- function(id) {
     })
   })
 }
+
+#' Collect Information About the Current R Session
+#'
+#' @param ... Currently not used.
+#' @return Text marked as HTML.
+#' @keywords internal
+#' @noRd
+info_session <- function(...) {
+  info <- paste0(utils::capture.output(utils::sessionInfo()), collapse = "\n")
+  markdown(sprintf("```\n%s\n```", info))
+}

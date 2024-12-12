@@ -155,20 +155,20 @@ import_server <- function(id) {
 read_table <- function(path, header = TRUE, sep = ",", dec = ".", quote = "\"'",
                        rownames = NULL, na.strings = "NA", skip = 0,
                        comment.char = "#") {
-  tryCatch(
+  run_with_modal(
     {
-      utils::read.table(file = path, header = header, sep = sep, dec = dec,
-                        quote = quote, row.names = rownames,
-                        na.strings = na.strings, skip = skip,
-                        comment.char = comment.char)
+      utils::read.table(
+        file = path,
+        header = header,
+        sep = sep,
+        dec = dec,
+        quote = quote,
+        row.names = rownames,
+        na.strings = na.strings,
+        skip = skip,
+        comment.char = comment.char
+      )
     },
-    error = function(e) {
-      showModal(modalDialog(
-        conditionMessage(e),
-        title = "Data import failed!",
-        easyClose = TRUE
-      ))
-      return(NULL)
-    }
+    title = "Data import failed!"
   )
 }
