@@ -8,7 +8,7 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  data <- kinesis::import_server("import")
+  data <- kinesis::prepare_server("prepare")
 
   ## PCA
   pca_results <- kinesis::pca_server("pca", x = data)

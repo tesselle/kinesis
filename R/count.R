@@ -14,6 +14,8 @@ count_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     count <- reactive({
       req(x())
+      validate_dim(x())
+
       out <- arkhe::keep_cols(x(), f = is.numeric, verbose = get_option("verbose"))
       if (any(dim(out) == 0)) return(NULL)
       out

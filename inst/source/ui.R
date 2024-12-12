@@ -12,7 +12,7 @@ shiny_ui <- function(request) {
       kinesis::home_ui("home", package = "nexus"),
       bslib::nav_panel(
         title = "Data",
-        kinesis::import_ui("import")
+        kinesis::prepare_ui("prepare")
       ),
       bslib::nav_panel(
         title = "Composition",

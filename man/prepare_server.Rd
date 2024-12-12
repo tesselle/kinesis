@@ -4,13 +4,11 @@
 \alias{prepare_server}
 \title{Prepare Data Server}
 \usage{
-prepare_server(id, x)
+prepare_server(id)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
-
-\item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 }
 \value{
 A reactive \code{data.frame}.

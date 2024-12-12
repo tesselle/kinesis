@@ -30,6 +30,7 @@ Imports:
     shiny (>= 1.9.1),
     stats,
     tabula (>= 3.1.1),
+    tools,
     utils
 Suggests: 
     tinytest,

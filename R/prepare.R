@@ -13,6 +13,7 @@ prepare_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      import_ui(ns("import")),
       h5("Prepare"),
       select_ui(ns("select")),
       accordion(
@@ -29,36 +30,28 @@ prepare_ui <- function(id) {
     ## Output: value box
     layout_columns(
       col_widths = breakpoints(
-        xs = c(12, 12, 12),
-        md = c(6, 6, 6),
-        lg = c(3, 3, 6)
+        xs = c(12, 12, 12, 12),
+        md = c(6, 6, 6, 6),
+        lg = c(3, 3, 3, 3)
       ),
       fill = FALSE,
       value_box(
-        title = "Sparcity",
-        value = textOutput(outputId = ns("value_sparcity"))
+        title = "Dimensions",
+        value = textOutput(outputId = ns("value_dimensions"))
+      ),
+      value_box(
+        title = "Sparsity",
+        value = textOutput(outputId = ns("value_sparsity"))
       ),
       value_box(
         title = "Missing values",
         value = textOutput(outputId = ns("value_missing"))
       ),
       card(
-        helpText("If everything looks good with your data, click on 'confirm' and proceed to the next tab."),
-        helpText("You can also export your data for futur use."),
-        layout_columns(
-          col_widths = breakpoints(
-            xs = c(12, 12),
-            lg = c(6, 6)
-          ),
-          actionButton(
-            inputId = ns("go"),
-            label = "Confirm",
-            class = "btn btn-primary"
-          ),
-          downloadButton(
-            outputId = ns("download"),
-            label = "Download"
-          )
+        helpText("Export your data for futur use."),
+        downloadButton(
+          outputId = ns("download"),
+          label = "Download"
         )
       )
     ),
@@ -84,45 +77,27 @@ prepare_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @return A reactive `data.frame`.
 #' @seealso [prepare_ui()]
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, x) {
-  stopifnot(is.reactive(x))
-
+prepare_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-
-    ## Select data -----
-    data_select <- select_server("select", x)
-
-    ## Clean data -----
-    data_clean <- clean_server("clean", data_select)
+    ## Prepare data -----
+    data_clean <- import_server("import") |>  ## Import data -----
+    select_server("select", x = _) |>       ## Select data -----
+    clean_server("clean", x = _)            ## Clean data -----
 
     ## Filter rows -----
     filter <- filter_server("filter", data_clean)
     data_filter <- reactive({ data_clean()[filter(), , drop = FALSE] })
 
-    ## Send notification -----
-    bindEvent(
-      observe({
-        if (anyNA(data_filter())) {
-          ## Save the ID for removal later
-          notif_missing <- showNotification(ui = "Missing values detected!",
-                                            duration = NULL, id = "missing",
-                                            type = "warning")
-        } else {
-          removeNotification("missing")
-        }
-      }),
-      data_filter()
-    )
-
     ## Render plot -----
     plot_missing <- reactive({
-      req(data_filter())
+      validate_csv(data_filter())
+      validate_dim(data_filter())
+
       tabula::plot_heatmap(
         object = is.na(data_filter()),
         col = if (anyNA(data_filter())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
@@ -134,7 +109,9 @@ prepare_server <- function(id, x) {
 
     ## Render table -----
     output$table <- gt::render_gt({
-      req(data_filter())
+      validate_csv(data_filter())
+      validate_dim(data_filter())
+
       data_filter() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::sub_missing() |>
@@ -142,10 +119,13 @@ prepare_server <- function(id, x) {
     })
 
     ## Render description -----
-    output$value_sparcity <- renderText({
+    output$value_dimensions <- renderText({
       req(data_filter())
-      spa <- arkhe::sparsity(data_filter())
-      paste0(round(spa * 100, 2), "%")
+      paste0(dim(data_filter()), collapse = " x ")
+    })
+    output$value_sparsity <- renderText({
+      req(data_filter())
+      paste0(round(arkhe::sparsity(data_filter()) * 100, 2), "%")
     })
     output$value_missing <- renderText({
       req(data_filter())
@@ -155,29 +135,27 @@ prepare_server <- function(id, x) {
     ## Dowload -----
     output$download <- export_table(data_filter, "data")
 
-    ## Confirm -----
-    results <- bindEvent(
-      reactive({
-        msg <- "Ready to go!"
-        showNotification(ui = msg, type = "message")
-        data_filter()
-      }),
-      input$go
-    )
-
-    results
+    data_filter
   })
 }
 
 # Modules ======================================================================
 ## Select ----------------------------------------------------------------------
 select_ui <- function(id) {
-  checkboxGroupInput(
-    inputId = NS(id, "select"),
-    label = "Select columns:",
-    choices = NULL,
-    selected = NULL,
-    width = "100%"
+  ns <- NS(id)
+
+  list(
+    checkboxGroupInput(
+      inputId = ns("select"),
+      label = "Select columns:",
+      choices = NULL,
+      selected = NULL,
+      width = "100%"
+    ),
+    checkboxInput(
+      inputId = ns("rownames"),
+      label = "First column as row names"
+    )
   )
 }
 select_server <- function(id, x) {
@@ -185,21 +163,30 @@ select_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    observe({
-      freezeReactiveValue(input, "select")
-      updateCheckboxGroupInput(
-        inputId = "select",
-        choices = colnames(x()),
-        selected = colnames(x()),
-        inline = TRUE
-      )
-    })
+    bindEvent(
+      observe({
+        freezeReactiveValue(input, "select")
+        updateCheckboxGroupInput(
+          inputId = "select",
+          choices = colnames(x()),
+          selected = colnames(x()),
+          inline = TRUE
+        )
+      }),
+      x()
+    )
 
     ## Select columns
     reactive({
-      assert_csv(x())
-      j <- match(input$select, colnames(x()))
-      if (anyNA(j) || length(j) == 0) x() else x()[, j, drop = FALSE]
+      req(x())
+      x <- arkhe::get_columns(x(), names = input$select)
+
+      if (isTRUE(input$rownames)) {
+        y <- run_with_notification(arkhe::assign_rownames(x, column = 1, remove = TRUE))
+        if (!is.null(y)) x <- y
+      }
+
+      x
     })
   })
 }

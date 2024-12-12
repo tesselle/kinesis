@@ -34,8 +34,8 @@
 NULL
 
 #' @import nexus
-#' @importFrom arkhe assign_rownames count detect discard keep_cols
-#' remove_constant remove_NA remove_zero replace_NA replace_zero
+#' @importFrom arkhe %||% assign_rownames count detect discard get_columns
+#'  keep_columns remove_constant remove_NA remove_zero replace_NA replace_zero
 #' @importFrom dimensio augment ca get_eigenvalues pca screeplot summary
 #' viz_contributions
 #' @importFrom isopleuros coordinates_ternary ternary_confidence ternary_density

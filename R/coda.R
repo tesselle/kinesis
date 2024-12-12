@@ -119,6 +119,8 @@ coda_server <- function(id, x) {
     ## Coerce to compositions -----
     coda <- reactive({
       req(x())
+      validate_dim(x())
+      validate_na(x())
 
       z <- run_with_notification(
         {

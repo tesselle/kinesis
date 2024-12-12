@@ -72,10 +72,6 @@ run_with_modal <- function(expr, title = NULL) {
   res
 }
 
-assert_csv <- function(x) {
-  validate(need(x, message = "Import a CSV file first."))
-}
-
 #' Make File Name
 #'
 #' @param name A [`character`] string specifying the name of the file

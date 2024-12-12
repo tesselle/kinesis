@@ -8,7 +8,7 @@
 #' @noRd
 shiny_server <- function(input, output, session) {
   ## Data
-  data <- kinesis::import_server("import")
+  data <- kinesis::prepare_server("prepare")
   coda <- kinesis::coda_server("coda", x = data)
 
   ## Statistics
