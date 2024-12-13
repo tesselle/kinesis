@@ -2,8 +2,6 @@
 
 export(ca_server)
 export(ca_ui)
-export(chi2_server)
-export(chi2_ui)
 export(coda_outliers_server)
 export(coda_outliers_ui)
 export(coda_plot_server)

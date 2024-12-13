@@ -15,10 +15,6 @@ shiny_ui <- function(request) {
         kinesis::prepare_ui("prepare")
       ),
       bslib::nav_panel(
-        title = "Chi-squared",
-        kinesis::chi2_ui("chi2")
-      ),
-      bslib::nav_panel(
         title = "Analysis",
         kinesis::ca_ui("ca")
       ), # navbarMenu

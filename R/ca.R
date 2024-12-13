@@ -37,7 +37,8 @@ ca_ui <- function(id) {
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
-      )
+      ),
+      uiOutput(outputId = ns("chi2"))
     ), # sidebar
     multivariate_ui(id),
     border_radius = FALSE,
@@ -72,7 +73,7 @@ ca_server <- function(id, x) {
       x()
     )
 
-    ## Compute PCA -----
+    ## Compute CA -----
     results <- bindEvent(
       reactive({
         req(x())
@@ -91,13 +92,39 @@ ca_server <- function(id, x) {
       input$go
     )
 
+    ## Chi-squared -----
+    chi2_test <- reactive({
+      req(results())
+      x <- dimensio::get_data(results())
+      z <- suppressWarnings(stats::chisq.test(x = x))
+
+      # Adjusted Cramer's V [95%CI]
+      k <- ncol(x)
+      r <- nrow(x)
+      n <- sum(x)
+      phi <- max(0, (z$statistic / n) - (k - 1) * (r - 1) / (n - 1))
+
+      k_bias <- k - (k - 1)^2 / (n - 1)
+      r_bias <- r - (r - 1)^2 / (n - 1)
+      V <- sqrt(phi / min(k_bias - 1, r_bias - 1))
+
+      z$cramer <- V
+      z
+    })
+    output$chi2 <- renderUI({
+      list(
+        h5("Chi-squared Test"),
+        tags$ul(
+          tags$li(sprintf("Statistic: %.0f", chi2_test()$statistic)),
+          tags$li(sprintf("Degrees of freedom: %.0f", chi2_test()$parameter)),
+          tags$li(sprintf("p-value: %s", format.pval(chi2_test()$p.value, eps = .001))),
+          tags$li(sprintf("Cramer's V: %.2f", chi2_test()$cramer))
+        )
+      )
+    })
+
     ## Warning -----
-    old_data <- bindEvent(
-      reactive({
-        x()
-      }),
-      input$go
-    )
+    old_data <- bindEvent(reactive({ x() }), input$go)
     output$warning <- renderUI({
       req(x(), old_data())
       new_raw <- serialize(x(), NULL)
