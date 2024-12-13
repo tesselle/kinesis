@@ -34,14 +34,16 @@
 NULL
 
 #' @import nexus
-#' @importFrom arkhe %||% assign_rownames count detect discard get_columns
-#'  keep_columns remove_constant remove_NA remove_zero replace_NA replace_zero
-#' @importFrom dimensio augment ca get_eigenvalues pca screeplot summary
-#' viz_contributions
+#' @importFrom arkhe %||% assign_rownames clean_whitespace detect
+#'  discard get_columns keep_columns remove_constant remove_NA remove_zero
+#'  replace_NA replace_zero seek_rows seek_columns sparsity
+#' @importFrom dimensio ca export get_eigenvalues pca screeplot summary
+#'  viz_confidence viz_hull viz_rows viz_tolerance viz_variables
+#'  viz_contributions
 #' @importFrom isopleuros coordinates_ternary ternary_confidence ternary_density
 #' ternary_grid ternary_hull ternary_points ternary_plot ternary_tolerance
-#' @importFrom kairos permute seriate_average
-#' @importFrom khroma color info
-#' @importFrom tabula plot_bertin plot_ford
-#' @importFrom utils capture.output
+#' @importFrom kairos as_seriation assess permute
+#' @importFrom khroma color info palette_color_discrete palette_color_continuous
+#'  palette_shape
+#' @importFrom tabula plot_heatmap plot_ford
 NULL

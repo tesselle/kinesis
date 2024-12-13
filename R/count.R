@@ -16,7 +16,7 @@ count_server <- function(id, x) {
       req(x())
       validate_dim(x())
 
-      out <- arkhe::keep_cols(x(), f = is.numeric, verbose = get_option("verbose"))
+      out <- arkhe::keep_columns(x(), f = is.numeric, verbose = get_option("verbose"))
       if (any(dim(out) == 0)) return(NULL)
       out
     })
