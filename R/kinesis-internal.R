@@ -8,7 +8,7 @@
 #' @return The result of `expr` or `NULL`.
 #' @keywords internal
 #' @noRd
-run_with_notification <- function(expr, what = NULL) {
+run_with_notification <- function(expr, title = NULL) {
   warn <- err <- NULL
 
   res <- withCallingHandlers(
@@ -27,14 +27,14 @@ run_with_notification <- function(expr, what = NULL) {
     }
   )
 
-  notif <- function(text, what = NULL, how = "default") {
+  notif <- function(text, title = NULL, how = "default") {
     # text <- paste0(text, collapse = "\n")
-    if (!is.null(what)) text <- sprintf("**%s**\n%s", what, text)
+    if (!is.null(title)) text <- sprintf("**%s**\n%s", title, text)
     showNotification(ui = markdown(text, hardbreaks = TRUE), type = how)
   }
 
-  if (!is.null(err)) notif(text = err, what = what, how = "error")
-  if (!is.null(warn)) notif(text = warn, what = what, how = "warning")
+  if (!is.null(err)) notif(text = err, title = title, how = "error")
+  if (!is.null(warn)) notif(text = warn, title = title, how = "warning")
 
   res
 }

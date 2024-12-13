@@ -131,13 +131,14 @@ coda_server <- function(id, x) {
             verbose = get_option("verbose", default = FALSE)
           )
         },
-        what = "Composition"
+        title = "Composition"
       )
 
       if (isTruthy(input$condense)) {
         by <- x()[, input$condense]
         z <- nexus::condense(z, by = by)
       }
+
       z
     })
 

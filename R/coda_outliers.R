@@ -84,7 +84,7 @@ coda_outliers_server <- function(id, x) {
               quantile = input$quantile
             )
           },
-          what = "Outliers detection"
+          title = "Outliers detection"
         )
       }),
       input$go

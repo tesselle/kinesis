@@ -101,7 +101,7 @@ pca_server <- function(id, x) {
               sup_col = arkhe::seek_columns(x(), names = input$sup_col)
             )
           },
-          what = "PCA"
+          title = "PCA"
         )
       }),
       input$go
