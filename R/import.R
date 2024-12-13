@@ -31,14 +31,14 @@ import_modal <- function(ns) {
     title = "Import Data",
     footer = tagList(
       modalButton("Cancel"),
-      actionButton(ns("go"), "OK")
+      actionButton(inputId = ns("go"), label = "OK", class = "btn-primary")
     ),
     layout_column_wrap(
       width = 1/3,
       ## Input: select a file
       div(
         tags$p(
-          helpText("Select the location of, and the CSV file you want to upload."),
+          helpText("Select the location of, and the file you want to upload."),
           helpText("Please check the default settings and adjust them to your data."),
           helpText("This application only supports data encoded in UFT-8."),
         ),
@@ -48,9 +48,10 @@ import_modal <- function(ns) {
         ),
         fileInput(
           inputId = ns("file"),
-          label = "Choose a CSV file:",
+          label = "Choose a CSV or a TSV file:",
           multiple = FALSE,
-          accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
+          accept = c(".csv", ".tsv", "text/csv", "text/tsv",
+                     "text/comma-separated-values", "text/tab-separated-values")
         )
       ),
       div(
@@ -139,8 +140,9 @@ import_server <- function(id) {
         on.exit(removeNotification(id), add = TRUE)
 
         x <- run_with_notification({
-          if (tolower(tools::file_ext(input$file$datapath)) != "csv") {
-            stop("Import a CSV file.", call. = FALSE)
+          ext <- tolower(tools::file_ext(input$file$datapath))
+          if (ext != "csv" && ext != "tsv") {
+            stop("Import a CSV or a TSV file.", call. = FALSE)
           }
 
           utils::read.table(
@@ -154,7 +156,7 @@ import_server <- function(id) {
             skip = if (!is.na(input$skip)) input$skip else 0,
             comment.char = input$comment
           )},
-          what = "Data import"
+          title = "Data import"
         )
 
         if (!is.null(x)) {
