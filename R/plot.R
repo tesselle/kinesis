@@ -48,6 +48,138 @@ brush_ylim <- function(e) {
   c(e$ymin, e$ymax)
 }
 
+# Server =======================================================================
+#' Plot Server
+#'
+#' @param id An ID string that corresponds with the ID used to call the module's
+#'  UI function.
+#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
+#' @param ... Further parameters to be passed to [shiny::renderPlot()].
+#' @family widgets
+#' @keywords internal
+render_plot <- function(id, x, ...) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Plot
+    output$plot <- renderPlot(grDevices::replayPlot(x()), ...)
+
+    ## Show modal dialog
+    bindEvent(
+      observe({ showModal(download_plot(session$ns)) }),
+      input$download
+    )
+
+    ## Preview
+    output$preview <- renderImage({
+      req(x())
+      req(input$width)
+      req(input$height)
+
+      res <- 72
+
+      ## Write to a temporary PNG file
+      outfile <- tempfile(fileext = ".png")
+
+      grDevices::png(
+        filename = outfile,
+        width = input$width,
+        height = input$height,
+        units = "in",
+        res = res
+      )
+      grDevices::replayPlot(x())
+      grDevices::dev.off()
+
+      ## Return a list containing information about the image
+      list(
+        src = outfile,
+        contentType = "image/png",
+        style = "height:300px; width:auto; max-width:100%;"
+      )
+    }, deleteFile = TRUE)
+
+    ## Download
+    output[["pdf"]] <- export_plot(input, x, format = "pdf")
+    output[["png"]] <- export_plot(input, x, format = "png")
+  })
+}
+
+#' Export Plot Modal
+#'
+#' @param ns A [namespace][shiny::NS()] function.
+#' @keywords internal
+#' @noRd
+download_plot <- function(ns) {
+  modalDialog(
+    title = "Save plot - Preview",
+    size = "l",
+    easyClose = FALSE,
+    fade = FALSE,
+    imageOutput(outputId = ns("preview")),
+    layout_column_wrap(
+      width = 1/3,
+      textInput(
+        inputId = ns("name"),
+        label = "File name",
+        value = "plot"
+      ),
+      numericInput(
+        inputId = ns("width"),
+        label = "Width (in)",
+        min = 0.5,
+        value = 7
+      ),
+      numericInput(
+        inputId = ns("height"),
+        label = "Height (in)",
+        min = 0.5,
+        value = 7
+      )
+    ),
+    footer = tagList(
+      modalButton("Cancel"),
+      downloadButton(
+        outputId = ns("pdf"),
+        label = "PDF",
+        icon = icon("download")
+      ),
+      downloadButton(
+        outputId = ns("png"),
+        label = "PNG",
+        icon = icon("download")
+      )
+    )
+  )
+}
+
+#' Download Plot
+#'
+#' Save and Download a graphic.
+#' @param input Inputs selected by the user.
+#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
+#' @param format A [`character`] string specifying the file extension.
+#' @keywords internal
+#' @noRd
+export_plot <- function(input, x, format) {
+  downloadHandler(
+    filename = function() { make_file_name(input$name, format) },
+    content = function(file) {
+      device <- switch (
+        format,
+        pdf = function(x, ...) grDevices::pdf(x, ...),
+        png = function(x, ...) grDevices::png(x, ..., units = "in", res = 300),
+        stop("Unknown graphics device.", call. = FALSE)
+      )
+
+      device(file, width = input$width, height = input$height)
+      grDevices::replayPlot(x())
+      grDevices::dev.off()
+    }
+  )
+}
+
+# Widgets ======================================================================
 select_cex <- function(inputId, default = c(1, 6)) {
   sliderInput(
     inputId = inputId,
@@ -103,124 +235,4 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
     selected = default,
     multiple = FALSE
   )
-}
-
-# Server =======================================================================
-#' Plot Server
-#'
-#' @param id An ID string that corresponds with the ID used to call the module's
-#'  UI function.
-#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
-#' @param ... Further parameters to be passed to [shiny::renderPlot()].
-#' @family widgets
-#' @keywords internal
-render_plot <- function(id, x, ...) {
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    ## Plot
-    output$plot <- renderPlot(grDevices::replayPlot(x()), ...)
-
-    ## Download modal
-    bindEvent(
-      observe({ showModal(export_plot_modal(session$ns("export"))) }),
-      input$download
-    )
-
-    ## Download
-    export_plot_server("export", x, format = "pdf")
-    export_plot_server("export", x, format = "png")
-  })
-}
-
-#' Plot Modal Dialog
-#'
-#' @param id A [`character`] vector to be used for the namespace.
-#' @family widgets
-#' @keywords internal
-#' @noRd
-export_plot_modal <- function(id) {
-  ## Create a namespace function using the provided id
-  ns <- NS(id)
-
-  modalDialog(
-    easyClose = FALSE,
-    title = "Save plot",
-    textInput(
-      inputId = ns("name"),
-      label = "File name",
-      value = "plot"
-    ),
-    numericInput(
-      inputId = ns("width"),
-      label = "Width (in)",
-      min = 0.5,
-      value = 7
-    ),
-    numericInput(
-      inputId = ns("height"),
-      label = "Height (in)",
-      min = 0.5,
-      value = 7
-    ),
-    footer = tagList(
-      modalButton("Cancel"),
-      downloadButton(
-        outputId = ns("pdf"),
-        label = "PDF",
-        icon = shiny::icon("download")
-      ),
-      downloadButton(
-        outputId = ns("png"),
-        label = "PNG",
-        icon = shiny::icon("download")
-      )
-    )
-  )
-}
-
-#' Download Plot
-#'
-#' Save and Download a graphic.
-#' @param id An ID string that corresponds with the ID used to call the module's
-#'  UI function.
-#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
-#' @param format A [`character`] string specifying the file extension.
-#' @family widgets
-#' @keywords internal
-#' @noRd
-export_plot_server <- function(id, x, format) {
-  ## Validation
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    name <- reactive({
-      req(input$name)
-      input$name
-    })
-    width <- reactive({
-      req(input$width)
-      input$width
-    })
-    height <- reactive({
-      req(input$height)
-      input$height
-    })
-
-    output[[format]] <- downloadHandler(
-      filename = function() { make_file_name(name(), format) },
-      content = function(file) {
-        device <- switch (
-          format,
-          pdf = function(x, ...) grDevices::pdf(x, ...),
-          png = function(x, ...) grDevices::png(x, ..., units = "in", res = 300),
-          stop("Unknown graphics device.", call. = FALSE)
-        )
-
-        device(file, width = width(), height = height())
-        grDevices::replayPlot(x())
-        grDevices::dev.off()
-      }
-    )
-  })
 }

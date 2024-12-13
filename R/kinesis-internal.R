@@ -39,39 +39,6 @@ run_with_notification <- function(expr, title = NULL) {
   res
 }
 
-#' Modal Dialog
-#'
-#' Shows a modal dialog if an expression raises an error.
-#' @param expr An expression to be evaluated.
-#' @param title A [`character`] string giving the title of the dialog.
-#' @return The result of `expr` or `NULL`.
-#' @keywords internal
-#' @noRd
-run_with_modal <- function(expr, title = NULL) {
-  err <- NULL
-
-  res <- withCallingHandlers(
-    tryCatch(
-      expr,
-      error = function(e) {
-        if (!inherits(e, "shiny.silent.error")) { # Ignore silent error
-          err <<- conditionMessage(e)
-        }
-        return(NULL)
-      }
-    )
-  )
-
-  modal <- function(text, title = NULL) {
-    dialog <- modalDialog(text, title = title, easyClose = TRUE)
-    showModal(dialog)
-  }
-
-  if (!is.null(err)) modal(text = err, title = title)
-
-  res
-}
-
 #' Make File Name
 #'
 #' @param name A [`character`] string specifying the name of the file
