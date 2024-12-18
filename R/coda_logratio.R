@@ -25,7 +25,12 @@ logratio_ui <- function(id) {
       plotOutput(outputId = ns("graph"))
     ), # sidebar
     ## Output: plot
-    output_plot(id = ns("plot"), height = "100%", title = "Density")
+    output_plot(
+      id = ns("plot"),
+      tools = list(select_color(inputId = ns("col"))),
+      height = "100%",
+      title = "Density"
+    )
   ) # layout_sidebar
 }
 
@@ -80,7 +85,9 @@ logratio_server <- function(id, x, method) {
     ## Plot -----
     plot_log <- reactive({
       req(logratio())
-      plot(logratio())
+      col <- khroma::color(input$col)
+      pal <- khroma::palette_color_discrete(col)
+      plot(logratio(), color = pal)
       grDevices::recordPlot()
     })
 

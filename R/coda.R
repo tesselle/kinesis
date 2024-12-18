@@ -191,9 +191,10 @@ coda_server <- function(id, x) {
     ## Render tables -----
     output$table <- gt::render_gt({
       req(clean())
-      if (nexus::any_assigned(clean())) {
-        tbl <- data.frame(group = nexus::groups(clean()), clean())
-        gt <- gt::gt(tbl, groupname_col = "group", rownames_to_stub = TRUE)
+      if (nexus::is_grouped(clean())) {
+        gt <- clean() |>
+          as.data.frame() |>
+          gt::gt(groupname_col = ".group", rownames_to_stub = TRUE)
       } else {
         gt <- clean() |>
           as.data.frame() |>

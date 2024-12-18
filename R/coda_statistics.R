@@ -77,9 +77,8 @@ coda_summary_server <- function(id, x) {
     ## Location -----
     data_loc <- reactive({
       req(x())
-      if (nexus::any_assigned(x())) {
-        index <- nexus::groups(x())
-        nexus::aggregate(x(), by = index, FUN = nexus::mean, na.rm = FALSE)
+      if (nexus::is_grouped(x())) {
+        nexus::aggregate(x(), FUN = nexus::mean, na.rm = FALSE)
       } else {
         m <- nexus::mean(x(), na.rm = FALSE)
         matrix(m, nrow = 1, dimnames = list("center", names(m)))
@@ -157,7 +156,7 @@ coda_summary_server <- function(id, x) {
       req(x())
       data_loc() |>
         as.data.frame() |>
-        gt::gt(rownames_to_stub = nexus::any_assigned(x())) |>
+        gt::gt(rownames_to_stub = nexus::is_grouped(x())) |>
         gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
         gt::tab_header(title = "Compositional Mean")
