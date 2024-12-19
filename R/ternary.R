@@ -197,68 +197,59 @@ ternary_server <- function(id, x) {
     })
 
     ## Update UI -----
-    bindEvent(
-      observe({
-        choices <- colnames(data_quanti())
-        updateSelectInput(session, inputId = "axis1", choices = choices)
-      }),
-      data_quanti()
-    )
-    bindEvent(
-      observe({
-        choices <- setdiff(colnames(data_quanti()), input$axis1)
-        selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
-        selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
-        updateSelectInput(session, inputId = "axis2",
-                          choices = choices, selected = selected2)
-        updateSelectInput(session, inputId = "axis3",
-                          choices = choices, selected = selected3)
-      }),
-      input$axis1
-    )
-    bindEvent(
-      observe({
-        choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
-        selected <- if (input$axis3 %in% choices) input$axis3 else NULL
-        updateSelectInput(session, inputId = "axis3",
-                          choices = choices, selected = selected)
-      }),
-      input$axis2
-    )
-    bindEvent(
-      observe({
-        choices <- c(none = "", colnames(x()))
-        updateSelectInput(session, inputId = "symbol_color", choices = choices)
-      }),
-      x()
-    )
-    bindEvent(
-      observe({
-        choices <- c(none = "", colnames(data_quali()))
-        updateSelectInput(session, inputId = "symbol_shape", choices = choices)
-        updateSelectInput(session, inputId = "group", choices = choices)
-      }),
-      data_quali()
-    )
-    bindEvent(
-      observe({
-        choices <- c(none = "", colnames(data_quanti()))
-        updateSelectInput(session, inputId = "symbol_size", choices = choices)
-      }),
-      data_quanti()
-    )
+    observe({
+      choices <- colnames(data_quanti())
+      updateSelectInput(session, inputId = "axis1", choices = choices)
+    }) |>
+      bindEvent(data_quanti())
+
+    observe({
+      choices <- setdiff(colnames(data_quanti()), input$axis1)
+      selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
+      selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
+      updateSelectInput(session, inputId = "axis2",
+                        choices = choices, selected = selected2)
+      updateSelectInput(session, inputId = "axis3",
+                        choices = choices, selected = selected3)
+    }) |>
+      bindEvent(input$axis1)
+
+    observe({
+      choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
+      selected <- if (input$axis3 %in% choices) input$axis3 else NULL
+      updateSelectInput(session, inputId = "axis3",
+                        choices = choices, selected = selected)
+    }) |>
+      bindEvent(input$axis2)
+
+    observe({
+      choices <- c(none = "", colnames(x()))
+      updateSelectInput(session, inputId = "symbol_color", choices = choices)
+    }) |>
+      bindEvent(x())
+
+    observe({
+      choices <- c(none = "", colnames(data_quali()))
+      updateSelectInput(session, inputId = "symbol_shape", choices = choices)
+      updateSelectInput(session, inputId = "group", choices = choices)
+    }) |>
+      bindEvent(data_quali())
+
+    observe({
+      choices <- c(none = "", colnames(data_quanti()))
+      updateSelectInput(session, inputId = "symbol_size", choices = choices)
+    }) |>
+      bindEvent(data_quanti())
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.
     ## If so, zoom to the brush bounds; if not, reset the zoom.
     range_ternplot <- reactiveValues(x = NULL, y = NULL)
-    bindEvent(
-      observe({
-        range_ternplot$x <- brush_xlim(input$ternplot_brush)
-        range_ternplot$y <- brush_ylim(input$ternplot_brush)
-      }),
-      input$ternplot_dblclick
-    )
+    observe({
+      range_ternplot$x <- brush_xlim(input$ternplot_brush)
+      range_ternplot$y <- brush_ylim(input$ternplot_brush)
+    }) |>
+      bindEvent(input$ternplot_dblclick)
 
     ## Get ternary data -----
     data_tern <- reactive({

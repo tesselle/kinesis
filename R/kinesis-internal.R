@@ -1,5 +1,76 @@
 # HELPERS
 
+validate_csv <- function(x) {
+  validate(need(x, message = "Import a CSV file first."))
+}
+validate_dim <- function(x) {
+  validate(need(all(dim(x) > 0), "Select at least one row and one column."))
+}
+validate_na <- function(x) {
+  validate(need(!anyNA(x), "Your data should not contain missing values."))
+}
+validate_zero <- function(x) {
+  validate(need(all(x != 0), "Your data should not contain zeros."))
+}
+
+#' Compute on Action UI
+#'
+#' @param id A [`character`] vector to be used for the namespace.
+#' @seealso [compute_server()]
+#' @keywords internal
+compute_ui <- function(id) {
+  ## Create a namespace function using the provided id
+  ns <- NS(id)
+
+  list(
+    uiOutput(outputId = ns("warning")),
+    actionButton(
+      inputId = ns("go"),
+      label = "(Re)Compute",
+      class = "btn btn-primary"
+    )
+  )
+}
+
+#' Compute on Action Server
+#'
+#' @param id An ID string that corresponds with the ID used to call the module's
+#'  UI function.
+#' @param x A reactive object.
+#' @param f A [`function`] that takes `x` as argument.
+#' @return A reactive object (the result of `f(x)`).
+#' @seealso [compute_ui()]
+#' @keywords internal
+compute_server <- function(id, x, f) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    old_data <- reactive({ x() }) |> bindEvent(input$go)
+
+    results <- reactive({
+      req(x())
+      run_with_notification({ f(x()) }, title = toupper(id))
+    }) |>
+      bindEvent(input$go)
+
+    output$warning <- renderUI({
+      req(x(), old_data())
+      new_raw <- serialize(x(), NULL)
+      old_raw <- serialize(old_data(), NULL)
+      if (!isTRUE(all.equal(new_raw, old_raw))) {
+        div(
+          class = "alert alert-warning",
+          role = "alert",
+          "Your data seems to have changed.",
+          "You should perform your analysis again."
+        )
+      }
+    })
+
+    results
+  })
+}
+
 #' Notification
 #'
 #' Shows a notification if an expression raises an error or a warning.

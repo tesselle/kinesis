@@ -69,25 +69,19 @@ render_plot <- function(id, x, ...) {
     observe({ showModal(download_plot(session$ns)) }) |>
       bindEvent(input$download)
 
-    ## Width and height
-    width <- reactive({ input$width })
-    height <- reactive({ input$height })
-
     ## Preview
     output$preview <- renderImage({
-      req(x(), width(), height())
-
-      res <- 72
+      req(x())
 
       ## Write to a temporary PNG file
       outfile <- tempfile(fileext = ".png")
 
       grDevices::png(
         filename = outfile,
-        width = width(),
-        height = height(),
+        width = input$width,
+        height = input$height,
         units = "in",
-        res = res
+        res = 72
       )
       x()()
       grDevices::dev.off()

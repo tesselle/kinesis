@@ -85,9 +85,9 @@ prepare_ui <- function(id) {
 prepare_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
-    data_clean <- import_server("import") |>  ## Import data -----
-    select_server("select", x = _) |>       ## Select data -----
-    clean_server("clean", x = _)            ## Clean data -----
+    data_clean <- import_server("import") |>
+      select_server("select", x = _) |>
+      clean_server("clean", x = _)
 
     ## Filter rows -----
     filter <- filter_server("filter", data_clean)
@@ -164,18 +164,16 @@ select_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    bindEvent(
-      observe({
-        freezeReactiveValue(input, "select")
-        updateCheckboxGroupInput(
-          inputId = "select",
-          choices = colnames(x()),
-          selected = colnames(x()),
-          inline = TRUE
-        )
-      }),
-      x()
-    )
+    observe({
+      freezeReactiveValue(input, "select")
+      updateCheckboxGroupInput(
+        inputId = "select",
+        choices = colnames(x()),
+        selected = colnames(x()),
+        inline = TRUE
+      )
+    }) |>
+      bindEvent(x())
 
     ## Select columns
     reactive({

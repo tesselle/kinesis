@@ -95,14 +95,13 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Histogram -----
-    bindEvent(
-      observe({
-        choices <- colnames(x())
-        freezeReactiveValue(input, "hist_select")
-        updateSelectInput(inputId = "hist_select", choices = choices)
-      }),
-      x()
-    )
+    observe({
+      choices <- colnames(x())
+      freezeReactiveValue(input, "hist_select")
+      updateSelectInput(inputId = "hist_select", choices = choices)
+    }) |>
+      bindEvent(x())
+
     plot_hist <- reactive({
       req(x())
       function() nexus::hist(x(), select = input$hist_select)

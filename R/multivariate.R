@@ -221,20 +221,17 @@ multivariate_server <- function(id, x) {
     ## If so, zoom to the brush bounds; if not, reset the zoom.
     range_ind <- reactiveValues(x = NULL, y = NULL)
     range_var <- reactiveValues(x = NULL, y = NULL)
-    bindEvent(
-      observe({
-        range_ind$x <- brush_xlim(input$plot_ind_brush)
-        range_ind$y <- brush_ylim(input$plot_ind_brush)
-      }),
-      input$plot_ind_dblclick
-    )
-    bindEvent(
-      observe({
-        range_var$x <- brush_xlim(input$plot_var_brush)
-        range_var$y <- brush_ylim(input$plot_var_brush)
-      }),
-      input$plot_var_dblclick
-    )
+    observe({
+      range_ind$x <- brush_xlim(input$plot_ind_brush)
+      range_ind$y <- brush_ylim(input$plot_ind_brush)
+    }) |>
+      bindEvent(input$plot_ind_dblclick)
+
+    observe({
+      range_var$x <- brush_xlim(input$plot_var_brush)
+      range_var$y <- brush_ylim(input$plot_var_brush)
+    }) |>
+      bindEvent(input$plot_var_dblclick)
 
     ## Individuals -----
     plot_ind <- reactive({

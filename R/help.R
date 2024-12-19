@@ -1,18 +1,5 @@
 # HELP TEXT
 
-validate_csv <- function(x) {
-  validate(need(x, message = "Import a CSV file first."))
-}
-validate_dim <- function(x) {
-  validate(need(all(dim(x) > 0), "Select at least one row and one column."))
-}
-validate_na <- function(x) {
-  validate(need(!anyNA(x), "Your data should not contain missing values."))
-}
-validate_zero <- function(x) {
-  validate(need(all(x != 0), "Your data should not contain zeros."))
-}
-
 #' Build an URL
 #'
 #' @param package A [`character`] string giving the name of a package.

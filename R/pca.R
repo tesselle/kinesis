@@ -40,14 +40,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      uiOutput(
-        outputId = ns("warning"),
-      ),
-      actionButton(
-        inputId = ns("go"),
-        label = "(Re)Compute",
-        class = "btn btn-primary"
-      ),
+      compute_ui(id = ns("pca")),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
@@ -76,57 +69,29 @@ pca_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Build UI -----
-    bindEvent(
-      observe({
-        freezeReactiveValue(input, "sup_row")
-        updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
-        freezeReactiveValue(input, "sup_col")
-        updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
-      }),
-      x()
-    )
+    observe({
+      freezeReactiveValue(input, "sup_row")
+      updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
+      freezeReactiveValue(input, "sup_col")
+      updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
+    }) |>
+      bindEvent(x())
 
     ## Compute PCA -----
-    results <- bindEvent(
-      reactive({
-        req(x())
-        run_with_notification(
-          {
-            dimensio::pca(
-              object = x(),
-              center = input$center,
-              scale = input$scale,
-              rank = input$rank,
-              sup_row = arkhe::seek_rows(x(), names = input$sup_row),
-              sup_col = arkhe::seek_columns(x(), names = input$sup_col)
-            )
-          },
-          title = "PCA"
-        )
-      }),
-      input$go
-    )
-
-    ## Warning -----
-    old_data <- bindEvent(
-      reactive({
-        x()
-      }),
-      input$go
-    )
-    output$warning <- renderUI({
-      req(x(), old_data())
-      new_raw <- serialize(x(), NULL)
-      old_raw <- serialize(old_data(), NULL)
-      if (!isTRUE(all.equal(new_raw, old_raw))) {
-        div(
-          class = "alert alert-warning",
-          role = "alert",
-          "Your data seems to have changed.",
-          "You should perform your analysis again."
+    results <- compute_server(
+      id = "pca",
+      x = x,
+      f = function(x) {
+        dimensio::pca(
+          object = x,
+          center = input$center,
+          scale = input$scale,
+          rank = input$rank,
+          sup_row = arkhe::seek_rows(x, names = input$sup_row),
+          sup_col = arkhe::seek_columns(x, names = input$sup_col)
         )
       }
-    })
+    )
 
     ## Export -----
     output$download <- downloadHandler(

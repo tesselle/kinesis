@@ -128,44 +128,40 @@ import_modal <- function(ns) {
 import_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ## Show modal dialog -----
-    bindEvent(
-      observe({ showModal(import_modal(session$ns)) }),
-      input$upload
-    )
+    observe({ showModal(import_modal(session$ns)) }) |>
+      bindEvent(input$upload)
 
     ## Read data file -----
-    data <- bindEvent(
-      reactive({
-        id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
-        on.exit(removeNotification(id), add = TRUE)
+    data <- reactive({
+      id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
+      on.exit(removeNotification(id), add = TRUE)
 
-        x <- run_with_notification({
-          ext <- tolower(tools::file_ext(input$file$datapath))
-          if (ext != "csv" && ext != "tsv") {
-            stop("Import a CSV or a TSV file.", call. = FALSE)
-          }
-
-          utils::read.table(
-            file = input$file$datapath,
-            header = input$header,
-            sep = input$sep,
-            dec = input$dec,
-            quote = input$quote,
-            row.names = if (input$rownames) 1 else NULL,
-            na.strings = input$na.strings,
-            skip = if (!is.na(input$skip)) input$skip else 0,
-            comment.char = input$comment
-          )},
-          title = "Data import"
-        )
-
-        if (!is.null(x)) {
-          removeModal()
-          x
+      x <- run_with_notification({
+        ext <- tolower(tools::file_ext(input$file$datapath))
+        if (ext != "csv" && ext != "tsv") {
+          stop("Import a CSV or a TSV file.", call. = FALSE)
         }
-      }),
-      input$go
-    )
+
+        utils::read.table(
+          file = input$file$datapath,
+          header = input$header,
+          sep = input$sep,
+          dec = input$dec,
+          quote = input$quote,
+          row.names = if (input$rownames) 1 else NULL,
+          na.strings = input$na.strings,
+          skip = if (!is.na(input$skip)) input$skip else 0,
+          comment.char = input$comment
+        )},
+        title = "Data import"
+      )
+
+      if (!is.null(x)) {
+        removeModal()
+        x
+      }
+    }) |>
+      bindEvent(input$go)
 
     data
   })

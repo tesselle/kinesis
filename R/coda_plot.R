@@ -72,14 +72,13 @@ coda_plot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    bindEvent(
-      observe({
-        freezeReactiveValue(input, "order_rows")
-        choices <- c("", colnames(data_bar()))
-        updateSelectizeInput(inputId = "order_rows", choices = choices)
-      }),
-      data_bar()
-    )
+    ## Update UI -----
+    observe({
+      choices <- c("", colnames(data_bar()))
+      freezeReactiveValue(input, "order_rows")
+      updateSelectizeInput(inputId = "order_rows", choices = choices)
+    }) |>
+      bindEvent(data_bar())
 
     ## Subset -----
     data_bar <- reactive({

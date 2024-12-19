@@ -26,14 +26,7 @@ ca_ui <- function(id) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      uiOutput(
-        outputId = ns("warning"),
-      ),
-      actionButton(
-        inputId = ns("go"),
-        label = "(Re)Compute",
-        class = "btn btn-primary"
-      ),
+      compute_ui(id = ns("ca")),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
@@ -63,33 +56,26 @@ ca_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Build UI -----
-    bindEvent(
-      observe({
-        freezeReactiveValue(input, "sup_row")
-        updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
-        freezeReactiveValue(input, "sup_col")
-        updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
-      }),
-      x()
-    )
+    observe({
+      freezeReactiveValue(input, "sup_row")
+      updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
+      freezeReactiveValue(input, "sup_col")
+      updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
+    }) |>
+      bindEvent(x())
 
     ## Compute CA -----
-    results <- bindEvent(
-      reactive({
-        req(x())
-        run_with_notification(
-          {
-            dimensio::ca(
-              object = x(),
-              rank = input$rank,
-              sup_row = arkhe::seek_rows(x(), names = input$sup_row),
-              sup_col = arkhe::seek_columns(x(), names = input$sup_col)
-            )
-          },
-          title = "CA"
+    results <- compute_server(
+      id = "ca",
+      x = x,
+      f = function(x) {
+        dimensio::ca(
+          object = x,
+          rank = input$rank,
+          sup_row = arkhe::seek_rows(x, names = input$sup_row),
+          sup_col = arkhe::seek_columns(x, names = input$sup_col)
         )
-      }),
-      input$go
+      }
     )
 
     ## Chi-squared -----
