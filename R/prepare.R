@@ -98,12 +98,13 @@ prepare_server <- function(id) {
       validate_csv(data_filter())
       validate_dim(data_filter())
 
-      tabula::plot_heatmap(
-        object = is.na(data_filter()),
-        col = if (anyNA(data_filter())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
-        fixed_ratio = FALSE
-      )
-      grDevices::recordPlot()
+      function() {
+        tabula::plot_heatmap(
+          object = is.na(data_filter()),
+          col = if (anyNA(data_filter())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
+          fixed_ratio = FALSE
+        )
+      }
     })
     render_plot("missing", x = plot_missing)
 
@@ -132,7 +133,7 @@ prepare_server <- function(id) {
       sum(is.na(data_filter()))
     })
 
-    ## Dowload -----
+    ## Download -----
     output$download <- export_table(data_filter, "data")
 
     data_filter

@@ -87,8 +87,8 @@ logratio_server <- function(id, x, method) {
       req(logratio())
       col <- khroma::color(input$col)
       pal <- khroma::palette_color_discrete(col)
-      plot(logratio(), color = pal)
-      grDevices::recordPlot()
+
+      function() plot(logratio(), color = pal)
     })
 
     ## Graph -----
@@ -96,8 +96,8 @@ logratio_server <- function(id, x, method) {
       req(logratio())
       if (inherits(logratio(), "CLR")) return(NULL)
       graph <- nexus::as_graph(logratio())
-      plot(graph)
-      grDevices::recordPlot()
+
+      function() plot(graph)
     })
 
     ## Render title -----

@@ -105,9 +105,9 @@ coda_outliers_server <- function(id, x) {
     ## Plot -----
     plot <- reactive({
       req(out())
-      validate(need(input$group, "Please choose a group."))
-      plot(out(), select = as.integer(input$group), type = input$type)
-      grDevices::recordPlot()
+      function() {
+        plot(out(), select = as.integer(input$group), type = input$type)
+      }
     })
     render_plot("plot", x = plot)
 

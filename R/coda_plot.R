@@ -105,14 +105,15 @@ coda_plot_server <- function(id, x) {
       col <- khroma::color(input$color_qualitative)
       pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
 
-      nexus::barplot(
-        height = data_bar(),
-        order_columns = input$order_columns,
-        order_rows = get_value(input$order_rows),
-        decreasing = input$decreasing,
-        color = pal
-      )
-      grDevices::recordPlot()
+      function() {
+        nexus::barplot(
+          height = data_bar(),
+          order_columns = input$order_columns,
+          order_rows = get_value(input$order_rows),
+          decreasing = input$decreasing,
+          color = pal
+        )
+      }
     })
 
     ## Render barplot -----

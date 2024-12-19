@@ -317,64 +317,66 @@ ternary_server <- function(id, x) {
         range_coord <- isopleuros::coordinates_cartesian(x = x_pts, y = y_pts)
       }
 
-      ## Build plot
-      graphics::par(mar = c(1, 1, 1, 1))
-      z <- isopleuros::ternary_plot(
-        x = tern,
-        type = "n",
-        xlim = range_coord$x,
-        ylim = range_coord$y,
-        zlim = range_coord$z,
-        xlab = input$axis1,
-        ylab = input$axis2,
-        zlab = input$axis3,
-        center = input$center,
-        scale = input$scale
+      ## Enveloppe
+      level <- as.numeric(input$level)
+      fun_wrap <- switch(
+        input$wrap,
+        tol = function(x, ...) isopleuros::ternary_tolerance(x, level = level, ...),
+        conf = function(x, ...) isopleuros::ternary_confidence(x, level = level, ...),
+        hull = function(x, ...) isopleuros::ternary_hull(x, ...),
+        function(...) invisible()
       )
 
-      ## Add grid
-      if (input$grid) {
-        isopleuros::ternary_grid(center = z$center, scale = z$scale)
-      }
-
-      if (no_scale) {
-        ## Density contours
-        if (input$density) {
-          isopleuros::ternary_density(tern)
-        }
-
-        ## Envelope
-        level <- as.numeric(input$level)
-        fun_wrap <- switch(
-          input$wrap,
-          tol = function(x, ...) isopleuros::ternary_tolerance(x, level = level, ...),
-          conf = function(x, ...) isopleuros::ternary_confidence(x, level = level, ...),
-          hull = function(x, ...) isopleuros::ternary_hull(x, ...),
-          function(...) invisible()
+      ## Build plot
+      function() {
+        graphics::par(mar = c(1, 1, 1, 1))
+        z <- isopleuros::ternary_plot(
+          x = tern,
+          type = "n",
+          xlim = range_coord$x,
+          ylim = range_coord$y,
+          zlim = range_coord$z,
+          xlab = input$axis1,
+          ylab = input$axis2,
+          zlab = input$axis3,
+          center = input$center,
+          scale = input$scale
         )
-        for (i in split(seq_len(n), f = grp)) {
-          z <- tern[i, , drop = FALSE]
-          if (nrow(z) < 3) next
-          fun_wrap(z, lty = 1, border = border[i])
+
+        ## Add grid
+        if (input$grid) {
+          isopleuros::ternary_grid(center = z$center, scale = z$scale)
         }
+
+        if (no_scale) {
+          ## Density contours
+          if (input$density) {
+            isopleuros::ternary_density(tern)
+          }
+
+          ## Envelope
+          for (i in split(seq_len(n), f = grp)) {
+            z <- tern[i, , drop = FALSE]
+            if (nrow(z) < 3) next
+            fun_wrap(z, lty = 1, border = border[i])
+          }
+        }
+
+        ## Add points
+        if (input$points) {
+          isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex,
+                                     center = z$center, scale = z$scale)
+        }
+
+        ## Add labels
+        if (input$labels) {
+          isopleuros::ternary_labels(tern, center = z$center, scale = z$scale,
+                                     labels = rownames(tern), col = col)
+        }
+
+        ## Add legend
+        # TODO
       }
-
-      ## Add points
-      if (input$points) {
-        isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex,
-                                   center = z$center, scale = z$scale)
-      }
-
-      ## Add labels
-      if (input$labels) {
-        isopleuros::ternary_labels(tern, center = z$center, scale = z$scale,
-                                   labels = rownames(tern), col = col)
-      }
-
-      ## Add legend
-      # TODO
-
-      grDevices::recordPlot()
     })
 
     ## Render plot -----

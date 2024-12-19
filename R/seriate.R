@@ -101,8 +101,13 @@ seriate_server  <- function(id, x, order) {
     ## Plot -----
     plot_permute <- reactive({
       req(data_permute())
-      tabula::plot_ford(data_permute(), weights = input$weights, EPPM = input$eppm)
-      grDevices::recordPlot()
+      function() {
+        tabula::plot_ford(
+          object = data_permute(),
+          weights = input$weights,
+          EPPM = input$eppm
+        )
+      }
     })
 
     ## Render plot -----

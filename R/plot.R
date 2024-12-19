@@ -49,11 +49,12 @@ brush_ylim <- function(e) {
 }
 
 # Server =======================================================================
+# https://stackoverflow.com/a/46961131
 #' Plot Server
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
+#' @param x A reactive [`function`] recording the plot.
 #' @param ... Further parameters to be passed to [shiny::renderPlot()].
 #' @family widgets
 #' @keywords internal
@@ -62,19 +63,19 @@ render_plot <- function(id, x, ...) {
 
   moduleServer(id, function(input, output, session) {
     ## Plot
-    output$plot <- renderPlot(grDevices::replayPlot(x()), ...)
+    output$plot <- renderPlot(x()(), ...)
 
     ## Show modal dialog
-    bindEvent(
-      observe({ showModal(download_plot(session$ns)) }),
-      input$download
-    )
+    observe({ showModal(download_plot(session$ns)) }) |>
+      bindEvent(input$download)
+
+    ## Width and height
+    width <- reactive({ input$width })
+    height <- reactive({ input$height })
 
     ## Preview
     output$preview <- renderImage({
-      req(x())
-      req(input$width)
-      req(input$height)
+      req(x(), width(), height())
 
       res <- 72
 
@@ -83,12 +84,12 @@ render_plot <- function(id, x, ...) {
 
       grDevices::png(
         filename = outfile,
-        width = input$width,
-        height = input$height,
+        width = width(),
+        height = height(),
         units = "in",
         res = res
       )
-      grDevices::replayPlot(x())
+      x()()
       grDevices::dev.off()
 
       ## Return a list containing information about the image
@@ -117,7 +118,7 @@ download_plot <- function(ns) {
     easyClose = FALSE,
     fade = FALSE,
     div(
-      imageOutput(outputId = ns("preview")),
+      plotOutput(outputId = ns("preview")),
       style = "text-align: center;"
     ),
     layout_column_wrap(
@@ -160,7 +161,7 @@ download_plot <- function(ns) {
 #'
 #' Save and Download a graphic.
 #' @param input Inputs selected by the user.
-#' @param x A reactive recorded plot to be saved (see [grDevices::recordPlot()]).
+#' @param x A reactive [`function`] recording the plot.
 #' @param format A [`character`] string specifying the file extension.
 #' @keywords internal
 #' @noRd
@@ -176,7 +177,7 @@ export_plot <- function(input, x, format) {
       )
 
       device(file, width = input$width, height = input$height)
-      grDevices::replayPlot(x())
+      x()()
       grDevices::dev.off()
     }
   )

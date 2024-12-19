@@ -206,13 +206,14 @@ multivariate_server <- function(id, x) {
 
     plot_eigen <- reactive({
       req(x())
-      dimensio::screeplot(
-        x = x(),
-        cumulative = TRUE,
-        labels = FALSE,
-        limit = sum(eigen()[, 3] <= 99)
-      )
-      grDevices::recordPlot()
+      function() {
+        dimensio::screeplot(
+          x = x(),
+          cumulative = TRUE,
+          labels = FALSE,
+          limit = sum(eigen()[, 3] <= 99)
+        )
+      }
     })
 
     ## Interactive zoom -----
@@ -239,21 +240,6 @@ multivariate_server <- function(id, x) {
     plot_ind <- reactive({
       req(x())
 
-      dimensio::viz_rows(
-        x = x(),
-        axes = c(axis1(), axis2()),
-        active = TRUE,
-        sup = TRUE,
-        labels = input$lab_row,
-        extra_quanti = get_value(input$extra_quanti),
-        color = khroma::color(input$col_ind),
-        symbol = get_value(as.integer(input$pch)),
-        size = input$cex,
-        xlim = range_ind$x,
-        ylim = range_ind$y,
-        panel.first = graphics::grid()
-      )
-
       ## Envelope
       level <- as.numeric(input$level)
       fun_wrap <- switch(
@@ -264,42 +250,57 @@ multivariate_server <- function(id, x) {
         function(...) invisible()
       )
 
-      fun_wrap(
-        x = x(),
-        margin = 1,
-        axes = c(axis1(), axis2()),
-        color = khroma::color(input$col_ind)
-      )
-      grDevices::recordPlot()
+      function() {
+        dimensio::viz_rows(
+          x = x(),
+          axes = c(axis1(), axis2()),
+          active = TRUE,
+          sup = TRUE,
+          labels = input$lab_row,
+          extra_quanti = get_value(input$extra_quanti),
+          color = khroma::color(input$col_ind),
+          symbol = get_value(as.integer(input$pch)),
+          size = input$cex,
+          xlim = range_ind$x,
+          ylim = range_ind$y,
+          panel.first = graphics::grid()
+        )
+        fun_wrap(
+          x = x(),
+          margin = 1,
+          axes = c(axis1(), axis2()),
+          color = khroma::color(input$col_ind)
+        )
+      }
     })
 
     ## Variables -----
     plot_var <- reactive({
       req(x())
-
-      dimensio::viz_variables(
-        x = x(),
-        axes = c(axis1(), axis2()),
-        active = TRUE, sup = TRUE,
-        labels = input$lab_col,
-        extra_quanti = get_value(input$extra_quanti),
-        color = khroma::color(input$col_var),
-        symbol = get_value(as.integer(input$lty)),
-        size = input$lwd,
-        xlim = range_var$x,
-        ylim = range_var$y,
-        panel.first = graphics::grid()
-      )
-      grDevices::recordPlot()
+      function() {
+        dimensio::viz_variables(
+          x = x(),
+          axes = c(axis1(), axis2()),
+          active = TRUE, sup = TRUE,
+          labels = input$lab_col,
+          extra_quanti = get_value(input$extra_quanti),
+          color = khroma::color(input$col_var),
+          symbol = get_value(as.integer(input$lty)),
+          size = input$lwd,
+          xlim = range_var$x,
+          ylim = range_var$y,
+          panel.first = graphics::grid()
+        )
+      }
     })
 
     contrib_var <- reactive({
       req(x())
-
-      graphics::par(mfrow = c(1, 2))
-      dimensio::viz_contributions(x = x(), margin = 2, axes = axis1())
-      dimensio::viz_contributions(x = x(), margin = 2, axes = axis2())
-      grDevices::recordPlot()
+      function() {
+        graphics::par(mfrow = c(1, 2))
+        dimensio::viz_contributions(x = x(), margin = 2, axes = axis1())
+        dimensio::viz_contributions(x = x(), margin = 2, axes = axis2())
+      }
     })
 
     ## Render plots -----

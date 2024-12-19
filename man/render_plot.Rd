@@ -10,7 +10,7 @@ render_plot(id, x, ...)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{x}{A reactive recorded plot to be saved (see \code{\link[grDevices:recordplot]{grDevices::recordPlot()}}).}
+\item{x}{A reactive \code{\link{function}} recording the plot.}
 
 \item{...}{Further parameters to be passed to \code{\link[shiny:renderPlot]{shiny::renderPlot()}}.}
 }

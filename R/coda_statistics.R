@@ -105,8 +105,7 @@ coda_summary_server <- function(id, x) {
     )
     plot_hist <- reactive({
       req(x())
-      nexus::hist(x(), select = input$hist_select)
-      grDevices::recordPlot()
+      function() nexus::hist(x(), select = input$hist_select)
     })
 
     ## CLR covariance -----
@@ -131,16 +130,17 @@ coda_summary_server <- function(id, x) {
     plot_clust <- reactive({
       d <- stats::as.dist(data_var())
       h <- stats::hclust(d, method = "ward.D2")
-      plot(h, hang = -1, main = "", sub = "",
-           xlab = "", ylab = "Total variation", las = 1)
-      grDevices::recordPlot()
+
+      function() {
+        plot(h, hang = -1, main = "", sub = "",
+             xlab = "", ylab = "Total variation", las = 1)
+      }
     })
 
     ## Heatmap -----
     plot_heatmap <- reactive({
       req(data_var())
-      tabula::plot_heatmap(data_var(), fixed_ratio = TRUE)
-      grDevices::recordPlot()
+      function() tabula::plot_heatmap(data_var(), fixed_ratio = TRUE)
     })
 
     Aitchison1986 <- info_article(
