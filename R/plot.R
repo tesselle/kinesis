@@ -116,7 +116,10 @@ download_plot <- function(ns) {
     size = "l",
     easyClose = FALSE,
     fade = FALSE,
-    imageOutput(outputId = ns("preview")),
+    div(
+      imageOutput(outputId = ns("preview")),
+      style = "text-align: center;"
+    ),
     layout_column_wrap(
       width = 1/3,
       textInput(
