@@ -38,17 +38,10 @@ coda_outliers_ui <- function(id) {
         title = "Plot"
       ),
       div(
-        selectInput(
-          inputId = ns("group"),
-          label = "Select a group",
-          choices = NULL,
-          selected = NULL,
-          multiple = FALSE
-        ),
         radioButtons(
           inputId = ns("type"),
           label = "Type of plot",
-          choices = c("dotchart", "distance", "qqplot")
+          choices = c("dotchart", "distance")
         ),
         tableOutput(outputId = ns("info"))
       )
@@ -72,41 +65,27 @@ coda_outliers_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Detect outliers -----
-    out <- bindEvent(
-      reactive({
-        validate(need(x(), "Check your data."))
+    out <- reactive({
+      validate(need(x(), "Check your data."))
 
-        run_with_notification(
-          {
-            nexus::detect_outlier(
-              x(),
-              method = input$method,
-              quantile = input$quantile
-            )
-          },
-          title = "Outliers detection"
-        )
-      }),
-      input$go
-    )
-
-    ## Select group -----
-    bindEvent(
-      observe({
-        grp <- nexus::groups(out())
-        choices <- seq_along(grp)
-        names(choices) <- names(grp)
-        freezeReactiveValue(input, "group")
-        updateSelectInput(inputId = "group", choices = choices)
-      }),
-      out()
-    )
+      run_with_notification(
+        {
+          nexus::detect_outlier(
+            x(),
+            method = input$method,
+            quantile = input$quantile
+          )
+        },
+        title = "Outliers detection"
+      )
+    }) |>
+      bindEvent(input$go)
 
     ## Plot -----
     plot <- reactive({
       req(out())
       function() {
-        plot(out(), select = as.integer(input$group), type = input$type)
+        plot(out(), type = input$type)
       }
     })
     render_plot("plot", x = plot)
