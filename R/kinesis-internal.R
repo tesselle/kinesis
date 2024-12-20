@@ -13,6 +13,19 @@ validate_zero <- function(x) {
   validate(need(all(x != 0), "Your data should not contain zeros."))
 }
 
+#' Bootstrap Theme
+#'
+#' @param ... Extra parameters to be passed to [bslib::bs_theme()].
+#' @seealso [bslib::bs_theme()]
+#' @keywords internal
+#' @export
+theme_ui <- function(...) {
+  path <- system.file("static", "custom.scss", package = "kinesis")
+  scss <- sass::sass_file(path)
+
+  bslib::bs_add_rules(bslib::bs_theme(...), scss)
+}
+
 #' Compute on Action UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.

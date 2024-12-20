@@ -4,23 +4,22 @@
 #' @keywords internal
 #' @noRd
 shiny_ui <- function(request) {
-  bslib::page_fillable(
-    includeCSS(system.file("static", "style.css", package = "kinesis")),
+  bslib::page_navbar(
+    title = toupper(kinesis::get_option("name")),
+    kinesis::home_ui("home", package = "dimensio"),
+    bslib::nav_panel(
+      title = "Data",
+      kinesis::prepare_ui("prepare")
+    ),
+    bslib::nav_panel(
+      title = "CA",
+      kinesis::ca_ui("ca")
+    ),
+    bslib::nav_item(bslib::input_dark_mode()),
+    header = kinesis::header_ui("header"),
+    footer = kinesis::footer_ui("footer"),
+    theme = kinesis::theme_ui(),
     lang = "en",
-    bslib::page_navbar(
-      title = toupper(kinesis::get_option("name")),
-      kinesis::home_ui("home", package = "dimensio"),
-      bslib::nav_panel(
-        title = "Data",
-        kinesis::prepare_ui("prepare")
-      ),
-      bslib::nav_panel(
-        title = "CA",
-        kinesis::ca_ui("ca")
-      ),
-      header = kinesis::header_ui("header"),
-      footer = kinesis::footer_ui("footer"),
-      collapsible = TRUE
-    )
+    collapsible = TRUE
   )
 }

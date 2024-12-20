@@ -76,7 +76,8 @@ multivariate_ui <- function(id) {
       multivariate_individuals(id),
       multivariate_variables(id),
       multivariate_screeplot(id)
-    ) # navset_tab
+    ),
+    border = FALSE
   ) # layout_sidebar
 }
 

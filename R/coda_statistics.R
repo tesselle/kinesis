@@ -33,7 +33,8 @@ coda_summary_ui <- function(id) {
       )
     ),
     h5("Multivariate statistics"),
-    navset_tab(
+    navset_card_pill(
+      placement = "above",
       nav_panel(
         title = "Location",
         gt::gt_output(outputId = ns("mean")),
