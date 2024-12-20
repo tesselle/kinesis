@@ -153,7 +153,7 @@ coda_summary_server <- function(id, x) {
 
     ## Render table -----
     output$mean <- gt::render_gt({
-      req(x())
+      req(x(), data_loc())
       data_loc() |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = nexus::is_grouped(x())) |>
@@ -162,6 +162,7 @@ coda_summary_server <- function(id, x) {
         gt::tab_header(title = "Compositional Mean")
     })
     output$quantile <-  gt::render_gt({
+      req(data_quant())
       data_quant() |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = TRUE) |>
@@ -170,6 +171,7 @@ coda_summary_server <- function(id, x) {
         gt::tab_header(title = "Percentile Table")
     })
     output$covariance <- gt::render_gt({
+      req(data_cov())
       covar <- data_cov()
       covar[lower.tri(covar, diag = FALSE)] <- NA
 
@@ -182,6 +184,7 @@ coda_summary_server <- function(id, x) {
         gt::tab_source_note(source_note = gt::html(Aitchison1986))
     })
     output$pip <- gt::render_gt({
+      req(data_pip())
       prop <- data_pip()
       prop[lower.tri(prop, diag = TRUE)] <- NA
 
@@ -198,6 +201,7 @@ coda_summary_server <- function(id, x) {
         gt::tab_source_note(source_note = gt::html(Egozcue2023))
     })
     output$variation <- gt::render_gt({
+      req(data_var())
       varia <- data_var()
       varia[lower.tri(varia, diag = TRUE)] <- NA
 

@@ -13,6 +13,7 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      h5("Definition"),
       checkboxGroupInput(
         inputId = ns("parts"),
         label = "Compositional parts:",
@@ -23,7 +24,7 @@ coda_ui <- function(id) {
       hr(),
       helpText(
         "You can use a qualitative variable to assign each sample to a group.",
-        "Missing values and empty strings will be interpreted as unassigned samples."
+        "Missing values will be interpreted as unassigned samples."
       ),
       selectizeInput(
         inputId = ns("groups"),
