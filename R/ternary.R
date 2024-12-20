@@ -199,6 +199,7 @@ ternary_server <- function(id, x) {
     ## Update UI -----
     observe({
       choices <- colnames(data_quanti())
+      freezeReactiveValue(input, "axis1")
       updateSelectInput(session, inputId = "axis1", choices = choices)
     }) |>
       bindEvent(data_quanti())
@@ -207,8 +208,10 @@ ternary_server <- function(id, x) {
       choices <- setdiff(colnames(data_quanti()), input$axis1)
       selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
       selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
+      freezeReactiveValue(input, "axis2")
       updateSelectInput(session, inputId = "axis2",
                         choices = choices, selected = selected2)
+      freezeReactiveValue(input, "axis3")
       updateSelectInput(session, inputId = "axis3",
                         choices = choices, selected = selected3)
     }) |>
@@ -217,6 +220,7 @@ ternary_server <- function(id, x) {
     observe({
       choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
       selected <- if (input$axis3 %in% choices) input$axis3 else NULL
+      freezeReactiveValue(input, "axis3")
       updateSelectInput(session, inputId = "axis3",
                         choices = choices, selected = selected)
     }) |>
@@ -224,19 +228,23 @@ ternary_server <- function(id, x) {
 
     observe({
       choices <- c(none = "", colnames(x()))
+      freezeReactiveValue(input, "symbol_color")
       updateSelectInput(session, inputId = "symbol_color", choices = choices)
     }) |>
       bindEvent(x())
 
     observe({
       choices <- c(none = "", colnames(data_quali()))
+      freezeReactiveValue(input, "symbol_shape")
       updateSelectInput(session, inputId = "symbol_shape", choices = choices)
+      freezeReactiveValue(input, "group")
       updateSelectInput(session, inputId = "group", choices = choices)
     }) |>
       bindEvent(data_quali())
 
     observe({
       choices <- c(none = "", colnames(data_quanti()))
+      freezeReactiveValue(input, "symbol_size")
       updateSelectInput(session, inputId = "symbol_size", choices = choices)
     }) |>
       bindEvent(data_quanti())
