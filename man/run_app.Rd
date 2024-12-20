@@ -6,15 +6,20 @@
 \usage{
 run_app(
   app = c("seriation", "source", "ternary", "ca", "pca"),
+  bookmark = c("disable", "server"),
   options = list(launch.browser = interactive())
 )
 }
 \arguments{
-\item{app}{A \code{\link{character}} string specifying the Shiny application
+\item{app}{A \code{\link{character}} string specifying the \pkg{Shiny} application
 to run (see details). Any unambiguous substring can be given.}
 
+\item{bookmark}{A \code{\link{character}} string specifying how to save the
+application's state. It must be one of "\code{disable}" or "\code{server}" (see
+\code{\link[shiny:enableBookmarking]{shiny::enableBookmarking()}})}
+
 \item{options}{A \code{\link{list}} of named options that should be passed to the
-\code{\link[shiny:runApp]{shiny::runApp()}} call.}
+\code{\link[shiny:shinyApp]{shiny::shinyAppDir()}} call.}
 }
 \value{
 A \pkg{shiny} application object.

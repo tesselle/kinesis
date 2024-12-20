@@ -3,10 +3,13 @@
 #' Run an App
 #'
 #' A wrapper for [shiny::shinyAppDir()].
-#' @param app A [`character`] string specifying the Shiny application
+#' @param app A [`character`] string specifying the \pkg{Shiny} application
 #'  to run (see details). Any unambiguous substring can be given.
+#' @param bookmark A [`character`] string specifying how to save the
+#'  application's state. It must be one of "`disable`" or "`server`" (see
+#'  [shiny::enableBookmarking()])
 #' @param options A [`list`] of named options that should be passed to the
-#'  [`shiny::runApp()`] call.
+#'  [`shiny::shinyAppDir()`] call.
 #' @details
 #'  \tabular{ll}{
 #'   **Application name**          \tab  **Keyword** \cr
@@ -25,18 +28,23 @@
 #' @author N. Frerebeau
 #' @export
 run_app <- function(app = c("seriation", "source", "ternary", "ca", "pca"),
+                    bookmark = c("disable", "server"),
                     options = list(launch.browser = interactive())) {
   app <- match.arg(app, several.ok = FALSE)
-  appDir <- system.file(app, package = "kinesis")
+  bookmark <- match.arg(bookmark, several.ok = FALSE)
 
+  appDir <- system.file(app, package = "kinesis")
   if (appDir == "")
     stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
 
+  ## Create a Shiny app object
+  shiny::enableBookmarking(store = bookmark)
   obj <- shiny::shinyAppDir(appDir = appDir, options = options)
 
-  ## Bundling the options inside the shinyApp object
-  kinesis_options <- get_config(app)
-  obj$appOptions$kinesis_options <- kinesis_options
+  ## Bundle the options inside the shinyApp object
+  opt <- get_config(app)
+  opt$bookmark <- bookmark != "disable"
+  obj$appOptions$kinesis_options <- opt
 
   obj
 }

@@ -44,9 +44,15 @@ home_ui <- function(id, package) {
           help_license()
         ),
         nav_panel(
-          title = "Metadata",
-          textInput(inputId = ns("user"), label = "User name"),
-          textInput(inputId = ns("project"), label = "Project ID")
+          title = "Bookmark",
+          tags$p("You can save the state of the application and get a URL which will restore the application with that state.",
+                 "You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state."),
+          tags$p("This is not intended for long-term storage. There is no guarantee as to how long your bookmark will last."),
+          if (get_option("bookmark")) {
+            tags$div(class = "d-grid d-md-block", bookmarkButton())
+          } else {
+            tags$p("Bookmarking is currently disabled.")
+          }
         )
       ) # navset_card_pill
     ) # layout_sidebar
@@ -65,7 +71,7 @@ header_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    uiOutput(outputId = ns("alert_config"))
+    uiOutput(outputId = ns("alert_test"))
   )
 }
 
@@ -105,9 +111,36 @@ footer_ui <- function(id) {
 #' @export
 home_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    ## User data -----
-    session$userData$user_name <- reactive({ input$user })
-    session$userData$project_name <- reactive({ input$project })
+    ## Bookmark -----
+    onBookmark(function(state) {
+      saved_time <- Sys.time()
+
+      msg <- sprintf("Last saved at %s.", saved_time)
+      showNotification(
+        ui = msg,
+        duration = 5,
+        closeButton = TRUE,
+        type = "message",
+        session = session
+      )
+      message(msg)
+
+      # state is a mutable reference object,
+      # we can add arbitrary values to it.
+      state$values$time <- saved_time
+    })
+
+    onRestore(function(state) {
+      msg <- sprintf("Restoring from state bookmarked at %s.", state$values$time)
+      showNotification(
+        ui = msg,
+        duration = 5,
+        closeButton = TRUE,
+        type = "message",
+        session = session
+      )
+      message(msg)
+    })
 
     ## Render -----
     output$session <- renderPrint({ utils::sessionInfo() })
@@ -125,7 +158,7 @@ home_server <- function(id) {
 header_server  <- function(id) {
   moduleServer(id, function(input, output, session) {
     ## Display alert -----
-    output$alert_config <- renderUI({
+    output$alert_test <- renderUI({
       if (get_option("production")) return(NULL)
       div(
         class = "alert alert-warning",

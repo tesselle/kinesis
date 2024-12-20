@@ -9,4 +9,3 @@ rm(list = ls())
 
 ## Set Shiny settings ==========================================================
 options(shiny.maxRequestSize = 30*1024^2)
-enableBookmarking(store = kinesis::get_option("bookmark"))
