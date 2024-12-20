@@ -61,7 +61,6 @@ testServer(kinesis:::clean_server, args = list(x = x), {
 
 # Filter =======================================================================
 testServer(kinesis:::filter_server, args = list(x = x), {
-  filter <- session$getReturned()
   expect_equal(filter(), TRUE)
 
   session$setInputs(
@@ -69,8 +68,6 @@ testServer(kinesis:::filter_server, args = list(x = x), {
     color = fake$color,
     height = c(0.06, 0.79)
   )
-  filter <- session$getReturned()
-
   sub <- !is.na(fake$height) & fake$height >= 0.06 & fake$height <= 0.79
   expect_equal(filter(), sub)
 
@@ -79,7 +76,6 @@ testServer(kinesis:::filter_server, args = list(x = x), {
     color = c("LightCoral", "DarkSlateBlue", "OrangeRed"),
     height = c(0.06, 0.79)
   )
-  filter <- session$getReturned()
   sub <- !is.na(fake$height) & fake$height >= 0.06 & fake$height <= 0.79 &
     fake$color %in% c("LightCoral", "DarkSlateBlue", "OrangeRed")
   expect_equal(filter(), sub)

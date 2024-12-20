@@ -55,7 +55,8 @@ prepare_ui <- function(id) {
         )
       )
     ),
-    navset_tab(
+    navset_card_pill(
+      placement = "above",
       nav_panel(
         title = "Data",
         ## Output: display data
@@ -87,21 +88,18 @@ prepare_server <- function(id) {
     ## Prepare data -----
     data_clean <- import_server("import") |>
       select_server("select", x = _) |>
-      clean_server("clean", x = _)
-
-    ## Filter rows -----
-    filter <- filter_server("filter", data_clean)
-    data_filter <- reactive({ data_clean()[filter(), , drop = FALSE] })
+      clean_server("clean", x = _) |>
+      filter_server("filter", x = _)
 
     ## Render plot -----
     plot_missing <- reactive({
-      validate_csv(data_filter())
-      validate_dim(data_filter())
+      validate_csv(data_clean())
+      validate_dim(data_clean())
 
       function() {
         tabula::plot_heatmap(
-          object = is.na(data_filter()),
-          col = if (anyNA(data_filter())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
+          object = is.na(data_clean()),
+          col = if (anyNA(data_clean())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
           fixed_ratio = FALSE
         )
       }
@@ -110,10 +108,10 @@ prepare_server <- function(id) {
 
     ## Render table -----
     output$table <- gt::render_gt({
-      validate_csv(data_filter())
-      validate_dim(data_filter())
+      validate_csv(data_clean())
+      validate_dim(data_clean())
 
-      data_filter() |>
+      data_clean() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::sub_missing() |>
         gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
@@ -121,22 +119,22 @@ prepare_server <- function(id) {
 
     ## Render description -----
     output$value_dimensions <- renderText({
-      req(data_filter())
-      paste0(dim(data_filter()), collapse = " x ")
+      req(data_clean())
+      paste0(dim(data_clean()), collapse = " x ")
     })
     output$value_sparsity <- renderText({
-      req(data_filter())
-      paste0(round(arkhe::sparsity(data_filter()) * 100, 2), "%")
+      req(data_clean())
+      paste0(round(arkhe::sparsity(data_clean()) * 100, 2), "%")
     })
     output$value_missing <- renderText({
-      req(data_filter())
-      sum(is.na(data_filter()))
+      req(data_clean())
+      sum(is.na(data_clean()))
     })
 
     ## Download -----
-    output$download <- export_table(data_filter, "data")
+    output$download <- export_table(data_clean, "data")
 
-    data_filter
+    data_clean
   })
 }
 
@@ -234,6 +232,12 @@ clean_ui <- function(id) {
     ),
     accordion_panel(
       "Missing values",
+      ## Input: empty as missing
+      checkboxInput(
+        inputId = ns("empty_as_NA"),
+        label = "Empty string as missing value",
+        value = FALSE
+      ),
       ## Input: zero as missing
       checkboxInput(
         inputId = ns("zero_as_NA"),
@@ -285,7 +289,12 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         out <- arkhe::remove_constant(out, verbose = verbose)
       }
 
-      ## Remove zeros
+      ## Replace empty strings
+      if (isTRUE(input$empty_as_NA)) {
+        out <- arkhe::replace_empty(out, value = NA)
+      }
+
+      ## Replace zeros
       if (isTRUE(input$zero_as_NA)) {
         out <- arkhe::replace_zero(out, value = NA)
       }
@@ -335,7 +344,7 @@ filter_server <- function(id, x) {
     # /!\ Disable suspend for output$controls /!\
     outputOptions(output, "controls", suspendWhenHidden = FALSE)
 
-    reactive({
+    filter <- reactive({
       each_var <- lapply(
         X = vars(),
         FUN = function(var, input) {
@@ -344,6 +353,10 @@ filter_server <- function(id, x) {
         input = input
       )
       Reduce(f = `&`, x = each_var)
+    })
+
+    reactive({
+      x()[filter(), , drop = FALSE]
     })
   })
 }
