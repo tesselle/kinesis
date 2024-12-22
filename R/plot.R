@@ -62,12 +62,14 @@ render_plot <- function(id, x, ...) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Plot
-    output$plot <- renderPlot(x()(), ...)
-
     ## Show modal dialog
     observe({ showModal(download_plot(session$ns)) }) |>
       bindEvent(input$download)
+
+    setBookmarkExclude(c("download", "name", "width", "height"))
+
+    ## Plot
+    output$plot <- renderPlot(x()(), ...)
 
     ## Preview
     output$preview <- renderImage({

@@ -25,6 +25,7 @@ vignettes/figures/
 *.utf8.md
 *.knit.md
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
+shiny_bookmarks/
 rsconnect/
 .Rproj.user
 inst/doc

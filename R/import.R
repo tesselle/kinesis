@@ -127,12 +127,14 @@ import_modal <- function(ns) {
 #' @export
 import_server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    data <- reactiveValues(values = NULL)
+
     ## Show modal dialog -----
     observe({ showModal(import_modal(session$ns)) }) |>
       bindEvent(input$upload)
 
     ## Read data file -----
-    data <- reactive({
+    observe({
       id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
       on.exit(removeNotification(id), add = TRUE)
 
@@ -156,13 +158,16 @@ import_server <- function(id) {
         title = "Data import"
       )
 
-      if (!is.null(x)) {
-        removeModal()
-        x
-      }
+      if (!is.null(x)) removeModal()
+      data$values <- x
     }) |>
       bindEvent(input$go)
 
-    data
+    ## Bookmark -----
+    setBookmarkExclude(c("upload", "go"))
+    onBookmark(function(state) state$values$data <- data$values)
+    onRestore(function(state) data$values <- state$values$data)
+
+    reactive({ data$values })
   })
 }
