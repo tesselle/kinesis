@@ -17,14 +17,14 @@ multivariate_ui <- function(id) {
       open = FALSE,
       h5("Factor maps"),
       ## Input: display options
-      selectInput(
+      selectizeInput(
         inputId = ns("axis1"),
         label = "Horizontal axis",
         choices = NULL,
         selected = NULL,
         multiple = FALSE
       ),
-      selectInput(
+      selectizeInput(
         inputId = ns("axis2"),
         label = "Vertical axis",
         choices = NULL,
@@ -174,15 +174,23 @@ multivariate_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Build UI -----
+    ## Update UI -----
     observeEvent(axes(), {
       freezeReactiveValue(input, "axis1")
-      updateSelectInput(inputId = "axis1", choices = axes())
+      updateSelectizeInput(inputId = "axis1", choices = axes())
     })
     observeEvent(axis1(), {
       choices <- axes()[-axis1()]
       freezeReactiveValue(input, "axis2")
-      updateSelectInput(inputId = "axis2", choices = choices)
+      updateSelectizeInput(inputId = "axis2", choices = choices)
+    })
+
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateSelectizeInput(session, inputId = "axis1",
+                           selected = state$input$axis1)
+      updateSelectizeInput(session, inputId = "axis2",
+                           selected = state$input$axis2)
     })
 
     axes <- reactive({

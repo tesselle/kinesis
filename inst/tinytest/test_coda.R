@@ -15,11 +15,16 @@ testServer(coda_server, args = list(x = x), {
   session$setInputs() # Needed because of freezeReactiveValue() (???)
   session$setInputs(parts = c(2, 3), groups = "", condense = "")
   expect_equal(dim(coda()), c(9L, 2L))
+  expect_equal(dim(grouped()), c(9L, 2L))
 
   session$setInputs(parts = c(2, 3, 4), condense = "group")
-  expect_equal(dim(coda()), c(3L, 3L))
+  expect_equal(dim(coda()), c(9L, 3L))
+  expect_equal(dim(grouped()), c(3L, 3L))
+})
 
-  session$setInputs(groups = "", condense = "", delta = 2/3,
+testServer(coda_server, args = list(x = x), {
+  session$setInputs() # Needed because of freezeReactiveValue() (???)
+  session$setInputs(parts = c(2, 3, 4), groups = "", condense = "", delta = 2/3,
                     limit_Ca = 0, limit_Fe = 0, limit_Na = 0)
   expect_error(valid(), "Compositional data must not contain zeros")
 

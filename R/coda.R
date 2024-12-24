@@ -19,6 +19,7 @@ coda_ui <- function(id) {
         label = "Compositional parts:",
         choices = NULL,
         selected = NULL,
+        inline = TRUE,
         width = "100%"
       ),
       hr(),
@@ -45,7 +46,7 @@ coda_ui <- function(id) {
         choices = NULL,
         selected = NULL,
         multiple = TRUE,
-        options = list(plugins = "clear_button")
+        options = list(plugins = "remove_button")
       ),
       hr(),
       uiOutput(outputId = ns("description"))
@@ -95,49 +96,56 @@ coda_server <- function(id, x) {
     observe({
       req(x())
       index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
-      index_double <- arkhe::detect(x = x(), f = is.double, margin = 2)
-      choices <- colnames(x())[!index_double]
+      choices <- colnames(x())
+      choices_quanti <- choices[which(index_numeric)]
+      choices_quali <- choices[which(!index_numeric)]
 
       freezeReactiveValue(input, "parts")
-      updateCheckboxGroupInput(
-        inputId = "parts",
-        choices = colnames(x())[index_numeric],
-        selected = colnames(x())[index_double],
-        inline = TRUE
-      )
+      updateCheckboxGroupInput(inputId = "parts", choices = choices_quanti)
       freezeReactiveValue(input, "groups")
-      updateSelectizeInput(
-        inputId = "groups",
-        choices = c("", choices)
-      )
+      updateSelectizeInput(inputId = "groups", choices = c(None = "", choices_quali))
       freezeReactiveValue(input, "condense")
-      updateSelectizeInput(
-        inputId = "condense",
-        choices = c("", choices)
-      )
+      updateSelectizeInput(inputId = "condense", choices = c(None = "", choices))
+    })
+
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateCheckboxGroupInput(session, inputId = "parts",
+                               selected = state$input$parts)
+      updateSelectizeInput(session, inputId = "groups",
+                           selected = state$input$groups)
+      updateSelectizeInput(session, inputId = "condense",
+                           selected = state$input$condense)
     })
 
     ## Coerce to compositions -----
     coda <- reactive({
-      req(x())
+      req(x(), input$parts)
       validate_dim(x())
       validate_na(x())
 
-      z <- run_with_notification(
+      run_with_notification(
         {
           nexus::as_composition(
             from = x(),
-            parts = get_value(input$parts),
-            groups = get_value(input$groups),
+            parts = input$parts,
             verbose = get_option("verbose", default = FALSE)
           )
         },
         title = "Composition"
       )
+    })
 
+    grouped <- reactive({
+      req(x(), coda())
+      validate(need(ncol(coda()) > 1, "Select at least two columns."))
+
+      z <- coda()
+      if (isTruthy(input$groups)) {
+        z <- nexus::group(z, by = x()[[input$groups]])
+      }
       if (isTruthy(input$condense)) {
-        by <- x()[, input$condense]
-        z <- nexus::condense(z, by = by)
+        z <- nexus::condense(z, by = x()[input$condense])
       }
 
       z
@@ -145,12 +153,12 @@ coda_server <- function(id, x) {
 
     ## Render filters -----
     output$limits <- renderUI({
-      req(coda())
+      req(grouped())
 
-      n <- ncol(coda())
+      n <- ncol(grouped())
       if (n == 0) return(NULL)
 
-      parts <- colnames(coda())
+      parts <- colnames(grouped())
       ids <- paste0("limit_", parts)
       lab <- paste(parts, "(%)", sep = " ")
       ui <- vector(mode = "list", length = n)
@@ -164,15 +172,15 @@ coda_server <- function(id, x) {
 
     ## Impute zeros -----
     clean <- reactive({
-      req(coda())
+      req(grouped())
 
-      parts <- colnames(coda())
+      parts <- colnames(grouped())
       ids <- paste0("limit_", parts)
       limits <- lapply(X = ids, FUN = function(i, x) x[[i]], x = input)
 
-      if (any(lengths(limits) == 0) || all(limits == 0)) return(coda())
+      if (any(lengths(limits) == 0) || all(limits == 0)) return(grouped())
       limits <- unlist(limits) / 100
-      nexus::replace_zero(coda(), value = limits, delta = input$delta)
+      nexus::replace_zero(grouped(), value = limits, delta = input$delta)
     })
 
     ## Validate -----

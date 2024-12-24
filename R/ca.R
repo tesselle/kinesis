@@ -55,7 +55,7 @@ ca_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Build UI -----
+    ## Update UI -----
     observe({
       freezeReactiveValue(input, "sup_row")
       updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
@@ -63,6 +63,14 @@ ca_server <- function(id, x) {
       updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
     }) |>
       bindEvent(x())
+
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateSelectizeInput(session, inputId = "sup_row",
+                           selected = state$input$sup_row)
+      updateSelectizeInput(session, inputId = "sup_col",
+                           selected = state$input$sup_col)
+    })
 
     ## Compute CA -----
     results <- compute_server(

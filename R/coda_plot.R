@@ -80,6 +80,12 @@ coda_plot_server <- function(id, x) {
     }) |>
       bindEvent(data_bar())
 
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateSelectizeInput(session, inputId = "order_rows",
+                           selected = state$input$order_rows)
+    })
+
     ## Subset -----
     data_bar <- reactive({
       req(x())

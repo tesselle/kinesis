@@ -17,21 +17,21 @@ ternary_ui <- function(id) {
         accordion_panel(
           "Aesthetic mappings",
           ## Input: select axes
-          selectInput(
+          selectizeInput(
             inputId = ns("axis1"),
             label = "Component X",
             choices = NULL,
             selected = NULL,
             multiple = FALSE
           ),
-          selectInput(
+          selectizeInput(
             inputId = ns("axis2"),
             label = "Component Y",
             choices = NULL,
             selected = NULL,
             multiple = FALSE,
           ),
-          selectInput(
+          selectizeInput(
             inputId = ns("axis3"),
             label = "Component Z",
             choices = NULL,
@@ -187,67 +187,82 @@ ternary_server <- function(id, x) {
       req(x())
       arkhe::detect(x(), margin = 2, f = is.numeric)
     })
-    data_quali <- reactive({
+    var_quali <- reactive({
       if (sum(!is_quanti()) < 1) return(NULL)
-      x()[, !is_quanti(), drop = FALSE]
+      colnames(x())[!is_quanti()]
     })
-    data_quanti <- reactive({
+    var_quanti <- reactive({
       if (sum(is_quanti()) < 3) return(NULL)
-      x()[, is_quanti(), drop = FALSE]
+      colnames(x())[is_quanti()]
     })
 
     ## Update UI -----
     observe({
-      choices <- colnames(data_quanti())
       freezeReactiveValue(input, "axis1")
-      updateSelectInput(session, inputId = "axis1", choices = choices)
+      updateSelectizeInput(inputId = "axis1", choices = var_quanti())
     }) |>
-      bindEvent(data_quanti())
+      bindEvent(var_quanti())
 
     observe({
-      choices <- setdiff(colnames(data_quanti()), input$axis1)
+      choices <- setdiff(var_quanti(), input$axis1)
       selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
       selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
       freezeReactiveValue(input, "axis2")
-      updateSelectInput(session, inputId = "axis2",
-                        choices = choices, selected = selected2)
+      updateSelectizeInput(inputId = "axis2", choices = choices, selected = selected2)
       freezeReactiveValue(input, "axis3")
-      updateSelectInput(session, inputId = "axis3",
-                        choices = choices, selected = selected3)
+      updateSelectizeInput(inputId = "axis3", choices = choices, selected = selected3)
     }) |>
       bindEvent(input$axis1)
 
     observe({
-      choices <- setdiff(colnames(data_quanti()), c(input$axis1, input$axis2))
+      choices <- setdiff(var_quanti(), c(input$axis1, input$axis2))
       selected <- if (input$axis3 %in% choices) input$axis3 else NULL
       freezeReactiveValue(input, "axis3")
-      updateSelectInput(session, inputId = "axis3",
-                        choices = choices, selected = selected)
+      updateSelectizeInput(inputId = "axis3", choices = choices, selected = selected)
     }) |>
       bindEvent(input$axis2)
 
     observe({
-      choices <- c(none = "", colnames(x()))
+      choices <- c(None = "", colnames(x()))
       freezeReactiveValue(input, "symbol_color")
-      updateSelectInput(session, inputId = "symbol_color", choices = choices)
+      updateSelectizeInput(inputId = "symbol_color", choices = choices)
     }) |>
       bindEvent(x())
 
     observe({
-      choices <- c(none = "", colnames(data_quali()))
-      freezeReactiveValue(input, "symbol_shape")
-      updateSelectInput(session, inputId = "symbol_shape", choices = choices)
+      choices <- c(None = "", var_quali())
       freezeReactiveValue(input, "group")
-      updateSelectInput(session, inputId = "group", choices = choices)
+      updateSelectizeInput(inputId = "group", choices = choices)
+      freezeReactiveValue(input, "symbol_shape")
+      updateSelectizeInput(inputId = "symbol_shape", choices = choices)
     }) |>
-      bindEvent(data_quali())
+      bindEvent(var_quali())
 
     observe({
-      choices <- c(none = "", colnames(data_quanti()))
+      choices <- c(None = "", var_quanti())
       freezeReactiveValue(input, "symbol_size")
-      updateSelectInput(session, inputId = "symbol_size", choices = choices)
+      updateSelectizeInput(inputId = "symbol_size", choices = choices)
     }) |>
-      bindEvent(data_quanti())
+      bindEvent(var_quanti())
+
+
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateSelectizeInput(session, inputId = "axis1",
+                           selected = state$input$axis1)
+      updateSelectizeInput(session, inputId = "axis2",
+                           selected = state$input$axis2)
+      updateSelectizeInput(session, inputId = "axis3",
+                           selected = state$input$axis3)
+      updateSelectizeInput(session, inputId = "group",
+                           selected = state$input$group)
+      updateSelectizeInput(session, inputId = "symbol_color",
+                           selected = state$input$symbol_color)
+      updateSelectizeInput(session, inputId = "symbol_shape",
+                           selected = state$input$symbol_shape)
+      updateSelectizeInput(session, inputId = "symbol_size",
+                           selected = state$input$symbol_size)
+    })
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.
@@ -261,13 +276,15 @@ ternary_server <- function(id, x) {
 
     ## Get ternary data -----
     data_tern <- reactive({
-      tern <- data_quanti()[, c(input$axis1, input$axis2, input$axis3)]
+      req(x(), input$axis1, input$axis2, input$axis3)
+      tern <- x()[, c(input$axis1, input$axis2, input$axis3)]
       tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
     })
 
     ## Build plot -----
     plot_ternary <- reactive({
       ## Select data
+      req(data_tern())
       tern <- data_tern()
       n <- nrow(tern)
 
@@ -281,7 +298,7 @@ ternary_server <- function(id, x) {
       cex <- get_value(as.integer(input$cex), 1)
 
       if (isTruthy(input$group)) {
-        grp <- data_quali()[[input$group]]
+        grp <- x()[[input$group]]
       } else {
         grp <- rep("", n)
       }
@@ -296,13 +313,13 @@ ternary_server <- function(id, x) {
         if (all(grp == symbol_color)) border <- col
       }
       if (isTruthy(input$symbol_shape)) {
-        symbol_shape <- data_quali()[[input$symbol_shape]]
+        symbol_shape <- x()[[input$symbol_shape]]
         pch <- khroma::palette_shape(symbols = pch)(symbol_shape)
       } else {
         pch <- pch[[1L]] %||% 16
       }
       if (isTruthy(input$symbol_size)) {
-        symbol_size <- data_quanti()[[input$symbol_size]]
+        symbol_size <- x()[[input$symbol_size]]
         cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)

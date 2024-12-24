@@ -10,8 +10,11 @@ testServer(import_server, {
                     na.strings = "NA", skip = 0, comment = "#")
 
   session$setInputs(file = list(datapath = "path.txt"), go = 1)
-  expect_null(data())
+  expect_null(data$values)
+
+  session$setInputs(file = list(datapath = path), go = NULL)
+  expect_null(data$values)
 
   session$setInputs(file = list(datapath = path), go = 1)
-  expect_equal(data(), fake)
+  expect_equal(data$values, fake)
 })

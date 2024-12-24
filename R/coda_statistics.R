@@ -18,7 +18,7 @@ coda_summary_ui <- function(id) {
         label = "Download tables"
       ),
       h5("Univariate statistics"),
-      selectInput(
+      selectizeInput(
         inputId = ns("hist_select"),
         label = "Select a part",
         choices = NULL,
@@ -99,9 +99,15 @@ coda_summary_server <- function(id, x) {
     observe({
       choices <- colnames(x())
       freezeReactiveValue(input, "hist_select")
-      updateSelectInput(inputId = "hist_select", choices = choices)
+      updateSelectizeInput(inputId = "hist_select", choices = choices)
     }) |>
       bindEvent(x())
+
+    ## Bookmark -----
+    onRestored(function(state) {
+      updateSelectizeInput(session, inputId = "hist_select",
+                           selected = state$input$hist_select)
+    })
 
     plot_hist <- reactive({
       req(x())

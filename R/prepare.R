@@ -149,6 +149,7 @@ select_ui <- function(id) {
       label = "Select columns:",
       choices = NULL,
       selected = NULL,
+      inline = TRUE,
       width = "100%"
     ),
     checkboxInput(
@@ -167,11 +168,15 @@ select_server <- function(id, x) {
       updateCheckboxGroupInput(
         inputId = "select",
         choices = colnames(x()),
-        selected = colnames(x()),
-        inline = TRUE
+        selected = colnames(x())
       )
-    }) |>
-      bindEvent(x())
+    })
+
+    ## Bookmark
+    onRestored(function(state) {
+      selected <- state$input$select
+      updateCheckboxGroupInput(session, "select", selected = selected)
+    })
 
     ## Select columns
     reactive({
@@ -179,7 +184,9 @@ select_server <- function(id, x) {
       x <- arkhe::get_columns(x(), names = input$select)
 
       if (isTRUE(input$rownames)) {
-        y <- run_with_notification(arkhe::assign_rownames(x, column = 1, remove = TRUE))
+        y <- run_with_notification(
+          arkhe::assign_rownames(x, column = 1, remove = TRUE)
+        )
         if (!is.null(y)) x <- y
       }
 
@@ -330,34 +337,27 @@ filter_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Get variable names
     vars <- reactive({ names(x()) })
 
+    ## Build UI
     output$controls <- renderUI({
       lapply(
         X = vars(),
-        FUN = function(var) {
-          filter_build(x()[[var]], session$ns(var), var)
-        }
+        FUN = function(var) filter_build(x()[[var]], session$ns(var), var)
       )
     })
-
-    # /!\ Disable suspend for output$controls /!\
-    outputOptions(output, "controls", suspendWhenHidden = FALSE)
 
     filter <- reactive({
       each_var <- lapply(
         X = vars(),
-        FUN = function(var, input) {
-          filter_var(x()[[var]], input[[var]])
-        },
+        FUN = function(var, input) filter_var(x()[[var]], input[[var]]),
         input = input
       )
       Reduce(f = `&`, x = each_var)
     })
 
-    reactive({
-      x()[filter(), , drop = FALSE]
-    })
+    reactive({ x()[filter(), , drop = FALSE] })
   })
 }
 filter_var <- function(x, val) {
