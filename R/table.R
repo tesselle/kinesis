@@ -14,8 +14,10 @@ export_table <- function(x, name) {
   downloadHandler(
     filename = function() { make_file_name(name, "csv") },
     content = function(file) {
+      x <- x()
+      if (!is.data.frame(x) && !is.matrix(x)) x <- as.matrix(x)
       utils::write.csv(
-        x = x(),
+        x = x,
         file = file,
         fileEncoding = "utf-8"
       )

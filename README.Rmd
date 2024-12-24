@@ -67,8 +67,17 @@ remotes::install_github("tesselle/kinesis")
 library(kinesis)
 
 ## Run the app for matrix seriation
-run_app("seriate")
+run_app("seriation")
 ```
+
+| Keyword     | Application name              |
+|:------------|:------------------------------|
+| `ca`        | Correspondence Analysis       |
+| `pca`       | Principal Components Analysis |
+| `diversity` | Diversity Measures            |
+| `seriation` | Matrix Seriation              |
+| `source`    | Compositional Data Analysis   |
+| `ternary`   | Ternary Plot                  |
 
 ## Contributing
 
