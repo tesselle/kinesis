@@ -15,6 +15,7 @@ shiny_ui <- function(request) {
       title = "Plot",
       kinesis::ternary_ui("ternary")
     ),
+    bslib::nav_spacer(),
     bslib::nav_item(bslib::input_dark_mode()),
     header = kinesis::header_ui("header"),
     footer = kinesis::footer_ui("footer"),
