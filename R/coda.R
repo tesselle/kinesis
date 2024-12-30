@@ -51,29 +51,20 @@ coda_ui <- function(id) {
       hr(),
       uiOutput(outputId = ns("description"))
     ), # sidebar
-    layout_sidebar(
-      sidebar = sidebar(
-        width = 400,
-        open = FALSE,
-        h5("Detection limits"),
-        ## Output: set detection limits
-        helpText(
-          "If your data contains zeros, these can be considered as values below the detection limit (thus interpreted as small unknown values).",
-          "In this case, you can define the detection limit for each compositional part below.",
-          "If all limits are specified, zeros will be replaced by a fraction of these limits.",
-          "See", cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", T), "for computational details."
-        ),
-        numericInput(inputId = ns("delta"), label = "Fraction",
-                     value = 2 / 3, min = 0, max = 1),
-        uiOutput(outputId = ns("limits"))
+    navset_card_pill(
+      placement = "above",
+      nav_panel(
+        title = "Data",
+        ## Output: display data
+        gt::gt_output(outputId = ns("table"))
       ),
-      ## Output: display table,
-      gt::gt_output(outputId = ns("table")),
-      border = FALSE
-    ), # layout_sidebar
+      nav_panel(
+        title = "Detection limits",
+        coda_zero_ui(ns("limits"))
+      )
+    ),
     border_radius = FALSE,
-    fillable = TRUE,
-    class = "p-0"
+    fillable = TRUE
   ) # layout_sidebar
 }
 
@@ -88,7 +79,7 @@ coda_ui <- function(id) {
 #' @family coda modules
 #' @keywords internal
 #' @export
-coda_server <- function(id, x) {
+coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -129,7 +120,7 @@ coda_server <- function(id, x) {
           nexus::as_composition(
             from = x(),
             parts = input$parts,
-            verbose = get_option("verbose", default = FALSE)
+            verbose = verbose
           )
         },
         title = "Composition"
@@ -142,7 +133,7 @@ coda_server <- function(id, x) {
 
       z <- coda()
       if (isTruthy(input$groups)) {
-        z <- nexus::group(z, by = x()[[input$groups]])
+        z <- nexus::group(z, by = x()[[input$groups]], verbose = verbose)
       }
       if (isTruthy(input$condense)) {
         z <- nexus::condense(z, by = x()[input$condense])
@@ -151,61 +142,32 @@ coda_server <- function(id, x) {
       z
     })
 
-    ## Render filters -----
-    output$limits <- renderUI({
-      req(grouped())
-
-      n <- ncol(grouped())
-      if (n == 0) return(NULL)
-
-      parts <- colnames(grouped())
-      ids <- paste0("limit_", parts)
-      lab <- paste(parts, "(%)", sep = " ")
-      ui <- vector(mode = "list", length = n)
-      for (j in seq_len(n)) {
-        ui[[j]] <- numericInput(inputId = session$ns(ids[j]), label = lab[j],
-                                value = 0, min = 0, max = 100)
-      }
-
-      ui
-    })
-
-    ## Impute zeros -----
-    clean <- reactive({
-      req(grouped())
-
-      parts <- colnames(grouped())
-      ids <- paste0("limit_", parts)
-      limits <- lapply(X = ids, FUN = function(i, x) x[[i]], x = input)
-
-      if (any(lengths(limits) == 0) || all(limits == 0)) return(grouped())
-      limits <- unlist(limits) / 100
-      nexus::replace_zero(grouped(), value = limits, delta = input$delta)
-    })
+    ## Zeros -----
+    no_zero <- coda_zero_server("limits", x = grouped)
 
     ## Validate -----
     valid <- reactive({
-      validate(need(!anyNA(clean()), "Compositional data must not contain missing values."))
-      validate(need(!any(clean() == 0), "Compositional data must not contain zeros."))
-      clean()
+      validate(need(!anyNA(no_zero()), "Compositional data must not contain missing values."))
+      validate(need(!any(no_zero() == 0), "Compositional data must not contain zeros."))
+      no_zero()
     })
 
     ## Render description -----
     output$description <- renderUI({
-      req(clean())
-      descr <- utils::capture.output(nexus::describe(clean()))
+      req(no_zero())
+      descr <- utils::capture.output(nexus::describe(no_zero()))
       markdown(descr)
     })
 
     ## Render tables -----
     output$table <- gt::render_gt({
-      req(clean())
-      if (nexus::is_grouped(clean())) {
-        gt <- clean() |>
+      req(no_zero())
+      if (nexus::is_grouped(no_zero())) {
+        gt <- no_zero() |>
           as.data.frame() |>
           gt::gt(groupname_col = ".group", rownames_to_stub = TRUE)
       } else {
-        gt <- clean() |>
+        gt <- no_zero() |>
           as.data.frame() |>
           gt::gt(rownames_to_stub = TRUE)
       }
@@ -223,5 +185,76 @@ coda_server <- function(id, x) {
     })
 
     valid
+  })
+}
+
+# Modules ======================================================================
+## Imputation ------------------------------------------------------------------
+coda_zero_ui <- function(id) {
+  ns <- NS(id)
+
+  list(
+    helpText(
+      "If your data contains zeros, these can be considered as values below the detection limit (thus interpreted as small unknown values).",
+      "In this case, you can define the detection limit for each compositional part below.",
+      "If all limits are specified, zeros will be replaced by a fraction of these limits.",
+      "See", cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", T), "for computational details."
+    ),
+    numericInput(
+      inputId = ns("delta"),
+      label = "Fraction",
+      value = 2 / 3,
+      min = 0,
+      max = 1
+    ),
+    uiOutput(outputId = ns("values"))
+  )
+}
+coda_zero_server <- function(id, x) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    id <- reactive({
+      req(x())
+      validate_dim(x())
+      paste0("limit_", colnames(x()))
+    })
+
+    ui <- reactive({
+      req(id())
+
+      n <- length(id())
+      lab <- paste(sub("limit_", "", id()), "(%)", sep = " ")
+
+      ui <- vector(mode = "list", length = n)
+      for (j in seq_len(n)) {
+        ui[[j]] <- numericInput(
+          inputId = session$ns(id()[[j]]),
+          label = lab[[j]],
+          value = 0, min = 0, max = 100
+        )
+      }
+
+      do.call(layout_column_wrap, args = c(ui, width = 1/4))
+    })
+    output$values <- renderUI({ ui() })
+
+    ## Bookmark
+    onRestored(function(state) {
+      req(ui())
+      values <- lapply(X = id(), FUN = function(i, x) x[[i]], x = state$input)
+      updateNumericInput(session, "select", value = values)
+    })
+
+    reactive({
+      req(id())
+
+      limits <- lapply(X = id(), FUN = function(i, x) x[[i]], x = input)
+      if (any(lengths(limits) == 0) || any(limits <= 0)) return(x())
+      limits <- unlist(limits) / 100
+
+      data$values <- nexus::replace_zero(x = x(), value = limits,
+                                         delta = input$delta)
+    })
   })
 }
