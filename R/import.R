@@ -56,14 +56,14 @@ import_modal <- function(ns) {
       ),
       div(
         ## Input: checkbox if file has header
-        checkboxInput(
-          inputId = ns("header"),
+        input_switch(
+          id = ns("header"),
           label = "Header",
           value = TRUE
         ),
         ## Input: checkbox if file has row names
-        checkboxInput(
-          inputId = ns("rownames"),
+        input_switch(
+          id = ns("rownames"),
           label = "Row names",
           value = FALSE
         ),

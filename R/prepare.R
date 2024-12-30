@@ -59,13 +59,11 @@ prepare_ui <- function(id) {
       placement = "above",
       nav_panel(
         title = "Data",
-        ## Output: display data
         gt::gt_output(outputId = ns("table"))
       ),
       nav_panel(
         title = "Missing values",
-        ## Output: display data
-        output_plot(id = ns("missing"))
+        missing_ui(ns("missing"))
       )
     ),
     border_radius = FALSE,
@@ -89,22 +87,8 @@ prepare_server <- function(id) {
     data_clean <- import_server("import") |>
       select_server("select", x = _) |>
       clean_server("clean", x = _) |>
+      missing_server("missing", x = _) |>
       filter_server("filter", x = _)
-
-    ## Render plot -----
-    plot_missing <- reactive({
-      validate_csv(data_clean())
-      validate_dim(data_clean())
-
-      function() {
-        tabula::plot_heatmap(
-          object = is.na(data_clean()),
-          col = if (anyNA(data_clean())) c("#DDDDDD", "#BB5566") else "#DDDDDD",
-          fixed_ratio = FALSE
-        )
-      }
-    })
-    render_plot("missing", x = plot_missing)
 
     ## Render table -----
     output$table <- gt::render_gt({
@@ -174,8 +158,7 @@ select_server <- function(id, x) {
 
     ## Bookmark
     onRestored(function(state) {
-      selected <- state$input$select
-      updateCheckboxGroupInput(session, "select", selected = selected)
+      updateCheckboxGroupInput(session, "select", selected = state$input$select)
     })
 
     ## Select columns
@@ -236,32 +219,6 @@ clean_ui <- function(id) {
         value = TRUE,
         width = "100%"
       )
-    ),
-    accordion_panel(
-      "Missing values",
-      ## Input: empty as missing
-      checkboxInput(
-        inputId = ns("empty_as_NA"),
-        label = "Empty string as missing value",
-        value = FALSE
-      ),
-      ## Input: zero as missing
-      checkboxInput(
-        inputId = ns("zero_as_NA"),
-        label = "Zero as missing value",
-        value = FALSE
-      ),
-      ## Input: remove missing
-      radioButtons(
-        inputId = ns("remove"),
-        label = "Remove missing values:",
-        choices = c(
-          "Keep as is" = "none",
-          "Replace missing values with zeros" = "zero",
-          "Remove rows with missing values" = "row",
-          "Remove columns with missing values" = "col"
-        )
-      )
     )
   )
 }
@@ -269,7 +226,6 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-
     reactive({
       out <- x()
 
@@ -296,6 +252,52 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         out <- arkhe::remove_constant(out, verbose = verbose)
       }
 
+      out
+    })
+  })
+}
+
+## Missing ---------------------------------------------------------------------
+missing_ui <- function(id) {
+  ns <- NS(id)
+
+  layout_column_wrap(
+    width = 1/2,
+    list(
+      ## Input: empty as missing
+      checkboxInput(
+        inputId = ns("empty_as_NA"),
+        label = "Empty string as missing value",
+        value = FALSE
+      ),
+      ## Input: zero as missing
+      checkboxInput(
+        inputId = ns("zero_as_NA"),
+        label = "Zero as missing value",
+        value = FALSE
+      ),
+      ## Input: remove missing
+      radioButtons(
+        inputId = ns("remove"),
+        label = "Remove missing values:",
+        choices = c(
+          "Keep as is" = "none",
+          "Replace missing values with zeros" = "zero",
+          "Remove rows with missing values" = "row",
+          "Remove columns with missing values" = "col"
+        )
+      )
+    ),
+    output_plot(ns("heatmap"))
+  )
+}
+missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    data_replace <- reactive({
+      out <- x()
+
       ## Replace empty strings
       if (isTRUE(input$empty_as_NA)) {
         out <- arkhe::replace_empty(out, value = NA)
@@ -306,8 +308,14 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         out <- arkhe::replace_zero(out, value = NA)
       }
 
+      out
+    })
+
+    data_missing <- reactive({
+      out <- data_replace()
+
       ## Remove missing values
-      choice <- input$remove %||% ""
+      choice <- get_value(input$remove, default = "")
       fun <- switch(
         choice,
         zero = function(x) {
@@ -326,6 +334,20 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       out
     })
 
+    ## Render plot
+    plot_missing <- reactive({
+      validate_csv(data_missing())
+      validate_dim(data_missing())
+
+      function() {
+        col <- if (anyNA(data_missing())) c("#DDDDDD", "#BB5566") else "#DDDDDD"
+        tabula::plot_heatmap(object = is.na(data_missing()), col = col,
+                             fixed_ratio = FALSE)
+      }
+    })
+    render_plot("heatmap", x = plot_missing)
+
+    data_missing
   })
 }
 

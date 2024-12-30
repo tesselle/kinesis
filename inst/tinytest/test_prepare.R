@@ -41,10 +41,12 @@ testServer(kinesis:::clean_server, args = list(x = x), {
   session$setInputs(remove_zero_row = FALSE)
   session$setInputs(remove_zero_column = TRUE, all = FALSE)
   expect_equal(dataset(), arkhe::remove_zero(fake, margin = 2, all = FALSE))
+})
 
-  session$setInputs(remove_zero_column = FALSE)
-  session$setInputs(zero_as_NA = TRUE)
-  expect_equal(dataset(), arkhe::replace_zero(fake, value = NA))
+# Missing ======================================================================
+testServer(kinesis:::missing_server, args = list(x = x), {
+  dataset <- session$getReturned()
+  expect_equal(dataset(), fake)
 
   session$setInputs(zero_as_NA = FALSE)
   session$setInputs(remove = "zero")
