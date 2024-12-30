@@ -14,10 +14,12 @@ x <- reactiveVal(fake)
 testServer(coda_server, args = list(x = x), {
   session$setInputs() # Needed because of freezeReactiveValue() (???)
   session$setInputs(parts = c(2, 3), groups = "", condense = "")
+  session$elapse(750)
   expect_equal(dim(coda()), c(9L, 2L))
   expect_equal(dim(grouped()), c(9L, 2L))
 
   session$setInputs(parts = c(2, 3, 4), condense = "group")
+  session$elapse(750)
   expect_equal(dim(coda()), c(9L, 3L))
   expect_equal(dim(grouped()), c(3L, 3L))
 })
@@ -25,6 +27,7 @@ testServer(coda_server, args = list(x = x), {
 testServer(coda_server, args = list(x = x), {
   session$setInputs() # Needed because of freezeReactiveValue() (???)
   session$setInputs(parts = c(2, 3, 4), groups = "", condense = "")
+  session$elapse(750)
   expect_error(valid(), "Compositional data must not contain zeros")
 
   session$setInputs(groups = "group",

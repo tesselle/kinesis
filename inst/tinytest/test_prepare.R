@@ -26,6 +26,7 @@ testServer(kinesis:::select_server, args = list(x = x), {
   expect_equal(dataset(), fake)
 
   session$setInputs(select = c("doi", "color", "height"))
+  session$elapse(750)
   dataset <- session$getReturned()
   expect_equal(dataset(), fake[, c("doi", "color", "height")])
 })

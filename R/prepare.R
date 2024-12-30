@@ -161,10 +161,15 @@ select_server <- function(id, x) {
       updateCheckboxGroupInput(session, "select", selected = state$input$select)
     })
 
+    selected <- reactive({
+      req(x(), input$select)
+      arkhe::get_columns(x(), names = input$select)
+    }) |>
+      debounce(500)
+
     ## Select columns
     reactive({
-      req(x())
-      x <- arkhe::get_columns(x(), names = input$select)
+      x <- selected()
 
       if (isTRUE(input$rownames)) {
         y <- run_with_notification(

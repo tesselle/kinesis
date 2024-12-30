@@ -128,7 +128,8 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         },
         title = "Composition"
       )
-    })
+    }) |>
+      debounce(500)
 
     grouped <- reactive({
       req(x(), coda())
