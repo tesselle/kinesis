@@ -4,13 +4,16 @@
 \alias{coda_server}
 \title{Compositional Data Server}
 \usage{
-coda_server(id, x)
+coda_server(id, x, verbose = get_option("verbose", FALSE))
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
 \item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
+
+\item{verbose}{A \code{\link{logical}} scalar: should \R report extra information
+on progress?}
 }
 \value{
 A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.

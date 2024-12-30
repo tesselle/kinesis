@@ -60,7 +60,7 @@ coda_ui <- function(id) {
       ),
       nav_panel(
         title = "Detection limits",
-        coda_zero_ui(ns("limits"))
+        coda_zero_ui(ns("zero"))
       )
     ),
     border_radius = FALSE,
@@ -74,6 +74,8 @@ coda_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @param verbose A [`logical`] scalar: should \R report extra information
+#'  on progress?
 #' @return A reactive [`nexus::CompositionMatrix-class`] object.
 #' @seealso [coda_ui()]
 #' @family coda modules
@@ -114,6 +116,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       req(x(), input$parts)
       validate_dim(x())
       validate_na(x())
+      validate(need(length(input$parts) > 1, "Select at least two columns."))
 
       run_with_notification(
         {
@@ -129,7 +132,6 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     grouped <- reactive({
       req(x(), coda())
-      validate(need(ncol(coda()) > 1, "Select at least two columns."))
 
       z <- coda()
       if (isTruthy(input$groups)) {
@@ -143,7 +145,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     })
 
     ## Zeros -----
-    no_zero <- coda_zero_server("limits", x = grouped)
+    no_zero <- coda_zero_server("zero", x = grouped)
 
     ## Validate -----
     valid <- reactive({
@@ -253,8 +255,7 @@ coda_zero_server <- function(id, x) {
       if (any(lengths(limits) == 0) || any(limits <= 0)) return(x())
       limits <- unlist(limits) / 100
 
-      data$values <- nexus::replace_zero(x = x(), value = limits,
-                                         delta = input$delta)
+      nexus::replace_zero(x = x(), value = limits, delta = input$delta)
     })
   })
 }
