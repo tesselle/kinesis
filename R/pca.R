@@ -40,7 +40,8 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      compute_ui(id = ns("pca")),
+      uiOutput(outputId = ns("warning")),
+      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
@@ -85,21 +86,33 @@ pca_server <- function(id, x) {
                            selected = state$input$sup_col)
     })
 
+    ## Check data -----
+    output$warning <- has_changed(x, trigger = input$go)
+
     ## Compute PCA -----
-    results <- compute_server(
-      id = "pca",
-      x = x,
-      f = function(x) {
-        dimensio::pca(
-          object = x,
-          center = input$center,
-          scale = input$scale,
-          rank = input$rank,
-          sup_row = arkhe::seek_rows(x, names = input$sup_row),
-          sup_col = arkhe::seek_columns(x, names = input$sup_col)
-        )
+    compute_pca <- ExtendedTask$new(
+      function(x, center, scale, rank, sup_row, sup_col) {
+        promises::future_promise({
+          dimensio::pca(
+            object = x,
+            center = center,
+            scale = scale,
+            rank = rank,
+            sup_row = arkhe::seek_rows(x, names = sup_row),
+            sup_col = arkhe::seek_columns(x, names = sup_col)
+          )
+        })
       }
-    )
+    ) |>
+      bslib::bind_task_button("go")
+
+    observe({
+      compute_pca$invoke(x(), input$center, input$scale, input$rank,
+                         input$sup_row, input$sup_col)
+    }) |>
+      bindEvent(input$go)
+
+    results <- reactive({ notify(compute_pca$result()) })
 
     ## Export -----
     output$download <- downloadHandler(

@@ -29,61 +29,28 @@ theme_ui <- function(version = "5", ...) {
   bslib::bs_add_rules(bs, scss)
 }
 
-#' Compute on Action UI
+#' Check If a Dataset Has Changed
 #'
-#' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [compute_server()]
-#' @keywords internal
-compute_ui <- function(id) {
-  ## Create a namespace function using the provided id
-  ns <- NS(id)
-
-  list(
-    uiOutput(outputId = ns("warning")),
-    actionButton(
-      inputId = ns("go"),
-      label = "(Re)Compute",
-      class = "btn btn-primary"
-    )
-  )
-}
-
-#' Compute on Action Server
-#'
-#' @param id An ID string that corresponds with the ID used to call the module's
-#'  UI function.
 #' @param x A reactive object.
-#' @param f A [`function`] that takes `x` as argument.
-#' @return A reactive object (the result of `f(x)`).
-#' @seealso [compute_ui()]
+#' @param trigger An input to respond to.
+#' @return An UI element or `NULL` (if no changes).
 #' @keywords internal
-compute_server <- function(id, x, f) {
+#' @noRd
+has_changed <- function(x, trigger) {
   stopifnot(is.reactive(x))
+  y <- reactive({ x() }) |> bindEvent(trigger)
 
-  moduleServer(id, function(input, output, session) {
-    old_data <- reactive({ x() }) |> bindEvent(input$go)
-
-    results <- reactive({
-      req(x())
-      notify({ f(x()) }, title = toupper(id))
-    }) |>
-      bindEvent(input$go)
-
-    output$warning <- renderUI({
-      req(x(), old_data())
-      new_raw <- serialize(x(), NULL)
-      old_raw <- serialize(old_data(), NULL)
-      if (!isTRUE(all.equal(new_raw, old_raw))) {
-        div(
-          class = "alert alert-warning",
-          role = "alert",
-          "Your data seems to have changed.",
-          "You should perform your analysis again."
-        )
-      }
-    })
-
-    results
+  renderUI({
+    req(x(), y())
+    new_raw <- serialize(x(), NULL)
+    old_raw <- serialize(y(), NULL)
+    if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
+    div(
+      class = "alert alert-warning",
+      role = "alert",
+      "Your data seem to have changed.",
+      "You should perform your analysis again."
+    )
   })
 }
 

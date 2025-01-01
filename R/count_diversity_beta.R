@@ -20,11 +20,7 @@ diversity_beta_ui <- function(id) {
         choices = c(`Bray-Curtis` = "bray", `Morisita-Horn` = "morisita"),
         multiple = FALSE
       ),
-      actionButton(
-        inputId = ns("go"),
-        label = "(Re)Compute",
-        class = "btn btn-primary"
-      ),
+      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download_beta"),
         label = "Download dissimilarity matrix"
@@ -106,27 +102,27 @@ diversity_beta_server <- function(id, x, y) {
     })
 
     ## Compute similarity -----
-    beta <- reactive({
-      req(x(), input$method)
-      validate_na(x())
+    compute_beta <- ExtendedTask$new(
+      function(x, method) {
+        promises::future_promise({
+          1 - tabula::similarity(x, method = method)
+        })
+      }
+    ) |>
+      bslib::bind_task_button("go")
 
-      id <- showNotification(
-        ui = "Computing diversity...",
-        duration = NULL,
-        closeButton = FALSE,
-        type = "message"
-      )
-      on.exit(removeNotification(id), add = TRUE)
-
-      num <- arkhe::keep_columns(x(), f = is.numeric, verbose = get_option("verbose"))
-      1 - tabula::similarity(num, method = input$method)
+    observe({
+      compute_beta$invoke(x(), input$method)
     }) |>
       bindEvent(input$go)
 
+    results <- reactive({ notify(compute_beta$result()) })
+
     ## Compute PCoA -----
     analysis <- reactive({
-      req(beta())
-      dimensio::pcoa(beta(), rank = 2)
+      req(results())
+      validate_na(results())
+      notify(dimensio::pcoa(results(), rank = 2))
     })
 
     ## Plot -----
@@ -152,6 +148,6 @@ diversity_beta_server <- function(id, x, y) {
     render_plot("plot_pcoa", x = plot_pcoa)
 
     ## Download -----
-    output$download_beta <- export_table(beta, "beta")
+    output$download_beta <- export_table(results, "beta")
   })
 }

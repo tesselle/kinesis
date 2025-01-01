@@ -26,7 +26,8 @@ ca_ui <- function(id) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      compute_ui(id = ns("ca")),
+      uiOutput(outputId = ns("warning")),
+      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
@@ -72,19 +73,30 @@ ca_server <- function(id, x) {
                            selected = state$input$sup_col)
     })
 
+    ## Check data -----
+    output$warning <- has_changed(x, trigger = input$go)
+
     ## Compute CA -----
-    results <- compute_server(
-      id = "ca",
-      x = x,
-      f = function(x) {
-        dimensio::ca(
-          object = x,
-          rank = input$rank,
-          sup_row = arkhe::seek_rows(x, names = input$sup_row),
-          sup_col = arkhe::seek_columns(x, names = input$sup_col)
-        )
+    compute_ca <- ExtendedTask$new(
+      function(x, rank, sup_row, sup_col) {
+        promises::future_promise({
+          dimensio::ca(
+            object = x,
+            rank = rank,
+            sup_row = arkhe::seek_rows(x, names = sup_row),
+            sup_col = arkhe::seek_columns(x, names = sup_col)
+          )
+        })
       }
-    )
+    ) |>
+      bslib::bind_task_button("go")
+
+    observe({
+      compute_ca$invoke(x(), input$rank, input$sup_row, input$sup_col)
+    }) |>
+      bindEvent(input$go)
+
+    results <- reactive({ notify(compute_ca$result()) })
 
     ## Chi-squared -----
     chi2_test <- reactive({
@@ -105,6 +117,7 @@ ca_server <- function(id, x) {
       z$cramer <- V
       z
     })
+
     output$chi2 <- renderUI({
       list(
         h5("Chi-squared Test"),
@@ -115,22 +128,6 @@ ca_server <- function(id, x) {
           tags$li(sprintf("Cramer's V: %.2f", chi2_test()$cramer))
         )
       )
-    })
-
-    ## Warning -----
-    old_data <- bindEvent(reactive({ x() }), input$go)
-    output$warning <- renderUI({
-      req(x(), old_data())
-      new_raw <- serialize(x(), NULL)
-      old_raw <- serialize(old_data(), NULL)
-      if (!isTRUE(all.equal(new_raw, old_raw))) {
-        div(
-          class = "alert alert-warning",
-          role = "alert",
-          "Your data seems to have changed.",
-          "You should perform your analysis again."
-        )
-      }
     })
 
     ## Export -----
