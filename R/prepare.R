@@ -90,17 +90,6 @@ prepare_server <- function(id) {
       missing_server("missing", x = _) |>
       filter_server("filter", x = _)
 
-    ## Render table -----
-    output$table <- gt::render_gt({
-      validate_csv(data_clean())
-      validate_dim(data_clean())
-
-      data_clean() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::sub_missing() |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
-    })
-
     ## Render description -----
     output$value_dimensions <- renderText({
       req(data_clean())
@@ -117,6 +106,17 @@ prepare_server <- function(id) {
 
     ## Download -----
     output$download <- export_table(data_clean, "data")
+
+    ## Render table -----
+    output$table <- gt::render_gt({
+      validate_csv(data_clean())
+      validate_dim(data_clean())
+
+      data_clean() |>
+        gt::gt(rownames_to_stub = TRUE) |>
+        gt::sub_missing() |>
+        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+    })
 
     data_clean
   })
@@ -165,7 +165,7 @@ select_server <- function(id, x) {
       req(x(), input$select)
       arkhe::get_columns(x(), names = input$select)
     }) |>
-      debounce(500)
+      debounce(750)
 
     ## Select columns
     reactive({
