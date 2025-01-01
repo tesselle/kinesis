@@ -28,7 +28,7 @@ get_value <- function(x, default = NULL) {
 get_config <- function(app, config = Sys.getenv("KINESIS_CONFIG_ACTIVE", "default"),
                        use_parent = TRUE) {
 
-  file <- system.file(app, "config.yml", package = "kinesis", mustWork = FALSE)
+  file <- system.file("app", app, "config.yml", package = "kinesis", mustWork = FALSE)
   config::get(value = NULL, config = config, file = file,
               use_parent = use_parent)
 }

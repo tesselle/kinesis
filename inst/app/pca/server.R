@@ -6,7 +6,7 @@
 #' @author N. Frerebeau
 #' @keywords internal
 #' @noRd
-shiny_server <- function(input, output, session) {
+function(input, output, session) {
   ## Data
   data <- kinesis::prepare_server("prepare")
 

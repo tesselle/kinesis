@@ -34,7 +34,7 @@ run_app <- function(app = c("diversity", "seriation", "source", "ternary", "ca",
   app <- match.arg(app, several.ok = FALSE)
   bookmark <- match.arg(bookmark, several.ok = FALSE)
 
-  appDir <- system.file(app, package = "kinesis")
+  appDir <- system.file("app", app, package = "kinesis")
   if (appDir == "")
     stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
 

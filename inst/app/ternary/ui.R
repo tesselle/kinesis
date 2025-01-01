@@ -3,7 +3,7 @@
 #' @author N. Frerebeau
 #' @keywords internal
 #' @noRd
-shiny_ui <- function(request) {
+function(request) {
   bslib::page_navbar(
     title = toupper(kinesis::get_option("name")),
     kinesis::home_ui("home", package = "isopleuros"),
