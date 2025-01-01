@@ -79,7 +79,7 @@ logratio_server <- function(id, x, method) {
         plr = function(x) nexus::transform_plr(x, pivot = input$pivot)
       )
 
-      run_with_notification(trans(x()), title = toupper(method))
+      notify(trans(x()), title = toupper(method))
     })
 
     ## Plot -----

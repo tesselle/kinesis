@@ -138,7 +138,7 @@ import_server <- function(id) {
       id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
       on.exit(removeNotification(id), add = TRUE)
 
-      x <- run_with_notification({
+      x <- notify({
         ext <- tolower(tools::file_ext(input$file$datapath))
         if (ext != "csv" && ext != "tsv") {
           stop("Import a CSV or a TSV file.", call. = FALSE)

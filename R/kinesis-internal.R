@@ -65,7 +65,7 @@ compute_server <- function(id, x, f) {
 
     results <- reactive({
       req(x())
-      run_with_notification({ f(x()) }, title = toupper(id))
+      notify({ f(x()) }, title = toupper(id))
     }) |>
       bindEvent(input$go)
 
@@ -95,7 +95,7 @@ compute_server <- function(id, x, f) {
 #' @return The result of `expr` or `NULL`.
 #' @keywords internal
 #' @noRd
-run_with_notification <- function(expr, title = NULL) {
+notify <- function(expr, title = NULL) {
   warn <- err <- NULL
 
   res <- withCallingHandlers(

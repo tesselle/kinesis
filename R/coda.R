@@ -118,7 +118,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       validate_na(x())
       validate(need(length(input$parts) > 1, "Select at least two columns."))
 
-      run_with_notification(
+      notify(
         {
           nexus::as_composition(
             from = x(),

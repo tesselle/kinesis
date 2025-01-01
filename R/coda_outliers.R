@@ -68,7 +68,7 @@ coda_outliers_server <- function(id, x) {
     out <- reactive({
       validate(need(x(), "Check your data."))
 
-      run_with_notification(
+      notify(
         {
           nexus::detect_outlier(
             x(),
