@@ -22,7 +22,7 @@ cite_package <- function(x = NULL) {
   lapply(
     X = x,
     FUN = function(x) {
-      bib <- format(utils::citation(x), style = "text")
+      bib <- format(utils::citation(x)[[1]], style = "text")
       txt <- paste0(vapply(X = bib, FUN = markdown, FUN.VALUE = character(1)))
       HTML(txt)
     }
