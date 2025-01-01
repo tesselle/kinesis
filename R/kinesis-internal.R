@@ -15,15 +15,18 @@ validate_zero <- function(x) {
 
 #' Bootstrap Theme
 #'
+#' @param version A [`character`] string specifying the major version of
+#'  Bootstrap to use.
 #' @param ... Extra parameters to be passed to [bslib::bs_theme()].
 #' @seealso [bslib::bs_theme()]
 #' @keywords internal
 #' @export
-theme_ui <- function(...) {
+theme_ui <- function(version = "5", ...) {
   path <- system.file("static", "custom.scss", package = "kinesis")
   scss <- sass::sass_file(path)
 
-  bslib::bs_add_rules(bslib::bs_theme(...), scss)
+  bs <- bslib::bs_theme(version = version, ...)
+  bslib::bs_add_rules(bs, scss)
 }
 
 #' Compute on Action UI

@@ -4,9 +4,12 @@
 \alias{theme_ui}
 \title{Bootstrap Theme}
 \usage{
-theme_ui(...)
+theme_ui(version = "5", ...)
 }
 \arguments{
+\item{version}{A \code{\link{character}} string specifying the major version of
+Bootstrap to use.}
+
 \item{...}{Extra parameters to be passed to \code{\link[bslib:bs_theme]{bslib::bs_theme()}}.}
 }
 \description{
