@@ -112,7 +112,9 @@ pca_server <- function(id, x) {
     }) |>
       bindEvent(input$go)
 
-    results <- reactive({ notify(compute_pca$result()) })
+    results <- reactive({
+      notify(compute_pca$result(), title = "Principal Components Analysis")
+    })
 
     ## Export -----
     output$download <- downloadHandler(

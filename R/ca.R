@@ -96,7 +96,9 @@ ca_server <- function(id, x) {
     }) |>
       bindEvent(input$go)
 
-    results <- reactive({ notify(compute_ca$result()) })
+    results <- reactive({
+      notify(compute_ca$result(), title = "Correspondence Analysis")
+    })
 
     ## Chi-squared -----
     chi2_test <- reactive({

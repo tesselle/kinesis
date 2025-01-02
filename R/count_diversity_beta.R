@@ -116,7 +116,9 @@ diversity_beta_server <- function(id, x, y) {
     }) |>
       bindEvent(input$go)
 
-    results <- reactive({ notify(compute_beta$result()) })
+    results <- reactive({
+      notify(compute_beta$result(), title = "Beta Diversity")
+    })
 
     ## Compute PCoA -----
     analysis <- reactive({

@@ -126,7 +126,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
             verbose = verbose
           )
         },
-        title = "Composition"
+        title = "Compositional Data"
       )
     }) |>
       debounce(750)

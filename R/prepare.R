@@ -172,7 +172,8 @@ select_server <- function(id, x) {
       x <- selected()
 
       if (isTRUE(input$rownames)) {
-        y <- notify(arkhe::assign_rownames(x, column = 1, remove = TRUE))
+        y <- notify(arkhe::assign_rownames(x, column = 1, remove = TRUE),
+                    title = "Rownames")
         if (!is.null(y)) x <- y
       }
 

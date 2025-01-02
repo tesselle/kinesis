@@ -167,7 +167,7 @@ import_server <- function(id) {
           skip = if (!is.na(input$skip)) input$skip else 0,
           comment.char = input$comment
         )},
-        title = "Data import"
+        title = "Data Upload"
       )
 
       if (!is.null(x)) removeModal()

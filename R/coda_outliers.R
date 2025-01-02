@@ -76,7 +76,7 @@ coda_outliers_server <- function(id, x) {
             quantile = input$quantile
           )
         },
-        title = "Outliers detection"
+        title = "Outliers Detection"
       )
     }) |>
       bindEvent(input$go)
