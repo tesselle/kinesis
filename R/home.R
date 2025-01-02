@@ -19,6 +19,7 @@ home_ui <- function(id, package) {
         h5("Workflow"),
         markdown(get_option("workflow")),
       ), # sidebar
+      uiOutput(outputId = ns("alert_test")),
       navset_card_pill(
         placement = "above",
         nav_panel(
@@ -57,22 +58,6 @@ home_ui <- function(id, package) {
       ) # navset_card_pill
     ) # layout_sidebar
   ) # nav_panel
-}
-
-#' Header UI
-#'
-#' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [header_server()]
-#' @family page modules
-#' @keywords internal
-#' @export
-header_ui <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  list(
-    uiOutput(outputId = ns("alert_test"))
-  )
 }
 
 #' Footer UI
@@ -142,30 +127,18 @@ home_server <- function(id) {
       message(msg)
     })
 
-    ## Render -----
-    output$session <- renderPrint({ utils::sessionInfo() })
-  })
-}
-
-#' Header Server
-#'
-#' @param id An ID string that corresponds with the ID used to call the module's
-#'  UI function.
-#' @seealso [header_ui()]
-#' @family page modules
-#' @keywords internal
-#' @export
-header_server  <- function(id) {
-  moduleServer(id, function(input, output, session) {
     ## Display alert -----
     output$alert_test <- renderUI({
-      if (get_option("production")) return(NULL)
+      if (isTRUE(get_option("production"))) return(NULL)
       div(
         class = "alert alert-warning",
         role = "alert",
         "This application is under development, so you shouldn't use it for anything serious!"
       )
     })
+
+    ## Render -----
+    output$session <- renderPrint({ utils::sessionInfo() })
   })
 }
 

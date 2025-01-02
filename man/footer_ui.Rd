@@ -17,8 +17,6 @@ Footer UI
 
 Other page modules: 
 \code{\link{footer_server}()},
-\code{\link{header_server}()},
-\code{\link{header_ui}()},
 \code{\link{home_server}()},
 \code{\link{home_ui}()}
 }

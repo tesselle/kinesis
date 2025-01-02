@@ -19,7 +19,6 @@ function(input, output, session) {
   kinesis::ternary_server("ternary", x = data)
 
   kinesis::home_server("home")
-  kinesis::header_server("header")
   kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
 }

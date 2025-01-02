@@ -20,8 +20,6 @@ About UI
 Other page modules: 
 \code{\link{footer_server}()},
 \code{\link{footer_ui}()},
-\code{\link{header_server}()},
-\code{\link{header_ui}()},
 \code{\link{home_server}()}
 }
 \concept{page modules}

@@ -24,7 +24,6 @@ function(input, output, session) {
   seriation <- kinesis::seriate_server("seriate", x = count, order = ca_results)
 
   kinesis::home_server("home")
-  kinesis::header_server("header")
   kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
 }

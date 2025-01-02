@@ -22,7 +22,6 @@ function(input, output, session) {
   kinesis::occurrence_server("occurrence", x = count)
 
   kinesis::home_server("home")
-  kinesis::header_server("header")
   kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
 }
