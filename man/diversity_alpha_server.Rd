@@ -19,7 +19,6 @@ Alpha Diversity Server
 \code{\link[=diversity_alpha_ui]{diversity_alpha_ui()}}
 
 Other count data modules: 
-\code{\link{count_server}()},
 \code{\link{diversity_alpha_ui}()},
 \code{\link{diversity_beta_server}()},
 \code{\link{diversity_beta_ui}()},

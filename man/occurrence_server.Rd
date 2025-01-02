@@ -22,7 +22,6 @@ Co-Occurrence Server
 \code{\link[=occurrence_ui]{occurrence_ui()}}
 
 Other count data modules: 
-\code{\link{count_server}()},
 \code{\link{diversity_alpha_server}()},
 \code{\link{diversity_alpha_ui}()},
 \code{\link{diversity_beta_server}()},

@@ -8,8 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
-  count <- kinesis::count_server("count", x = data) # Remove non-numeric columns
+  data <- kinesis::prepare_server("prepare", select = is.numeric)
 
   ## Switch tab (only happen once)
   observe({
@@ -17,11 +16,11 @@ function(input, output, session) {
   }) |> bindEvent(data(), once = TRUE)
 
   ## CA
-  ca_results <- kinesis::ca_server("ca", x = count)
+  ca_results <- kinesis::ca_server("ca", x = data)
   kinesis::multivariate_server("ca", ca_results)
 
   ## Seriation
-  seriation <- kinesis::seriate_server("seriate", x = count, order = ca_results)
+  seriation <- kinesis::seriate_server("seriate", x = data, order = ca_results)
 
   kinesis::home_server("home")
   kinesis::footer_server("footer")

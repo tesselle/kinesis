@@ -24,7 +24,6 @@ Beta Diversity Server
 \code{\link[=diversity_beta_ui]{diversity_beta_ui()}}
 
 Other count data modules: 
-\code{\link{count_server}()},
 \code{\link{diversity_alpha_server}()},
 \code{\link{diversity_alpha_ui}()},
 \code{\link{diversity_beta_ui}()},

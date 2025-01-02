@@ -17,13 +17,16 @@ occurrence_ui <- function(id) {
       radioButtons(
         inputId = ns("method"),
         label = "Method",
-        choices = c("Count", "Binomial"),
+        choices = c(`Absolute frequency` = "absolute",
+                    `Relative frequency` = "relative",
+                    `Binomial assessment` = "binomial"),
       ),
       radioButtons(
         inputId = ns("plot_type"),
         label = "Plot type",
         choices = c("Heatmap", "Spot"),
       ),
+      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
@@ -62,15 +65,27 @@ occurrence_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Compute index -----
-    occur <- reactive({
-      req(x())
-      validate_na(x())
-      tabula::occurrence(x(), method = tolower(input$method))
+    compute_occur <- ExtendedTask$new(
+      function(x, method) {
+        promises::future_promise({
+          tabula::occurrence(x, method = tolower(method))
+        })
+      }
+    ) |>
+      bslib::bind_task_button("go")
+
+    observe({
+      compute_occur$invoke(x(), input$method)
+    }) |>
+      bindEvent(input$go)
+
+    results <- reactive({
+      notify(compute_occur$result(), title = "Co-Occurrence")
     })
 
     ## Plot -----
     map <- reactive({
-      req(occur())
+      req(results())
       fun <- switch(
         input$plot_type,
         color = "",
@@ -78,13 +93,13 @@ occurrence_server <- function(id, x) {
         Spot = function(x, ...) tabula::plot_spot(x, ...)
       )
 
-      function() fun(occur(), color = khroma::color(input$color))
+      function() fun(results(), color = khroma::color(input$color))
     })
 
     ## Render table -----
     output$table <- gt::render_gt({
-      req(occur())
-      occur() |>
+      req(results())
+      results() |>
         as.matrix() |>
         as.data.frame() |>
         gt::gt(rownames_to_stub = TRUE) |>
@@ -96,6 +111,6 @@ occurrence_server <- function(id, x) {
     render_plot("plot", x = map)
 
     ## Download -----
-    output$download <- export_table(occur, "occurrence")
+    output$download <- export_table(results, "occurrence")
   })
 }

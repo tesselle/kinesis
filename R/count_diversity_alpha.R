@@ -29,19 +29,20 @@ diversity_alpha_ui <- function(id) {
         title = "Definitions",
         tags$dl(
           tags$dt("Heterogeneity index"),
-          tags$dd(""),
+          tags$dd("The higher the heterogeneity value, the more diverse the individuals are in the dataset."),
           tags$dl(
             tags$dt(cite_article("Shannon", 1948, "10.1002/j.1538-7305.1948.tb01338.x")),
-            tags$dd("The Shannon index assumes that individuals are randomly sampled from an infinite population and that all types are represented in the sample."),
+            tags$dd("The Shannon index assumes that individuals are randomly sampled from an infinite population and that all types are represented in the sample.",
+                    "It combine both richness and evenness to provide an overall measure of diversity in a given sample."),
             tags$dt(cite_article("Brillouin", 1956)),
             tags$dd("The Brillouin index describes a known collection: it does not assume random sampling in an infinite population.")
           ),
 
           tags$dt("Dominance index"),
-          tags$dd("Dominance is a measure of whether a community is dominated by certain types (an increase in the value of a dominance index means a decrease in diversity)."),
+          tags$dd("Dominance is a measure of whether a community is dominated by certain types (an increase in the value means a decrease in diversity)."),
           tags$dl(
             tags$dt(cite_article("Simpson", 1949, "10.1038/163688a0")),
-            tags$dd("The Simpson index expresses the probability that two individuals randomly picked from a finite sample belong to two different types. It can be interpreted as the weighted mean of the proportional abundances."),
+            tags$dd("The Simpson dominance provides an indication of the probability that two randomly chosen individuals belong to the same type."),
             tags$dt(cite_article("Berger-Parker", 1970, "10.1126/science.168.3937.1345")),
             tags$dd("The Berger-Parker index expresses the proportional importance of the most abundant type. This metric is highly biased by sample size and richness.")
           ),
@@ -50,7 +51,7 @@ diversity_alpha_ui <- function(id) {
           tags$dd("Richness quantifies how many different types the dataset of interest contains, it does not take into account the abundances of the types."),
           tags$dl(
             tags$dt(cite_article("Menhinick", 1964, "10.2307/1934933")),
-            tags$dd(""),
+            tags$dd("The Menhinick index normalizes the species richness by the community size."),
             tags$dt(cite_article("Margalef", 1958)),
             tags$dd(""),
             tags$dt("Chao 1", cite_article("Chao", 1984, text = FALSE)),
@@ -83,32 +84,35 @@ diversity_alpha_server <- function(id, x) {
     alpha <- reactive({
       req(x())
 
-      index <- t(apply(
-        X = x(),
-        MARGIN = 1,
-        FUN = function(x) {
-          chao1 <- try(tabula::index_chao1(x), silent = TRUE)
-          ace <- try(tabula::index_ace(x), silent = TRUE)
-          c(
-            Size = sum(x),
-            Observed = tabula::observed(x),
-            ## Heterogeneity
-            Shanon = tabula::index_shannon(x),
-            Brillouin = tabula::index_brillouin(x),
-            ## Dominance
-            Simpson = tabula::index_simpson(x),
-            Berger = tabula::index_berger(x),
-            ## Richness
-            Menhinick = tabula::index_menhinick(x),
-            Margalef = tabula::index_margalef(x),
-            Chao1 = ifelse(inherits(chao1, "try-error"), NA, chao1),
-            ACE = ifelse(inherits(ace, "try-error"), NA, ace),
-            Squares = tabula::index_squares(x)
-          )
-        }
-      ))
-      rownames(index) <- rownames(x())
-      as.data.frame(index)
+      notify(
+        {
+          index <- t(apply(
+            X = x(),
+            MARGIN = 1,
+            FUN = function(x) {
+              c(
+                Size = sum(x),
+                Observed = tabula::observed(x),
+                ## Heterogeneity
+                Shanon = tabula::index_shannon(x, evenness = FALSE, unbiased = FALSE),
+                Brillouin = tabula::index_brillouin(x, evenness = FALSE),
+                ## Dominance
+                Simpson = tabula::index_simpson(x, evenness = FALSE, unbiased = FALSE),
+                Berger = tabula::index_berger(x),
+                ## Richness
+                Menhinick = tabula::index_menhinick(x),
+                Margalef = tabula::index_margalef(x),
+                Chao1 = tabula::index_chao1(x, unbiased = FALSE),
+                ACE = tabula::index_ace(x),
+                Squares = tabula::index_squares(x)
+              )
+            }
+          ))
+          rownames(index) <- rownames(x())
+          as.data.frame(index)
+        },
+        title = "Alpha diversity"
+      )
     })
 
     ## Render table -----

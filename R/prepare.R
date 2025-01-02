@@ -76,16 +76,17 @@ prepare_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @param select A predicate [`function`] used to select columns.
 #' @return A reactive `data.frame`.
 #' @seealso [prepare_ui()]
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id) {
+prepare_server <- function(id, select = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_clean <- import_server("import") |>
-      select_server("select", x = _) |>
+      select_server("select", x = _, f = select) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _) |>
       filter_server("filter", x = _)
@@ -142,17 +143,22 @@ select_ui <- function(id) {
     )
   )
 }
-select_server <- function(id, x) {
+select_server <- function(id, x, f = NULL) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
     observe({
+      req(x())
+      selected <- seq_len(ncol(x()))
+      if (is.function(f)) {
+        selected <- which(arkhe::detect(x(), f = f, margin = 2))
+      }
       freezeReactiveValue(input, "select")
       updateCheckboxGroupInput(
         inputId = "select",
         choices = colnames(x()),
-        selected = colnames(x())
+        selected = colnames(x())[selected]
       )
     })
 

@@ -4,11 +4,13 @@
 \alias{prepare_server}
 \title{Prepare Data Server}
 \usage{
-prepare_server(id)
+prepare_server(id, select = NULL)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
+
+\item{select}{A predicate \code{\link{function}} used to select columns.}
 }
 \value{
 A reactive \code{data.frame}.

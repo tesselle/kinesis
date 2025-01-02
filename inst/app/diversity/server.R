@@ -8,8 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
-  count <- kinesis::count_server("count", x = data) # Remove non-numeric columns
+  data <- kinesis::prepare_server("prepare", select = is.numeric)
 
   ## Switch tab (only happen once)
   observe({
@@ -17,9 +16,9 @@ function(input, output, session) {
   }) |> bindEvent(data(), once = TRUE)
 
   ## Diversity
-  alpha <- kinesis::diversity_alpha_server("alpha", x = count)
+  alpha <- kinesis::diversity_alpha_server("alpha", x = data)
   kinesis::diversity_beta_server("beta", x = data, y = alpha)
-  kinesis::occurrence_server("occurrence", x = count)
+  kinesis::occurrence_server("occurrence", x = data)
 
   kinesis::home_server("home")
   kinesis::footer_server("footer")

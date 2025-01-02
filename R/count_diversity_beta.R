@@ -48,24 +48,21 @@ diversity_beta_ui <- function(id) {
     layout_columns(
       col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
       output_plot(
-        id = ns("plot_pcoa"),
-        title = "PCoA",
+        id = ns("plot_diss"),
+        title = "Dissimilarity",
         tools = list(
-          select_color(inputId = ns("col"), type = "sequential", default = "YlOrBr"),
-          select_cex(inputId = ns("cex"), default = c(1, 1))
+          select_color(inputId = ns("col_diss"), type = "sequential", default = "YlOrBr")
         ),
         height = "100%"
       ),
-      card(
-        card_header("Definitions"),
-        card_body(
-          tags$dl(
-            tags$dt(cite_article("Bray-Curtis", 1957, "10.2307/1942268")),
-            tags$dd("Bray and Curtis modified version of the Sorenson index."),
-            tags$dt("Morisita-Horn"),
-            tags$dd("")
-          )
-        )
+      output_plot(
+        id = ns("plot_pcoa"),
+        title = "PCoA",
+        tools = list(
+          select_color(inputId = ns("col_pcoa"), type = "sequential", default = "YlOrBr"),
+          select_cex(inputId = ns("cex_pcoa"), default = c(1, 1))
+        ),
+        height = "100%"
       )
     )
   ) # layout_sidebar
@@ -128,6 +125,19 @@ diversity_beta_server <- function(id, x, y) {
     })
 
     ## Plot -----
+    plot_diss <- reactive({
+      req(results())
+      function() {
+        tabula::plot_heatmap(
+          object = results(),
+          color = khroma::color(input$col_diss, force = TRUE),
+          diag = FALSE,
+          upper = FALSE,
+          fixed_ratio = TRUE
+        )
+      }
+    })
+
     plot_pcoa <- reactive({
       req(analysis(), y())
 
@@ -140,13 +150,14 @@ diversity_beta_server <- function(id, x, y) {
           x = analysis(),
           labels = input$pcoa_labels,
           extra_quanti = extra_quanti,
-          color = khroma::color(input$col, force = TRUE),
-          size = get_value(input$cex)
+          color = khroma::color(input$col_pcoa, force = TRUE),
+          size = get_value(input$cex_pcoa)
         )
       }
     })
 
     ## Render plot -----
+    render_plot("plot_diss", x = plot_diss)
     render_plot("plot_pcoa", x = plot_pcoa)
 
     ## Download -----
