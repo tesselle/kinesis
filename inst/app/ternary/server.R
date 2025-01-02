@@ -10,6 +10,11 @@ function(input, output, session) {
   ## Data
   data <- kinesis::prepare_server("prepare")
 
+  ## Switch tab (only happen once)
+  observe({
+    bslib::nav_select(id = "main", selected = "Data")
+  }) |> bindEvent(data(), once = TRUE)
+
   ## Ternary Plot
   kinesis::ternary_server("ternary", x = data)
 

@@ -11,6 +11,11 @@ function(input, output, session) {
   data <- kinesis::prepare_server("prepare")
   count <- kinesis::count_server("count", x = data) # Remove non-numeric columns
 
+  ## Switch tab (only happen once)
+  observe({
+    bslib::nav_select(id = "main", selected = "Data")
+  }) |> bindEvent(data(), once = TRUE)
+
   ## CA
   ca_results <- kinesis::ca_server("ca", x = count)
   kinesis::multivariate_server("ca", ca_results)

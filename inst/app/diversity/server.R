@@ -11,6 +11,11 @@ function(input, output, session) {
   data <- kinesis::prepare_server("prepare")
   count <- kinesis::count_server("count", x = data) # Remove non-numeric columns
 
+  ## Switch tab (only happen once)
+  observe({
+    bslib::nav_select(id = "main", selected = "Data")
+  }) |> bindEvent(data(), once = TRUE)
+
   ## Diversity
   alpha <- kinesis::diversity_alpha_server("alpha", x = count)
   kinesis::diversity_beta_server("beta", x = data, y = alpha)

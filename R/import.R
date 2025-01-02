@@ -133,24 +133,36 @@ import_server <- function(id) {
     observe({ showModal(import_modal(session$ns)) }) |>
       bindEvent(input$upload)
 
+    ## Read from connection -----
+    obs <- observe({
+      params <- parseQueryString(session$clientData$url_search)
+      query <- params[["data"]]
+
+      if (!is.null(query)) {
+        msg <- sprintf("Reading data from %s...", query)
+        id <- showNotification(msg, duration = NULL, closeButton = FALSE,
+                               type = "message")
+        on.exit(removeNotification(id), add = TRUE)
+
+        data$values <- notify(read.csv(file = url(query)), "Data Input")
+      }
+      obs$destroy()
+    })
+
     ## Read data file -----
     observe({
-      id <- showNotification("Reading data...", duration = NULL, closeButton = FALSE)
+      id <- showNotification("Reading data...", duration = NULL,
+                             closeButton = FALSE, type = "message")
       on.exit(removeNotification(id), add = TRUE)
 
       x <- notify({
-        ext <- tolower(tools::file_ext(input$file$datapath))
-        if (ext != "csv" && ext != "tsv") {
-          stop("Import a CSV or a TSV file.", call. = FALSE)
-        }
-
         utils::read.table(
           file = input$file$datapath,
           header = input$header,
           sep = input$sep,
           dec = input$dec,
           quote = input$quote,
-          row.names = if (input$rownames) 1 else NULL,
+          row.names = if (isTRUE(input$rownames)) 1 else NULL,
           na.strings = input$na.strings,
           skip = if (!is.na(input$skip)) input$skip else 0,
           comment.char = input$comment

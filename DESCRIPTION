@@ -3,7 +3,7 @@ Title: 'shiny' Applications for the 'tesselle' Packages
 Version: 0.0.0.9004
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-5759-4944", affiliation = "Université Bordeaux Montaigne")),
+           comment = c(ORCID = "0000-0001-5759-4944")),
     person("Brice", "Lebrun", , "brice.lebrun@u-bordeaux-montaigne.fr", role = "ctb",
            comment = c(ORCID = "0000-0001-7503-8685", "Logo designer")),
     person("Université Bordeaux Montaigne", role = "fnd"),
@@ -33,7 +33,6 @@ Imports:
     shiny (>= 1.10.0),
     stats,
     tabula (>= 3.1.1),
-    tools,
     utils
 Suggests: 
     tinytest,

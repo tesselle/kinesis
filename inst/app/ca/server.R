@@ -10,6 +10,11 @@ function(input, output, session) {
   ## Data
   data <- kinesis::prepare_server("prepare")
 
+  ## Switch tab (only happen once)
+  observe({
+    bslib::nav_select(id = "main", selected = "Data")
+  }) |> bindEvent(data(), once = TRUE)
+
   ## CA
   ca_results <- kinesis::ca_server("ca", x = data)
   kinesis::multivariate_server("ca", ca_results)

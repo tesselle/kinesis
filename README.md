@@ -79,14 +79,14 @@ library(kinesis)
 run_app("seriation")
 ```
 
-| Keyword     | Application name              |
-|:------------|:------------------------------|
-| `ca`        | Correspondence Analysis       |
-| `pca`       | Principal Components Analysis |
-| `diversity` | Diversity Measures            |
-| `seriation` | Matrix Seriation              |
-| `source`    | Compositional Data Analysis   |
-| `ternary`   | Ternary Plot                  |
+| Keyword | Application name | Example |
+|:---|:---|:---|
+| `ca` | Correspondence Analysis | [ceramic data](https://analytics.huma-num.fr/tesselle/ca?data=https://raw.githubusercontent.com/tesselle/folio/refs/heads/main/data-raw/zuni.csv) |
+| `pca` | Principal Components Analysis |  |
+| `diversity` | Diversity Measures | [ceramic data](https://analytics.huma-num.fr/tesselle/diversity?data=https://raw.githubusercontent.com/tesselle/folio/refs/heads/main/data-raw/zuni.csv) |
+| `seriation` | Matrix Seriation | [ceramic data](https://analytics.huma-num.fr/tesselle/seriation?data=https://raw.githubusercontent.com/tesselle/folio/refs/heads/main/data-raw/zuni.csv) |
+| `source` | Compositional Data Analysis | [bronze data](https://analytics.huma-num.fr/tesselle/source?data=https://raw.githubusercontent.com/tesselle/folio/refs/heads/main/data-raw/bronze.csv) |
+| `ternary` | Ternary Plot | [bronze data](https://analytics.huma-num.fr/tesselle/ternary?data=https://raw.githubusercontent.com/tesselle/folio/refs/heads/main/data-raw/bronze.csv) |
 
 ## Contributing
 

@@ -6,6 +6,7 @@
 function(request) {
   bslib::page_navbar(
     title = toupper(kinesis::get_option("name")),
+    id = "main",
     kinesis::home_ui("home", package = "kairos"),
     bslib::nav_panel(
       title = "Data",
