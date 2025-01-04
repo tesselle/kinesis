@@ -172,7 +172,7 @@ select_server <- function(id, x, f = NULL) {
       req(x(), input$select)
       arkhe::get_columns(x(), names = input$select)
     }) |>
-      debounce(1000)
+      debounce(750)
 
     ## Select columns
     reactive({

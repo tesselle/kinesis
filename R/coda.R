@@ -127,7 +127,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         title = "Compositional Data"
       )
     }) |>
-      debounce(1000)
+      debounce(750)
 
     grouped <- reactive({
       req(x(), coda())
@@ -142,7 +142,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
       z
     }) |>
-      debounce(1000)
+      debounce(750)
 
     ## Zeros -----
     no_zero <- coda_zero_server("zero", x = grouped)
