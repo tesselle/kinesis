@@ -200,12 +200,12 @@ ternary_server <- function(id, x) {
     ## Update UI -----
     observe({
       freezeReactiveValue(input, "axis1")
-      updateSelectizeInput(inputId = "axis1", choices = var_quanti())
+      updateSelectizeInput(inputId = "axis1", choices = c(Choose = "", var_quanti()))
     }) |>
       bindEvent(var_quanti())
 
     observe({
-      choices <- setdiff(var_quanti(), input$axis1)
+      choices <- c(Choose = "", setdiff(var_quanti(), input$axis1))
       selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
       selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
       freezeReactiveValue(input, "axis2")
@@ -216,7 +216,7 @@ ternary_server <- function(id, x) {
       bindEvent(input$axis1)
 
     observe({
-      choices <- setdiff(var_quanti(), c(input$axis1, input$axis2))
+      choices <- c(Choose = "", setdiff(var_quanti(), c(input$axis1, input$axis2)))
       selected <- if (input$axis3 %in% choices) input$axis3 else NULL
       freezeReactiveValue(input, "axis3")
       updateSelectizeInput(inputId = "axis3", choices = choices, selected = selected)
