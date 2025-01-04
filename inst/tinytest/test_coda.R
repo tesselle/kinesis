@@ -7,9 +7,11 @@ fake <- data.frame(
   Fe = c(6.12, 5.88, 5.12, 0, 6.02, 0, 0, 5.28, 5.72),
   Na = c(0.97, 1.59, 0, 0.86, 0.76, 0.51, 0.75, 0.52, 0.56)
 )
-imp <- nexus::replace_zero(nexus::as_composition(fake, groups = 1),
-                           value = c(0.02, 0.1, 0.01) / 100, delta = 2/3)
+coda <- nexus::as_composition(fake, parts = c(2, 3, 4), groups = 1)
+imp <- nexus::replace_zero(coda, value = c(0.02, 0.1, 0.01) / 100, delta = 2/3)
+
 x <- reactiveVal(fake)
+y <- reactiveVal(coda)
 
 testServer(coda_server, args = list(x = x), {
   session$setInputs() # Needed because of freezeReactiveValue() (???)
@@ -22,16 +24,19 @@ testServer(coda_server, args = list(x = x), {
   session$elapse(2000)
   expect_equal(dim(coda()), c(9L, 3L))
   expect_equal(dim(grouped()), c(3L, 3L))
-})
 
-testServer(coda_server, args = list(x = x), {
-  session$setInputs() # Needed because of freezeReactiveValue() (???)
-  session$setInputs(parts = c(2, 3, 4), groups = "group", condense = "")
+  session$setInputs(parts = c(2, 3, 4), groups = "", condense = "")
   session$elapse(2000)
   expect_error(valid(), "Compositional data must not contain zeros")
+})
 
-  session$setInputs("zero-delta" = 2/3, "zero-limit_Ca" = 0.02,
-                    "zero-limit_Fe" = 0.1, "zero-limit_Na" = 0.01)
+testServer(kinesis:::coda_zero_server, args = list(x = y), {
+  expect_equal(ids(), c("limit_Ca", "limit_Fe", "limit_Na"))
+  dataset <- session$getReturned()
+  expect_equal(dataset(), coda)
+
+  session$setInputs(delta = 2/3, limit_Ca = 0.02,
+                    limit_Fe = 0.1, limit_Na = 0.01, go = 1)
   dataset <- session$getReturned()
   expect_equal(dataset(), imp)
 })

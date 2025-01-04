@@ -4,7 +4,7 @@ validate_csv <- function(x) {
   validate(need(x, message = "Import a CSV file first."))
 }
 validate_dim <- function(x) {
-  validate(need(all(dim(x) > 0), "Select at least one row and one column."))
+  validate(need(isTruthy(x) && all(dim(x) > 0), "Select at least one row and one column."))
 }
 validate_na <- function(x) {
   validate(need(!anyNA(x), "Your data should not contain missing values."))

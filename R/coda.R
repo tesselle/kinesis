@@ -111,7 +111,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     ## Coerce to compositions -----
     coda <- reactive({
-      req(x(), input$parts)
+      req(input$parts)
       validate_dim(x())
       validate_na(x())
       validate(need(length(input$parts) > 1, "Select at least two columns."))
@@ -129,10 +129,13 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     }) |>
       debounce(750)
 
-    grouped <- reactive({
-      req(x(), coda())
+    ## Zeros -----
+    no_zero <- coda_zero_server("zero", x = coda)
 
-      z <- coda()
+    grouped <- reactive({
+      req(no_zero())
+
+      z <- no_zero()
       if (isTruthy(input$groups)) {
         z <- nexus::group(z, by = x()[[input$groups]], verbose = verbose)
       }
@@ -144,32 +147,29 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     }) |>
       debounce(750)
 
-    ## Zeros -----
-    no_zero <- coda_zero_server("zero", x = grouped)
-
     ## Validate -----
     valid <- reactive({
-      validate(need(!anyNA(no_zero()), "Compositional data must not contain missing values."))
-      validate(need(!any(no_zero() == 0), "Compositional data must not contain zeros."))
-      no_zero()
+      validate(need(!anyNA(grouped()), "Compositional data must not contain missing values."))
+      validate(need(!any(grouped() == 0), "Compositional data must not contain zeros."))
+      grouped()
     })
 
     ## Render description -----
     output$description <- renderUI({
-      req(no_zero())
-      descr <- utils::capture.output(nexus::describe(no_zero()))
+      req(grouped())
+      descr <- utils::capture.output(nexus::describe(grouped()))
       markdown(descr)
     })
 
     ## Render tables -----
     output$table <- gt::render_gt({
-      req(no_zero())
-      if (nexus::is_grouped(no_zero())) {
-        gt <- no_zero() |>
+      req(grouped())
+      if (nexus::is_grouped(grouped())) {
+        gt <- grouped() |>
           as.data.frame() |>
           gt::gt(groupname_col = ".group", rownames_to_stub = TRUE)
       } else {
-        gt <- no_zero() |>
+        gt <- grouped() |>
           as.data.frame() |>
           gt::gt(rownames_to_stub = TRUE)
       }
@@ -209,53 +209,65 @@ coda_zero_ui <- function(id) {
       min = 0,
       max = 1
     ),
-    uiOutput(outputId = ns("values"))
+    uiOutput(outputId = ns("values")),
+    actionButton(inputId = ns("go"), "Replace zero")
   )
 }
 coda_zero_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    id <- reactive({
-      req(x())
+    data <- reactiveValues(values = NULL)
+
+    ## Build UI
+    ids <- reactive({
       validate_dim(x())
+      data$values <- x()
       paste0("limit_", colnames(x()))
     })
 
     ui <- reactive({
-      req(id())
+      req(ids())
 
-      n <- length(id())
-      lab <- paste(sub("limit_", "", id()), "(%)", sep = " ")
-
-      ui <- vector(mode = "list", length = n)
-      for (j in seq_len(n)) {
-        ui[[j]] <- numericInput(
-          inputId = session$ns(id()[[j]]),
-          label = lab[[j]],
-          value = 0, min = 0, max = 100
-        )
-      }
+      ui <- lapply(
+        X = ids(),
+        FUN = function(i) {
+          numericInput(
+            inputId = session$ns(i),
+            label = paste(sub("limit_", "", i), "(%)", sep = " "),
+            value = 0, min = 0, max = 100
+          )
+        }
+      )
 
       do.call(layout_column_wrap, args = c(ui, width = 1/4))
     })
     output$values <- renderUI({ ui() })
+    outputOptions(output, "values", suspendWhenHidden = FALSE)
+
+    ## Compute
+    observe({
+      req(ids())
+      limits <- lapply(X = ids(), FUN = function(i, x) x[[i]], x = input)
+      if (all(lengths(limits) != 0) || all(limits > 0)) {
+        limits <- unlist(limits) / 100
+        data$values <- nexus::replace_zero(
+          x = x(),
+          value = limits,
+          delta = input$delta
+        )
+      }
+    }) |>
+      bindEvent(input$go)
 
     ## Bookmark
     onRestored(function(state) {
       req(ui())
-      values <- lapply(X = id(), FUN = function(i, x) x[[i]], x = state$input)
-      updateNumericInput(session, "select", value = values)
+      for (i in ids()) {
+        updateNumericInput(session, session$ns(i), value = state$input[[i]])
+      }
     })
 
-    reactive({
-      req(id())
-
-      limits <- lapply(X = id(), FUN = function(i, x) x[[i]], x = input)
-      if (any(lengths(limits) == 0) || any(limits <= 0)) return(x())
-      limits <- unlist(limits) / 100
-
-      nexus::replace_zero(x = x(), value = limits, delta = input$delta)
-    })
+    reactive({ data$values })
   })
 }
