@@ -13,20 +13,12 @@ prepare_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      title = "Data",
       helpText("Import your data and perform basic data cleansing and preparation steps."),
       import_ui(ns("import")),
-      h5("Prepare"),
       select_ui(ns("select")),
-      accordion(
-        open = FALSE,
-        multiple = FALSE,
-        clean_ui(ns("clean")),
-        accordion_panel(
-          "Filter rows",
-          helpText("Remove data points that fall outside a specification."),
-          filter_ui(ns("filter"))
-        )
-      )
+      clean_ui(ns("clean")),
+      # filter_ui(ns("filter"))
     ), # sidebar
     ## Output: value box
     layout_columns(
@@ -89,8 +81,8 @@ prepare_server <- function(id, select = NULL) {
     data_clean <- import_server("import") |>
       select_server("select", x = _, f = select) |>
       clean_server("clean", x = _) |>
-      missing_server("missing", x = _) |>
-      filter_server("filter", x = _)
+      missing_server("missing", x = _)
+      # filter_server("filter", x = _)
 
     ## Render description -----
     output$value_dimensions <- renderText({
@@ -194,8 +186,8 @@ clean_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    accordion_panel(
-      "Clean values",
+    tags$div(
+      "Clean values:",
       ## Input: remove whitespace
       checkboxInput(
         inputId = ns("remove_whitespace"),
@@ -203,9 +195,8 @@ clean_ui <- function(id) {
         value = TRUE
       )
     ),
-    accordion_panel(
-      "Remove data",
-      helpText("Remove any non informative data."),
+    tags$div(
+      "Remove any non informative data:",
       ## Input: remove zero
       checkboxInput(
         inputId = ns("remove_zero_row"),
@@ -364,7 +355,10 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
 ## Filter ----------------------------------------------------------------------
 filter_ui <- function(id) {
-  uiOutput(NS(id, "controls"))
+  list(
+    helpText("Remove data points that fall outside a specification."),
+    uiOutput(NS(id, "controls"))
+  )
 }
 filter_server <- function(id, x) {
   stopifnot(is.reactive(x))
