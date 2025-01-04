@@ -13,7 +13,7 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Definition"),
+      helpText("Coerce your data to compositions and define (reference) groups."),
       checkboxGroupInput(
         inputId = ns("parts"),
         label = "Compositional parts:",
@@ -22,7 +22,6 @@ coda_ui <- function(id) {
         inline = TRUE,
         width = "100%"
       ),
-      hr(),
       helpText(
         "You can use a qualitative variable to assign each sample to a group.",
         "Missing values will be interpreted as unassigned samples."
@@ -35,7 +34,6 @@ coda_ui <- function(id) {
         multiple = FALSE,
         options = list(plugins = "clear_button")
       ),
-      hr(),
       helpText(
         "If your data contain several observations for the same sample (e.g. repeated measurements),",
         "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."

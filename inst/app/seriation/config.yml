@@ -16,8 +16,6 @@ default:
     temporal variation. Note that the direction of temporal change within the
     correspondence analysis space is *arbitrary*: additional information is
     needed to determine the actual order in time.
-  workflow: |
-    * **Data.** Import your data and perform basic data cleansing and preparation steps.
 
 test:
   production: FALSE

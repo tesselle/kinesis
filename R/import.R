@@ -144,7 +144,7 @@ import_server <- function(id) {
                                type = "message")
         on.exit(removeNotification(id), add = TRUE)
 
-        data$values <- notify(read.csv(file = url(query)), "Data Input")
+        data$values <- notify(utils::read.csv(file = url(query)), "Data Input")
       }
       obs$destroy()
     })

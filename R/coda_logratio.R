@@ -13,6 +13,7 @@ logratio_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      helpText("Compute log-ratio transformations of compositional data."),
       uiOutput(outputId = ns("title")),
       checkboxInput(
         inputId = ns("weights"),

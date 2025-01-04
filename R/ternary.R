@@ -15,7 +15,7 @@ ternary_ui <- function(id) {
       width = 400,
       accordion(
         accordion_panel(
-          "Aesthetic mappings",
+          title = "Aesthetic mappings",
           ## Input: select axes
           selectizeInput(
             inputId = ns("axis1"),
@@ -67,7 +67,7 @@ ternary_ui <- function(id) {
           )
         ),
         accordion_panel(
-          "Layers",
+          title = "Layers",
           ## Input: add points
           checkboxInput(
             inputId = ns("points"),
@@ -82,7 +82,7 @@ ternary_ui <- function(id) {
           )
         ),
         accordion_panel(
-          "Transform",
+          title = "Transform",
           checkboxInput(
             inputId = ns("center"),
             label = "Center",
@@ -95,7 +95,7 @@ ternary_ui <- function(id) {
           )
         ),
         accordion_panel(
-          "Envelopes",
+          title = "Envelopes",
           ## Input: select group
           selectizeInput(
             inputId = ns("group"),
@@ -125,7 +125,7 @@ ternary_ui <- function(id) {
           )
         ),
         accordion_panel(
-          "Annotations",
+          title = "Annotations",
           ## Input: add a grid
           checkboxInput(
             inputId = ns("grid"),
@@ -148,7 +148,8 @@ ternary_ui <- function(id) {
         )
       )
     ), # sidebar
-    helpText("Click and drag to select an area, then double-click to zoom in.",
+    helpText("Visualize your data in the ternary space.",
+             "Click and drag to select an area, then double-click to zoom in.",
              "Double-click again to reset the zoom."),
     output_plot(
       id = ns("ternplot"),

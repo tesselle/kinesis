@@ -6,8 +6,6 @@ default:
   description: |
     This app allows to computes a correspondence analysis based on the
     singular value decomposition.
-  workflow: |
-    * **Data.** Import your data and perform basic data cleansing and preparation steps.
 
 test:
   production: FALSE

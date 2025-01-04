@@ -7,7 +7,10 @@ function(request) {
   bslib::page_navbar(
     title = toupper(kinesis::get_option("name")),
     id = "main",
-    kinesis::home_ui("home", package = "isopleuros"),
+    bslib::nav_panel(
+      title = "Home",
+      kinesis::home_ui("home", package = "isopleuros")
+    ),
     bslib::nav_panel(
       title = "Data",
       kinesis::prepare_ui("prepare")

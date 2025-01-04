@@ -7,8 +7,6 @@ default:
     This app allows allows to compute several diversity measures from a count
     table (absolute frequencies giving the number of individuals for each
     category, i.e. a contingency table).
-  workflow: |
-    * **Data.** Import your data and perform basic data cleansing and preparation steps.
 
 test:
   production: FALSE

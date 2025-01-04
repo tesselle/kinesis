@@ -13,6 +13,7 @@ prepare_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      helpText("Import your data and perform basic data cleansing and preparation steps."),
       import_ui(ns("import")),
       h5("Prepare"),
       select_ui(ns("select")),

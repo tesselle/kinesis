@@ -13,6 +13,7 @@ coda_summary_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
+      helpText("Data summary and descriptive statistics."),
       downloadButton(
         outputId = ns("download"),
         label = "Download tables"

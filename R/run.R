@@ -34,13 +34,13 @@ run_app <- function(app = c("diversity", "seriation", "source", "ternary", "ca",
   app <- match.arg(app, several.ok = FALSE)
   bookmark <- match.arg(bookmark, several.ok = FALSE)
 
-  appDir <- system.file("app", app, package = "kinesis")
-  if (appDir == "")
+  app_dir <- system.file("app", app, package = "kinesis")
+  if (app_dir == "")
     stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
 
   ## Create a Shiny app object
   shiny::enableBookmarking(store = bookmark)
-  obj <- shiny::shinyAppDir(appDir = appDir, options = options)
+  obj <- shiny::shinyAppDir(appDir = app_dir, options = options)
 
   ## Bundle the options inside the shinyApp object
   opt <- get_config(app)

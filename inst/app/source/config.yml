@@ -14,13 +14,6 @@ default:
     tracking of ancient materials. It provides provides tools for the
     exploration, visualization and analysis of compositional data in the
     framework of Aitchison (1986).
-  workflow: |
-    * **Data.** Import your data and perform basic data cleansing and preparation steps.
-    * **Composition.** Coerce your data to compositions and define (reference) groups.
-    * **Transform.** Compute log-ratio transformations of compositional data.
-    * **Statistics.** Data summary and descriptive statistics.
-    * **Plot.** Visualize your data.
-    * **Analysis.** Perform multivariate data analysis.
 
 test:
   production: FALSE

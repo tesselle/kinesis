@@ -11,53 +11,51 @@ home_ui <- function(id, package) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  nav_panel(
-    title = "Home",
-    layout_sidebar(
-      sidebar = sidebar(
-        width = 400,
-        h5("Workflow"),
-        markdown(get_option("workflow")),
-      ), # sidebar
-      uiOutput(outputId = ns("alert_test")),
-      navset_card_pill(
-        placement = "above",
-        nav_panel(
-          title = "Overview",
-          h3(get_option("title")),
-          markdown(get_option("description")),
-          help_warranty(),
-          tags$p(
-            class = "logo",
-            tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
-                   tags$img(src = "static/logo-archeosciences.svg")),
-            tags$a(href = "https://www.huma-num.fr", rel = "external",
-                   tags$img(src = "static/logo-humanum.svg"))
-          )
-        ),
-        nav_panel(
-          title = "How to cite",
-          help_cite(package)
-        ),
-        nav_panel(
-          title = "About",
-          help_tesselle(),
-          help_license()
-        ),
-        nav_panel(
-          title = "Bookmark",
-          tags$p("You can save the state of the application and get a URL which will restore the application with that state.",
-                 "You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state."),
-          tags$p("This is not intended for long-term storage. There is no guarantee as to how long your bookmark will last."),
-          if (get_option("bookmark")) {
-            tags$div(class = "d-grid d-md-block", bookmarkButton())
-          } else {
-            tags$p("Bookmarking is currently disabled.")
-          }
+  layout_sidebar(
+    sidebar = sidebar(
+      width = 300,
+      title = "Welcome!",
+      help_tesselle(),
+      help_license(),
+      tags$img(
+        src = "static/tesselle.png",
+        alt = "Logo of the tesselle project.",
+        style = "width: 75%; margin: auto;"
+      )
+    ), # sidebar
+    uiOutput(outputId = ns("alert_test")),
+    navset_card_pill(
+      placement = "above",
+      nav_panel(
+        title = "Overview",
+        h3(get_option("title")),
+        markdown(get_option("description")),
+        help_warranty(),
+        tags$p(
+          class = "logo",
+          tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
+                 tags$img(src = "static/logo-archeosciences.svg")),
+          tags$a(href = "https://www.huma-num.fr", rel = "external",
+                 tags$img(src = "static/logo-humanum.svg"))
         )
-      ) # navset_card_pill
-    ) # layout_sidebar
-  ) # nav_panel
+      ),
+      nav_panel(
+        title = "How to cite",
+        help_cite(package)
+      ),
+      nav_panel(
+        title = "Bookmark",
+        tags$p("You can save the state of the application and get a URL which will restore the application with that state.",
+               "You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state."),
+        tags$p("This is not intended for long-term storage. There is no guarantee as to how long your bookmark will last."),
+        if (get_option("bookmark")) {
+          tags$div(class = "d-grid d-md-block", bookmarkButton())
+        } else {
+          tags$p("Bookmarking is currently disabled.")
+        }
+      )
+    ) # navset_card_pill
+  ) # layout_sidebar
 }
 
 #' Footer UI
