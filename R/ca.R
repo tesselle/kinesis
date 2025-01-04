@@ -84,8 +84,7 @@ ca_server <- function(id, x) {
             object = x,
             rank = rank,
             sup_row = arkhe::seek_rows(x, names = sup_row),
-            sup_col = arkhe::seek_columns(x, names = sup_col),
-            autoclean = FALSE
+            sup_col = arkhe::seek_columns(x, names = sup_col)
           )
         })
       }
