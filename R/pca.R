@@ -17,7 +17,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Principal Components Analysis"),
+      title = "Principal Components Analysis",
       checkboxInput(
         inputId = ns("center"),
         label = "Center",
@@ -49,8 +49,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
     ), # sidebar
     multivariate_ui(id),
     border_radius = FALSE,
-    fillable = TRUE,
-    class = "p-0"
+    fillable = TRUE
   )
 }
 
@@ -84,6 +83,8 @@ pca_server <- function(id, x) {
                            selected = state$input$sup_row)
       updateSelectizeInput(session, inputId = "sup_col",
                            selected = state$input$sup_col)
+      updateSelectizeInput(session, inputId = "sup_quali",
+                           selected = state$input$sup_quali)
     })
 
     ## Check data -----
@@ -91,7 +92,7 @@ pca_server <- function(id, x) {
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
-      function(x, center, scale, rank, sup_row, sup_col) {
+      function(x, center, scale, rank, sup_row, sup_col, sup_quali) {
         promises::future_promise({
           dimensio::pca(
             object = x,
@@ -108,7 +109,7 @@ pca_server <- function(id, x) {
 
     observe({
       compute_pca$invoke(x(), input$center, input$scale, input$rank,
-                         input$sup_row, input$sup_col)
+                         input$sup_row, input$sup_col, input$sup_quali)
     }) |>
       bindEvent(input$go)
 

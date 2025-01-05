@@ -13,7 +13,7 @@ ca_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Correspondence Analysis"),
+      title = "Correspondence Analysis",
       selectizeInput(
         inputId = ns("sup_row"),
         label = "Supplementary individuals",
@@ -36,8 +36,7 @@ ca_ui <- function(id) {
     ), # sidebar
     multivariate_ui(id),
     border_radius = FALSE,
-    fillable = TRUE,
-    class = "p-0"
+    fillable = TRUE
   )
 }
 

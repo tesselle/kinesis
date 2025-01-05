@@ -11,11 +11,9 @@ multivariate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
+  navset_card_pill(
     sidebar = sidebar(
-      width = 400,
-      open = FALSE,
-      h5("Factor maps"),
+      title = "Factor maps",
       ## Input: display options
       selectizeInput(
         inputId = ns("axis1"),
@@ -41,7 +39,6 @@ multivariate_ui <- function(id) {
         label = "Label variables",
         value = TRUE
       ),
-      hr(),
       ## Input: add ellipses
       radioButtons(
         inputId = ns("wrap"),
@@ -55,12 +52,11 @@ multivariate_ui <- function(id) {
       ),
       checkboxGroupInput(
         inputId = ns("level"),
-        label = "Ellipse level",
+        label = "Ellipse level:",
         selected = "0.95",
         choiceNames = c("68%", "95%", "99%"),
         choiceValues = c("0.68", "0.95", "0.99")
       ),
-      hr(),
       radioButtons(
         inputId = ns("extra_quanti"),
         label = "Quality assessment:",
@@ -70,15 +66,12 @@ multivariate_ui <- function(id) {
           "Cos2" = "cos2"
         )
       )
-    ), # sidebar
-    navset_card_pill(
-      multivariate_results(id),
-      multivariate_individuals(id),
-      multivariate_variables(id),
-      multivariate_screeplot(id)
     ),
-    border = FALSE
-  ) # layout_sidebar
+    multivariate_results(id),
+    multivariate_individuals(id),
+    multivariate_variables(id),
+    multivariate_screeplot(id)
+  )
 }
 
 multivariate_results <- function(id) {
@@ -264,7 +257,7 @@ multivariate_server <- function(id, x) {
           sup = TRUE,
           labels = input$lab_row,
           extra_quanti = get_value(input$extra_quanti),
-          color = khroma::color(input$col_ind),
+          color = get_color(input$col_ind),
           symbol = get_value(as.integer(input$pch)),
           size = input$cex,
           xlim = range_ind$x,
@@ -275,7 +268,7 @@ multivariate_server <- function(id, x) {
           x = x(),
           margin = 1,
           axes = c(axis1(), axis2()),
-          color = khroma::color(input$col_ind)
+          color = get_color(input$col_ind)
         )
       }
     })
@@ -290,7 +283,7 @@ multivariate_server <- function(id, x) {
           active = TRUE, sup = TRUE,
           labels = input$lab_col,
           extra_quanti = get_value(input$extra_quanti),
-          color = khroma::color(input$col_var),
+          color = get_color(input$col_var),
           symbol = get_value(as.integer(input$lty)),
           size = input$lwd,
           xlim = range_var$x,
@@ -325,23 +318,20 @@ multivariate_server <- function(id, x) {
     })
     output$info_ind <- gt::render_gt({
       req(x())
-      info <- dimensio::summary(x(), margin = 1)@results
-      info |>
-        as.data.frame() |>
+      dimensio::summary(x(), axes = c(axis1(), axis2()), margin = 1)|>
         multivariate_summary()
     })
     output$info_var <- gt::render_gt({
       req(x())
-      info <- dimensio::summary(x(), margin = 2)@results
-      info |>
-        as.data.frame() |>
+      dimensio::summary(x(), axes = c(axis1(), axis2()), margin = 2) |>
         multivariate_summary()
     })
   })
 }
 
 multivariate_summary <- function(x) {
-  gt::gt(x, rownames_to_stub = TRUE) |>
+  as.data.frame(x) |>
+    gt::gt(rownames_to_stub = TRUE) |>
     gt::fmt_number(decimals = 3) |>
     gt::tab_spanner(
       label = "Coordinates",
@@ -358,5 +348,8 @@ multivariate_summary <- function(x) {
       columns = gt::ends_with("cos2"),
       id = "cos2"
     ) |>
-    gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+    gt::opt_interactive(
+      use_compact_mode = TRUE,
+      use_page_size_select = TRUE
+    )
 }
