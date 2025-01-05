@@ -75,7 +75,7 @@ prepare_ui <- function(id) {
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, select = NULL) {
+prepare_server <- function(id, select = function(...) { return(TRUE) }) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_clean <- import_server("import") |>
@@ -122,14 +122,7 @@ select_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    checkboxGroupInput(
-      inputId = ns("select"),
-      label = "Select columns:",
-      choices = NULL,
-      selected = NULL,
-      inline = TRUE,
-      width = "100%"
-    ),
+    column_checkbox_ui(id = ns("columns")),
     checkboxInput(
       inputId = ns("rownames"),
       label = "First column as row names"
@@ -140,39 +133,24 @@ select_server <- function(id, x, f = NULL) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Update UI
-    observe({
-      req(x())
-      selected <- seq_len(ncol(x()))
-      if (is.function(f)) {
-        selected <- which(arkhe::detect(x(), f = f, margin = 2))
-      }
-      freezeReactiveValue(input, "select")
-      updateCheckboxGroupInput(
-        inputId = "select",
-        choices = colnames(x()),
-        selected = colnames(x())[selected]
-      )
-    })
-
-    ## Bookmark
-    onRestored(function(state) {
-      updateCheckboxGroupInput(session, "select", selected = state$input$select)
-    })
+    ## Select columns
+    columns <- column_checkbox_server("columns", x = x, f = f)
 
     selected <- reactive({
-      req(x(), input$select)
-      arkhe::get_columns(x(), names = input$select)
+      req(x(), columns())
+      arkhe::get_columns(x(), names = columns())
     }) |>
       debounce(750)
 
-    ## Select columns
+    ## Assign row names
     reactive({
       x <- selected()
 
       if (isTRUE(input$rownames)) {
-        y <- notify(arkhe::assign_rownames(x, column = 1, remove = TRUE),
-                    title = "Rownames")
+        y <- notify(
+          arkhe::assign_rownames(x, column = 1, remove = TRUE),
+          title = "Rownames"
+        )
         if (!is.null(y)) x <- y
       }
 

@@ -54,6 +54,49 @@ has_changed <- function(x, trigger) {
   })
 }
 
+column_checkbox_ui <- function(id, label = "Select columns:") {
+  ns <- NS(id)
+
+  checkboxGroupInput(
+    inputId = ns("select"),
+    label = label,
+    choices = NULL,
+    selected = NULL,
+    inline = TRUE,
+    width = "100%"
+  )
+}
+
+column_checkbox_server <- function(id, x, f) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Update UI
+    observe({
+      req(x())
+      choices <- colnames(x())
+      selected <- NULL
+      if (is.function(f)) {
+        selected <- which(arkhe::detect(x = x(), f = f, margin = 2))
+      }
+
+      freezeReactiveValue(input, "select")
+      updateCheckboxGroupInput(
+        inputId = "select",
+        choices = choices,
+        selected = choices[selected]
+      )
+    })
+
+    ## Bookmark
+    onRestored(function(state) {
+      updateCheckboxGroupInput(session, "select", selected = state$input$select)
+    })
+
+    reactive({ input$select })
+  })
+}
+
 #' Notification
 #'
 #' Shows a notification if an expression raises an error or a warning.

@@ -14,14 +14,7 @@ coda_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       helpText("Coerce your data to compositions and define (reference) groups."),
-      checkboxGroupInput(
-        inputId = ns("parts"),
-        label = "Compositional parts:",
-        choices = NULL,
-        selected = NULL,
-        inline = TRUE,
-        width = "100%"
-      ),
+      column_checkbox_ui(ns("parts"), label = "Compositional parts:"),
       helpText(
         "You can use a qualitative variable to assign each sample to a group.",
         "Missing values will be interpreted as unassigned samples."
@@ -45,9 +38,7 @@ coda_ui <- function(id) {
         selected = NULL,
         multiple = TRUE,
         options = list(plugins = "remove_button")
-      ),
-      hr(),
-      uiOutput(outputId = ns("description"))
+      )
     ), # sidebar
     navset_card_pill(
       placement = "above",
@@ -86,44 +77,36 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     ## Update UI -----
     observe({
       req(x())
-      index_numeric <- arkhe::detect(x = x(), f = is.numeric, margin = 2)
       choices <- colnames(x())
-      choices_quanti <- choices[which(index_numeric)]
-      choices_quali <- choices[which(!index_numeric)]
+      quali <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
 
-      freezeReactiveValue(input, "parts")
-      updateCheckboxGroupInput(inputId = "parts", choices = choices_quanti)
       freezeReactiveValue(input, "groups")
-      updateSelectizeInput(inputId = "groups", choices = c(None = "", choices_quali))
+      updateSelectizeInput(inputId = "groups", choices = c(None = "", choices[quali]))
       freezeReactiveValue(input, "condense")
       updateSelectizeInput(inputId = "condense", choices = c(None = "", choices))
     })
 
     ## Bookmark -----
     onRestored(function(state) {
-      updateCheckboxGroupInput(session, inputId = "parts",
-                               selected = state$input$parts)
       updateSelectizeInput(session, inputId = "groups",
                            selected = state$input$groups)
       updateSelectizeInput(session, inputId = "condense",
                            selected = state$input$condense)
     })
 
+    ## Select columns -----
+    columns <- column_checkbox_server("parts", x = x, f = NULL)
+
     ## Coerce to compositions -----
     coda <- reactive({
-      req(input$parts)
+      req(columns())
       validate_dim(x())
       validate_na(x())
-      validate(need(length(input$parts) > 1, "Select at least two columns."))
 
+      parts <- get_value(columns())
       notify(
-        {
-          nexus::as_composition(
-            from = x(),
-            parts = input$parts,
-            verbose = verbose
-          )
-        },
+        nexus::as_composition(from = x(), parts = parts, autodetect = FALSE,
+                              verbose = verbose),
         title = "Compositional Data"
       )
     }) |>
@@ -149,16 +132,10 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     ## Validate -----
     valid <- reactive({
+      validate(need(ncol(grouped()) > 1, "Select at least two columns."))
       validate(need(!anyNA(grouped()), "Compositional data must not contain missing values."))
       validate(need(!any(grouped() == 0), "Compositional data must not contain zeros."))
       grouped()
-    })
-
-    ## Render description -----
-    output$description <- renderUI({
-      req(grouped())
-      descr <- utils::capture.output(nexus::describe(grouped()))
-      markdown(descr)
     })
 
     ## Render tables -----
