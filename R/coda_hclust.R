@@ -29,7 +29,7 @@ coda_hclust_ui <- function(id) {
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       numericInput(
         inputId = ns("cut"),
-        label = "Desired number of groups",
+        label = "Desired number of clusters",
         value = 1, min = 1, max = NA, step = 1
       ),
       downloadButton(
@@ -99,12 +99,13 @@ coda_hclust_server <- function(id, x) {
       results()$dist
     })
     groups <- reactive({
+      req(input$cut)
       stats::cutree(results(), k = input$cut)
     })
 
     ## Dendrogram -----
     plot_dendro <- reactive({
-      req(results())
+      req(results(), input$cut)
       function() {
         xlab <- sprintf("Aitchison distance, %s linkage", results()$method)
         plot(results(), hang = -1, main = NULL, sub = "",
@@ -118,12 +119,23 @@ coda_hclust_server <- function(id, x) {
         g <- results()$groups
         if (!is.null(g)) {
           col <- get_color(input$col_dendro)
+          col <- khroma::palette_color_discrete(col)(g)
           graphics::points(
             x = seq_along(i),
             y = rep(0, length(i)),
-            col = khroma::palette_color_discrete(col)(g)[i],
+            col = col[i],
             pch = 16
           )
+
+          arg <- list(x = "topright", pch = 16, bty = "n")
+          leg <- stats::aggregate(
+            data.frame(col = col),
+            by = list(legend = g),
+            FUN = unique
+          )
+          leg <- as.list(leg)
+          leg <- utils::modifyList(leg, arg)
+          do.call(graphics::legend, args = leg)
         }
       }
     })
