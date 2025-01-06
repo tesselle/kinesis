@@ -36,21 +36,27 @@ theme_ui <- function(version = "5", ...) {
 #' @return An UI element or `NULL` (if no changes).
 #' @keywords internal
 #' @noRd
-has_changed <- function(x, trigger) {
-  stopifnot(is.reactive(x))
-  y <- reactive({ x() }) |> bindEvent(trigger)
+data_diff_ui <- function(id) {
+  ns <- NS(id)
+  uiOutput(outputId = ns("warning"))
+}
 
-  renderUI({
-    req(x(), y())
-    new_raw <- serialize(x(), NULL)
-    old_raw <- serialize(y(), NULL)
-    if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
-    div(
-      class = "alert alert-warning",
-      role = "alert",
-      "Your data seem to have changed.",
-      "You should perform your analysis again."
-    )
+data_diff_server <- function(id, x, y) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    output$warning <- renderUI({
+      req(x(), y())
+      new_raw <- serialize(x(), NULL)
+      old_raw <- serialize(y(), NULL)
+      if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
+      div(
+        class = "alert alert-warning",
+        role = "alert",
+        "Your data seem to have changed.",
+        "You should perform your analysis again."
+      )
+    })
   })
 }
 

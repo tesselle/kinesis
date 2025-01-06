@@ -26,7 +26,7 @@ ca_ui <- function(id) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      uiOutput(outputId = ns("warning")),
+      data_diff_ui(ns("change")),
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
@@ -34,7 +34,7 @@ ca_ui <- function(id) {
       ),
       uiOutput(outputId = ns("chi2"))
     ), # sidebar
-    multivariate_ui(id),
+    multivariate_ui(ns("ca")),
     border_radius = FALSE,
     fillable = TRUE
   )
@@ -45,7 +45,7 @@ ca_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A list of reactive `data.frame`.
+#' @param x A reactive `data.frame`.
 #' @return A reactive [`dimensio::PCA-class`] object.
 #' @seealso [ca_ui()]
 #' @family multivariate analysis modules
@@ -73,7 +73,8 @@ ca_server <- function(id, x) {
     })
 
     ## Check data -----
-    output$warning <- has_changed(x, trigger = input$go)
+    old <- reactive({ x() }) |> bindEvent(input$go)
+    data_diff_server("change", x, old)
 
     ## Compute CA -----
     compute_ca <- ExtendedTask$new(
@@ -98,6 +99,8 @@ ca_server <- function(id, x) {
     results <- reactive({
       notify(compute_ca$result(), title = "Correspondence Analysis")
     })
+
+    multivariate_server("ca", results)
 
     ## Chi-squared -----
     chi2_test <- reactive({

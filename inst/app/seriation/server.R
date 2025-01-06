@@ -17,7 +17,6 @@ function(input, output, session) {
 
   ## CA
   ca_results <- kinesis::ca_server("ca", x = data)
-  kinesis::multivariate_server("ca", ca_results)
 
   ## Seriation
   seriation <- kinesis::seriate_server("seriate", x = data, order = ca_results)

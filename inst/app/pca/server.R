@@ -16,8 +16,7 @@ function(input, output, session) {
   }) |> bindEvent(data(), once = TRUE)
 
   ## PCA
-  pca_results <- kinesis::pca_server("pca", x = data)
-  kinesis::multivariate_server("pca", pca_results)
+  results <- kinesis::pca_server("pca", x = data)
 
   kinesis::home_server("home")
   kinesis::footer_server("footer")

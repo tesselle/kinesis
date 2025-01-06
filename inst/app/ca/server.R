@@ -16,8 +16,7 @@ function(input, output, session) {
   }) |> bindEvent(data(), once = TRUE)
 
   ## CA
-  ca_results <- kinesis::ca_server("ca", x = data)
-  kinesis::multivariate_server("ca", ca_results)
+  results <- kinesis::ca_server("ca", x = data)
 
   kinesis::home_server("home")
   kinesis::footer_server("footer")

@@ -40,14 +40,14 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      uiOutput(outputId = ns("warning")),
+      data_diff_ui(ns("change")),
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
         label = "Download results"
       )
     ), # sidebar
-    multivariate_ui(id),
+    multivariate_ui(ns("pca")),
     border_radius = FALSE,
     fillable = TRUE
   )
@@ -58,7 +58,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A list of reactive `data.frame`.
+#' @param x A reactive `data.frame`.
 #' @return A reactive [`dimensio::PCA-class`] object.
 #' @seealso [pca_ui()]
 #' @family multivariate analysis modules
@@ -88,7 +88,8 @@ pca_server <- function(id, x) {
     })
 
     ## Check data -----
-    output$warning <- has_changed(x, trigger = input$go)
+    old <- reactive({ x() }) |> bindEvent(input$go)
+    data_diff_server("change", x, old)
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
@@ -116,6 +117,8 @@ pca_server <- function(id, x) {
     results <- reactive({
       notify(compute_pca$result(), title = "Principal Components Analysis")
     })
+
+    multivariate_server("pca", results)
 
     ## Export -----
     output$download <- downloadHandler(

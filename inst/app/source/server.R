@@ -32,7 +32,6 @@ function(input, output, session) {
 
   ## PCA
   pca_results <- kinesis::pca_server("pca", x = clogratio)
-  kinesis::multivariate_server("pca", pca_results)
 
   kinesis::home_server("home")
   kinesis::footer_server("footer")

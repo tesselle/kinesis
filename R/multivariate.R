@@ -67,88 +67,65 @@ multivariate_ui <- function(id) {
         )
       )
     ),
-    multivariate_results(id),
-    multivariate_individuals(id),
-    multivariate_variables(id),
-    multivariate_screeplot(id)
-  )
-}
-
-multivariate_results <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  nav_panel(
-    title = "Results",
-    helpText("Click and drag to select an area, then double-click to zoom in.",
-             "Double-click again to reset the zoom."),
-    layout_columns(
-      col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
-      output_plot(
-        id = ns("plot_ind"),
-        tools = list(
-          select_color(inputId = ns("col_ind")),
-          select_pch(inputId = ns("pch"), default = NULL),
-          select_cex(inputId = ns("cex"), default = c(1, 6))
+    ## Results -----
+    nav_panel(
+      title = "Results",
+      helpText("Click and drag to select an area, then double-click to zoom in.",
+               "Double-click again to reset the zoom."),
+      layout_column_wrap(
+        output_plot(
+          id = ns("plot_ind"),
+          tools = list(
+            select_color(inputId = ns("col_ind")),
+            select_pch(inputId = ns("pch"), default = NULL),
+            select_cex(inputId = ns("cex"), default = c(1, 6))
+          ),
+          title = "Individuals factor map",
+          dblclick = ns("plot_ind_dblclick"),
+          brush = brushOpts(
+            id = ns("plot_ind_brush"),
+            resetOnNew = TRUE
+          ),
+          height = "100%"
         ),
-        title = "Individuals factor map",
-        dblclick = ns("plot_ind_dblclick"),
-        brush = brushOpts(
-          id = ns("plot_ind_brush"),
-          resetOnNew = TRUE
-        ),
-        height = "100%"
+        output_plot(
+          id = ns("plot_var"),
+          tools = list(
+            select_color(inputId = ns("col_var"), default = "YlOrBr"),
+            select_lty(inputId = ns("lty"), default = NULL),
+            select_cex(inputId = ns("lwd"), default = c(1, 1))
+          ),
+          title = "Variables factor map",
+          dblclick = ns("plot_var_dblclick"),
+          brush = brushOpts(
+            id = ns("plot_var_brush"),
+            resetOnNew = TRUE
+          ),
+          height = "100%"
+        )
+      ) # layout_columns
+    ),
+    ## Individuals -----
+    nav_panel(
+      title = "Individuals",
+      gt::gt_output(outputId = ns("info_ind"))
+    ),
+    ## Variables -----
+    nav_panel(
+      title = "Variables",
+      layout_column_wrap(
+        output_plot(id = ns("plot_contrib_1")),
+        output_plot(id = ns("plot_contrib_2"))
       ),
-      output_plot(
-        id = ns("plot_var"),
-        tools = list(
-          select_color(inputId = ns("col_var"), default = "YlOrBr"),
-          select_lty(inputId = ns("lty"), default = NULL),
-          select_cex(inputId = ns("lwd"), default = c(1, 1))
-        ),
-        title = "Variables factor map",
-        dblclick = ns("plot_var_dblclick"),
-        brush = brushOpts(
-          id = ns("plot_var_brush"),
-          resetOnNew = TRUE
-        ),
-        height = "100%"
+      gt::gt_output(outputId = ns("info_var"))
+    ),
+    ## Screeplot -----
+    nav_panel(
+      title = "Screeplot",
+      layout_column_wrap(
+        output_plot(id = ns("screeplot"), title = "Screeplot"),
+        gt::gt_output(outputId = ns("variance"))
       )
-    ) # layout_columns
-  )
-}
-
-multivariate_individuals <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  nav_panel(
-    title = "Individuals",
-    gt::gt_output(outputId = ns("info_ind"))
-  )
-}
-
-multivariate_variables <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  nav_panel(
-    title = "Variables",
-    output_plot(id = ns("contrib_var"), title = "Contributions"),
-    gt::gt_output(outputId = ns("info_var"))
-  )
-}
-
-multivariate_screeplot <- function(id) {
-  # Create a namespace function using the provided id
-  ns <- NS(id)
-
-  nav_panel(
-    title = "Screeplot",
-    layout_columns(
-      col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
-      output_plot(id = ns("screeplot"), title = "Screeplot"),
-      gt::gt_output(outputId = ns("variance"))
     )
   )
 }
@@ -167,12 +144,23 @@ multivariate_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Eigenvalues -----
+    eigen <- reactive({
+      req(x())
+      dimensio::get_eigenvalues(x())
+    })
+
     ## Update UI -----
-    observeEvent(axes(), {
+    axes <- reactive({
+      choices <- seq_len(nrow(eigen()))
+      names(choices) <- unique(rownames(eigen()))
+      choices
+    })
+    observe({
       freezeReactiveValue(input, "axis1")
       updateSelectizeInput(inputId = "axis1", choices = axes())
     })
-    observeEvent(axis1(), {
+    observe({
       choices <- axes()[-axis1()]
       freezeReactiveValue(input, "axis2")
       updateSelectizeInput(inputId = "axis2", choices = choices)
@@ -186,11 +174,7 @@ multivariate_server <- function(id, x) {
                            selected = state$input$axis2)
     })
 
-    axes <- reactive({
-      choices <- seq_len(nrow(eigen()))
-      names(choices) <- unique(rownames(eigen()))
-      choices
-    })
+    ## Select axes -----
     axis1 <- reactive({
       req(input$axis1)
       as.numeric(input$axis1)
@@ -200,25 +184,8 @@ multivariate_server <- function(id, x) {
       as.numeric(input$axis2)
     })
 
-    ## Eigenvalues -----
-    eigen <- reactive({
-      req(x())
-      dimensio::get_eigenvalues(x())
-    })
-
-    plot_eigen <- reactive({
-      req(x())
-      function() {
-        dimensio::screeplot(
-          x = x(),
-          cumulative = TRUE,
-          labels = FALSE,
-          limit = sum(eigen()[, 3] <= 99)
-        )
-      }
-    })
-
-    ## Interactive zoom -----
+    ## Plot -----
+    ## Interactive zoom
     ## When a double-click happens, check if there's a brush on the plot.
     ## If so, zoom to the brush bounds; if not, reset the zoom.
     range_ind <- reactiveValues(x = NULL, y = NULL)
@@ -235,7 +202,7 @@ multivariate_server <- function(id, x) {
     }) |>
       bindEvent(input$plot_var_dblclick)
 
-    ## Individuals -----
+    ## Individuals
     plot_ind <- reactive({
       req(x())
 
@@ -273,7 +240,7 @@ multivariate_server <- function(id, x) {
       }
     })
 
-    ## Variables -----
+    ## Variables
     plot_var <- reactive({
       req(x())
       function() {
@@ -293,19 +260,37 @@ multivariate_server <- function(id, x) {
       }
     })
 
-    contrib_var <- reactive({
+    plot_contrib_1 <- reactive({
       req(x())
       function() {
-        graphics::par(mfrow = c(1, 2))
         dimensio::viz_contributions(x = x(), margin = 2, axes = axis1())
+      }
+    })
+
+    plot_contrib_2 <- reactive({
+      req(x())
+      function() {
         dimensio::viz_contributions(x = x(), margin = 2, axes = axis2())
+      }
+    })
+
+    plot_eigen <- reactive({
+      req(x())
+      function() {
+        dimensio::screeplot(
+          x = x(),
+          cumulative = TRUE,
+          labels = FALSE,
+          limit = sum(eigen()[, 3] <= 99)
+        )
       }
     })
 
     ## Render plots -----
     render_plot("plot_ind", x = plot_ind)
     render_plot("plot_var", x = plot_var)
-    render_plot("contrib_var", x = contrib_var)
+    render_plot("plot_contrib_1", x = plot_contrib_1)
+    render_plot("plot_contrib_2", x = plot_contrib_2)
     render_plot("screeplot", x = plot_eigen)
 
     ## Render tables -----
