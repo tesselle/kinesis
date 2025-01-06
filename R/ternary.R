@@ -205,6 +205,7 @@ ternary_server <- function(id, x) {
       bindEvent(var_quanti())
 
     observe({
+      req(var_quanti())
       choices <- c(Choose = "", setdiff(var_quanti(), input$axis1))
       selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
       selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
@@ -305,7 +306,8 @@ ternary_server <- function(id, x) {
       }
       if (isTruthy(input$symbol_color)) {
         symbol_color <- x()[[input$symbol_color]]
-        col <- get_color(input$col)(length(unique(symbol_color)))
+        lvl <- length(unique(symbol_color))
+        col <- get_color(input$col)(lvl)
         if (is.double(symbol_color)) {
           col <- khroma::palette_color_continuous(colors = col)(symbol_color)
         } else {
@@ -320,7 +322,7 @@ ternary_server <- function(id, x) {
         pch <- pch[[1L]] %||% 16
       }
       if (isTruthy(input$symbol_size)) {
-        symbol_size <- x()[[input$symbol_size]]
+        symbol_size <- arkhe::scale_range(x()[[input$symbol_size]])
         cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)

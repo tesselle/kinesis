@@ -187,7 +187,7 @@ select_cex <- function(inputId, default = c(1, 6)) {
     min = 0.2,
     max = 9,
     value = default,
-    step = 0.2
+    step = 0.1
   )
 }
 
@@ -236,7 +236,12 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
     multiple = FALSE
   )
 }
+
 get_color <- function(palette) {
-  khroma::color(palette, force = TRUE)
+  function(n) {
+    col <- try(khroma::color(palette)(n), silent = TRUE)
+    if (!inherits(col, "try-error")) return(col)
+    khroma::color(palette, force = TRUE)(n)
+  }
 }
 
