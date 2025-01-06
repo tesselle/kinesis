@@ -130,7 +130,7 @@ diversity_beta_server <- function(id, x, y) {
       function() {
         tabula::plot_heatmap(
           object = results(),
-          color = khroma::color(input$col_diss, force = TRUE),
+          color = get_color(input$col_diss),
           diag = FALSE,
           upper = FALSE,
           fixed_ratio = TRUE
@@ -150,7 +150,7 @@ diversity_beta_server <- function(id, x, y) {
           x = analysis(),
           labels = input$pcoa_labels,
           extra_quanti = extra_quanti,
-          color = khroma::color(input$col_pcoa, force = TRUE),
+          color = get_color(input$col_pcoa),
           size = get_value(input$cex_pcoa)
         )
       }

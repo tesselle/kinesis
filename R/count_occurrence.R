@@ -93,7 +93,7 @@ occurrence_server <- function(id, x) {
         Spot = function(x, ...) tabula::plot_spot(x, ...)
       )
 
-      function() fun(results(), color = khroma::color(input$color))
+      function() fun(results(), color = get_color(input$color))
     })
 
     ## Render table -----

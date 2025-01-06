@@ -236,3 +236,7 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
     multiple = FALSE
   )
 }
+get_color <- function(palette) {
+  khroma::color(palette, force = TRUE)
+}
+
