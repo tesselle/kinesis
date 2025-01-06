@@ -16,6 +16,8 @@ Compositional Data Outliers UI
 \code{\link[=coda_outliers_server]{coda_outliers_server()}}
 
 Other coda modules: 
+\code{\link{coda_hclust_server}()},
+\code{\link{coda_hclust_ui}()},
 \code{\link{coda_outliers_server}()},
 \code{\link{coda_plot_server}()},
 \code{\link{coda_plot_ui}()},

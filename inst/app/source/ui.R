@@ -66,6 +66,10 @@ function(request) {
       bslib::nav_panel(
         title = "PCA",
         kinesis::pca_ui("pca", scale = FALSE)
+      ),
+      bslib::nav_panel(
+        title = "HCLUST",
+        kinesis::coda_hclust_ui("clust")
       )
     ),
     bslib::nav_spacer(),

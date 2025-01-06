@@ -2,6 +2,8 @@
 
 export(ca_server)
 export(ca_ui)
+export(coda_hclust_server)
+export(coda_hclust_ui)
 export(coda_outliers_server)
 export(coda_outliers_ui)
 export(coda_plot_server)

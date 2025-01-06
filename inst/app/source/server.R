@@ -33,6 +33,9 @@ function(input, output, session) {
   ## PCA
   pca_results <- kinesis::pca_server("pca", x = clogratio)
 
+  ## Cluster
+  clust <- kinesis::coda_hclust_server("clust", x = coda)
+
   kinesis::home_server("home")
   kinesis::footer_server("footer")
   session$onSessionEnded(stopApp)
