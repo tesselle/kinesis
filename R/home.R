@@ -23,7 +23,6 @@ home_ui <- function(id, package) {
         style = "width: 75%; margin: auto;"
       )
     ), # sidebar
-    uiOutput(outputId = ns("alert_test")),
     navset_card_pill(
       placement = "above",
       nav_panel(
@@ -123,16 +122,6 @@ home_server <- function(id) {
         session = session
       )
       message(msg)
-    })
-
-    ## Display alert -----
-    output$alert_test <- renderUI({
-      if (isTRUE(get_option("production"))) return(NULL)
-      div(
-        class = "alert alert-warning",
-        role = "alert",
-        "This application is under development, so you shouldn't use it for anything serious!"
-      )
     })
 
     ## Render -----

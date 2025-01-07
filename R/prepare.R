@@ -108,7 +108,10 @@ prepare_server <- function(id, choose = function(...) TRUE,
       data_clean() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::sub_missing() |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+        gt::opt_interactive(
+          use_compact_mode = TRUE,
+          use_page_size_select = TRUE
+        )
     })
 
     data_clean

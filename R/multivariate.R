@@ -153,7 +153,7 @@ multivariate_server <- function(id, x) {
     ## Update UI -----
     axes <- reactive({
       choices <- seq_len(nrow(eigen()))
-      names(choices) <- unique(rownames(eigen()))
+      names(choices) <- rownames(eigen())
       choices
     })
     observe({
@@ -299,23 +299,25 @@ multivariate_server <- function(id, x) {
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(columns = 2, decimals = 3) |>
         gt::fmt_percent(columns = c(3, 4), decimals = 2, scale_values = FALSE) |>
-        gt::opt_interactive(use_compact_mode = TRUE, use_page_size_select = TRUE)
+        gt::opt_interactive(
+          use_compact_mode = TRUE,
+          use_page_size_select = TRUE
+        )
     })
     output$info_ind <- gt::render_gt({
       req(x())
-      dimensio::summary(x(), axes = c(axis1(), axis2()), margin = 1)|>
-        multivariate_summary()
+      multivariate_summary(x(), axes = c(axis1(), axis2()), margin = 1)
     })
     output$info_var <- gt::render_gt({
       req(x())
-      dimensio::summary(x(), axes = c(axis1(), axis2()), margin = 2) |>
-        multivariate_summary()
+      multivariate_summary(x(), axes = c(axis1(), axis2()), margin = 2)
     })
   })
 }
 
-multivariate_summary <- function(x) {
-  as.data.frame(x) |>
+multivariate_summary <- function(x, axes, margin) {
+  dimensio::summary(x, axes = axes, margin = margin) |>
+    as.data.frame() |>
     gt::gt(rownames_to_stub = TRUE) |>
     gt::fmt_number(decimals = 3) |>
     gt::tab_spanner(
