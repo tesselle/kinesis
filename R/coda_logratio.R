@@ -72,12 +72,13 @@ logratio_server <- function(id, x, method) {
     logratio <- reactive({
       req(x())
 
+      pivot <- get_value(input$pivot, default = 1)
       trans <- switch (
         method,
         clr = function(x) nexus::transform_clr(x, weights = input$weights),
-        alr = function(x) nexus::transform_alr(x, j = input$pivot, weights = input$weights),
+        alr = function(x) nexus::transform_alr(x, j = pivot, weights = input$weights),
         ilr = function(x) nexus::transform_ilr(x),
-        plr = function(x) nexus::transform_plr(x, pivot = input$pivot)
+        plr = function(x) nexus::transform_plr(x, pivot = pivot)
       )
 
       notify(trans(x()), title = toupper(method))
@@ -98,7 +99,8 @@ logratio_server <- function(id, x, method) {
       if (inherits(logratio(), "CLR")) return(NULL)
       graph <- nexus::as_graph(logratio())
 
-      function() plot(graph)
+      plot(graph)
+      grDevices::recordPlot()
     })
 
     ## Render title -----
