@@ -26,16 +26,11 @@ coda_ui <- function(id) {
       ),
       column_select_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
     ), # sidebar
-    navset_card_pill(
-      placement = "above",
-      nav_panel(
-        title = "Data",
+    card(
+      card_header("Data"),
+      card_body(
         ## Output: display data
         gt::gt_output(outputId = ns("table"))
-      ),
-      nav_panel(
-        title = "Detection limits",
-        coda_zero_ui(ns("zero"))
       )
     ),
     border_radius = FALSE,
@@ -95,15 +90,15 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         title = "Compositional Data"
       )
     }) |>
-      debounce(750)
+      debounce(500)
 
     ## Zeros -----
-    no_zero <- coda_zero_server("zero", x = coda)
+    # TODO
 
     grouped <- reactive({
-      req(no_zero())
+      req(coda())
 
-      out <- no_zero()
+      out <- coda()
       if (isTruthy(col_groups())) {
         out <- nexus::group(out, by = x()[[col_groups()]], verbose = verbose)
       }
@@ -117,7 +112,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
       out
     }) |>
-      debounce(750)
+      debounce(500)
 
     ## Render tables -----
     output$table <- gt::render_gt({
@@ -125,7 +120,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       if (nexus::is_grouped(grouped())) {
         gt <- grouped() |>
           as.data.frame() |>
-          gt::gt(groupname_col = ".group", rownames_to_stub = TRUE)
+          gt::gt(rownames_to_stub = TRUE, groupname_col = ".group")
       } else {
         gt <- grouped() |>
           as.data.frame() |>
@@ -134,13 +129,17 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       gt |>
         gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
-        gt::tab_style_body(
-          fn = function(x) is.na(x),
-          style = gt::cell_text(color = "red3")
-        ) |>
-        gt::tab_style_body(
-          fn = function(x) x == 0,
-          style = gt::cell_text(color = "orange")
+        # gt::tab_style_body(
+        #   fn = function(x) is.na(x),
+        #   style = gt::cell_text(color = "red3")
+        # ) |>
+        # gt::tab_style_body(
+        #   fn = function(x) x == 0,
+        #   style = gt::cell_text(color = "orange")
+        # ) |>
+        gt::opt_interactive(
+          use_compact_mode = TRUE,
+          use_page_size_select = TRUE
         )
     })
 
