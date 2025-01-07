@@ -105,7 +105,7 @@ column_select_server <- function(id, x, find_col = NULL,
         selection <- which(arkhe::detect(x = x(), f = find_col, margin = 2))
         choices <- choices[selection]
       }
-      if (isTRUE(preserve) && !is.null(input$selected)) {
+      if (isTRUE(preserve)) {
         ## Partially kept previous selection, if any
         selected <- intersect(choices, input$selected)
       }
@@ -117,10 +117,48 @@ column_select_server <- function(id, x, find_col = NULL,
       updateSelectizeInput(
         inputId = "selected",
         choices = choices,
-        selected = selected
+        selected = selected,
+        server = TRUE
       )
     }) |>
       bindEvent(x())
+
+    ## Bookmark
+    onRestored(function(state) {
+      updateSelectizeInput(session, "selected", selected = state$input$selected)
+    })
+
+    reactive({ input$selected })
+  })
+}
+
+vector_filter_server <- function(id, x, exclude = NULL, preserve = TRUE,
+                                 none = TRUE) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Update UI
+    observe({
+      choices <- x()
+      selected <- NULL
+      if (is.reactive(exclude) && isTruthy(exclude())) {
+        choices <- setdiff(choices, exclude())
+      }
+      if (isTRUE(preserve)) {
+        isolate({ selected <- intersect(choices, input$selected) })
+      }
+      if (isTRUE(none)) {
+        choices <- c(Choose = "", choices)
+      }
+
+      freezeReactiveValue(input, "selected")
+      updateSelectizeInput(
+        inputId = "selected",
+        choices = choices,
+        selected = selected,
+        server = TRUE
+      )
+    })
 
     ## Bookmark
     onRestored(function(state) {
@@ -176,7 +214,7 @@ column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
         ok <- arkhe::detect(x = x(), f = use_col, margin = 2)
         selected <- choices[which(col & ok)]
       }
-      if (isTRUE(preserve) && !is.null(input$checked)) {
+      if (isTRUE(preserve)) {
         ## Partially kept previous selection, if any
         keep <- intersect(choices, input$checked)
         if (length(keep) > 0) selected <- keep

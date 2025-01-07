@@ -71,9 +71,17 @@ pca_server <- function(id, x) {
     ## Update UI -----
     observe({
       freezeReactiveValue(input, "sup_row")
-      updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
+      updateSelectizeInput(
+        inputId = "sup_row",
+        choices = c(Choose = "", rownames(x())),
+        server = TRUE
+      )
       freezeReactiveValue(input, "sup_col")
-      updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
+      updateSelectizeInput(
+        inputId = "sup_col",
+        choices = c(Choose = "", colnames(x())),
+        server = TRUE
+      )
     })
 
     ## Bookmark -----

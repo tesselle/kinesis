@@ -17,54 +17,13 @@ ternary_ui <- function(id) {
         accordion_panel(
           title = "Aesthetic mappings",
           ## Input: select axes
-          selectizeInput(
-            inputId = ns("axis1"),
-            label = "Component X",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE
-          ),
-          selectizeInput(
-            inputId = ns("axis2"),
-            label = "Component Y",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-          ),
-          selectizeInput(
-            inputId = ns("axis3"),
-            label = "Component Z",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-          ),
-          ## Input: color mapping
-          selectizeInput(
-            inputId = ns("symbol_color"),
-            label = "Colors",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-            options = list(plugins = "clear_button")
-          ),
-          ## Input: symbol mapping
-          selectizeInput(
-            inputId = ns("symbol_shape"),
-            label = "Symbol shapes",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-            options = list(plugins = "clear_button")
-          ),
-          ## Input: symbol size mapping
-          selectizeInput(
-            inputId = ns("symbol_size"),
-            label = "Symbol sizes",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-            options = list(plugins = "clear_button")
-          )
+          column_select_ui(id = ns("axis1"), label = "Component X"),
+          column_select_ui(id = ns("axis2"), label = "Component Y"),
+          column_select_ui(id = ns("axis3"), label = "Component Z"),
+          ## Input: aesthetics mapping
+          column_select_ui(id = ns("symbol_color"), label = "Colors"),
+          column_select_ui(id = ns("symbol_shape"), label = "Symbol shapes"),
+          column_select_ui(id = ns("symbol_size"), label = "Symbol sizes"),
         ),
         accordion_panel(
           title = "Layers",
@@ -97,14 +56,7 @@ ternary_ui <- function(id) {
         accordion_panel(
           title = "Envelopes",
           ## Input: select group
-          selectizeInput(
-            inputId = ns("group"),
-            label = "Group by",
-            choices = NULL,
-            selected = NULL,
-            multiple = FALSE,
-            options = list(plugins = "clear_button")
-          ),
+          column_select_ui(id = ns("group"), label = "Group by"),
           ## Input: add ellipses
           radioButtons(
             inputId = ns("wrap"),
@@ -183,88 +135,25 @@ ternary_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Subset data -----
-    is_quanti <- reactive({
+    ## Select columns -----
+    quanti <- reactive({
       req(x())
-      arkhe::detect(x(), margin = 2, f = is.numeric)
+      i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2))
+      colnames(x())[i]
     })
-    var_quali <- reactive({
-      if (sum(!is_quanti()) < 1) return(NULL)
-      colnames(x())[!is_quanti()]
+    quali <- reactive({
+      req(x())
+      i <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
+      colnames(x())[i]
     })
-    var_quanti <- reactive({
-      if (sum(is_quanti()) < 3) return(NULL)
-      colnames(x())[is_quanti()]
-    })
-
-    ## Update UI -----
-    observe({
-      freezeReactiveValue(input, "axis1")
-      updateSelectizeInput(inputId = "axis1", choices = c(Choose = "", var_quanti()))
-    }) |>
-      bindEvent(var_quanti())
-
-    observe({
-      req(var_quanti())
-      choices <- c(Choose = "", setdiff(var_quanti(), input$axis1))
-      selected2 <- if (input$axis2 %in% choices) input$axis2 else NULL
-      selected3 <- if (input$axis3 %in% choices) input$axis3 else NULL
-      freezeReactiveValue(input, "axis2")
-      updateSelectizeInput(inputId = "axis2", choices = choices, selected = selected2)
-      freezeReactiveValue(input, "axis3")
-      updateSelectizeInput(inputId = "axis3", choices = choices, selected = selected3)
-    }) |>
-      bindEvent(input$axis1)
-
-    observe({
-      choices <- c(Choose = "", setdiff(var_quanti(), c(input$axis1, input$axis2)))
-      selected <- if (input$axis3 %in% choices) input$axis3 else NULL
-      freezeReactiveValue(input, "axis3")
-      updateSelectizeInput(inputId = "axis3", choices = choices, selected = selected)
-    }) |>
-      bindEvent(input$axis2)
-
-    observe({
-      choices <- c(None = "", colnames(x()))
-      freezeReactiveValue(input, "symbol_color")
-      updateSelectizeInput(inputId = "symbol_color", choices = choices)
-    }) |>
-      bindEvent(x())
-
-    observe({
-      choices <- c(None = "", var_quali())
-      freezeReactiveValue(input, "group")
-      updateSelectizeInput(inputId = "group", choices = choices)
-      freezeReactiveValue(input, "symbol_shape")
-      updateSelectizeInput(inputId = "symbol_shape", choices = choices)
-    }) |>
-      bindEvent(var_quali())
-
-    observe({
-      choices <- c(None = "", var_quanti())
-      freezeReactiveValue(input, "symbol_size")
-      updateSelectizeInput(inputId = "symbol_size", choices = choices)
-    }) |>
-      bindEvent(var_quanti())
-
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "axis1",
-                           selected = state$input$axis1)
-      updateSelectizeInput(session, inputId = "axis2",
-                           selected = state$input$axis2)
-      updateSelectizeInput(session, inputId = "axis3",
-                           selected = state$input$axis3)
-      updateSelectizeInput(session, inputId = "group",
-                           selected = state$input$group)
-      updateSelectizeInput(session, inputId = "symbol_color",
-                           selected = state$input$symbol_color)
-      updateSelectizeInput(session, inputId = "symbol_shape",
-                           selected = state$input$symbol_shape)
-      updateSelectizeInput(session, inputId = "symbol_size",
-                           selected = state$input$symbol_size)
-    })
+    axis1 <- vector_filter_server("axis1", x = quanti)
+    axis2 <- vector_filter_server("axis2", x = quanti, exclude = axis1)
+    axis12 <- reactive({ c(axis1(), axis2()) })
+    axis3 <- vector_filter_server("axis3", x = quanti, exclude = axis12)
+    symbol_color <- column_select_server("symbol_color", x = x)
+    symbol_shape <- vector_filter_server("symbol_shape", x = quali)
+    symbol_size <- vector_filter_server("symbol_size", x = quanti)
+    symbol_group <- vector_filter_server("group", x = quali)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.
@@ -278,8 +167,8 @@ ternary_server <- function(id, x) {
 
     ## Get ternary data -----
     data_tern <- reactive({
-      req(x(), input$axis1, input$axis2, input$axis3)
-      tern <- x()[, c(input$axis1, input$axis2, input$axis3)]
+      req(x(), axis1(), axis2(), axis3())
+      tern <- x()[, c(axis1(), axis2(), axis3())]
       tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
     })
 
@@ -299,13 +188,16 @@ ternary_server <- function(id, x) {
       pch <- get_value(as.integer(input$pch))
       cex <- get_value(as.integer(input$cex), 1)
 
-      if (isTruthy(input$group)) {
-        grp <- x()[[input$group]]
+      ## Grouping variable
+      if (isTruthy(symbol_group())) {
+        symbol_group <- x()[[symbol_group()]]
       } else {
-        grp <- rep("", n)
+        symbol_group <- rep("", n)
       }
-      if (isTruthy(input$symbol_color)) {
-        symbol_color <- x()[[input$symbol_color]]
+
+      ## Symbol colors
+      if (isTruthy(symbol_color())) {
+        symbol_color <- x()[[symbol_color()]]
         lvl <- length(unique(symbol_color))
         col <- get_color(input$col)(lvl)
         if (is.double(symbol_color)) {
@@ -313,16 +205,20 @@ ternary_server <- function(id, x) {
         } else {
           col <- khroma::palette_color_discrete(colors = col)(symbol_color)
         }
-        if (all(grp == symbol_color)) border <- col
+        if (identical(symbol_group, symbol_color)) border <- col
       }
-      if (isTruthy(input$symbol_shape)) {
-        symbol_shape <- x()[[input$symbol_shape]]
+
+      ## Symbol shapes
+      if (isTruthy(symbol_shape())) {
+        symbol_shape <- x()[[symbol_shape()]]
         pch <- khroma::palette_shape(symbols = pch)(symbol_shape)
       } else {
         pch <- pch[[1L]] %||% 16
       }
-      if (isTruthy(input$symbol_size)) {
-        symbol_size <- arkhe::scale_range(x()[[input$symbol_size]])
+
+      ## Symbol sizes
+      if (isTruthy(symbol_size())) {
+        symbol_size <- arkhe::scale_range(x()[[symbol_size()]])
         cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)
@@ -355,9 +251,9 @@ ternary_server <- function(id, x) {
           xlim = range_coord$x,
           ylim = range_coord$y,
           zlim = range_coord$z,
-          xlab = input$axis1,
-          ylab = input$axis2,
-          zlab = input$axis3,
+          xlab = axis1(),
+          ylab = axis2(),
+          zlab = axis3(),
           center = input$center,
           scale = input$scale
         )
@@ -374,7 +270,7 @@ ternary_server <- function(id, x) {
           }
 
           ## Envelope
-          for (i in split(seq_len(n), f = grp)) {
+          for (i in split(seq_len(n), f = symbol_group)) {
             z <- tern[i, , drop = FALSE]
             if (nrow(z) < 3) next
             fun_wrap(z, lty = 1, border = border[i])
