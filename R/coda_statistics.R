@@ -19,13 +19,7 @@ coda_summary_ui <- function(id) {
         label = "Download tables"
       ),
       h5("Univariate statistics"),
-      selectizeInput(
-        inputId = ns("hist_select"),
-        label = "Select a part",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE
-      ),
+      column_select_ui(id = ns("hist_select"), label = "Select a part"),
       output_plot(
         id = ns("hist"),
         title = "Histogram",
@@ -97,22 +91,11 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Histogram -----
-    observe({
-      choices <- colnames(x())
-      freezeReactiveValue(input, "hist_select")
-      updateSelectizeInput(inputId = "hist_select", choices = choices)
-    }) |>
-      bindEvent(x())
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "hist_select",
-                           selected = state$input$hist_select)
-    })
-
+    col_hist <- column_select_server("hist_select", x = x, preserve = FALSE,
+                                     none = FALSE)
     plot_hist <- reactive({
-      req(x())
-      function() nexus::hist(x(), select = input$hist_select)
+      req(x(), col_hist())
+      function() nexus::hist(x(), select = col_hist())
     })
 
     ## CLR covariance -----

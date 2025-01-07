@@ -3,8 +3,11 @@
 validate_csv <- function(x) {
   validate(need(x, message = "Import a CSV file first."))
 }
-validate_dim <- function(x) {
-  validate(need(isTruthy(x) && all(dim(x) > 0), "Select at least one row and one column."))
+validate_dim <- function(x, i = 1, j = 1) {
+  rows <- ngettext(i, "Select at least %d row.", "Select at least %d rows.")
+  cols <- ngettext(j, "Select at least %d column.", "Select at least %d columns.")
+  validate(need(NROW(x) >= i, sprintf(rows, i)))
+  validate(need(NCOL(x) >= j, sprintf(cols, j)))
 }
 validate_na <- function(x) {
   validate(need(!anyNA(x), "Your data should not contain missing values."))
@@ -60,11 +63,79 @@ data_diff_server <- function(id, x, y) {
   })
 }
 
+column_select_ui <- function(id, label = "Choose", multiple = FALSE) {
+  ns <- NS(id)
+  plugins <- ifelse(isTRUE(multiple), "remove_button", "clear_button")
+  options <- list(plugins = plugins)
+
+  selectizeInput(
+    inputId = ns("selected"),
+    label = label,
+    choices = NULL,
+    selected = NULL,
+    multiple = multiple,
+    options = options
+  )
+}
+
+#' Update a Column Select List
+#'
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `matrix`-like object.
+#' @param find_col A predicate [`function`] for column detection
+#'  (see [arkhe::detect()]).
+#' @param preserve A [`logical`] scalar: should existing selection be preserved
+#'  on update?
+#' @param none A [`logical`] scalar: should a placeholder be added as the first
+#'  element?
+#' @return A reactive [`character`] vector of column names.
+#' @seealso [column_select_ui()]
+#' @keywords internal
+#' @noRd
+column_select_server <- function(id, x, find_col = NULL,
+                                 preserve = TRUE, none = TRUE) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Update UI
+    observe({
+      choices <- colnames(x())
+      selected <- NULL
+      if (!is.null(choices) && is.function(find_col)) {
+        selection <- which(arkhe::detect(x = x(), f = find_col, margin = 2))
+        choices <- choices[selection]
+      }
+      if (isTRUE(preserve) && !is.null(input$selected)) {
+        ## Partially kept previous selection, if any
+        selected <- intersect(choices, input$selected)
+      }
+      if (isTRUE(none)) {
+        choices <- c(Choose = "", choices)
+      }
+
+      freezeReactiveValue(input, "selected")
+      updateSelectizeInput(
+        inputId = "selected",
+        choices = choices,
+        selected = selected
+      )
+    }) |>
+      bindEvent(x())
+
+    ## Bookmark
+    onRestored(function(state) {
+      updateSelectizeInput(session, "selected", selected = state$input$selected)
+    })
+
+    reactive({ input$selected })
+  })
+}
+
 column_checkbox_ui <- function(id, label = "Select columns:") {
   ns <- NS(id)
 
   checkboxGroupInput(
-    inputId = ns("select"),
+    inputId = ns("checked"),
     label = label,
     choices = NULL,
     selected = NULL,
@@ -73,33 +144,58 @@ column_checkbox_ui <- function(id, label = "Select columns:") {
   )
 }
 
-column_checkbox_server <- function(id, x, f) {
+#' Update a Column Checkbox Group
+#'
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `matrix`-like object.
+#' @param find_col A predicate [`function`] for column detection
+#'  (see [arkhe::detect()]).
+#' @param use_col A predicate [`function`] for column selection
+#'  (see [arkhe::detect()]).
+#' @param preserve A [`logical`] scalar: should existing selection be preserved
+#'  on update?
+#' @return A reactive [`character`] vector of column names.
+#' @seealso [column_checkbox_ui()]
+#' @keywords internal
+#' @noRd
+column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
+                                   preserve = TRUE) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
     observe({
-      req(x())
       choices <- colnames(x())
       selected <- NULL
-      if (is.function(f)) {
-        selected <- which(arkhe::detect(x = x(), f = f, margin = 2))
+      col <- rep(TRUE, length(choices))
+      if (length(choices) > 0 && is.function(find_col)) {
+        col <- arkhe::detect(x = x(), f = find_col, margin = 2)
+        choices <- choices[which(col)]
       }
-
-      freezeReactiveValue(input, "select")
+      if (length(choices) > 0 && is.function(use_col)) {
+        ok <- arkhe::detect(x = x(), f = use_col, margin = 2)
+        selected <- choices[which(col & ok)]
+      }
+      if (isTRUE(preserve) && !is.null(input$checked)) {
+        ## Partially kept previous selection, if any
+        keep <- intersect(choices, input$checked)
+        if (length(keep) > 0) selected <- keep
+      }
+      freezeReactiveValue(input, "checked")
       updateCheckboxGroupInput(
-        inputId = "select",
+        inputId = "checked",
         choices = choices,
-        selected = choices[selected]
+        selected = selected
       )
-    })
+    }) |>
+      bindEvent(x())
 
     ## Bookmark
     onRestored(function(state) {
-      updateCheckboxGroupInput(session, "select", selected = state$input$select)
+      updateCheckboxGroupInput(session, "checked", selected = state$input$checked)
     })
 
-    reactive({ input$select })
+    reactive({ input$checked })
   })
 }
 

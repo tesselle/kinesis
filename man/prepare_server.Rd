@@ -4,11 +4,13 @@
 \alias{prepare_server}
 \title{Prepare Data Server}
 \usage{
-prepare_server(id, select = NULL)
+prepare_server(id, choose = function(...) TRUE, select = function(...) TRUE)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
+
+\item{choose}{A predicate \code{\link{function}} used to select columns.}
 
 \item{select}{A predicate \code{\link{function}} used to select columns.}
 }

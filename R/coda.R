@@ -19,26 +19,12 @@ coda_ui <- function(id) {
         "You can use a qualitative variable to assign each sample to a group.",
         "Missing values will be interpreted as unassigned samples."
       ),
-      selectizeInput(
-        inputId = ns("groups"),
-        label = "Groups",
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-        options = list(plugins = "clear_button")
-      ),
+      column_select_ui(id = ns("groups"), label = "Groups"),
       helpText(
         "If your data contain several observations for the same sample (e.g. repeated measurements),",
         "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
       ),
-      selectizeInput(
-        inputId = ns("condense"),
-        label = "Condense",
-        choices = NULL,
-        selected = NULL,
-        multiple = TRUE,
-        options = list(plugins = "remove_button")
-      )
+      column_select_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
     ), # sidebar
     navset_card_pill(
       placement = "above",
@@ -74,9 +60,13 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Select columns
+    col_parts <- column_checkbox_server("parts", x = x, find_col = is.numeric)
+    col_groups <- column_select_server("groups", x = x, find_col = Negate(is.numeric))
+    col_condense <- column_select_server("condense", x = x)
+
     ## Update UI -----
     observe({
-      req(x())
       choices <- colnames(x())
       quali <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
 
@@ -94,16 +84,11 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
                            selected = state$input$condense)
     })
 
-    ## Select columns -----
-    columns <- column_checkbox_server("parts", x = x, f = NULL)
-
     ## Coerce to compositions -----
     coda <- reactive({
-      req(columns())
-      validate_dim(x())
-      validate_na(x())
+      req(col_parts())
 
-      parts <- get_value(columns())
+      parts <- get_value(col_parts())
       notify(
         nexus::as_composition(from = x(), parts = parts, autodetect = FALSE,
                               verbose = verbose),
@@ -118,25 +103,21 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     grouped <- reactive({
       req(no_zero())
 
-      z <- no_zero()
-      if (isTruthy(input$groups)) {
-        z <- nexus::group(z, by = x()[[input$groups]], verbose = verbose)
+      out <- no_zero()
+      if (isTruthy(col_groups())) {
+        out <- nexus::group(out, by = x()[[col_groups()]], verbose = verbose)
       }
-      if (isTruthy(input$condense)) {
-        z <- nexus::condense(z, by = x()[input$condense])
+      if (isTruthy(col_condense())) {
+        out <- nexus::condense(out, by = x()[col_condense()], verbose = verbose)
       }
 
-      z
+      validate_dim(out, j = 2)
+      validate_na(out)
+      validate_zero(out)
+
+      out
     }) |>
       debounce(750)
-
-    ## Validate -----
-    valid <- reactive({
-      validate(need(ncol(grouped()) > 1, "Select at least two columns."))
-      validate(need(!anyNA(grouped()), "Compositional data must not contain missing values."))
-      validate(need(!any(grouped() == 0), "Compositional data must not contain zeros."))
-      grouped()
-    })
 
     ## Render tables -----
     output$table <- gt::render_gt({
@@ -163,7 +144,7 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         )
     })
 
-    valid
+    grouped
   })
 }
 
@@ -174,7 +155,8 @@ coda_zero_ui <- function(id) {
 
   list(
     helpText(
-      "If your data contains zeros, these can be considered as values below the detection limit (thus interpreted as small unknown values).",
+      "If your data contains zeros, these can be considered as values below the detection limit",
+      "(thus interpreted as small unknown values).",
       "In this case, you can define the detection limit for each compositional part below.",
       "If all limits are specified, zeros will be replaced by a fraction of these limits.",
       "See", cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", T), "for computational details."
@@ -198,7 +180,7 @@ coda_zero_server <- function(id, x) {
 
     ## Build UI
     ids <- reactive({
-      validate_dim(x())
+      if (is.null(colnames(x()))) return(NULL)
       data$values <- x()
       paste0("limit_", colnames(x()))
     })

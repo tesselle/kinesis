@@ -1,5 +1,25 @@
 library("shiny")
-using("tinysnapshot")
+
+bronze <- read.csv("bronze.csv")
+x <- reactiveVal(bronze)
+
+testServer(kinesis:::coda_server, args = list(x = x), {
+  session$setInputs() # Needed because of freezeReactiveValue() (???)
+  session$setInputs("parts-checked" = 4:11, groups = "", condense = "")
+  session$elapse(2000)
+  expect_equal(dim(coda()), c(369L, 8L))
+  expect_equal(dim(grouped()), c(369L, 8L))
+
+  session$setInputs("group-selected" = "dynasty")
+  session$elapse(2000)
+  expect_equal(dim(coda()), c(369L, 8L))
+  expect_equal(dim(grouped()), c(369L, 8L))
+
+  session$setInputs("condense-selected" = c("dynasty", "reference"))
+  session$elapse(2000)
+  expect_equal(dim(coda()), c(369L, 8L))
+  expect_equal(dim(grouped()), c(300L, 8L))
+})
 
 fake <- data.frame(
   group = rep(c("A", "B", "C"), each = 3),
@@ -15,19 +35,9 @@ y <- reactiveVal(coda)
 
 testServer(coda_server, args = list(x = x), {
   session$setInputs() # Needed because of freezeReactiveValue() (???)
-  session$setInputs("parts-select" = c(2, 3), groups = "", condense = "")
+  session$setInputs("parts-checked" = c(2, 3, 4), groups = "", condense = "")
   session$elapse(2000)
-  expect_equal(dim(coda()), c(9L, 2L))
-  expect_equal(dim(grouped()), c(9L, 2L))
-
-  session$setInputs("parts-select" = c(2, 3, 4), condense = "group")
-  session$elapse(2000)
-  expect_equal(dim(coda()), c(9L, 3L))
-  expect_equal(dim(grouped()), c(3L, 3L))
-
-  session$setInputs("parts-select" = c(2, 3, 4), groups = "", condense = "")
-  session$elapse(2000)
-  expect_error(valid(), "Compositional data must not contain zeros")
+  expect_error(grouped(), "Your data should not contain zeros.")
 })
 
 testServer(kinesis:::coda_zero_server, args = list(x = y), {

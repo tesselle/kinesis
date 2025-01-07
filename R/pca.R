@@ -74,8 +74,7 @@ pca_server <- function(id, x) {
       updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
       freezeReactiveValue(input, "sup_col")
       updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
-    }) |>
-      bindEvent(x())
+    })
 
     ## Bookmark -----
     onRestored(function(state) {
@@ -83,8 +82,6 @@ pca_server <- function(id, x) {
                            selected = state$input$sup_row)
       updateSelectizeInput(session, inputId = "sup_col",
                            selected = state$input$sup_col)
-      updateSelectizeInput(session, inputId = "sup_quali",
-                           selected = state$input$sup_quali)
     })
 
     ## Check data -----

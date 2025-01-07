@@ -34,12 +34,7 @@ coda_plot_ui <- function(id) {
         label = "Sort columns",
         value = FALSE
       ),
-      selectizeInput(
-        inputId = ns("order_rows"),
-        label = "Row order",
-        choices = NULL, selected = NULL, multiple = FALSE,
-        options = list(plugins = "remove_button")
-      ),
+      column_select_ui(id = ns("order_rows"), label = "Row order"),
       checkboxInput(
         inputId = ns("decreasing"),
         label = "Decreasing row order",
@@ -72,19 +67,8 @@ coda_plot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Update UI -----
-    observe({
-      choices <- c("", colnames(data_bar()))
-      freezeReactiveValue(input, "order_rows")
-      updateSelectizeInput(inputId = "order_rows", choices = choices)
-    }) |>
-      bindEvent(data_bar())
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "order_rows",
-                           selected = state$input$order_rows)
-    })
+    ## Select column -----
+    col_bar <- column_select_server("order_rows", x = x, preserve = FALSE)
 
     ## Subset -----
     data_bar <- reactive({
@@ -114,7 +98,7 @@ coda_plot_server <- function(id, x) {
         nexus::barplot(
           height = data_bar(),
           order_columns = input$order_columns,
-          order_rows = get_value(input$order_rows),
+          order_rows = get_value(col_bar()),
           decreasing = input$decreasing,
           color = pal
         )

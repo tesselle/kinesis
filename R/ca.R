@@ -61,8 +61,7 @@ ca_server <- function(id, x) {
       updateSelectizeInput(inputId = "sup_row", choices = rownames(x()))
       freezeReactiveValue(input, "sup_col")
       updateSelectizeInput(inputId = "sup_col", choices = colnames(x()))
-    }) |>
-      bindEvent(x())
+    })
 
     ## Bookmark -----
     onRestored(function(state) {

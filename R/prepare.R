@@ -69,17 +69,19 @@ prepare_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @param choose A predicate [`function`] used to select columns.
 #' @param select A predicate [`function`] used to select columns.
 #' @return A reactive `data.frame`.
 #' @seealso [prepare_ui()]
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, select = function(...) { return(TRUE) }) {
+prepare_server <- function(id, choose = function(...) TRUE,
+                           select = function(...) TRUE) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_clean <- import_server("import") |>
-      select_server("select", x = _, f = select) |>
+      select_server("select", x = _, find_col = choose, use_col = select) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _)
       # filter_server("filter", x = _)
@@ -103,9 +105,6 @@ prepare_server <- function(id, select = function(...) { return(TRUE) }) {
 
     ## Render table -----
     output$table <- gt::render_gt({
-      validate_csv(data_clean())
-      validate_dim(data_clean())
-
       data_clean() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::sub_missing() |>
@@ -129,29 +128,32 @@ select_ui <- function(id) {
     )
   )
 }
-select_server <- function(id, x, f = NULL) {
+select_server <- function(id, x, find_col = NULL, use_col = NULL) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Select columns
-    columns <- column_checkbox_server("columns", x = x, f = f)
+    columns <- column_checkbox_server("columns", x = x,
+                                      find_col = find_col, use_col = use_col)
 
     selected <- reactive({
-      req(x(), columns())
-      arkhe::get_columns(x(), names = columns())
+      validate_csv(x())
+      out <- arkhe::get_columns(x(), names = columns())
+      validate_dim(out)
+      out
     }) |>
-      debounce(750)
+      debounce(500)
 
     ## Assign row names
     reactive({
       x <- selected()
 
       if (isTRUE(input$rownames)) {
-        y <- notify(
+        out <- notify(
           arkhe::assign_rownames(x, column = 1, remove = TRUE),
           title = "Rownames"
         )
-        if (!is.null(y)) x <- y
+        if (!is.null(out)) x <- out
       }
 
       x
@@ -232,6 +234,8 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         out <- arkhe::remove_constant(out, verbose = verbose)
       }
 
+      validate_dim(out)
+
       out
     })
   })
@@ -311,14 +315,14 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       )
       out <- fun(out)
 
+      validate_dim(out)
+
       out
     })
 
     ## Render plot
     plot_missing <- reactive({
-      validate_csv(data_missing())
-      validate_dim(data_missing())
-
+      req(data_missing())
       function() {
         col <- if (anyNA(data_missing())) c("#DDDDDD", "#BB5566") else "#DDDDDD"
         tabula::plot_heatmap(object = is.na(data_missing()), col = col,
