@@ -43,9 +43,17 @@ coda_plot_ui <- function(id) {
     ), # sidebar
     output_plot(
       id = ns("plot"),
-      tools = select_color(
-        inputId = ns("color_qualitative"),
-        type = "qualitative"
+      tools = list(
+        select_color(
+          inputId = ns("color_qualitative"),
+          type = "qualitative"
+        ),
+        numericInput(
+          inputId = ns("space"),
+          label = "Gutter",
+          value = 0.2,
+          min = 0, max = 0.5, step = 0.1
+        )
       ),
       height = "100%",
       title = "Barplot"
@@ -68,7 +76,7 @@ coda_plot_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Select column -----
-    col_bar <- column_select_server("order_rows", x = x, preserve = FALSE)
+    col_bar <- column_select_server("order_rows", x = x)
 
     ## Subset -----
     data_bar <- reactive({
@@ -100,7 +108,8 @@ coda_plot_server <- function(id, x) {
           order_columns = input$order_columns,
           order_rows = get_value(col_bar()),
           decreasing = input$decreasing,
-          color = pal
+          color = pal,
+          space = get_value(input$space, 0)
         )
       }
     })
