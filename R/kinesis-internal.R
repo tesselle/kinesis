@@ -33,6 +33,19 @@ validate_zero <- function(x) {
   validate(need(all(x != 0), "Your data should not contain zeros."))
 }
 
+#' Get a (Default) Value
+#'
+#' @param x An \R object.
+#' @param default A default value to be used is `x` is not
+#'  [truthy][shiny::isTruthy()].
+#' @return `x` or `default`.
+#' @keywords internal
+#' @noRd
+get_value <- function(x, default = NULL) {
+  if (!isTruthy(x)) return(default)
+  x
+}
+
 #' Make File Name
 #'
 #' @param name A [`character`] string specifying the name of the file

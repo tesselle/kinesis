@@ -5,9 +5,8 @@
 #' A wrapper for [shiny::shinyAppDir()].
 #' @param app A [`character`] string specifying the \pkg{Shiny} application
 #'  to run (see details). Any unambiguous substring can be given.
-#' @param bookmark A [`character`] string specifying how to save the
-#'  application's state. It must be one of "`disable`" or "`server`" (see
-#'  [shiny::enableBookmarking()])
+#' @param bookmark A [`logical`] scalar: should server-side bookmarking of the
+#'  application be enabled (see [shiny::enableBookmarking()])?
 #' @param options A [`list`] of named options that should be passed to the
 #'  [`shiny::shinyAppDir()`] call.
 #' @details
@@ -29,23 +28,82 @@
 #' @author N. Frerebeau
 #' @export
 run_app <- function(app = c("diversity", "seriation", "source", "ternary", "ca", "pca"),
-                    bookmark = c("disable", "server"),
+                    bookmark = FALSE,
                     options = list(launch.browser = interactive())) {
+  ## App selection
   app <- match.arg(app, several.ok = FALSE)
-  bookmark <- match.arg(bookmark, several.ok = FALSE)
-
   app_dir <- system.file("app", app, package = "kinesis")
-  if (app_dir == "")
-    stop(sprintf("Could not find %s app.", sQuote(app)), call. = FALSE)
+  if (app_dir == "") {
+    msg <- sprintf("Could not find the %s application.", sQuote(app))
+    stop(msg, call. = FALSE)
+  }
+
+  ## Enable bookmarking
+  bookmark <- isTRUE(bookmark)
+  shiny::enableBookmarking(store = ifelse(bookmark, "server", "disable"))
 
   ## Create a Shiny app object
-  shiny::enableBookmarking(store = bookmark)
   obj <- shiny::shinyAppDir(appDir = app_dir, options = options)
 
   ## Bundle the options inside the shinyApp object
-  opt <- get_config(app)
-  opt$bookmark <- bookmark != "disable"
+  opt <- get_config(app, file = NULL)
+  opt$bookmark <- bookmark
   obj$appOptions$kinesis_options <- opt
 
   obj
+}
+
+#' Read Configuration Values
+#'
+#' @param app A [`character`] string specifying the Shiny application
+#'  to run (see [run_app()]).
+#' @param file A [`character`] string specifying the configuration file to
+#'  read from. If `NA` (the default), use the value of the
+#'  `KINESIS_CONFIG_FILE` environment variable ("`config.yml`" if the variable
+#'  does not exist). If `NULL`, use the build-in configuration file.
+#' @param active A [`character`] string specifying the name of configuration to
+#'  read from. If `NA` (the default), use the value of the
+#'  `KINESIS_CONFIG_ACTIVE` environment variable ("`default`" if the variable
+#'  does not exist).
+#' @param use_parent A [`logical`] scalar: should parent directories be scanned
+#'  for configuration files if the specified config file isn't found?
+#' @return A [`list`] of configuration values.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @export
+get_config <- function(app, file = NA, active = NA, use_parent = TRUE) {
+  ## Get config file
+  if (is.null(file)) {
+    file <- system.file("app", app, "config.yml", package = "kinesis")
+  }
+  if (is.na(file)) {
+    file <- Sys.getenv("KINESIS_CONFIG_FILE", "config.yml")
+  }
+  if (!file.exists(file)) {
+    msg <- sprintf("Could not find the configuration file for %s.", sQuote(app))
+    stop(msg, call. = FALSE)
+  }
+
+  ## Read config
+  if (is.na(active)) {
+    active <- Sys.getenv("KINESIS_CONFIG_ACTIVE", "default")
+  }
+  config::get(value = NULL, config = active, file = file,
+              use_parent = use_parent)
+}
+
+#' Get Option
+#'
+#' @param name A [`character`] string specifying the name of an option to get.
+#'  If `NULL` (the default), all options are returned.
+#' @param default A value to be returned if the option is not currently set.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @export
+get_option <- function(name = NULL, default = NULL) {
+  if (is.null(name)) {
+    shiny::getShinyOption("kinesis_options")
+  } else {
+    shiny::getShinyOption("kinesis_options")[[name]] %||% default
+  }
 }
