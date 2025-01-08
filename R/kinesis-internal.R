@@ -246,7 +246,21 @@ column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
 }
 
 # Notification =================================================================
-#' Notification
+show_notification <- function(text, title = NULL, id = NULL, duration = 5,
+                              closeButton = TRUE, type = "default") {
+  # text <- paste0(text, collapse = "\n")
+  if (!is.null(title)) text <- sprintf("**%s**\n%s", title, text)
+  id <- showNotification(
+    ui = markdown(text, hardbreaks = TRUE),
+    duration = duration,
+    closeButton = closeButton,
+    id = id,
+    type = type
+  )
+  invisible(id)
+}
+
+#' Notify
 #'
 #' Shows a notification if an expression raises an error or a warning.
 #' @param expr An expression to be evaluated.
@@ -273,46 +287,39 @@ notify <- function(expr, title = NULL) {
     }
   )
 
-  notif <- function(text, title = NULL, how = "default") {
-    # text <- paste0(text, collapse = "\n")
-    if (!is.null(title)) text <- sprintf("**%s**\n%s", title, text)
-    showNotification(ui = markdown(text, hardbreaks = TRUE), type = how)
-  }
-
-  if (!is.null(err)) notif(text = err, title = title, how = "error")
-  if (!is.null(warn)) notif(text = warn, title = title, how = "warning")
+  if (!is.null(err))
+    show_notification(text = err, title = title, type = "error")
+  if (!is.null(warn))
+    show_notification(text = warn, title = title, type = "warning")
 
   res
 }
 
-
-#' Check If a Dataset Has Changed
+#' Compare Two \R Objects
 #'
+#' Shows a notification if `x` and `y` are not [identical][identical()].
 #' @param x A reactive object.
-#' @param trigger An input to respond to.
-#' @return An UI element or `NULL` (if no changes).
+#' @param y A reactive object.
+#' @param title A [`character`] string giving the title of the notification.
+#' @return
+#'  `notify_change()` is called for its side-effects.
 #' @keywords internal
 #' @noRd
-data_diff_ui <- function(id) {
-  ns <- NS(id)
-  uiOutput(outputId = ns("warning"))
-}
-
-data_diff_server <- function(id, x, y) {
+notify_change <- function(id, x, y, title = "Important message") {
   stopifnot(is.reactive(x))
+  stopifnot(is.reactive(y))
 
   moduleServer(id, function(input, output, session) {
-    output$warning <- renderUI({
-      req(x(), y())
-      new_raw <- serialize(x(), NULL)
-      old_raw <- serialize(y(), NULL)
-      if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
-      div(
-        class = "alert alert-warning",
-        role = "alert",
-        "Your data seem to have changed.",
-        "You should perform your analysis again."
-      )
-    })
+    observe({
+      if (identical(x(), y())) {
+        removeNotification(id)
+      } else {
+        txt <- "Your data seem to have changed. You should perform your analysis again."
+        show_notification(id = id, text = txt, title = title,
+                          duration = NULL, closeButton = FALSE,
+                          type = "warning")
+      }
+    }) |>
+      bindEvent(x(), y())
   })
 }

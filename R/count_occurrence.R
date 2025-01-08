@@ -64,6 +64,10 @@ occurrence_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Check data -----
+    old <- reactive({ x() }) |> bindEvent(input$go)
+    notify_change(session$ns("change"), x, old, title = "Co-Occurrence")
+
     ## Compute index -----
     compute_occur <- ExtendedTask$new(
       function(x, method) {

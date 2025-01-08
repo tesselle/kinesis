@@ -98,6 +98,10 @@ diversity_beta_server <- function(id, x, y) {
                            selected = state$input$extra_quanti)
     })
 
+    ## Check data -----
+    old <- reactive({ x() }) |> bindEvent(input$go)
+    notify_change(session$ns("change"), x, old, title = "Beta Diversity")
+
     ## Compute similarity -----
     compute_beta <- ExtendedTask$new(
       function(x, method) {

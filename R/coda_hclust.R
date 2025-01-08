@@ -25,7 +25,6 @@ coda_hclust_ui <- function(id) {
                     "average", "mcquitty", "median", "centroid"),
         selected = "ward.D2"
       ),
-      data_diff_ui(ns("change")),
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       numericInput(
         inputId = ns("cut"),
@@ -70,7 +69,7 @@ coda_hclust_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    data_diff_server("change", x, old)
+    notify_change(session$ns("change"), x, old, title = "HCLUST")
 
     ## Compute cluster -----
     compute_hclust <- ExtendedTask$new(

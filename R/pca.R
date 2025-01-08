@@ -40,7 +40,6 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      data_diff_ui(ns("change")),
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download"),
@@ -94,7 +93,7 @@ pca_server <- function(id, x) {
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    data_diff_server("change", x, old)
+    notify_change(session$ns("change"), x, old, title = "PCA")
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
