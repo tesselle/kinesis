@@ -46,7 +46,7 @@ This package is a part of the tesselle project
 ## Remote use
 
 The applications are deployed on the [Huma-Num](https://www.huma-num.fr)
-Shiny server: <https://analytics.huma-num.fr/tesselle/home/>.
+Shiny server: <https://analytics.huma-num.fr/tesselle/>.
 
 ## Local use
 

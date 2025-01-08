@@ -39,7 +39,7 @@ print(cite, bibtex = FALSE)
 
 ## Remote use
 
-The applications are deployed on the [Huma-Num](https://www.huma-num.fr) Shiny server: <https://analytics.huma-num.fr/tesselle/home/>.
+The applications are deployed on the [Huma-Num](https://www.huma-num.fr) Shiny server: <https://analytics.huma-num.fr/tesselle/>.
 
 ## Local use
 ### Installation
