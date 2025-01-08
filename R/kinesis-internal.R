@@ -151,8 +151,8 @@ column_select_server <- function(id, x, find_col = NULL,
 #' Update a Select List with a Vector
 #'
 #' @param id A [`character`] string specifying the namespace.
-#' @param x A reactive `vector` object.
-#' @param exclude A reactive `vector` object or `NULL`.
+#' @param x A reactive [`character`] vector.
+#' @param exclude A reactive [`character`] vector of values to exclude.
 #' @param preserve A [`logical`] scalar: should existing selection be preserved
 #'  on update?
 #' @param none A [`logical`] scalar: should a placeholder be added as the first
@@ -162,24 +162,23 @@ column_select_server <- function(id, x, find_col = NULL,
 #' @seealso [selectize_ui()]
 #' @keywords internal
 #' @noRd
-vector_select_server <- function(id, x, exclude = NULL, preserve = TRUE,
-                                 none = TRUE) {
+vector_select_server <- function(id, x, exclude = reactive({ NULL }),
+                                 preserve = TRUE, none = TRUE, server = TRUE) {
   stopifnot(is.reactive(x))
+  stopifnot(is.reactive(exclude))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
     observe({
       choices <- x()
       selected <- NULL
-      if (is.reactive(exclude) && isTruthy(exclude())) {
+      if (!is.null(exclude())) {
         choices <- setdiff(choices, exclude())
       }
       if (isTRUE(preserve)) {
         ## Try to keep previous selection, if any
-        isolate({
-          keep <- intersect(choices, input$selected)
-          if (length(keep) > 0) selected <- keep
-        })
+        keep <- intersect(choices, input$selected)
+        if (length(keep) > 0) selected <- keep
       }
       if (isTRUE(none)) {
         choices <- c(Choose = "", choices)
@@ -190,9 +189,10 @@ vector_select_server <- function(id, x, exclude = NULL, preserve = TRUE,
         inputId = "selected",
         choices = choices,
         selected = selected,
-        server = TRUE
+        server = server
       )
-    })
+    }) |>
+      bindEvent(x(), exclude())
 
     ## Bookmark
     onRestored(function(state) {
