@@ -19,7 +19,7 @@ coda_summary_ui <- function(id) {
         label = "Download tables"
       ),
       h5("Univariate statistics"),
-      column_select_ui(id = ns("hist_select"), label = "Select a part"),
+      selectize_ui(id = ns("hist_select"), label = "Select a part"),
       output_plot(
         id = ns("hist"),
         title = "Histogram",

@@ -124,7 +124,7 @@ select_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    column_checkbox_ui(id = ns("columns")),
+    checkboxgroup_ui(id = ns("columns")),
     checkboxInput(
       inputId = ns("rownames"),
       label = "First column as row names"

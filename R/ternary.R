@@ -17,13 +17,13 @@ ternary_ui <- function(id) {
         accordion_panel(
           title = "Aesthetic mappings",
           ## Input: select axes
-          column_select_ui(id = ns("axis1"), label = "Component X"),
-          column_select_ui(id = ns("axis2"), label = "Component Y"),
-          column_select_ui(id = ns("axis3"), label = "Component Z"),
+          selectize_ui(id = ns("axis1"), label = "Component X"),
+          selectize_ui(id = ns("axis2"), label = "Component Y"),
+          selectize_ui(id = ns("axis3"), label = "Component Z"),
           ## Input: aesthetics mapping
-          column_select_ui(id = ns("symbol_color"), label = "Colors"),
-          column_select_ui(id = ns("symbol_shape"), label = "Symbol shapes"),
-          column_select_ui(id = ns("symbol_size"), label = "Symbol sizes"),
+          selectize_ui(id = ns("symbol_color"), label = "Colors"),
+          selectize_ui(id = ns("symbol_shape"), label = "Symbol shapes"),
+          selectize_ui(id = ns("symbol_size"), label = "Symbol sizes"),
         ),
         accordion_panel(
           title = "Layers",
@@ -56,7 +56,7 @@ ternary_ui <- function(id) {
         accordion_panel(
           title = "Envelopes",
           ## Input: select group
-          column_select_ui(id = ns("group"), label = "Group by"),
+          selectize_ui(id = ns("group"), label = "Group by"),
           ## Input: add ellipses
           radioButtons(
             inputId = ns("wrap"),
@@ -146,14 +146,14 @@ ternary_server <- function(id, x) {
       i <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
       colnames(x())[i]
     })
-    axis1 <- vector_filter_server("axis1", x = quanti)
-    axis2 <- vector_filter_server("axis2", x = quanti, exclude = axis1)
+    axis1 <- vector_select_server("axis1", x = quanti)
+    axis2 <- vector_select_server("axis2", x = quanti, exclude = axis1)
     axis12 <- reactive({ c(axis1(), axis2()) })
-    axis3 <- vector_filter_server("axis3", x = quanti, exclude = axis12)
+    axis3 <- vector_select_server("axis3", x = quanti, exclude = axis12)
     symbol_color <- column_select_server("symbol_color", x = x)
-    symbol_shape <- vector_filter_server("symbol_shape", x = quali)
-    symbol_size <- vector_filter_server("symbol_size", x = quanti)
-    symbol_group <- vector_filter_server("group", x = quali)
+    symbol_shape <- vector_select_server("symbol_shape", x = quali)
+    symbol_size <- vector_select_server("symbol_size", x = quanti)
+    symbol_group <- vector_select_server("group", x = quali)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.

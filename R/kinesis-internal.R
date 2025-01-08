@@ -1,21 +1,5 @@
 # HELPERS
 
-validate_csv <- function(x) {
-  validate(need(x, message = "Import a CSV file first."))
-}
-validate_dim <- function(x, i = 1, j = 1) {
-  rows <- ngettext(i, "Select at least %d row.", "Select at least %d rows.")
-  cols <- ngettext(j, "Select at least %d column.", "Select at least %d columns.")
-  validate(need(NROW(x) >= i, sprintf(rows, i)))
-  validate(need(NCOL(x) >= j, sprintf(cols, j)))
-}
-validate_na <- function(x) {
-  validate(need(!anyNA(x), "Your data should not contain missing values."))
-}
-validate_zero <- function(x) {
-  validate(need(all(x != 0), "Your data should not contain zeros."))
-}
-
 #' Bootstrap Theme
 #'
 #' @param version A [`character`] string specifying the major version of
@@ -32,38 +16,54 @@ theme_ui <- function(version = "5", ...) {
   bslib::bs_add_rules(bs, scss)
 }
 
-#' Check If a Dataset Has Changed
+# Helpers ======================================================================
+validate_csv <- function(x) {
+  validate(need(x, message = "Import a CSV file first."))
+}
+validate_dim <- function(x, i = 1, j = 1) {
+  rows <- ngettext(i, "Select at least %d row.", "Select at least %d rows.")
+  cols <- ngettext(j, "Select at least %d column.", "Select at least %d columns.")
+  validate(need(NROW(x) >= i, sprintf(rows, i)))
+  validate(need(NCOL(x) >= j, sprintf(cols, j)))
+}
+validate_na <- function(x) {
+  validate(need(!anyNA(x), "Your data should not contain missing values."))
+}
+validate_zero <- function(x) {
+  validate(need(all(x != 0), "Your data should not contain zeros."))
+}
+
+#' Make File Name
 #'
-#' @param x A reactive object.
-#' @param trigger An input to respond to.
-#' @return An UI element or `NULL` (if no changes).
+#' @param name A [`character`] string specifying the name of the file
+#'  (without extension and the leading dot).
+#' @param ext A [`character`] string specifying the file extension.
+#' @param project A [`character`] string specifying the name of the project.
+#' @family widgets
 #' @keywords internal
 #' @noRd
-data_diff_ui <- function(id) {
+make_file_name <- function(name, ext, project = NULL) {
+  project <- if (is.null(project)) "" else paste0(project, "_")
+  time_stamp <- format(Sys.time(), "%y%m%d_%H%M%S")
+
+  sprintf("%s%s_%s.%s", project, name, time_stamp, ext)
+}
+
+# Widgets ======================================================================
+checkboxgroup_ui <- function(id, label = "Select columns:") {
   ns <- NS(id)
-  uiOutput(outputId = ns("warning"))
+
+  checkboxGroupInput(
+    inputId = ns("checked"),
+    label = label,
+    choices = NULL,
+    selected = NULL,
+    inline = TRUE,
+    width = "100%"
+  )
 }
 
-data_diff_server <- function(id, x, y) {
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    output$warning <- renderUI({
-      req(x(), y())
-      new_raw <- serialize(x(), NULL)
-      old_raw <- serialize(y(), NULL)
-      if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
-      div(
-        class = "alert alert-warning",
-        role = "alert",
-        "Your data seem to have changed.",
-        "You should perform your analysis again."
-      )
-    })
-  })
-}
-
-column_select_ui <- function(id, label = "Choose", multiple = FALSE) {
+selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
   ns <- NS(id)
   plugins <- ifelse(isTRUE(multiple), "remove_button", "clear_button")
   options <- list(plugins = plugins)
@@ -78,7 +78,7 @@ column_select_ui <- function(id, label = "Choose", multiple = FALSE) {
   )
 }
 
-#' Update a Column Select List
+#' Update a Select List with Column Names
 #'
 #' @param id A [`character`] string specifying the namespace.
 #' @param x A reactive `matrix`-like object.
@@ -88,12 +88,14 @@ column_select_ui <- function(id, label = "Choose", multiple = FALSE) {
 #'  on update?
 #' @param none A [`logical`] scalar: should a placeholder be added as the first
 #'  element?
+#' @param server A [`logical`] scalar: should server-side selectize be used?
 #' @return A reactive [`character`] vector of column names.
-#' @seealso [column_select_ui()]
+#' @seealso [selectize_ui()]
 #' @keywords internal
 #' @noRd
 column_select_server <- function(id, x, find_col = NULL,
-                                 preserve = TRUE, none = TRUE) {
+                                 preserve = TRUE, none = TRUE,
+                                 server = TRUE) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -106,8 +108,9 @@ column_select_server <- function(id, x, find_col = NULL,
         choices <- choices[selection]
       }
       if (isTRUE(preserve)) {
-        ## Partially kept previous selection, if any
-        selected <- intersect(choices, input$selected)
+        ## Try to keep previous selection, if any
+        keep <- intersect(choices, input$selected)
+        if (length(keep) > 0) selected <- keep
       }
       if (isTRUE(none)) {
         choices <- c(Choose = "", choices)
@@ -118,7 +121,7 @@ column_select_server <- function(id, x, find_col = NULL,
         inputId = "selected",
         choices = choices,
         selected = selected,
-        server = TRUE
+        server = server
       )
     }) |>
       bindEvent(x())
@@ -132,7 +135,21 @@ column_select_server <- function(id, x, find_col = NULL,
   })
 }
 
-vector_filter_server <- function(id, x, exclude = NULL, preserve = TRUE,
+#' Update a Select List with a Vector
+#'
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `vector` object.
+#' @param exclude A reactive `vector` object or `NULL`.
+#' @param preserve A [`logical`] scalar: should existing selection be preserved
+#'  on update?
+#' @param none A [`logical`] scalar: should a placeholder be added as the first
+#'  element?
+#' @param server A [`logical`] scalar: should server-side selectize be used?
+#' @return A reactive [`character`] vector of column names.
+#' @seealso [selectize_ui()]
+#' @keywords internal
+#' @noRd
+vector_select_server <- function(id, x, exclude = NULL, preserve = TRUE,
                                  none = TRUE) {
   stopifnot(is.reactive(x))
 
@@ -145,7 +162,11 @@ vector_filter_server <- function(id, x, exclude = NULL, preserve = TRUE,
         choices <- setdiff(choices, exclude())
       }
       if (isTRUE(preserve)) {
-        isolate({ selected <- intersect(choices, input$selected) })
+        ## Try to keep previous selection, if any
+        isolate({
+          keep <- intersect(choices, input$selected)
+          if (length(keep) > 0) selected <- keep
+        })
       }
       if (isTRUE(none)) {
         choices <- c(Choose = "", choices)
@@ -169,20 +190,7 @@ vector_filter_server <- function(id, x, exclude = NULL, preserve = TRUE,
   })
 }
 
-column_checkbox_ui <- function(id, label = "Select columns:") {
-  ns <- NS(id)
-
-  checkboxGroupInput(
-    inputId = ns("checked"),
-    label = label,
-    choices = NULL,
-    selected = NULL,
-    inline = TRUE,
-    width = "100%"
-  )
-}
-
-#' Update a Column Checkbox Group
+#' Update a Checkbox Group with Column Names
 #'
 #' @param id A [`character`] string specifying the namespace.
 #' @param x A reactive `matrix`-like object.
@@ -193,7 +201,7 @@ column_checkbox_ui <- function(id, label = "Select columns:") {
 #' @param preserve A [`logical`] scalar: should existing selection be preserved
 #'  on update?
 #' @return A reactive [`character`] vector of column names.
-#' @seealso [column_checkbox_ui()]
+#' @seealso [checkboxgroup_ui()]
 #' @keywords internal
 #' @noRd
 column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
@@ -215,7 +223,7 @@ column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
         selected <- choices[which(col & ok)]
       }
       if (isTRUE(preserve)) {
-        ## Partially kept previous selection, if any
+        ## Try to keep previous selection, if any
         keep <- intersect(choices, input$checked)
         if (length(keep) > 0) selected <- keep
       }
@@ -237,6 +245,7 @@ column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
   })
 }
 
+# Notification =================================================================
 #' Notification
 #'
 #' Shows a notification if an expression raises an error or a warning.
@@ -276,18 +285,34 @@ notify <- function(expr, title = NULL) {
   res
 }
 
-#' Make File Name
+
+#' Check If a Dataset Has Changed
 #'
-#' @param name A [`character`] string specifying the name of the file
-#'  (without extension and the leading dot).
-#' @param ext A [`character`] string specifying the file extension.
-#' @param project A [`character`] string specifying the name of the project.
-#' @family widgets
+#' @param x A reactive object.
+#' @param trigger An input to respond to.
+#' @return An UI element or `NULL` (if no changes).
 #' @keywords internal
 #' @noRd
-make_file_name <- function(name, ext, project = NULL) {
-  project <- if (is.null(project)) "" else paste0(project, "_")
-  time_stamp <- format(Sys.time(), "%y%m%d_%H%M%S")
+data_diff_ui <- function(id) {
+  ns <- NS(id)
+  uiOutput(outputId = ns("warning"))
+}
 
-  sprintf("%s%s_%s.%s", project, name, time_stamp, ext)
+data_diff_server <- function(id, x, y) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    output$warning <- renderUI({
+      req(x(), y())
+      new_raw <- serialize(x(), NULL)
+      old_raw <- serialize(y(), NULL)
+      if (isTRUE(all.equal(new_raw, old_raw))) return(NULL)
+      div(
+        class = "alert alert-warning",
+        role = "alert",
+        "Your data seem to have changed.",
+        "You should perform your analysis again."
+      )
+    })
+  })
 }

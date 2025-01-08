@@ -34,7 +34,7 @@ coda_plot_ui <- function(id) {
         label = "Sort columns",
         value = FALSE
       ),
-      column_select_ui(id = ns("order_rows"), label = "Row order"),
+      selectize_ui(id = ns("order_rows"), label = "Row order"),
       checkboxInput(
         inputId = ns("decreasing"),
         label = "Decreasing row order",

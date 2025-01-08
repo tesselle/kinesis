@@ -14,17 +14,17 @@ coda_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       helpText("Coerce your data to compositions and define (reference) groups."),
-      column_checkbox_ui(ns("parts"), label = "Compositional parts:"),
+      checkboxgroup_ui(ns("parts"), label = "Compositional parts:"),
       helpText(
         "You can use a qualitative variable to assign each sample to a group.",
         "Missing values will be interpreted as unassigned samples."
       ),
-      column_select_ui(id = ns("groups"), label = "Groups"),
+      selectize_ui(id = ns("groups"), label = "Groups"),
       helpText(
         "If your data contain several observations for the same sample (e.g. repeated measurements),",
         "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
       ),
-      column_select_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
+      selectize_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
     ), # sidebar
     card(
       card_header("Data"),
