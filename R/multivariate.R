@@ -39,24 +39,6 @@ multivariate_ui <- function(id) {
         label = "Label variables",
         value = TRUE
       ),
-      ## Input: add ellipses
-      radioButtons(
-        inputId = ns("wrap"),
-        label = "Wrap:",
-        choices = c(
-          "None" = "none",
-          "Tolerance ellipse" = "tol",
-          "Confidence ellipse" = "conf",
-          "Convex hull" = "hull"
-        )
-      ),
-      checkboxGroupInput(
-        inputId = ns("level"),
-        label = "Ellipse level:",
-        selected = "0.95",
-        choiceNames = c("68%", "95%", "99%"),
-        choiceValues = c("0.68", "0.95", "0.99")
-      ),
       radioButtons(
         inputId = ns("extra_quanti"),
         label = "Quality assessment:",
@@ -65,6 +47,32 @@ multivariate_ui <- function(id) {
           "Contribution" = "contribution",
           "Cos2" = "cos2"
         )
+      ),
+      ## Input: add ellipses
+      checkboxInput(
+        inputId = ns("wrap_hull"),
+        label = "Convex hull",
+        value = FALSE
+      ),
+      checkboxInput(
+        inputId = ns("wrap_ellipse"),
+        label = "Ellipse",
+        value = FALSE
+      ),
+      radioButtons(
+        inputId = ns("ellipse_type"),
+        label = "Ellipse type:",
+        choices = c(
+          "Tolerance ellipse" = "tolerance",
+          "Confidence ellipse" = "confidence"
+        )
+      ),
+      checkboxGroupInput(
+        inputId = ns("ellipse_level"),
+        label = "Ellipse level:",
+        selected = "0.95",
+        choiceNames = c("68%", "95%", "99%"),
+        choiceValues = c("0.68", "0.95", "0.99")
       )
     ),
     ## Results -----
@@ -207,14 +215,11 @@ multivariate_server <- function(id, x) {
       req(x())
 
       ## Envelope
-      level <- as.numeric(input$level)
-      fun_wrap <- switch(
-        input$wrap,
-        tol = function(x, ...) dimensio::viz_tolerance(x, level = level, ...),
-        conf = function(x, ...) dimensio::viz_confidence(x, level = level, ...),
-        hull = function(x, ...) dimensio::viz_hull(x, ...),
-        function(...) invisible()
-      )
+      ellipse <- NULL
+      if (isTRUE(input$wrap_ellipse)) {
+        ellipse <- list(type = input$ellipse_type,
+                        level = as.numeric(input$ellipse_level))
+      }
 
       function() {
         dimensio::viz_rows(
@@ -224,18 +229,14 @@ multivariate_server <- function(id, x) {
           sup = TRUE,
           labels = input$lab_row,
           extra_quanti = get_value(input$extra_quanti),
+          ellipse = ellipse,
+          hull = input$wrap_hull,
           color = get_color(input$col_ind),
           symbol = get_value(as.integer(input$pch)),
           size = input$cex,
           xlim = range_ind$x,
           ylim = range_ind$y,
           panel.first = graphics::grid()
-        )
-        fun_wrap(
-          x = x(),
-          margin = 1,
-          axes = c(axis1(), axis2()),
-          color = get_color(input$col_ind)
         )
       }
     })
