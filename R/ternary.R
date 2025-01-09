@@ -108,7 +108,7 @@ ternary_ui <- function(id) {
       tools = list(
         select_color(inputId = ns("col")),
         select_pch(inputId = ns("pch"), default = NULL),
-        select_cex(inputId = ns("cex"), default = c(1, 6))
+        select_cex(inputId = ns("cex"))
       ),
       title = "Ternary plot",
       dblclick = ns("ternplot_dblclick"),

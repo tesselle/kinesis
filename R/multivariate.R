@@ -86,7 +86,7 @@ multivariate_ui <- function(id) {
           tools = list(
             select_color(inputId = ns("col_ind")),
             select_pch(inputId = ns("pch"), default = NULL),
-            select_cex(inputId = ns("cex"), default = c(1, 6))
+            select_cex(inputId = ns("cex"))
           ),
           title = "Individuals factor map",
           dblclick = ns("plot_ind_dblclick"),

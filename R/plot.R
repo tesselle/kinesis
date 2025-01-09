@@ -180,11 +180,11 @@ export_plot <- function(input, x, format) {
 }
 
 # Widgets ======================================================================
-select_cex <- function(inputId, default = c(1, 6)) {
+select_cex <- function(inputId, default = c(1, 2)) {
   sliderInput(
     inputId = inputId,
     label = "Symbol size",
-    min = 0.2,
+    min = 0.1,
     max = 9,
     value = default,
     step = 0.1
