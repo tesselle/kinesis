@@ -14,40 +14,13 @@ prepare_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       title = "Data",
-      helpText("Import your data and perform basic data cleansing and preparation steps."),
       import_ui(ns("import")),
       select_ui(ns("select")),
       clean_ui(ns("clean")),
       # filter_ui(ns("filter"))
     ), # sidebar
     ## Output: value box
-    layout_columns(
-      col_widths = breakpoints(
-        xs = c(12, 12, 12, 12),
-        md = c(6, 6, 6, 6),
-        lg = c(3, 3, 3, 3)
-      ),
-      fill = FALSE,
-      value_box(
-        title = "Dimensions",
-        value = textOutput(outputId = ns("value_dimensions"))
-      ),
-      value_box(
-        title = "Sparsity",
-        value = textOutput(outputId = ns("value_sparsity"))
-      ),
-      value_box(
-        title = "Missing values",
-        value = textOutput(outputId = ns("value_missing"))
-      ),
-      card(
-        helpText("Export your data for futur use."),
-        downloadButton(
-          outputId = ns("download"),
-          label = "Download"
-        )
-      )
-    ),
+    box_ui(ns("box")),
     navset_card_pill(
       placement = "above",
       nav_panel(
@@ -84,24 +57,10 @@ prepare_server <- function(id, choose = function(...) TRUE,
       select_server("select", x = _, find_col = choose, use_col = select) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _)
-      # filter_server("filter", x = _)
+    # filter_server("filter", x = _)
 
     ## Render description -----
-    output$value_dimensions <- renderText({
-      req(data_clean())
-      paste0(dim(data_clean()), collapse = " x ")
-    })
-    output$value_sparsity <- renderText({
-      req(data_clean())
-      paste0(round(arkhe::sparsity(data_clean()) * 100, 2), "%")
-    })
-    output$value_missing <- renderText({
-      req(data_clean())
-      sum(is.na(data_clean()))
-    })
-
-    ## Download -----
-    output$download <- export_table(data_clean, "data")
+    box_server("box", x = data_clean)
 
     ## Render table -----
     output$table <- gt::render_gt({
@@ -119,48 +78,128 @@ prepare_server <- function(id, choose = function(...) TRUE,
 }
 
 # Modules ======================================================================
-## Select ----------------------------------------------------------------------
-select_ui <- function(id) {
+## Value box -------------------------------------------------------------------
+box_ui <- function(id) {
   ns <- NS(id)
 
-  list(
-    checkboxgroup_ui(id = ns("columns")),
-    checkboxInput(
-      inputId = ns("rownames"),
-      label = "First column as row names"
+  layout_columns(
+    col_widths = breakpoints(
+      xs = c(12, 12, 12, 12),
+      md = c(6, 6, 6, 6),
+      lg = c(3, 3, 3, 3)
+    ),
+    fill = FALSE,
+    value_box(
+      title = "Dimensions",
+      value = textOutput(outputId = ns("value_dimensions"))
+    ),
+    value_box(
+      title = "Sparsity",
+      value = textOutput(outputId = ns("value_sparsity"))
+    ),
+    value_box(
+      title = "Missing values",
+      value = textOutput(outputId = ns("value_missing"))
+    ),
+    card(
+      helpText("Export your data for futur use."),
+      downloadButton(
+        outputId = ns("download"),
+        label = "Download"
+      )
     )
   )
 }
-select_server <- function(id, x, find_col = NULL, use_col = NULL) {
+box_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select columns
-    columns <- column_checkbox_server("columns", x = x,
-                                      find_col = find_col, use_col = use_col)
+    output$value_dimensions <- renderText({
+      req(x())
+      paste0(dim(x()), collapse = " x ")
+    })
+    output$value_sparsity <- renderText({
+      req(x())
+      paste0(round(arkhe::sparsity(x()) * 100, 2), "%")
+    })
+    output$value_missing <- renderText({
+      req(x())
+      sum(is.na(x()))
+    })
 
-    selected <- reactive({
-      validate_csv(x())
-      out <- arkhe::get_columns(x(), names = columns())
-      validate_dim(out)
+    ## Download -----
+    output$download <- export_table(x, "data")
+  })
+}
+
+## Select ----------------------------------------------------------------------
+select_ui <- function(id, label = "Select columns:") {
+  ns <- NS(id)
+
+  checkboxGroupInput(
+    inputId = ns("checked"),
+    label = label,
+    choices = NULL,
+    selected = NULL,
+    inline = TRUE,
+    width = "100%"
+  )
+}
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `matrix`-like object.
+#' @param find_col A predicate [`function`] for column detection
+#'  (see [arkhe::detect()]).
+#' @param use_col A predicate [`function`] for column selection
+#'  (see [arkhe::detect()]).
+#' @param preserve A [`logical`] scalar: should existing selection be preserved
+#'  on update?
+#' @noRd
+select_server <- function(id, x, find_col = NULL, use_col = NULL,
+                          preserve = TRUE, min_row = 1, min_col = 1) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Update UI
+    ## Update UI
+    observe({
+      choices <- colnames(x())
+      selected <- NULL
+      col <- rep(TRUE, length(choices))
+      if (length(choices) > 0 && is.function(find_col)) {
+        col <- arkhe::detect(x = x(), f = find_col, margin = 2)
+        choices <- choices[which(col)]
+      }
+      if (length(choices) > 0 && is.function(use_col)) {
+        ok <- arkhe::detect(x = x(), f = use_col, margin = 2)
+        selected <- choices[which(col & ok)]
+      }
+      if (isTRUE(preserve)) {
+        ## Try to keep previous selection, if any
+        keep <- intersect(choices, input$checked)
+        if (length(keep) > 0) selected <- keep
+      }
+      freezeReactiveValue(input, "checked")
+      updateCheckboxGroupInput(
+        inputId = "checked",
+        choices = choices,
+        selected = selected
+      )
+    }) |>
+      bindEvent(x())
+
+    ## Bookmark
+    onRestored(function(state) {
+      updateCheckboxGroupInput(session, "checked", selected = state$input$checked)
+    })
+
+    ## Select variables
+    reactive({
+      req(input$checked)
+      out <- arkhe::get_columns(x(), names = input$checked)
+      validate_dim(out, i = min_row, j = min_col)
       out
     }) |>
       debounce(500)
-
-    ## Assign row names
-    reactive({
-      x <- selected()
-
-      if (isTRUE(input$rownames)) {
-        out <- notify(
-          arkhe::assign_rownames(x, column = 1, remove = TRUE),
-          title = "Rownames"
-        )
-        if (!is.null(out)) x <- out
-      }
-
-      x
-    })
   })
 }
 
@@ -169,6 +208,12 @@ clean_ui <- function(id) {
   ns <- NS(id)
 
   list(
+    tags$div(
+      checkboxInput(
+        inputId = ns("rownames"),
+        label = "First column as row names"
+      )
+    ),
     tags$div(
       "Clean values:",
       ## Input: remove whitespace
@@ -214,27 +259,38 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     reactive({
       out <- x()
 
-      ## Clean whitespace
-      if (isTRUE(input$remove_whitespace)) {
-        out <- arkhe::clean_whitespace(out, squish = TRUE)
-      }
+      if (isTruthy(x())) {
+        ## Assign row names
+        if (isTRUE(input$rownames)) {
+          out <- notify(
+            arkhe::assign_rownames(out, column = 1, remove = TRUE),
+            title = "Rownames"
+          )
+          if (!is.null(out)) x <- out
+        }
 
-      ## Remove rows
-      ## If only zeros
-      if (isTRUE(input$remove_zero_row)) {
-        out <- arkhe::remove_zero(out, margin = 1, all = input$all,
-                                  verbose = verbose)
-      }
+        ## Clean whitespace
+        if (isTRUE(input$remove_whitespace)) {
+          out <- arkhe::clean_whitespace(out, squish = TRUE)
+        }
 
-      ## Remove columns
-      ## If only zeros
-      if (isTRUE(input$remove_zero_column)) {
-        out <- arkhe::remove_zero(out, margin = 2, all = input$all,
-                                  verbose = verbose)
-      }
-      ## If constant
-      if (isTRUE(input$remove_constant_column)) {
-        out <- arkhe::remove_constant(out, verbose = verbose)
+        ## Remove rows
+        ## If only zeros
+        if (isTRUE(input$remove_zero_row)) {
+          out <- arkhe::remove_zero(out, margin = 1, all = input$all,
+                                    verbose = verbose)
+        }
+
+        ## Remove columns
+        ## If only zeros
+        if (isTRUE(input$remove_zero_column)) {
+          out <- arkhe::remove_zero(out, margin = 2, all = input$all,
+                                    verbose = verbose)
+        }
+        ## If constant
+        if (isTRUE(input$remove_constant_column)) {
+          out <- arkhe::remove_constant(out, verbose = verbose)
+        }
       }
 
       validate_dim(out)

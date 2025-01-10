@@ -10,10 +10,13 @@ import_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  actionButton(
-    inputId = ns("upload"),
-    label = "Upload",
-    icon = icon("upload")
+  list(
+    helpText("Import your data and perform basic data cleansing and preparation steps."),
+    actionButton(
+      inputId = ns("upload"),
+      label = "Upload",
+      icon = icon("upload")
+    )
   )
 }
 
@@ -180,6 +183,9 @@ import_server <- function(id) {
     onBookmark(function(state) state$values$data <- data$values)
     onRestore(function(state) data$values <- state$values$data)
 
-    reactive({ data$values })
+    reactive({
+      validate_csv(data$values)
+      data$values
+    })
   })
 }

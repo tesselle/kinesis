@@ -10,7 +10,7 @@ ternary_server(id, x)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{x}{A reactive \code{data.frame}.}
+\item{x}{A reactive \code{matrix}-like object.}
 }
 \description{
 Ternary Plot Server

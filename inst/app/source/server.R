@@ -8,13 +8,12 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
-  coda <- kinesis::coda_server("coda", x = data)
+  coda <- kinesis::coda_server("coda")
 
   ## Switch tab (only happen once)
   observe({
     bslib::nav_select(id = "main", selected = "Data")
-  }) |> bindEvent(data(), once = TRUE)
+  }) |> bindEvent(coda(), once = TRUE)
 
   ## Statistics
   kinesis::coda_summary_server("coda_summary", coda)
@@ -22,7 +21,7 @@ function(input, output, session) {
 
   ## Graphs
   kinesis::coda_plot_server("barplot", x = coda)
-  kinesis::ternary_server("ternary", x = data)
+  kinesis::ternary_server("ternary", x = coda)
 
   ## Log-ratio
   clogratio <- kinesis::logratio_server("clr", coda, method = "clr")

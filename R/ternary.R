@@ -126,7 +126,7 @@ ternary_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame`.
+#' @param x A reactive `matrix`-like object.
 #' @seealso [ternary_ui()]
 #' @family plot modules
 #' @keywords internal
@@ -136,21 +136,24 @@ ternary_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Select columns -----
+    data_raw <- reactive({
+      as.data.frame(x())
+    })
     quanti <- reactive({
-      req(x())
-      i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2))
-      colnames(x())[i]
+      req(data_raw())
+      i <- which(arkhe::detect(x = data_raw(), f = is.numeric, margin = 2))
+      colnames(data_raw())[i]
     })
     quali <- reactive({
-      req(x())
-      i <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
-      colnames(x())[i]
+      req(data_raw())
+      i <- which(arkhe::detect(x = data_raw(), f = Negate(is.numeric), margin = 2))
+      colnames(data_raw())[i]
     })
     axis1 <- vector_select_server("axis1", x = quanti)
     axis2 <- vector_select_server("axis2", x = quanti, exclude = axis1)
     axis12 <- reactive({ c(axis1(), axis2()) })
     axis3 <- vector_select_server("axis3", x = quanti, exclude = axis12)
-    symbol_color <- column_select_server("symbol_color", x = x)
+    symbol_color <- column_select_server("symbol_color", x = data_raw)
     symbol_shape <- vector_select_server("symbol_shape", x = quali)
     symbol_size <- vector_select_server("symbol_size", x = quanti)
     symbol_group <- vector_select_server("group", x = quali)
@@ -167,8 +170,8 @@ ternary_server <- function(id, x) {
 
     ## Get ternary data -----
     data_tern <- reactive({
-      req(x(), axis1(), axis2(), axis3())
-      tern <- x()[, c(axis1(), axis2(), axis3())]
+      req(data_raw(), axis1(), axis2(), axis3())
+      tern <- data_raw()[, c(axis1(), axis2(), axis3())]
       tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
     })
 
@@ -190,14 +193,14 @@ ternary_server <- function(id, x) {
 
       ## Grouping variable
       if (isTruthy(symbol_group())) {
-        symbol_group <- x()[[symbol_group()]]
+        symbol_group <- data_raw()[[symbol_group()]]
       } else {
         symbol_group <- rep("", n)
       }
 
       ## Symbol colors
       if (isTruthy(symbol_color())) {
-        symbol_color <- x()[[symbol_color()]]
+        symbol_color <- data_raw()[[symbol_color()]]
         lvl <- length(unique(symbol_color))
         col <- get_color(input$col)(lvl)
         if (is.double(symbol_color)) {
@@ -210,7 +213,7 @@ ternary_server <- function(id, x) {
 
       ## Symbol shapes
       if (isTruthy(symbol_shape())) {
-        symbol_shape <- x()[[symbol_shape()]]
+        symbol_shape <- data_raw()[[symbol_shape()]]
         pch <- khroma::palette_shape(symbols = pch)(symbol_shape)
       } else {
         pch <- pch[[1L]] %||% 16
@@ -218,7 +221,7 @@ ternary_server <- function(id, x) {
 
       ## Symbol sizes
       if (isTruthy(symbol_size())) {
-        symbol_size <- arkhe::scale_range(x()[[symbol_size()]])
+        symbol_size <- arkhe::scale_range(data_raw()[[symbol_size()]])
         cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)

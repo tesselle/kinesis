@@ -13,10 +13,6 @@ function(request) {
     ),
     bslib::nav_panel(
       title = "Data",
-      kinesis::prepare_ui("prepare")
-    ),
-    bslib::nav_panel(
-      title = "Composition",
       kinesis::coda_ui("coda")
     ),
     bslib::nav_menu(

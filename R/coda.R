@@ -13,28 +13,42 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      helpText("Coerce your data to compositions and define (reference) groups."),
-      checkboxgroup_ui(ns("parts"), label = "Compositional parts:"),
-      helpText(
-        "You can use a qualitative variable to assign each sample to a group.",
-        "Missing values will be interpreted as unassigned samples."
-      ),
-      selectize_ui(id = ns("groups"), label = "Groups"),
-      helpText(
-        "If your data contain several observations for the same sample (e.g. repeated measurements),",
-        "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
-      ),
-      selectize_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
+      title = "Compositional Data",
+      import_ui(ns("import")),
+      select_ui(ns("select")),
+      clean_ui(ns("clean")),
+      # filter_ui(ns("filter"))
     ), # sidebar
-    card(
-      card_header("Data"),
-      card_body(
-        ## Output: display data
-        gt::gt_output(outputId = ns("table"))
+    ## Output: value box
+    box_ui(ns("box")),
+    navset_card_pill(
+      placement = "above",
+      nav_panel(
+        title = "Data",
+        layout_sidebar(
+          sidebar = sidebar(
+            helpText(
+              "You can use a qualitative variable to assign each sample to a (reference) group.",
+              "Missing values will be interpreted as unassigned samples."
+            ),
+            selectize_ui(id = ns("groups"), label = "Groups"),
+            helpText(
+              "If your data contain several observations for the same sample (e.g. repeated measurements),",
+              "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
+            ),
+            selectize_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
+          ), # sidebar
+          ## Output: display data
+          gt::gt_output(outputId = ns("table"))
+        ) # layout_sidebar
+      ),
+      nav_panel(
+        title = "Missing values",
+        missing_ui(ns("missing"))
       )
     ),
     border_radius = FALSE,
-    fillable = TRUE
+    fillable = TRUE,
   ) # layout_sidebar
 }
 
@@ -43,7 +57,6 @@ coda_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @param verbose A [`logical`] scalar: should \R report extra information
 #'  on progress?
 #' @return A reactive [`nexus::CompositionMatrix-class`] object.
@@ -51,46 +64,34 @@ coda_ui <- function(id) {
 #' @family coda modules
 #' @keywords internal
 #' @export
-coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
-  stopifnot(is.reactive(x))
-
+coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
   moduleServer(id, function(input, output, session) {
-    ## Select columns
-    col_parts <- column_checkbox_server("parts", x = x, find_col = is.numeric)
-    col_groups <- column_select_server("groups", x = x, find_col = Negate(is.numeric))
-    col_condense <- column_select_server("condense", x = x)
+    ## Prepare data -----
+    data_raw <- import_server("import")
+    data_clean <- data_raw |>
+      select_server("select", x = _, find_col = is.numeric, min_col = 3) |>
+      clean_server("clean", x = _) |>
+      missing_server("missing", x = _)
+
+    ## Value box -----
+    box_server("box", x = data_clean)
 
     ## Update UI -----
-    observe({
-      choices <- colnames(x())
-      quali <- which(arkhe::detect(x = x(), f = Negate(is.numeric), margin = 2))
-
-      freezeReactiveValue(input, "groups")
-      updateSelectizeInput(inputId = "groups", choices = c(None = "", choices[quali]))
-      freezeReactiveValue(input, "condense")
-      updateSelectizeInput(inputId = "condense", choices = c(None = "", choices))
-    })
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "groups",
-                           selected = state$input$groups)
-      updateSelectizeInput(session, inputId = "condense",
-                           selected = state$input$condense)
-    })
+    col_groups <- column_select_server("groups", x = data_raw,
+                                       find_col = Negate(is.numeric))
+    col_condense <- column_select_server("condense", x = data_raw)
 
     ## Coerce to compositions -----
     coda <- reactive({
-      req(col_parts())
+      req(data_clean())
 
-      parts <- get_value(col_parts())
+      parts <- seq_len(ncol(data_clean()))
       notify(
-        nexus::as_composition(from = x(), parts = parts, autodetect = FALSE,
-                              verbose = verbose),
+        nexus::as_composition(from = data_clean(), parts = parts,
+                              autodetect = FALSE, verbose = verbose),
         title = "Compositional Data"
       )
-    }) |>
-      debounce(500)
+    })
 
     ## Zeros -----
     # TODO
@@ -100,10 +101,10 @@ coda_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
       out <- coda()
       if (isTruthy(col_groups())) {
-        out <- nexus::group(out, by = x()[[col_groups()]], verbose = verbose)
+        out <- nexus::group(out, by = data_raw()[[col_groups()]], verbose = verbose)
       }
       if (isTruthy(col_condense())) {
-        out <- nexus::condense(out, by = x()[col_condense()], verbose = verbose)
+        out <- nexus::condense(out, by = data_raw()[col_condense()], verbose = verbose)
       }
 
       validate_dim(out, j = 2)

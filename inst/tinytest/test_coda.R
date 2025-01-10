@@ -1,11 +1,19 @@
 library("shiny")
 
 bronze <- read.csv("bronze.csv")
-x <- reactiveVal(bronze)
+path <- system.file("tinytest", "bronze.csv", package = "kinesis")
+parts <- c("Cu", "Sn", "Pb", "Zn", "Au", "Ag", "As", "Sb")
 
-testServer(kinesis:::coda_server, args = list(x = x), {
-  session$setInputs() # Needed because of freezeReactiveValue() (???)
-  session$setInputs("parts-checked" = 4:11, groups = "", condense = "")
+testServer(kinesis:::coda_server, {
+  session$setInputs("import-file" = list(datapath = path),
+                    "import-header" = TRUE,
+                    "import-sep" = ",", "import-dec" = ".",
+                    "import-quote" = "\"'", "import-rownames" = FALSE,
+                    "import-na.strings" = "NA", "import-skip" = 0,
+                    "import-comment" = "#", "import-go" = 1)
+
+  expect_equal(data_raw(), bronze)
+  session$setInputs("select-checked" = parts, groups = "", condense = "")
   session$elapse(2000)
   expect_equal(dim(coda()), c(369L, 8L))
   expect_equal(dim(grouped()), c(369L, 8L))
@@ -30,17 +38,9 @@ fake <- data.frame(
 coda <- nexus::as_composition(fake, parts = c(2, 3, 4), groups = 1)
 imp <- nexus::replace_zero(coda, value = c(0.02, 0.1, 0.01) / 100, delta = 2/3)
 
-x <- reactiveVal(fake)
-y <- reactiveVal(coda)
+x <- reactiveVal(coda)
 
-testServer(coda_server, args = list(x = x), {
-  session$setInputs() # Needed because of freezeReactiveValue() (???)
-  session$setInputs("parts-checked" = c(2, 3, 4), groups = "", condense = "")
-  session$elapse(2000)
-  expect_error(grouped(), "Your data should not contain zeros.")
-})
-
-testServer(kinesis:::coda_zero_server, args = list(x = y), {
+testServer(kinesis:::coda_zero_server, args = list(x = x), {
   expect_equal(ids(), c("limit_Ca", "limit_Fe", "limit_Na"))
   dataset <- session$getReturned()
   expect_equal(dataset(), coda)

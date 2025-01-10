@@ -63,19 +63,6 @@ make_file_name <- function(name, ext, project = NULL) {
 }
 
 # Widgets ======================================================================
-checkboxgroup_ui <- function(id, label = "Select columns:") {
-  ns <- NS(id)
-
-  checkboxGroupInput(
-    inputId = ns("checked"),
-    label = label,
-    choices = NULL,
-    selected = NULL,
-    inline = TRUE,
-    width = "100%"
-  )
-}
-
 selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
   ns <- NS(id)
   plugins <- ifelse(isTRUE(multiple), "remove_button", "clear_button")
@@ -200,61 +187,6 @@ vector_select_server <- function(id, x, exclude = reactive({ NULL }),
     })
 
     reactive({ input$selected })
-  })
-}
-
-#' Update a Checkbox Group with Column Names
-#'
-#' @param id A [`character`] string specifying the namespace.
-#' @param x A reactive `matrix`-like object.
-#' @param find_col A predicate [`function`] for column detection
-#'  (see [arkhe::detect()]).
-#' @param use_col A predicate [`function`] for column selection
-#'  (see [arkhe::detect()]).
-#' @param preserve A [`logical`] scalar: should existing selection be preserved
-#'  on update?
-#' @return A reactive [`character`] vector of column names.
-#' @seealso [checkboxgroup_ui()]
-#' @keywords internal
-#' @noRd
-column_checkbox_server <- function(id, x, find_col = NULL, use_col = NULL,
-                                   preserve = TRUE) {
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    ## Update UI
-    observe({
-      choices <- colnames(x())
-      selected <- NULL
-      col <- rep(TRUE, length(choices))
-      if (length(choices) > 0 && is.function(find_col)) {
-        col <- arkhe::detect(x = x(), f = find_col, margin = 2)
-        choices <- choices[which(col)]
-      }
-      if (length(choices) > 0 && is.function(use_col)) {
-        ok <- arkhe::detect(x = x(), f = use_col, margin = 2)
-        selected <- choices[which(col & ok)]
-      }
-      if (isTRUE(preserve)) {
-        ## Try to keep previous selection, if any
-        keep <- intersect(choices, input$checked)
-        if (length(keep) > 0) selected <- keep
-      }
-      freezeReactiveValue(input, "checked")
-      updateCheckboxGroupInput(
-        inputId = "checked",
-        choices = choices,
-        selected = selected
-      )
-    }) |>
-      bindEvent(x())
-
-    ## Bookmark
-    onRestored(function(state) {
-      updateCheckboxGroupInput(session, "checked", selected = state$input$checked)
-    })
-
-    reactive({ input$checked })
   })
 }
 
