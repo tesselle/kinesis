@@ -221,8 +221,8 @@ ternary_server <- function(id, x) {
 
       ## Symbol sizes
       if (isTruthy(symbol_size())) {
-        symbol_size <- arkhe::scale_range(data_raw()[[symbol_size()]])
-        cex <- khroma::palette_size_range(range = range(cex))(symbol_size)
+        symbol_size <- data_raw()[[symbol_size()]]
+        cex <- khroma::palette_size_sequential(range = range(cex))(symbol_size)
       } else {
         cex <- min(cex)
       }
