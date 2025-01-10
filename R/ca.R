@@ -106,7 +106,7 @@ ca_server <- function(id, x) {
       notify(compute_ca$result(), title = "Correspondence Analysis")
     })
 
-    multivariate_server("ca", results)
+    multivariate_server("ca", x = results, y = x)
 
     ## Chi-squared -----
     chi2_test <- reactive({

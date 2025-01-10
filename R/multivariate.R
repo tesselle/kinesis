@@ -39,14 +39,13 @@ multivariate_ui <- function(id) {
         label = "Label variables",
         value = TRUE
       ),
-      radioButtons(
-        inputId = ns("extra_quanti"),
-        label = "Quality assessment:",
-        choices = c(
-          "None" = "",
-          "Contribution" = "contribution",
-          "Cos2" = "cos2"
-        )
+      selectize_ui(
+        id = ns("extra_quanti"),
+        label = "Extra quantitative variable"
+      ),
+      selectize_ui(
+        id = ns("extra_quali"),
+        label = "Extra qualitative variable"
       ),
       ## Input: add ellipses
       checkboxInput(
@@ -144,14 +143,23 @@ multivariate_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`dimensio::MultivariateAnalysis-class`] object.
+#' @param y A reactive `matrix`-like object use to compute the multivariate
+#'  analysis.
 #' @seealso [multivariate_ui]
 #' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-multivariate_server <- function(id, x) {
+multivariate_server <- function(id, x, y) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Illustrative variables -----
+    extra <- reactive({ as.data.frame(y()) }) |> bindEvent(x())
+    col_quali <- column_select_server("extra_quali", x = extra,
+                                      find_col = Negate(is.numeric))
+    col_quanti <- column_select_server("extra_quanti", x = extra,
+                                       find_col = is.numeric)
+
     ## Eigenvalues -----
     eigen <- reactive({
       req(x())
@@ -214,6 +222,15 @@ multivariate_server <- function(id, x) {
     plot_ind <- reactive({
       req(x())
 
+      ## Extra variables
+      extra_quali <- extra_quanti <- NULL
+      if (isTruthy(col_quali())) {
+        extra_quali <- extra()[[col_quali()]]
+      }
+      if (isTruthy(col_quanti())) {
+        extra_quanti <- extra()[[col_quanti()]]
+      }
+
       ## Envelope
       ellipse <- NULL
       if (isTRUE(input$wrap_ellipse)) {
@@ -228,7 +245,8 @@ multivariate_server <- function(id, x) {
           active = TRUE,
           sup = TRUE,
           labels = input$lab_row,
-          extra_quanti = get_value(input$extra_quanti),
+          extra_quali = extra_quali,
+          extra_quanti = extra_quanti,
           ellipse = ellipse,
           hull = input$wrap_hull,
           color = get_color(input$col_ind),

@@ -4,13 +4,16 @@
 \alias{multivariate_server}
 \title{Multivariate Analysis Server}
 \usage{
-multivariate_server(id, x)
+multivariate_server(id, x, y)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
 \item{x}{A reactive \code{\link[dimensio:MultivariateAnalysis]{dimensio::MultivariateAnalysis}} object.}
+
+\item{y}{A reactive \code{matrix}-like object use to compute the multivariate
+analysis.}
 }
 \description{
 Multivariate Analysis Server

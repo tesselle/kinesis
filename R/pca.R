@@ -122,7 +122,7 @@ pca_server <- function(id, x) {
       notify(compute_pca$result(), title = "Principal Components Analysis")
     })
 
-    multivariate_server("pca", results)
+    multivariate_server("pca", x = results, y = x)
 
     ## Export -----
     output$download <- downloadHandler(
