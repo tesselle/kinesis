@@ -15,6 +15,21 @@ function(request) {
       title = "Data",
       kinesis::coda_ui("coda")
     ),
+    bslib::nav_panel(
+      title = "Statistics",
+      kinesis::coda_summary_ui("coda_summary")
+    ),
+    bslib::nav_menu(
+      title = "Plot",
+      bslib::nav_panel(
+        title = "Bar plot",
+        kinesis::coda_plot_ui("barplot")
+      ),
+      bslib::nav_panel(
+        title = "Ternary plot",
+        kinesis::ternary_ui("ternary")
+      )
+    ),
     bslib::nav_menu(
       title = "Transform",
       bslib::nav_panel(
@@ -36,21 +51,6 @@ function(request) {
         title = "PLR",
         value = "panel_plr",
         kinesis::logratio_ui("plr")
-      )
-    ),
-    bslib::nav_panel(
-      title = "Statistics",
-      kinesis::coda_summary_ui("coda_summary")
-    ),
-    bslib::nav_menu(
-      title = "Plot",
-      bslib::nav_panel(
-        title = "Bar plot",
-        kinesis::coda_plot_ui("barplot")
-      ),
-      bslib::nav_panel(
-        title = "Ternary plot",
-        kinesis::ternary_ui("ternary")
       )
     ),
     bslib::nav_menu(

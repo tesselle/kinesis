@@ -27,16 +27,29 @@ coda_ui <- function(id) {
         title = "Data",
         layout_sidebar(
           sidebar = sidebar(
-            helpText(
-              "You can use a qualitative variable to assign each sample to a (reference) group.",
-              "Missing values will be interpreted as unassigned samples."
+            selectize_ui(
+              id = ns("groups"),
+              label = tooltip(
+                trigger = span(
+                  "Group",
+                  icon("info-circle")
+                ),
+                "You can use a qualitative variable to assign each sample to a (reference) group.",
+                "Missing values will be interpreted as unassigned samples."
+              )
             ),
-            selectize_ui(id = ns("groups"), label = "Groups"),
-            helpText(
-              "If your data contain several observations for the same sample (e.g. repeated measurements),",
-              "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
+            selectize_ui(
+              id = ns("condense"),
+              label = tooltip(
+                trigger = span(
+                  "Condense",
+                  icon("info-circle")
+                ),
+                "If your data contain several observations for the same sample (e.g. repeated measurements),",
+                "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
+              ),
+              multiple = TRUE
             ),
-            selectize_ui(id = ns("condense"), label = "Condense", multiple = TRUE),
           ), # sidebar
           ## Output: display data
           gt::gt_output(outputId = ns("table"))
