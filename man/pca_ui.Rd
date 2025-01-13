@@ -4,7 +4,7 @@
 \alias{pca_ui}
 \title{Principal Components Analysis UI}
 \usage{
-pca_ui(id, center = TRUE, scale = TRUE)
+pca_ui(id, center = TRUE, scale = TRUE, help = NULL)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
@@ -14,6 +14,8 @@ zero centered?}
 
 \item{scale}{A \code{\link{logical}} scalar: should the variables be scaled to unit
 variance?}
+
+\item{help}{A \code{\link{character}} string giving a short help text.}
 }
 \description{
 Principal Components Analysis UI

@@ -6,11 +6,12 @@
 #'  zero centered?
 #' @param scale A [`logical`] scalar: should the variables be scaled to unit
 #'  variance?
+#' @param help A [`character`] string giving a short help text.
 #' @seealso [pca_server()]
 #' @family multivariate analysis modules
 #' @keywords internal
 #' @export
-pca_ui <- function(id, center = TRUE, scale = TRUE) {
+pca_ui <- function(id, center = TRUE, scale = TRUE, help = NULL) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -18,6 +19,7 @@ pca_ui <- function(id, center = TRUE, scale = TRUE) {
     sidebar = sidebar(
       width = 400,
       title = "Principal Components Analysis",
+      helpText(help),
       checkboxInput(
         inputId = ns("center"),
         label = "Center",

@@ -61,7 +61,11 @@ function(request) {
       # ),
       bslib::nav_panel(
         title = "PCA",
-        kinesis::pca_ui("pca", scale = FALSE)
+        kinesis::pca_ui(
+          id = "pca",
+          scale = FALSE,
+          help = "PCA is computed on centered log-ratio (CLR), you should check the data transformation first."
+        )
       ),
       bslib::nav_panel(
         title = "HCLUST",
