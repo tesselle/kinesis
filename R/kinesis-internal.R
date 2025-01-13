@@ -131,7 +131,8 @@ column_select_server <- function(id, x, find_col = NULL,
       updateSelectizeInput(session, "selected", selected = state$input$selected)
     })
 
-    reactive({ input$selected })
+    reactive({ input$selected }) |>
+      debounce(500)
   })
 }
 

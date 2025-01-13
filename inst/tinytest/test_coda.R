@@ -16,19 +16,25 @@ testServer(kinesis:::coda_server, {
   session$setInputs("select-checked" = parts, groups = "", condense = "")
   session$elapse(2000)
   expect_equal(dim(coda()), c(369L, 8L))
-  expect_equal(dim(grouped()), c(369L, 8L))
+  expect_equal(dim(data_group()), c(369L, 8L))
+  expect_equal(dim(data_condense()), c(369L, 8L))
+  dataset <- session$getReturned()
+  expect_false(nexus::is_grouped(dataset()))
 
   session$setInputs("group-selected" = "dynasty")
   session$elapse(2000)
-  expect_equal(dim(coda()), c(369L, 8L))
-  expect_equal(dim(grouped()), c(369L, 8L))
+  dataset <- session$getReturned()
+  expect_equal(dim(dataset()), c(369L, 8L))
+  expect_true(nexus::is_grouped(dataset()))
 
   session$setInputs("condense-selected" = c("dynasty", "reference"))
   session$elapse(2000)
-  expect_equal(dim(coda()), c(369L, 8L))
-  expect_equal(dim(grouped()), c(300L, 8L))
+  dataset <- session$getReturned()
+  expect_equal(dim(dataset()), c(300L, 8L))
+  expect_true(nexus::is_grouped(dataset()))
 })
 
+# Zeros ========================================================================
 fake <- data.frame(
   group = rep(c("A", "B", "C"), each = 3),
   Ca = c(7.72, 0, 3.11, 7.19, 7.41, 5, 0, 1, 4.51),

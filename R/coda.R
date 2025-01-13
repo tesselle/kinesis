@@ -16,8 +16,7 @@ coda_ui <- function(id) {
       title = "Compositional Data",
       import_ui(ns("import")),
       select_ui(ns("select")),
-      clean_ui(ns("clean")),
-      # filter_ui(ns("filter"))
+      clean_ui(ns("clean"))
     ), # sidebar
     ## Output: value box
     box_ui(ns("box")),
@@ -28,7 +27,7 @@ coda_ui <- function(id) {
         layout_sidebar(
           sidebar = sidebar(
             selectize_ui(
-              id = ns("groups"),
+              id = ns("group"),
               label = tooltip(
                 trigger = span(
                   "Group",
@@ -83,60 +82,85 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
     data_raw <- import_server("import")
     data_clean <- data_raw |>
       select_server("select", x = _, find_col = is.numeric, min_col = 3) |>
-      clean_server("clean", x = _) |>
-      missing_server("missing", x = _)
-
-    ## Value box -----
-    box_server("box", x = data_clean)
+      clean_server("clean", x = _)
 
     ## Update UI -----
-    col_groups <- column_select_server("groups", x = data_raw,
-                                       find_col = Negate(is.numeric))
-    col_condense <- column_select_server("condense", x = data_raw)
+    col_group <- column_select_server(
+      id = "group",
+      x = data_raw,
+      find_col = Negate(is.numeric)
+    )
+    col_condense <- column_select_server(
+      id = "condense",
+      x = data_raw
+    )
 
-    ## Coerce to compositions -----
+    ## Compositions -----
     coda <- reactive({
       req(data_clean())
 
-      parts <- seq_len(ncol(data_clean()))
       notify(
-        nexus::as_composition(from = data_clean(), parts = parts,
-                              autodetect = FALSE, verbose = verbose),
+        nexus::as_composition(
+          from = data_clean(),
+          parts = seq_len(ncol(data_clean())),
+          autodetect = FALSE,
+          verbose = verbose
+        ),
         title = "Compositional Data"
       )
     })
 
-    ## Zeros -----
-    # TODO
-
-    grouped <- reactive({
+    ## Group -----
+    data_group <- reactive({
       req(coda())
 
       out <- coda()
-      if (isTruthy(col_groups())) {
-        out <- nexus::group(out, by = data_raw()[[col_groups()]], verbose = verbose)
+      if (isTruthy(col_group())) {
+        out <- nexus::group(out, by = data_raw()[[col_group()]], verbose = verbose)
       }
+
+      out
+    })
+
+    ## Condense -----
+    data_condense <- reactive({
+      req(data_group())
+
+      out <- data_group()
       if (isTruthy(col_condense())) {
         out <- nexus::condense(out, by = data_raw()[col_condense()], verbose = verbose)
       }
 
-      validate_dim(out, j = 2)
-      validate_na(out)
-      validate_zero(out)
-
       out
-    }) |>
-      debounce(500)
+    })
+
+    ## Missing values -----
+    data_missing <- missing_server("missing", x = data_condense)
+
+    ## Zeros -----
+    # TODO
+
+    ## Value box -----
+    box_server("box", x = data_missing)
+
+    ## Check -----
+    data_valid <- reactive({
+      validate_dim(data_missing(), i = 1, j = 3)
+      validate_na(data_missing())
+      validate_zero(data_missing())
+
+      data_missing()
+    })
 
     ## Render tables -----
     output$table <- gt::render_gt({
-      req(grouped())
-      if (nexus::is_grouped(grouped())) {
-        gt <- grouped() |>
+      req(data_valid())
+      if (nexus::is_grouped(data_valid())) {
+        gt <- data_valid() |>
           as.data.frame() |>
           gt::gt(rownames_to_stub = TRUE, groupname_col = ".group")
       } else {
-        gt <- grouped() |>
+        gt <- data_valid() |>
           as.data.frame() |>
           gt::gt(rownames_to_stub = TRUE)
       }
@@ -157,7 +181,7 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
         )
     })
 
-    grouped
+    data_valid
   })
 }
 

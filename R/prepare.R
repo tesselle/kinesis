@@ -160,7 +160,6 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    ## Update UI
     observe({
       choices <- colnames(x())
       selected <- NULL
@@ -259,38 +258,36 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
     reactive({
       out <- x()
 
-      if (isTruthy(x())) {
-        ## Assign row names
-        if (isTRUE(input$rownames)) {
-          out <- notify(
-            arkhe::assign_rownames(out, column = 1, remove = TRUE),
-            title = "Rownames"
-          )
-          if (!is.null(out)) x <- out
-        }
+      ## Assign row names
+      if (isTruthy(out) && isTRUE(input$rownames)) {
+        out <- notify(
+          arkhe::assign_rownames(out, column = 1, remove = TRUE),
+          title = "Rownames"
+        )
+        if (!is.null(out)) x <- out
+      }
 
-        ## Clean whitespace
-        if (isTRUE(input$remove_whitespace)) {
-          out <- arkhe::clean_whitespace(out, squish = TRUE)
-        }
+      ## Clean whitespace
+      if (isTruthy(out) && isTRUE(input$remove_whitespace)) {
+        out <- arkhe::clean_whitespace(out, squish = TRUE)
+      }
 
-        ## Remove rows
-        ## If only zeros
-        if (isTRUE(input$remove_zero_row)) {
-          out <- arkhe::remove_zero(out, margin = 1, all = input$all,
-                                    verbose = verbose)
-        }
+      ## Remove rows
+      ## If only zeros
+      if (isTruthy(out) && isTRUE(input$remove_zero_row)) {
+        out <- arkhe::remove_zero(out, margin = 1, all = input$all,
+                                  verbose = verbose)
+      }
 
-        ## Remove columns
-        ## If only zeros
-        if (isTRUE(input$remove_zero_column)) {
-          out <- arkhe::remove_zero(out, margin = 2, all = input$all,
-                                    verbose = verbose)
-        }
-        ## If constant
-        if (isTRUE(input$remove_constant_column)) {
-          out <- arkhe::remove_constant(out, verbose = verbose)
-        }
+      ## Remove columns
+      ## If only zeros
+      if (isTruthy(out) && isTRUE(input$remove_zero_column)) {
+        out <- arkhe::remove_zero(out, margin = 2, all = input$all,
+                                  verbose = verbose)
+      }
+      ## If constant
+      if (isTruthy(out) && isTRUE(input$remove_constant_column)) {
+        out <- arkhe::remove_constant(out, verbose = verbose)
       }
 
       validate_dim(out)

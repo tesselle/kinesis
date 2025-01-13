@@ -201,8 +201,7 @@ ternary_server <- function(id, x) {
       ## Symbol colors
       if (isTruthy(symbol_color())) {
         symbol_color <- data_raw()[[symbol_color()]]
-        lvl <- length(unique(symbol_color))
-        col <- get_color(input$col)(lvl)
+        col <- get_color(input$col)
         if (is.double(symbol_color)) {
           col <- khroma::palette_color_continuous(colors = col)(symbol_color)
         } else {
