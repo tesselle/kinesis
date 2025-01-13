@@ -23,7 +23,7 @@ function(request) {
       title = "Plot",
       bslib::nav_panel(
         title = "Bar plot",
-        kinesis::coda_plot_ui("barplot")
+        kinesis::coda_barplot_ui("barplot")
       ),
       bslib::nav_panel(
         title = "Ternary plot",

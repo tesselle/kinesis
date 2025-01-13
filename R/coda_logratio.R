@@ -28,7 +28,10 @@ logratio_ui <- function(id) {
     ## Output: plot
     output_plot(
       id = ns("plot"),
-      tools = list(select_color(inputId = ns("col"))),
+      tools = list(
+        select_color(inputId = ns("col")),
+        select_pch(inputId = ns("pch"), default = NULL)
+      ),
       height = "100%",
       title = "Density"
     )
@@ -87,10 +90,17 @@ logratio_server <- function(id, x, method) {
     ## Plot -----
     plot_log <- reactive({
       req(logratio())
-      col <- khroma::color(input$col)
-      pal <- khroma::palette_color_discrete(col)
+      col <- get_color(input$col)
+      pch <- get_value(as.integer(input$pch))
 
-      function() plot(logratio(), color = pal)
+      function() {
+        plot(
+          logratio(),
+          palette_color = khroma::palette_color_discrete(col),
+          palette_symbol = khroma::palette_shape(pch),
+          pch = get_value(pch, 1)
+        )
+      }
     })
 
     ## Graph -----

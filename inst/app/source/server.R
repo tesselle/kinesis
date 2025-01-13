@@ -20,7 +20,7 @@ function(input, output, session) {
   # kinesis::coda_outliers_server("outliers", coda)
 
   ## Graphs
-  kinesis::coda_plot_server("barplot", x = coda)
+  kinesis::coda_barplot_server("barplot", x = coda)
   kinesis::ternary_server("ternary", x = coda)
 
   ## Log-ratio

@@ -238,6 +238,8 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
 }
 
 get_color <- function(palette) {
+  force(palette)
+
   function(n) {
     col <- try(khroma::color(palette)(n), silent = TRUE)
     if (!inherits(col, "try-error")) return(col)

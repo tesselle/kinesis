@@ -2,11 +2,11 @@
 #' Compositional Bar Plot UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
-#' @seealso [coda_plot_server()]
+#' @seealso [coda_barplot_server()]
 #' @family coda modules
 #' @keywords internal
 #' @export
-coda_plot_ui <- function(id) {
+coda_barplot_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
@@ -67,11 +67,11 @@ coda_plot_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`nexus::CompositionMatrix-class`] object.
-#' @seealso [coda_plot_ui()]
+#' @seealso [coda_barplot_ui()]
 #' @family coda modules
 #' @keywords internal
 #' @export
-coda_plot_server <- function(id, x) {
+coda_barplot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -99,7 +99,7 @@ coda_plot_server <- function(id, x) {
     plot_bar <- reactive({
       req(data_bar())
 
-      col <- khroma::color(input$color_qualitative)
+      col <- get_color(input$color_qualitative)
       pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
 
       function() {
@@ -108,7 +108,7 @@ coda_plot_server <- function(id, x) {
           order_columns = input$order_columns,
           order_rows = get_value(col_bar()),
           decreasing = input$decreasing,
-          color = pal,
+          palette_color = pal,
           space = get_value(input$space, 0)
         )
       }
