@@ -8,10 +8,8 @@ reference:
   contents:
   - has_concept("shiny apps")
 
-# navbar:
-#  components:
-#    articles:
-#     text: Apps
-#     menu:
-#     - text: Seriation
-#       href: https://tesselle.shinyapps.io/seriate/
+navbar:
+  components:
+    intro:
+      text: Online Apps
+      href: https://analytics.huma-num.fr/tesselle/
