@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/tesselle/kinesis/graph/badge.svg?token=i2n7T978ex)](https://codecov.io/gh/tesselle/kinesis)
+[![codecov](https://codecov.io/gh/tesselle/kinesis/graph/badge.svg?token=i2n7T978ex)](https://app.codecov.io/gh/tesselle/kinesis)
 
 <a href="https://tesselle.r-universe.dev/kinesis"
 class="pkgdown-devel"><img
@@ -19,7 +19,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 
 ## Overview
 
-A collection of [**shiny**](https://shiny.rstudio.com) applications that
+A collection of [**shiny**](https://shiny.posit.co) applications that
 provides graphical user interfaces for the
 [tesselle](https://www.tesselle.org) packages.
 
@@ -36,9 +36,9 @@ for Research and Teaching in Archaeology.” *Advances in Archaeological
 Practice*. <doi:10.1017/aap.2024.10>
 <https://doi.org/10.1017/aap.2024.10>.
 
-Frerebeau N (2024). *kinesis: ‘shiny’ Applications for the ‘tesselle’
+Frerebeau N (2025). *kinesis: ‘shiny’ Applications for the ‘tesselle’
 Packages*. Université Bordeaux Montaigne, Pessac, France. R package
-version 0.0.0.9004, <https://packages.tesselle.org/kinesis/>.
+version 0.1.0, <https://packages.tesselle.org/kinesis/>.
 
 This package is a part of the tesselle project
 <https://www.tesselle.org>.

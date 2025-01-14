@@ -14,7 +14,7 @@ A collection of 'shiny' applications for the 'tesselle' packages.
 \tabular{ll}{
 \strong{Package:} \tab kinesis \cr
 \strong{Type:} \tab Package \cr
-\strong{Version:} \tab 0.0.0.9000 \cr
+\strong{Version:} \tab 0.1.0 \cr
 \strong{License:} \tab GPL-3 \cr
 }
 }

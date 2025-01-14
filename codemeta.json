@@ -1,22 +1,20 @@
 {
-  "@context": [
-    "https://doi.org/10.5063/schema/codemeta-2.0",
-    "http://schema.org"
-  ],
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "kinesis",
-  "description": "A collection of 'shiny' applications for the tesselle R\n    packages.",
-  "name": "kinesis: 'Shiny' Applications for the tesselle R Packages",
+  "description": "A collection of 'shiny' applications for the 'tesselle' packages.",
+  "name": "kinesis: 'shiny' Applications for the 'tesselle' Packages",
+  "relatedLink": "https://packages.tesselle.org/kinesis/",
   "codeRepository": "https://github.com/tesselle/kinesis",
   "issueTracker": "https://github.com/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.0.0.9000",
+  "version": "0.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
+  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
   "author": [
     {
       "@type": "Person",
@@ -26,9 +24,25 @@
       "@id": "https://orcid.org/0000-0001-5759-4944"
     }
   ],
-  "contributor": {},
-  "copyrightHolder": {},
-  "funder": {},
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Brice",
+      "familyName": "Lebrun",
+      "email": "brice.lebrun@u-bordeaux-montaigne.fr",
+      "@id": "https://orcid.org/0000-0001-7503-8685"
+    }
+  ],
+  "funder": [
+    {
+      "@type": "Organization",
+      "name": "Université Bordeaux Montaigne"
+    },
+    {
+      "@type": "Organization",
+      "name": "CNRS"
+    }
+  ],
   "maintainer": [
     {
       "@type": "Person",
@@ -41,35 +55,41 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "rmarkdown",
-      "name": "rmarkdown",
+      "identifier": "tinytest",
+      "name": "tinytest",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+      "sameAs": "https://CRAN.R-project.org/package=tinytest"
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "rsconnect",
-      "name": "rsconnect",
+      "identifier": "tinysnapshot",
+      "name": "tinysnapshot",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=rsconnect"
+      "sameAs": "https://CRAN.R-project.org/package=tinysnapshot"
     }
   ],
-  "softwareRequirements": [
-    {
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.1"
+    },
+    "2": {
       "@type": "SoftwareApplication",
       "identifier": "arkhe",
       "name": "arkhe",
-      "version": ">= 0.4.0",
+      "version": ">= 1.9.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -78,11 +98,37 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=arkhe"
     },
-    {
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "bslib",
+      "name": "bslib",
+      "version": ">= 0.8.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=bslib"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "config",
+      "name": "config",
+      "version": ">= 0.3.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=config"
+    },
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "dimensio",
       "name": "dimensio",
-      "version": ">= 0.2.2",
+      "version": ">= 0.11.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -91,23 +137,68 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dimensio"
     },
-    {
+    "6": {
       "@type": "SoftwareApplication",
-      "identifier": "ggplot2",
-      "name": "ggplot2",
+      "identifier": "future",
+      "name": "future",
+      "version": ">= 1.34.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=ggplot2"
+      "sameAs": "https://CRAN.R-project.org/package=future"
     },
-    {
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "grDevices",
+      "name": "grDevices"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "gt",
+      "name": "gt",
+      "version": ">= 0.11.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gt"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "isopleuros",
+      "name": "isopleuros",
+      "version": ">= 1.3.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=isopleuros"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "kairos",
+      "name": "kairos",
+      "version": ">= 2.2.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=kairos"
+    },
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "khroma",
       "name": "khroma",
-      "version": ">= 1.7.0",
+      "version": ">= 1.15.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -116,11 +207,50 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=khroma"
     },
-    {
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "nexus",
+      "name": "nexus",
+      "version": ">= 0.4.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=nexus"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "promises",
+      "name": "promises",
+      "version": ">= 1.3.2",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=promises"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "sass",
+      "name": "sass",
+      "version": ">= 0.4.9",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sass"
+    },
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
-      "version": ">= 1.5.0",
+      "version": ">= 1.10.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -129,15 +259,16 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=shiny"
     },
-    {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "tabula",
       "name": "tabula",
+      "version": ">= 3.2.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -146,24 +277,56 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tabula"
     },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "tools",
-      "name": "tools"
-    },
-    {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
+    },
+    "SystemRequirements": null
+  },
+  "fileSize": "449.378KB",
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2024",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Nicolas",
+          "familyName": "Frerebeau"
+        }
+      ],
+      "name": "{The tesselle Project: a Collection of R Packages for Research and Teaching in Archaeology}",
+      "identifier": "10.1017/aap.2024.10",
+      "@id": "https://doi.org/10.1017/aap.2024.10",
+      "sameAs": "https://doi.org/10.1017/aap.2024.10",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "datePublished": "2024",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "name": "Advances in Archaeological Practice"
+        }
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2025",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": "Nicolas",
+          "familyName": "Frerebeau"
+        }
+      ],
+      "name": "{kinesis: 'shiny' Applications for the 'tesselle' Packages}",
+      "url": "https://packages.tesselle.org/kinesis/",
+      "description": "R package version 0.1.0"
     }
   ],
-  "readme": "https://github.com/tesselle/kinesis/blob/master/README.md",
-  "fileSize": "213.55KB",
-  "developmentStatus": "https://www.repostatus.org/#wip",
-  "keywords": [
-    "shiny-apps",
-    "r-package"
-  ],
   "releaseNotes": "https://github.com/tesselle/kinesis/blob/master/NEWS.md",
-  "relatedLink": "https://packages.tesselle.org/kinesis/"
+  "readme": "https://github.com/tesselle/kinesis/blob/main/README.md",
+  "contIntegration": ["https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/tesselle/kinesis"],
+  "developmentStatus": "https://www.repostatus.org/#wip",
+  "keywords": ["shiny-apps", "r-package", "archaeology", "archaeological-science", "archaeometry"]
 }
