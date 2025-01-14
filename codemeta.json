@@ -284,7 +284,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "449.378KB",
+  "fileSize": "449.775KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -320,8 +320,11 @@
         }
       ],
       "name": "{kinesis: 'shiny' Applications for the 'tesselle' Packages}",
+      "identifier": "10.5281/zenodo.14645671",
       "url": "https://packages.tesselle.org/kinesis/",
-      "description": "R package version 0.1.0"
+      "description": "R package version 0.1.0",
+      "@id": "https://doi.org/10.5281/zenodo.14645671",
+      "sameAs": "https://doi.org/10.5281/zenodo.14645671"
     }
   ],
   "releaseNotes": "https://github.com/tesselle/kinesis/blob/master/NEWS.md",

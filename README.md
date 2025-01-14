@@ -11,10 +11,14 @@
 <a href="https://tesselle.r-universe.dev/kinesis"
 class="pkgdown-devel"><img
 src="https://tesselle.r-universe.dev/badges/kinesis"
-alt="r-universe" /></a> [![Project Status: WIP – Initial development is
-in progress, but there has not yet been a stable, usable release
-suitable for the
+alt="r-universe" /></a>
+
+[![Project Status: WIP – Initial development is in progress, but there
+has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+
+[![DOI
+Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.14645671.svg)](https://doi.org/10.5281/zenodo.14645671)
 <!-- badges: end -->
 
 ## Overview
@@ -37,8 +41,9 @@ Practice*. <doi:10.1017/aap.2024.10>
 <https://doi.org/10.1017/aap.2024.10>.
 
 Frerebeau N (2025). *kinesis: ‘shiny’ Applications for the ‘tesselle’
-Packages*. Université Bordeaux Montaigne, Pessac, France. R package
-version 0.1.0, <https://packages.tesselle.org/kinesis/>.
+Packages*. Université Bordeaux Montaigne, Pessac, France.
+<doi:10.5281/zenodo.14645671> <https://doi.org/10.5281/zenodo.14645671>,
+R package version 0.1.0, <https://packages.tesselle.org/kinesis/>.
 
 This package is a part of the tesselle project
 <https://www.tesselle.org>.

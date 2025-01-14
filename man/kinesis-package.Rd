@@ -16,6 +16,7 @@ A collection of 'shiny' applications for the 'tesselle' packages.
 \strong{Type:} \tab Package \cr
 \strong{Version:} \tab 0.1.0 \cr
 \strong{License:} \tab GPL-3 \cr
+\strong{Zenodo:} \tab \doi{10.5281/zenodo.14645671} \cr
 }
 }
 \seealso{
