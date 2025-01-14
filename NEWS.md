@@ -1,3 +1,5 @@
+# kinesis 0.1.0.9000
+
 # kinesis 0.1.0
 ## Internals
 * Import **arkhe** (>= 1.9.0).

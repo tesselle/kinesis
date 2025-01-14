@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/tesselle/kinesis",
   "issueTracker": "https://github.com/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.0",
+  "version": "0.1.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -284,7 +284,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "449.775KB",
+  "fileSize": "449.802KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -322,7 +322,7 @@
       "name": "{kinesis: 'shiny' Applications for the 'tesselle' Packages}",
       "identifier": "10.5281/zenodo.14645671",
       "url": "https://packages.tesselle.org/kinesis/",
-      "description": "R package version 0.1.0",
+      "description": "R package version 0.1.0.9000",
       "@id": "https://doi.org/10.5281/zenodo.14645671",
       "sameAs": "https://doi.org/10.5281/zenodo.14645671"
     }
