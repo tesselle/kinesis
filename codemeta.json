@@ -5,8 +5,8 @@
   "description": "A collection of 'shiny' applications for the 'tesselle' packages.",
   "name": "kinesis: 'shiny' Applications for the 'tesselle' Packages",
   "relatedLink": "https://packages.tesselle.org/kinesis/",
-  "codeRepository": "https://github.com/tesselle/kinesis",
-  "issueTracker": "https://github.com/tesselle/kinesis/issues",
+  "codeRepository": "https://codeberg.org/tesselle/kinesis",
+  "issueTracker": "https://codeberg.org/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.1.0.9000",
   "programmingLanguage": {
@@ -327,9 +327,5 @@
       "sameAs": "https://doi.org/10.5281/zenodo.14645671"
     }
   ],
-  "releaseNotes": "https://github.com/tesselle/kinesis/blob/master/NEWS.md",
-  "readme": "https://github.com/tesselle/kinesis/blob/main/README.md",
-  "contIntegration": ["https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/tesselle/kinesis"],
-  "developmentStatus": "https://www.repostatus.org/#wip",
-  "keywords": ["shiny-apps", "r-package", "archaeology", "archaeological-science", "archaeometry"]
+  "developmentStatus": "https://www.repostatus.org/#wip"
 }

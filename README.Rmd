@@ -17,9 +17,6 @@ Sys.setenv(LANGUAGE = "en") # Force locale
 # kinesis <img width=120px src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tesselle/kinesis/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/tesselle/kinesis/graph/badge.svg?token=i2n7T978ex)](https://app.codecov.io/gh/tesselle/kinesis)
-
 [![r-universe](https://tesselle.r-universe.dev/badges/kinesis)](https://tesselle.r-universe.dev/kinesis){.pkgdown-devel}
 
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -56,11 +53,11 @@ options(repos = c(CRAN = "https://cloud.r-project.org",
 install.packages("kinesis")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from [Codeberg](https://codeberg.org/) with:
 
 ```{r gh-installation, eval=FALSE}
 # install.packages("remotes")
-remotes::install_github("tesselle/kinesis")
+remotes::install_git("https://codeberg.org/tesselle/kinesis")
 ```
 
 ### Usage

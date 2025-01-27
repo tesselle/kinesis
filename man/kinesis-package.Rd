@@ -22,9 +22,9 @@ A collection of 'shiny' applications for the 'tesselle' packages.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/tesselle/kinesis}
+  \item \url{https://codeberg.org/tesselle/kinesis}
   \item \url{https://packages.tesselle.org/kinesis/}
-  \item Report bugs at \url{https://github.com/tesselle/kinesis/issues}
+  \item Report bugs at \url{https://codeberg.org/tesselle/kinesis/issues}
 }
 
 }

@@ -13,9 +13,9 @@ Maintainer: Nicolas Frerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>
 Description: A collection of 'shiny' applications for the 'tesselle'
     packages.
 License: GPL (>= 3)
-URL: https://github.com/tesselle/kinesis,
+URL: https://codeberg.org/tesselle/kinesis,
     https://packages.tesselle.org/kinesis/
-BugReports: https://github.com/tesselle/kinesis/issues
+BugReports: https://codeberg.org/tesselle/kinesis/issues
 Depends: 
     R (>= 4.1)
 Imports: 
