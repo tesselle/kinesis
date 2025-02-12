@@ -44,10 +44,10 @@ contact:
   orcid: https://orcid.org/0000-0001-5759-4944
 keywords:
 - archaeology
-- archaeological science
+- archaeological-science
 - archaeometry
-- r package
-- shiny apps
+- shiny-apps
+- r-package
 references:
 - type: manual
   title: 'kinesis: ''shiny'' Applications for the ''tesselle'' Packages'

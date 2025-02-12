@@ -24,15 +24,6 @@
       "@id": "https://orcid.org/0000-0001-5759-4944"
     }
   ],
-  "contributor": [
-    {
-      "@type": "Person",
-      "givenName": "Brice",
-      "familyName": "Lebrun",
-      "email": "brice.lebrun@u-bordeaux-montaigne.fr",
-      "@id": "https://orcid.org/0000-0001-7503-8685"
-    }
-  ],
   "funder": [
     {
       "@type": "Organization",
@@ -284,7 +275,10 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "449.802KB",
+  "applicationCategory": "ArchaeologicalScience",
+  "isPartOf": "https://www.tesselle.org",
+  "keywords": ["archaeology", "archaeological-science", "archaeometry", "shiny-apps", "r-package"],
+  "fileSize": "449.803KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
