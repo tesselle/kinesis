@@ -30,8 +30,8 @@ function(request) {
     bslib::nav_spacer(),
     bslib::nav_item(bslib::input_dark_mode()),
     footer = kinesis::footer_ui("footer"),
+    navbar_options = bslib::navbar_options(collapsible = TRUE),
     theme = kinesis::theme_ui(),
-    lang = "en",
-    collapsible = TRUE
+    lang = "en"
   )
 }
