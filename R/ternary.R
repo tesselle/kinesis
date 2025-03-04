@@ -38,6 +38,18 @@ ternary_ui <- function(id) {
             inputId = ns("density"),
             label = "Density contour",
             value = FALSE
+          ),
+          radioButtons(
+            inputId = ns("tile"),
+            label = "Heatmap",
+            choices = c(None = "none", Bin = "bin", Density = "dens"),
+            selected = "none"
+          ),
+          sliderInput(
+            inputId = ns("bin"),
+            label = "Number of bins",
+            min = 5, max = 20,
+            value = 10, step = 1
           )
         ),
         accordion_panel(
@@ -234,7 +246,16 @@ ternary_server <- function(id, x) {
         range_coord <- isopleuros::coordinates_cartesian(x = x_pts, y = y_pts)
       }
 
-      ## Enveloppe
+      ## Heatmap
+      bin <- as.numeric(input$bin)
+      fun_tile <- switch(
+        input$tile,
+        bin = isopleuros::tile_bin(tern),
+        dens = isopleuros::tile_density(tern),
+        NULL
+      )
+
+      ## Envelope
       level <- as.numeric(input$level)
       fun_wrap <- switch(
         input$wrap,
@@ -266,6 +287,15 @@ ternary_server <- function(id, x) {
         }
 
         if (no_scale) {
+          ## Heatmap
+          if (isTruthy(fun_tile)) {
+            isopleuros::ternary_image(
+              f = fun_tile,
+              n = bin,
+              palette = khroma::palette_color_continuous(get_color(input$col))
+            )
+          }
+
           ## Density contours
           if (input$density) {
             isopleuros::ternary_density(tern)
