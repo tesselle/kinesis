@@ -17,7 +17,8 @@ diversity_beta_ui <- function(id) {
       selectInput(
         inputId = ns("method"),
         label = "Dissimilarity measure",
-        choices = c(`Bray-Curtis` = "bray", `Morisita-Horn` = "morisita"),
+        choices = c(`Bray-Curtis` = "bray", `Dice-Sorenson` = "sorenson",
+                    `Morisita-Horn` = "morisita"),
         multiple = FALSE
       ),
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
