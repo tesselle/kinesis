@@ -19,14 +19,14 @@ home_ui <- function(id, package) {
       help_license(),
       tags$img(
         src = "static/tesselle.png",
-        alt = "Logo of the tesselle project.",
+        alt = tr_("Logo of the tesselle project."),
         style = "width: 75%; margin: auto;"
       )
     ), # sidebar
     navset_card_pill(
       placement = "above",
       nav_panel(
-        title = "Overview",
+        title = tr_("Overview"),
         h3(get_option("title")),
         markdown(get_option("description")),
         help_warranty(),
@@ -39,18 +39,23 @@ home_ui <- function(id, package) {
         )
       ),
       nav_panel(
-        title = "How to cite",
+        title = tr_("How to cite"),
         help_cite(package)
       ),
       nav_panel(
-        title = "Bookmark",
-        tags$p("You can save the state of the application and get a URL which will restore the application with that state.",
-               "You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state."),
-        tags$p("This is not intended for long-term storage. There is no guarantee as to how long your bookmark will last."),
+        title = tr_("Bookmark"),
+        tags$p(
+          tr_("You can save the state of the application and get a URL which will restore the application with that state."),
+          tr_("You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state.")
+        ),
+        tags$p(
+          tr_("This is not intended for long-term storage."),
+          tr_("There is no guarantee as to how long your bookmark will last.")
+        ),
         if (get_option("bookmark")) {
           tags$div(class = "d-grid d-md-block", bookmarkButton())
         } else {
-          tags$p("Bookmarking is currently disabled.")
+          tags$p(tr_("Bookmarking is currently disabled."))
         }
       )
     ) # navset_card_pill
@@ -71,13 +76,13 @@ footer_ui <- function(id) {
   tags$footer(
     style = "border-top: 1px; margin-top: 1em; width: 100%; text-align: center;",
     tags$p(
-      actionLink(inputId = ns("session"), label = "Session info"),
+      actionLink(inputId = ns("session"), label = tr_("Session info")),
       HTML(" &middot; "),
       tags$a(href = "https://codeberg.org/tesselle/kinesis",
-             target = "_blank", rel = "external", "Source code"),
+             target = "_blank", rel = "external", tr_("Source code")),
       HTML(" &middot; "),
       tags$a(href = "https://codeberg.org/tesselle/kinesis/issues",
-             target = "_blank", rel = "external", "Report a bug or request")
+             target = "_blank", rel = "external", tr_("Report a bug or request"))
     )
   )
 }
@@ -97,7 +102,7 @@ home_server <- function(id) {
     onBookmark(function(state) {
       saved_time <- Sys.time()
 
-      msg <- sprintf("Last saved at %s.", saved_time)
+      msg <- sprintf(tr_("Last saved at %s."), saved_time)
       showNotification(
         ui = msg,
         duration = 5,
@@ -113,7 +118,7 @@ home_server <- function(id) {
     })
 
     onRestore(function(state) {
-      msg <- sprintf("Restoring from state bookmarked at %s.", state$values$time)
+      msg <- sprintf(tr_("Restoring from state bookmarked at %s."), state$values$time)
       showNotification(
         ui = msg,
         duration = 5,
@@ -142,11 +147,11 @@ footer_server  <- function(id) {
     observeEvent(input$session, {
       showModal(
         modalDialog(
-          title = "Session Info",
+          title = tr_("Session Info"),
           info_session(),
           size = "xl",
           easyClose = TRUE,
-          footer = modalButton("Close")
+          footer = modalButton(tr_("Close"))
         )
       )
     })

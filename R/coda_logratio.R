@@ -14,14 +14,15 @@ logratio_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       title = uiOutput(outputId = ns("title")),
-      helpText("Compute log-ratio transformation of compositional data."),
+      helpText(tr_("Compute log-ratio transformation of compositional data.")),
       checkboxInput(
         inputId = ns("weights"),
-        label = "Weighted log-ratio",
+        label = tr_("Weighted log-ratio"),
         value = FALSE
       ),
       uiOutput(outputId = ns("settings")),
-      downloadButton(outputId = ns("download_table"), "Download log-ratio"),
+      downloadButton(outputId = ns("download_table"),
+                     label = tr_("Download log-ratio")),
       ## Output: graph
       plotOutput(outputId = ns("graph"))
     ), # sidebar
@@ -33,7 +34,7 @@ logratio_ui <- function(id) {
         select_pch(inputId = ns("pch"), default = NULL)
       ),
       height = "100%",
-      title = "Density"
+      title = tr_("Density")
     )
   ) # layout_sidebar
 }
@@ -59,8 +60,8 @@ logratio_server <- function(id, x, method) {
       if (!(method == "alr" || method == "plr")) return(NULL)
       label <- switch (
         method,
-        alr = "Rationing part:",
-        plr = "Pivotal variable:"
+        alr = tr_("Rationing part:"),
+        plr = tr_("Pivotal variable:")
       )
       selectizeInput(
         inputId = session$ns("pivot"),
@@ -117,10 +118,10 @@ logratio_server <- function(id, x, method) {
     output$title <- renderUI({
       title <- switch(
         method,
-        clr = "Centered Log-Ratio",
-        alr = "Additive Log-Ratio",
-        ilr = "Isometric Log-Ratio",
-        plr = "Pivot Log-Ratio",
+        clr = tr_("Centered Log-Ratio"),
+        alr = tr_("Additive Log-Ratio"),
+        ilr = tr_("Isometric Log-Ratio"),
+        plr = tr_("Pivot Log-Ratio"),
         ""
       )
       tags$header(title, class = "sidebar-title")

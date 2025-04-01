@@ -15,106 +15,106 @@ ternary_ui <- function(id) {
       width = 400,
       accordion(
         accordion_panel(
-          title = "Aesthetic mappings",
+          title = tr_("Aesthetic mappings"),
           ## Input: select axes
-          selectize_ui(id = ns("axis1"), label = "Component X"),
-          selectize_ui(id = ns("axis2"), label = "Component Y"),
-          selectize_ui(id = ns("axis3"), label = "Component Z"),
+          selectize_ui(id = ns("axis1"), label = tr_("Component X")),
+          selectize_ui(id = ns("axis2"), label = tr_("Component Y")),
+          selectize_ui(id = ns("axis3"), label = tr_("Component Z")),
           ## Input: aesthetics mapping
-          selectize_ui(id = ns("symbol_color"), label = "Colors"),
-          selectize_ui(id = ns("symbol_shape"), label = "Symbol shapes"),
-          selectize_ui(id = ns("symbol_size"), label = "Symbol sizes"),
+          selectize_ui(id = ns("symbol_color"), label = tr_("Colors")),
+          selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shapes")),
+          selectize_ui(id = ns("symbol_size"), label = tr_("Symbol sizes")),
         ),
         accordion_panel(
-          title = "Layers",
+          title = tr_("Layers"),
           ## Input: add points
           checkboxInput(
             inputId = ns("points"),
-            label = "Show points",
+            label = tr_("Show points"),
             value = TRUE
           ),
           ## Input: add density
           checkboxInput(
             inputId = ns("density"),
-            label = "Density contour",
+            label = tr_("Density contour"),
             value = FALSE
           ),
           radioButtons(
             inputId = ns("tile"),
-            label = "Heatmap",
-            choices = c(None = "none", Bin = "bin", Density = "dens"),
+            label = tr_("Heatmap"),
+            choiceNames = c(tr_("None"), tr_("Bin"), tr_("Density")),
+            choiceValues = c("none", "bin", "dens"),
             selected = "none"
           ),
           sliderInput(
             inputId = ns("bin"),
-            label = "Number of bins",
+            label = tr_("Number of bins"),
             min = 5, max = 20,
             value = 10, step = 1
           )
         ),
         accordion_panel(
-          title = "Transform",
+          title = tr_("Transform"),
           checkboxInput(
             inputId = ns("center"),
-            label = "Center",
+            label = tr_("Center"),
             value = FALSE
           ),
           checkboxInput(
             inputId = ns("scale"),
-            label = "Scale",
+            label = tr_("Scale"),
             value = FALSE
           )
         ),
         accordion_panel(
-          title = "Envelopes",
+          title = tr_("Envelopes"),
           ## Input: select group
-          selectize_ui(id = ns("group"), label = "Group by"),
+          selectize_ui(id = ns("group"), label = tr_("Group by")),
           ## Input: add ellipses
           radioButtons(
             inputId = ns("wrap"),
-            label = "Wrap:",
-            choices = c(
-              "None" = "none",
-              "Tolerance ellipse" = "tol",
-              "Confidence ellipse" = "conf",
-              "Convex hull" = "hull"
-            )
+            label = tr_("Wrap:"),
+            choiceNames = c(tr_("None"), tr_("Tolerance ellipse"),
+                            tr_("Confidence ellipse"), tr_("Convex hull")),
+            choiceValues = c("none", "tol", "conf", "hull"),
           ),
           checkboxGroupInput(
             inputId = ns("level"),
-            label = "Ellipse level",
+            label = tr_("Ellipse level"),
             selected = "0.95",
             choiceNames = c("68%", "95%", "99%"),
             choiceValues = c("0.68", "0.95", "0.99")
           )
         ),
         accordion_panel(
-          title = "Annotations",
+          title = tr_("Annotations"),
           ## Input: add a grid
           checkboxInput(
             inputId = ns("grid"),
-            label = "Grid",
+            label = tr_("Grid"),
             value = TRUE
           ),
           ## Input: add labels
           checkboxInput(
             inputId = ns("labels"),
-            label = "Labels",
+            label = tr_("Labels"),
             value = FALSE
           )
           ## Input: add a legend
           # TODO
           # checkboxInput(
           #   inputId = ns("legend"),
-          #   label = "Legend",
+          #   label = tr_("Legend"),
           #   value = TRUE
           # )
         )
       )
     ), # sidebar
-    helpText("Visualize your data in the ternary space.",
-             "Click and drag to select an area, then double-click to zoom in.",
-             "Double-click again to reset the zoom."),
+    helpText(
+      tr_("Visualize your data in the ternary space."),
+      tr_("Click and drag to select an area, then double-click to zoom in."),
+      tr_("Double-click again to reset the zoom.")
+    ),
     output_plot(
       id = ns("ternplot"),
       tools = list(
@@ -122,7 +122,7 @@ ternary_ui <- function(id) {
         select_pch(inputId = ns("pch"), default = NULL),
         select_cex(inputId = ns("cex"))
       ),
-      title = "Ternary plot",
+      title = tr_("Ternary plot"),
       dblclick = ns("ternplot_dblclick"),
       brush = brushOpts(
         id = ns("ternplot_brush"),

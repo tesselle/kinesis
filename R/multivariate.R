@@ -13,62 +13,60 @@ multivariate_ui <- function(id) {
 
   navset_card_pill(
     sidebar = sidebar(
-      title = "Factor maps",
+      title = tr_("Factor maps"),
       ## Input: display options
       selectizeInput(
         inputId = ns("axis1"),
-        label = "Horizontal axis",
+        label = tr_("Horizontal axis"),
         choices = NULL,
         selected = NULL,
         multiple = FALSE
       ),
       selectizeInput(
         inputId = ns("axis2"),
-        label = "Vertical axis",
+        label = tr_("Vertical axis"),
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
       ),
       checkboxInput(
         inputId = ns("lab_row"),
-        label = "Label individuals",
+        label = tr_("Label individuals"),
         value = FALSE
       ),
       checkboxInput(
         inputId = ns("lab_col"),
-        label = "Label variables",
+        label = tr_("Label variables"),
         value = TRUE
       ),
       selectize_ui(
         id = ns("extra_quanti"),
-        label = "Extra quantitative variable"
+        label = tr_("Extra quantitative variable")
       ),
       selectize_ui(
         id = ns("extra_quali"),
-        label = "Extra qualitative variable"
+        label = tr_("Extra qualitative variable")
       ),
       ## Input: add ellipses
       checkboxInput(
         inputId = ns("wrap_hull"),
-        label = "Convex hull",
+        label = tr_("Convex hull"),
         value = FALSE
       ),
       checkboxInput(
         inputId = ns("wrap_ellipse"),
-        label = "Ellipse",
+        label = tr_("Ellipse"),
         value = FALSE
       ),
       radioButtons(
         inputId = ns("ellipse_type"),
-        label = "Ellipse type:",
-        choices = c(
-          "Tolerance ellipse" = "tolerance",
-          "Confidence ellipse" = "confidence"
-        )
+        label = tr_("Ellipse type:"),
+        choiceNames = c(tr_("Tolerance ellipse"), tr_("Confidence ellipse")),
+        choiceValues = c("tolerance", "confidence")
       ),
       checkboxGroupInput(
         inputId = ns("ellipse_level"),
-        label = "Ellipse level:",
+        label = tr_("Ellipse level:"),
         selected = "0.95",
         choiceNames = c("68%", "95%", "99%"),
         choiceValues = c("0.68", "0.95", "0.99")
@@ -77,8 +75,10 @@ multivariate_ui <- function(id) {
     ## Results -----
     nav_panel(
       title = "Results",
-      helpText("Click and drag to select an area, then double-click to zoom in.",
-               "Double-click again to reset the zoom."),
+      helpText(
+        tr_("Click and drag to select an area, then double-click to zoom in."),
+        tr_("Double-click again to reset the zoom.")
+      ),
       layout_column_wrap(
         output_plot(
           id = ns("plot_ind"),
@@ -87,7 +87,7 @@ multivariate_ui <- function(id) {
             select_pch(inputId = ns("pch"), default = NULL),
             select_cex(inputId = ns("cex"))
           ),
-          title = "Individuals factor map",
+          title = tr_("Individuals factor map"),
           dblclick = ns("plot_ind_dblclick"),
           brush = brushOpts(
             id = ns("plot_ind_brush"),
@@ -102,7 +102,7 @@ multivariate_ui <- function(id) {
             select_lty(inputId = ns("lty"), default = NULL),
             select_cex(inputId = ns("lwd"), default = c(1, 1))
           ),
-          title = "Variables factor map",
+          title = tr_("Variables factor map"),
           dblclick = ns("plot_var_dblclick"),
           brush = brushOpts(
             id = ns("plot_var_brush"),
@@ -114,12 +114,12 @@ multivariate_ui <- function(id) {
     ),
     ## Individuals -----
     nav_panel(
-      title = "Individuals",
+      title = tr_("Individuals"),
       gt::gt_output(outputId = ns("info_ind"))
     ),
     ## Variables -----
     nav_panel(
-      title = "Variables",
+      title = tr_("Variables"),
       layout_column_wrap(
         output_plot(id = ns("plot_contrib_1")),
         output_plot(id = ns("plot_contrib_2"))
@@ -128,9 +128,9 @@ multivariate_ui <- function(id) {
     ),
     ## Screeplot -----
     nav_panel(
-      title = "Screeplot",
+      title = tr_("Screeplot"),
       layout_column_wrap(
-        output_plot(id = ns("screeplot"), title = "Screeplot"),
+        output_plot(id = ns("screeplot"), title = tr_("Screeplot")),
         gt::gt_output(outputId = ns("variance"))
       )
     )
@@ -340,17 +340,17 @@ multivariate_summary <- function(x, axes, margin) {
     gt::gt(rownames_to_stub = TRUE) |>
     gt::fmt_number(decimals = 3) |>
     gt::tab_spanner(
-      label = "Coordinates",
+      label = tr_("Coordinates"),
       columns = gt::ends_with("coord"),
       id = "coord"
     ) |>
     gt::tab_spanner(
-      label = "Contribution",
+      label = tr_("Contribution"),
       columns = gt::ends_with("contrib"),
       id = "contrib"
     ) |>
     gt::tab_spanner(
-      label = "Squared cosinus",
+      label = tr_("Squared cosinus"),
       columns = gt::ends_with("cos2"),
       id = "cos2"
     ) |>

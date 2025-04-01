@@ -14,12 +14,12 @@ output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
 
   gear <- popover(
     icon("gear"),
-    title = "Tools",
+    title = tr_("Tools"),
     placement = "auto",
     tools,
     actionButton(
       inputId = ns("download"),
-      label = "Download",
+      label = tr_("Download"),
       icon = icon("download")
     )
   )
@@ -109,7 +109,7 @@ render_plot <- function(id, x, ...) {
 #' @noRd
 download_plot <- function(ns) {
   modalDialog(
-    title = "Save plot - Preview",
+    title = tr_("Save plot - Preview"),
     size = "l",
     easyClose = FALSE,
     fade = FALSE,
@@ -121,24 +121,24 @@ download_plot <- function(ns) {
       width = 1/3,
       textInput(
         inputId = ns("name"),
-        label = "File name",
+        label = tr_("File name"),
         value = "plot"
       ),
       numericInput(
         inputId = ns("width"),
-        label = "Width (in)",
+        label = tr_("Width (in)"),
         min = 0.5,
         value = 7
       ),
       numericInput(
         inputId = ns("height"),
-        label = "Height (in)",
+        label = tr_("Height (in)"),
         min = 0.5,
         value = 7
       )
     ),
     footer = tagList(
-      modalButton("Cancel"),
+      modalButton(tr_("Cancel")),
       downloadButton(
         outputId = ns("pdf"),
         label = "PDF",
@@ -169,7 +169,7 @@ export_plot <- function(input, x, format) {
         format,
         pdf = function(x, ...) grDevices::pdf(x, ...),
         png = function(x, ...) grDevices::png(x, ..., units = "in", res = 300),
-        stop("Unknown graphics device.", call. = FALSE)
+        stop(tr_("Unknown graphics device."), call. = FALSE)
       )
 
       device(file, width = input$width, height = input$height)
@@ -183,7 +183,7 @@ export_plot <- function(input, x, format) {
 select_cex <- function(inputId, default = c(1, 2)) {
   sliderInput(
     inputId = inputId,
-    label = "Symbol size",
+    label = tr_("Symbol size"),
     min = 0.1,
     max = 9,
     value = default,
@@ -192,16 +192,18 @@ select_cex <- function(inputId, default = c(1, 2)) {
 }
 
 select_pch <- function(inputId, default = c(16, 17, 15, 3, 7, 8)) {
-  x <- c(square = 0, circle = 1, `triangle up` = 2, plus = 3, cross = 4,
-         diamond = 5, `triangle down` = 6, `square cross` = 7, star = 8,
-         `diamond plus` = 9, `circle plus` = 10, `triangles up and down` = 11,
-         `square plus` = 12, `circle cross` = 13, `square triangle` = 14,
-         `filled square` = 15, `filled circle` = 16, `filled triangle` = 17,
-         `filled diamond` = 18, `solid circle` = 19, bullet = 20)
+  x <- c(
+    square = 0, circle = 1, `triangle up` = 2, plus = 3, cross = 4,
+    diamond = 5, `triangle down` = 6, `square cross` = 7, star = 8,
+    `diamond plus` = 9, `circle plus` = 10, `triangles up and down` = 11,
+    `square plus` = 12, `circle cross` = 13, `square triangle` = 14,
+    `filled square` = 15, `filled circle` = 16, `filled triangle` = 17,
+    `filled diamond` = 18, `solid circle` = 19, bullet = 20
+  )
 
   selectizeInput(
     inputId = inputId,
-    label = "Symbol",
+    label = tr_("Symbol"),
     choices = x,
     selected = default,
     multiple = TRUE,
@@ -215,7 +217,7 @@ select_lty <- function(inputId, default = "solid") {
 
   selectizeInput(
     inputId = inputId,
-    label = "Line type",
+    label = tr_("Line type"),
     choices = x,
     selected = default,
     multiple = TRUE,
@@ -230,7 +232,7 @@ select_color <- function(inputId, type = NULL, default = "discreterainbow") {
 
   selectInput(
     inputId = inputId,
-    label = "Color palette",
+    label = tr_("Color palette"),
     choices = x,
     selected = default,
     multiple = FALSE

@@ -73,20 +73,17 @@ info_article <- function(...) {
 
 help_warranty <- function(...) {
   tags$p(
-    "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY."
+    tr_("This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.")
   )
 }
 
 help_cite <- function(package) {
   list(
     tags$p(
-      "If you use this application in your research, you must report",
-      "and cite it properly to ensure transparency of your results.",
-      "Moreover, authors and maintainers of this project are more likely",
-      "to continue their work if they see that it's being used and valued",
-      "by the research community."
+      tr_("If you use this application in your research, you must report and cite it properly to ensure transparency of your results."),
+      tr_("Moreover, authors and maintainers of this project are more likely to continue their work if they see that it's being used and valued by the research community.")
     ),
-    tags$p("To cite in your publications, please use:"),
+    tags$p(tr_("To cite in your publications, please use:")),
     cite_package(package)
   )
 }
@@ -94,8 +91,8 @@ help_cite <- function(package) {
 help_license <- function(...) {
   withTags(
     p(
-      "This app is distributed as a free and open source",
-      a("R package", href = url_tesselle("kinesis"),
+      tr_("This app is distributed as a free and open source R package:"),
+      a("packages.tesselle.org/kinesis", href = url_tesselle("kinesis"),
         target = "_blank", rel = "external", .noWS = "after"), "."
     )
   )
@@ -104,16 +101,13 @@ help_license <- function(...) {
 help_tesselle <- function(...) {
   withTags(
     list(
+      p(HTML(
+        tr_("This app is a part of the <strong>tesselle</strong> project, a collection of packages for research and teaching in archaeology."),
+        tr_("The <strong>tesselle</strong> packages focus on quantitative analysis methods developed for archaeology."),
+        tr_("They can be used to explore and analyze common data types in archaeology.")
+      )),
       p(
-        "This app is a part of the", strong("tesselle"), "project,",
-        "a collection of packages for research and teaching in archaeology.",
-        "The", strong("tesselle"), "packages focus on quantitative",
-        "analysis methods developed for archaeology. They can be used to",
-        "explore and analyze common data types in archaeology: count data,",
-        "compositional data and chronological data."
-      ),
-      p(
-        "For more information and relevant links see:",
+        tr_("For more information and relevant links see:"),
         a("tesselle.org", href = url_tesselle(), target = "_blank",
           rel = "external", .noWS = "after"), "."
       )

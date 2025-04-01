@@ -13,7 +13,7 @@ coda_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      title = "Compositional Data",
+      title = tr_("Compositional Data"),
       import_ui(ns("import")),
       select_ui(ns("select")),
       clean_ui(ns("clean"))
@@ -23,29 +23,29 @@ coda_ui <- function(id) {
     navset_card_pill(
       placement = "above",
       nav_panel(
-        title = "Data",
+        title = tr_("Data"),
         layout_sidebar(
           sidebar = sidebar(
             selectize_ui(
               id = ns("group"),
               label = tooltip(
                 trigger = span(
-                  "Group",
+                  tr_("Group"),
                   icon("info-circle")
                 ),
-                "You can use a qualitative variable to assign each sample to a (reference) group.",
-                "Missing values will be interpreted as unassigned samples."
+                tr_("You can use a qualitative variable to assign each sample to a (reference) group."),
+                tr_("Missing values will be interpreted as unassigned samples.")
               )
             ),
             selectize_ui(
               id = ns("condense"),
               label = tooltip(
                 trigger = span(
-                  "Condense",
+                  tr_("Condense"),
                   icon("info-circle")
                 ),
-                "If your data contain several observations for the same sample (e.g. repeated measurements),",
-                "you can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."
+                tr_("You can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."),
+                tr_("Usefull if your data contain several observations for the same sample (e.g. repeated measurements).")
               ),
               multiple = TRUE
             ),
@@ -55,7 +55,7 @@ coda_ui <- function(id) {
         ) # layout_sidebar
       ),
       nav_panel(
-        title = "Missing values",
+        title = tr_("Missing values"),
         missing_ui(ns("missing"))
       )
     ),
@@ -106,7 +106,7 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
           autodetect = FALSE,
           verbose = verbose
         ),
-        title = "Compositional Data"
+        title = tr_("Compositional Data")
       )
     })
 
@@ -192,21 +192,21 @@ coda_zero_ui <- function(id) {
 
   list(
     helpText(
-      "If your data contains zeros, these can be considered as values below the detection limit",
-      "(thus interpreted as small unknown values).",
-      "In this case, you can define the detection limit for each compositional part below.",
-      "If all limits are specified, zeros will be replaced by a fraction of these limits.",
-      "See", cite_article("Martin-Fernandez et al.", "2003", "10.1023/A:1023866030544", T), "for computational details."
+      tr_("If your data contains zeros, these can be considered as values below the detection limit (i.e. small unknown values)."),
+      tr_("In this case, you can define the detection limit for each compositional part below."),
+      tr_("If all limits are specified, zeros will be replaced by a fraction of these limits."),
+      tr_("For computational details, see"),
+      cite_article("Martin-Fernandez et al.", "2003", doi = "10.1023/A:1023866030544", text = TRUE)
     ),
     numericInput(
       inputId = ns("delta"),
-      label = "Fraction",
+      label = tr_("Fraction"),
       value = 2 / 3,
       min = 0,
       max = 1
     ),
     uiOutput(outputId = ns("values")),
-    actionButton(inputId = ns("go"), "Replace zero")
+    actionButton(inputId = ns("go"), tr_("Replace zero"))
   )
 }
 coda_zero_server <- function(id, x) {

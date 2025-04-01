@@ -13,23 +13,24 @@ occurrence_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Co-Occurrence"),
+      h5(tr_("Co-Occurrence")),
       radioButtons(
         inputId = ns("method"),
-        label = "Method",
-        choices = c(`Absolute frequency` = "absolute",
-                    `Relative frequency` = "relative",
-                    `Binomial assessment` = "binomial"),
+        label = tr_("Method"),
+        choiceNames = c(tr_("Absolute frequency"),
+                        tr_("Relative frequency"),
+                        tr_("Binomial assessment")),
+        choiceValues = c("absolute", "relative", "binomial")
       ),
       radioButtons(
         inputId = ns("plot_type"),
-        label = "Plot type",
+        label = tr_("Plot type"),
         choices = c("Heatmap", "Spot"),
       ),
-      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
+      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download results"
+        label = tr_("Download results")
       )
     ), # sidebar
     layout_columns(
@@ -66,7 +67,7 @@ occurrence_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = "Co-Occurrence")
+    notify_change(session$ns("change"), x, old, title = tr_("Co-Occurrence"))
 
     ## Compute index -----
     compute_occur <- ExtendedTask$new(
@@ -84,7 +85,7 @@ occurrence_server <- function(id, x) {
       bindEvent(input$go)
 
     results <- reactive({
-      notify(compute_occur$result(), title = "Co-Occurrence")
+      notify(compute_occur$result(), title = tr_("Co-Occurrence"))
     })
 
     ## Plot -----

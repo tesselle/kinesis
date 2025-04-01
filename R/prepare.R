@@ -13,7 +13,7 @@ prepare_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      title = "Data",
+      title = tr_("Data"),
       import_ui(ns("import")),
       select_ui(ns("select")),
       clean_ui(ns("clean")),
@@ -24,11 +24,11 @@ prepare_ui <- function(id) {
     navset_card_pill(
       placement = "above",
       nav_panel(
-        title = "Data",
+        title = tr_("Data"),
         gt::gt_output(outputId = ns("table"))
       ),
       nav_panel(
-        title = "Missing values",
+        title = tr_("Missing values"),
         missing_ui(ns("missing"))
       )
     ),
@@ -90,22 +90,22 @@ box_ui <- function(id) {
     ),
     fill = FALSE,
     value_box(
-      title = "Dimensions",
+      title = tr_("Dimensions"),
       value = textOutput(outputId = ns("value_dimensions"))
     ),
     value_box(
-      title = "Sparsity",
+      title = tr_("Sparsity"),
       value = textOutput(outputId = ns("value_sparsity"))
     ),
     value_box(
-      title = "Missing values",
+      title = tr_("Missing values"),
       value = textOutput(outputId = ns("value_missing"))
     ),
     card(
-      helpText("Export your data for futur use."),
+      helpText(tr_("Export your data for futur use.")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download"
+        label = tr_("Download")
       )
     )
   )
@@ -133,7 +133,7 @@ box_server <- function(id, x) {
 }
 
 ## Select ----------------------------------------------------------------------
-select_ui <- function(id, label = "Select columns:") {
+select_ui <- function(id, label = tr_("Select columns:")) {
   ns <- NS(id)
 
   checkboxGroupInput(
@@ -210,7 +210,7 @@ clean_ui <- function(id) {
     tags$div(
       checkboxInput(
         inputId = ns("rownames"),
-        label = "First column as row names"
+        label = tr_("First column as row names")
       )
     ),
     tags$div(
@@ -218,7 +218,7 @@ clean_ui <- function(id) {
       ## Input: remove whitespace
       checkboxInput(
         inputId = ns("remove_whitespace"),
-        label = "Remove leading/trailing whitespace",
+        label = tr_("Remove leading/trailing whitespace"),
         value = TRUE
       )
     ),
@@ -227,12 +227,12 @@ clean_ui <- function(id) {
       ## Input: remove zero
       checkboxInput(
         inputId = ns("remove_zero_row"),
-        label = "Remove rows with zero",
+        label = tr_("Remove rows with zero"),
         value = FALSE
       ),
       checkboxInput(
         inputId = ns("remove_zero_column"),
-        label = "Remove columns with zero",
+        label = tr_("Remove columns with zero"),
         value = FALSE
       ),
       ## Input: remove constant
@@ -244,7 +244,7 @@ clean_ui <- function(id) {
       ## Input: remove all?
       checkboxInput(
         inputId = ns("all"),
-        label = "Remove only if all values meet the condition",
+        label = tr_("Remove only if all values meet the condition"),
         value = TRUE,
         width = "100%"
       )
@@ -262,7 +262,7 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       if (isTruthy(out) && isTRUE(input$rownames)) {
         out <- notify(
           arkhe::assign_rownames(out, column = 1, remove = TRUE),
-          title = "Rownames"
+          title = tr_("Rownames")
         )
         if (!is.null(out)) x <- out
       }
@@ -307,25 +307,26 @@ missing_ui <- function(id) {
       ## Input: empty as missing
       checkboxInput(
         inputId = ns("empty_as_NA"),
-        label = "Empty string as missing value",
+        label = tr_("Empty string as missing value"),
         value = FALSE
       ),
       ## Input: zero as missing
       checkboxInput(
         inputId = ns("zero_as_NA"),
-        label = "Zero as missing value",
+        label = tr_("Zero as missing value"),
         value = FALSE
       ),
       ## Input: remove missing
       radioButtons(
         inputId = ns("remove"),
-        label = "Remove missing values:",
-        choices = c(
-          "Keep as is" = "none",
-          "Replace missing values with zeros" = "zero",
-          "Remove rows with missing values" = "row",
-          "Remove columns with missing values" = "col"
-        )
+        label = tr_("Remove missing values:"),
+        choiceNames = c(
+          tr_("Keep as is"),
+          tr_("Replace missing values with zeros"),
+          tr_("Remove rows with missing values"),
+          tr_("Remove columns with missing values")
+        ),
+        choiceValues = c("none", "zero", "row", "col")
       )
     ),
     output_plot(ns("heatmap"))
@@ -394,7 +395,7 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 ## Filter ----------------------------------------------------------------------
 filter_ui <- function(id) {
   list(
-    helpText("Remove data points that fall outside a specification."),
+    helpText(tr_("Remove data points that fall outside a specification.")),
     uiOutput(NS(id, "controls"))
   )
 }

@@ -13,20 +13,20 @@ diversity_alpha_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Diversity Measures"),
+      h5(tr_("Diversity Measures")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download results"
+        label = tr_("Download results")
       )
     ), # sidebar
     navset_card_pill(
       placement = "above",
       nav_panel(
-        title = "Results",
+        title = tr_("Results"),
         gt::gt_output(outputId = ns("measures"))
       ),
       nav_panel(
-        title = "Definitions",
+        title = tr_("Definitions"),
         tags$dl(
           tags$dt("Heterogeneity index"),
           tags$dd("The higher the heterogeneity value, the more diverse the individuals are in the dataset."),
@@ -120,21 +120,21 @@ diversity_alpha_server <- function(id, x) {
       alpha() |>
         gt::gt(rownames_to_stub = TRUE) |>
         gt::tab_spanner(
-          label = "Heterogeneity",
+          label = tr_("Heterogeneity"),
           columns = c(3, 4) + 1,
           id = "heterogeneity"
         ) |>
         gt::tab_spanner(
-          label = "Dominance",
+          label = tr_("Dominance"),
           columns = c(5, 6) + 1,
           id = "dominance"
         ) |>
         gt::tab_spanner(
-          label = "Richness",
+          label = tr_("Richness"),
           columns = c(7, 8, 9, 10, 11) + 1,
           id = "richness"
         ) |>
-        gt::tab_header(title = "Diversity Measures") |>
+        gt::tab_header(title = tr_("Diversity Measures")) |>
         gt::fmt_number(decimals = 3) |>
         gt::sub_missing()
     })

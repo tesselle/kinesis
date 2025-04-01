@@ -17,19 +17,19 @@ seriate_ui <- function(id) {
       ## Input: checkbox if permute rows
       checkboxInput(
         inputId = ns("margin_row"),
-        label = "Permute rows",
+        label = tr_("Permute rows"),
         value = TRUE
       ),
       ## Input: checkbox if permute columns
       checkboxInput(
         inputId = ns("margin_col"),
-        label = "Permute columns",
+        label = tr_("Permute columns"),
         value = TRUE
       ),
       ## Input: select CA axes
       numericInput(
         inputId = ns("axes"),
-        label = "CA dimension",
+        label = tr_("CA dimension"),
         value = 1,
         min = 1,
         max = 10,
@@ -37,7 +37,7 @@ seriate_ui <- function(id) {
       ),
       ## Output: download
       downloadButton(outputId = ns("export_table"),
-                     label = "Export matrix"),
+                     label = tr_("Export matrix")),
       h5("Display"),
       ## Input: select plot
       checkboxInput(
@@ -47,14 +47,18 @@ seriate_ui <- function(id) {
       ),
       checkboxInput(
         inputId = ns("weights"),
-        label = "weights",
+        label = tr_("Weights"),
         value = FALSE
       ),
       h5("Significance"),
       uiOutput(outputId = ns("coef"))
     ), # sidebar
     ## Output: plot reordered matrix
-    output_plot(id = ns("plot_permute"), height = "100%", title = "Rearranged matrix")
+    output_plot(
+      id = ns("plot_permute"),
+      height = "100%",
+      title = tr_("Rearranged matrix")
+    )
   ) # layout_sidebar
 }
 
@@ -77,7 +81,7 @@ seriate_server  <- function(id, x, order) {
   moduleServer(id, function(input, output, session) {
     ## Seriate -----
     data_seriate <- reactive({
-      validate(need(order(), "Compute the seriation order first."))
+      validate(need(order(), tr_("Compute the seriation order first.")))
 
       margin <- NULL
       if (input$margin_row) margin <- c(margin, 1)
@@ -117,7 +121,7 @@ seriate_server  <- function(id, x, order) {
     output$coef <- renderUI({
       tags$div(
         tags$ul(
-          tags$li(sprintf("Goodness of fit: %.3f", coef_seriate()$coef))
+          tags$li(sprintf(tr_("Goodness of fit: %.3f"), coef_seriate()$coef))
         ),
         info_article(author = "Porcic", year = "2013",
                      doi = "10.1016/j.jas.2013.07.013")

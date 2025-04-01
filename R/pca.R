@@ -18,34 +18,34 @@ pca_ui <- function(id, center = TRUE, scale = TRUE, help = NULL) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      title = "Principal Components Analysis",
+      title = tr_("Principal Components Analysis"),
       helpText(help),
       checkboxInput(
         inputId = ns("center"),
-        label = "Center",
+        label = tr_("Center"),
         value = center
       ),
       checkboxInput(
         inputId = ns("scale"),
-        label = "Scale",
+        label = tr_("Scale"),
         value = scale
       ),
       selectizeInput(
         inputId = ns("sup_row"),
-        label = "Supplementary individuals",
+        label = tr_("Supplementary individuals"),
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
       selectizeInput(
         inputId = ns("sup_col"),
-        label = "Supplementary variables",
+        label = tr_("Supplementary variables"),
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
+      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download results"
+        label = tr_("Download results")
       )
     ), # sidebar
     multivariate_ui(ns("pca")),
@@ -121,7 +121,7 @@ pca_server <- function(id, x) {
       bindEvent(input$go)
 
     results <- reactive({
-      notify(compute_pca$result(), title = "Principal Components Analysis")
+      notify(compute_pca$result(), title = tr_("Principal Components Analysis"))
     })
 
     multivariate_server("pca", x = results, y = x)

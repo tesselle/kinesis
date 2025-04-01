@@ -13,23 +13,23 @@ ca_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      title = "Correspondence Analysis",
+      title = tr_("Correspondence Analysis"),
       selectizeInput(
         inputId = ns("sup_row"),
-        label = "Supplementary individuals",
+        label = tr_("Supplementary individuals"),
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
       selectizeInput(
         inputId = ns("sup_col"),
-        label = "Supplementary variables",
+        label = tr_("Supplementary variables"),
         choices = NULL, selected = NULL, multiple = TRUE,
         options = list(plugins = "remove_button")
       ),
-      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
+      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download results"
+        label = tr_("Download results")
       ),
       uiOutput(outputId = ns("chi2"))
     ), # sidebar
@@ -103,7 +103,7 @@ ca_server <- function(id, x) {
       bindEvent(input$go)
 
     results <- reactive({
-      notify(compute_ca$result(), title = "Correspondence Analysis")
+      notify(compute_ca$result(), title = tr_("Correspondence Analysis"))
     })
 
     multivariate_server("ca", x = results, y = x)
@@ -130,12 +130,20 @@ ca_server <- function(id, x) {
 
     output$chi2 <- renderUI({
       list(
-        h5("Chi-squared Test"),
+        h5(tr_("Chi-squared Test")),
         tags$ul(
-          tags$li(sprintf("Statistic: %.0f", chi2_test()$statistic)),
-          tags$li(sprintf("Degrees of freedom: %.0f", chi2_test()$parameter)),
-          tags$li(sprintf("p-value: %s", format.pval(chi2_test()$p.value, eps = .001))),
-          tags$li(sprintf("Cramer's V: %.2f", chi2_test()$cramer))
+          tags$li(
+            sprintf(tr_("Statistic: %.0f"), chi2_test()$statistic)
+          ),
+          tags$li(
+            sprintf(tr_("Degrees of freedom: %.0f"), chi2_test()$parameter)
+          ),
+          tags$li(
+            sprintf(tr_("p-value: %s"), format.pval(chi2_test()$p.value, eps = .001))
+          ),
+          tags$li(
+            sprintf(tr_("Cramer's V: %.2f"), chi2_test()$cramer)
+          )
         )
       )
     })

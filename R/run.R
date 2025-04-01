@@ -34,7 +34,7 @@ run_app <- function(app = c("diversity", "seriation", "source", "ternary", "ca",
   app <- match.arg(app, several.ok = FALSE)
   app_dir <- system.file("app", app, package = "kinesis")
   if (app_dir == "") {
-    msg <- sprintf("Could not find the %s application.", sQuote(app))
+    msg <- sprintf(tr_("Could not find the %s application."), sQuote(app))
     stop(msg, call. = FALSE)
   }
 
@@ -80,7 +80,7 @@ get_config <- function(app, file = NA, active = NA, use_parent = TRUE) {
     file <- Sys.getenv("KINESIS_CONFIG_FILE", "config.yml")
   }
   if (!file.exists(file)) {
-    msg <- sprintf("Could not find the configuration file for %s.", sQuote(app))
+    msg <- sprintf(tr_("Could not find the configuration file for %s."), sQuote(app))
     stop(msg, call. = FALSE)
   }
 

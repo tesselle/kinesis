@@ -13,16 +13,16 @@ coda_summary_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      helpText("Data summary and descriptive statistics."),
+      helpText(tr_("Data summary and descriptive statistics.")),
       downloadButton(
         outputId = ns("download"),
-        label = "Download tables"
+        label = tr_("Download tables")
       ),
       h5("Univariate statistics"),
-      selectize_ui(id = ns("hist_select"), label = "Select a part"),
+      selectize_ui(id = ns("hist_select"), label = tr_("Select a part")),
       output_plot(
         id = ns("hist"),
-        title = "Histogram",
+        title = tr_("Histogram"),
         note = info_article(author = "Filzmoser et al.", year = "2009",
                             doi = "10.1016/j.scitotenv.2009.08.008")
       )
@@ -31,20 +31,20 @@ coda_summary_ui <- function(id) {
     navset_card_pill(
       placement = "above",
       nav_panel(
-        title = "Location",
+        title = tr_("Location"),
         gt::gt_output(outputId = ns("mean")),
         gt::gt_output(outputId = ns("quantile"))
       ),
       nav_panel(
-        title = "Covariance",
+        title = tr_("Covariance"),
         gt::gt_output(outputId = ns("covariance"))
       ),
       nav_panel(
-        title = "PIP",
+        title = tr_("PIP"),
         gt::gt_output(outputId = ns("pip"))
       ),
       nav_panel(
-        title = "Variation matrix",
+        title = tr_("Variation matrix"),
         layout_columns(
           col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
           output_plot(id = ns("heatmap")),
@@ -123,7 +123,7 @@ coda_summary_server <- function(id, x) {
 
       function() {
         plot(h, hang = -1, main = "", sub = "",
-             xlab = "", ylab = "Total variation", las = 1)
+             xlab = "", ylab = tr_("Total variation"), las = 1)
       }
     })
 
@@ -149,7 +149,7 @@ coda_summary_server <- function(id, x) {
         gt::gt(rownames_to_stub = nexus::is_grouped(x())) |>
         gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
-        gt::tab_header(title = "Compositional Mean")
+        gt::tab_header(title = tr_("Compositional Mean"))
     })
     output$quantile <-  gt::render_gt({
       req(data_quant())
@@ -158,7 +158,7 @@ coda_summary_server <- function(id, x) {
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_percent(decimals = 3) |>
         gt::sub_missing() |>
-        gt::tab_header(title = "Percentile Table")
+        gt::tab_header(title = tr_("Percentile Table"))
     })
     output$covariance <- gt::render_gt({
       req(data_cov())
@@ -170,7 +170,7 @@ coda_summary_server <- function(id, x) {
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(decimals = 3) |>
         gt::sub_missing(missing_text = "") |>
-        gt::tab_header(title = "Centered Log-Ratio Covariance") |>
+        gt::tab_header(title = tr_("Centered Log-Ratio Covariance")) |>
         gt::tab_source_note(source_note = gt::html(Aitchison1986))
     })
     output$pip <- gt::render_gt({
@@ -187,7 +187,7 @@ coda_summary_server <- function(id, x) {
           fn = function(x) x >= 0.75,
           style = gt::cell_fill(color = "#FFAABB")
         ) |>
-        gt::tab_header(title = "Proportionality Index of Parts") |>
+        gt::tab_header(title = tr_("Proportionality Index of Parts")) |>
         gt::tab_source_note(source_note = gt::html(Egozcue2023))
     })
     output$variation <- gt::render_gt({
@@ -200,7 +200,7 @@ coda_summary_server <- function(id, x) {
         gt::gt(rownames_to_stub = TRUE) |>
         gt::fmt_number(decimals = 3) |>
         gt::sub_missing(missing_text = "") |>
-        gt::tab_header(title = "Variation Matrix") |>
+        gt::tab_header(title = tr_("Variation Matrix")) |>
         gt::tab_source_note(source_note = gt::html(Aitchison1986))
     })
 

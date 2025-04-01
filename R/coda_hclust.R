@@ -12,32 +12,32 @@ coda_hclust_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      title = "Hierarchical Clustering",
+      title = tr_("Hierarchical Clustering"),
       selectInput(
         inputId = ns("dist"),
-        label = "Distance method",
+        label = tr_("Distance method"),
         choices = c(Aitchison = "euclidean")
       ),
       selectInput(
         inputId = ns("clust"),
-        label = "Clustering linkage",
+        label = tr_("Clustering linkage"),
         choices = c("ward.D", "ward.D2", "single", "complete",
                     "average", "mcquitty", "median", "centroid"),
         selected = "ward.D2"
       ),
-      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
+      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       numericInput(
         inputId = ns("cut"),
-        label = "Desired number of clusters",
+        label = tr_("Desired number of clusters"),
         value = 1, min = 1, max = NA, step = 1
       ),
       downloadButton(
         outputId = ns("download_dist"),
-        label = "Download distances"
+        label = tr_("Download distances")
       ),
       downloadButton(
         outputId = ns("download_clust"),
-        label = "Download clusters"
+        label = tr_("Download clusters")
       )
     ), # sidebar
     output_plot(
@@ -45,7 +45,7 @@ coda_hclust_ui <- function(id) {
       tools = list(
         select_color(inputId = ns("col_dendro"), type = "qualitative")
       ),
-      title = "Dendrogram"
+      title = tr_("Dendrogram")
     ),
     border_radius = FALSE,
     fillable = TRUE
@@ -69,7 +69,7 @@ coda_hclust_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = "HCLUST")
+    notify_change(session$ns("change"), x, old, title = tr_("HCLUST"))
 
     ## Compute cluster -----
     compute_hclust <- ExtendedTask$new(
@@ -92,7 +92,7 @@ coda_hclust_server <- function(id, x) {
       bindEvent(input$go)
 
     results <- reactive({
-      notify(compute_hclust$result(), title = "Hierarchical Clustering")
+      notify(compute_hclust$result(), title = tr_("Hierarchical Clustering"))
     })
     distances <- reactive({
       results()$dist
@@ -106,7 +106,7 @@ coda_hclust_server <- function(id, x) {
     plot_dendro <- reactive({
       req(results(), input$cut)
       function() {
-        xlab <- sprintf("Aitchison distance, %s linkage", results()$method)
+        xlab <- sprintf(tr_("Aitchison distance, %s linkage"), results()$method)
         plot(results(), hang = -1, main = NULL, sub = "",
              xlab = xlab, ylab = "Height", las = 1)
 

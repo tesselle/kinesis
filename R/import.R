@@ -14,7 +14,7 @@ import_ui <- function(id) {
     helpText("Import your data and perform basic data cleansing and preparation steps."),
     actionButton(
       inputId = ns("upload"),
-      label = "Upload",
+      label = tr_("Upload"),
       icon = icon("upload")
     )
   )
@@ -31,9 +31,9 @@ import_modal <- function(ns) {
     size = "xl",
     easyClose = FALSE,
     fade = FALSE,
-    title = "Import Data",
+    title = tr_("Import Data"),
     footer = tagList(
-      modalButton("Cancel"),
+      modalButton(tr_("Cancel")),
       actionButton(inputId = ns("go"), label = "OK", class = "btn-primary")
     ),
     layout_column_wrap(
@@ -51,7 +51,7 @@ import_modal <- function(ns) {
         ),
         fileInput(
           inputId = ns("file"),
-          label = "Choose a CSV or a TSV file:",
+          label = tr_("Choose a CSV or a TSV file:"),
           multiple = FALSE,
           accept = c(".csv", ".tsv", "text/csv", "text/tsv",
                      "text/comma-separated-values", "text/tab-separated-values")
@@ -61,34 +61,35 @@ import_modal <- function(ns) {
         ## Input: checkbox if file has header
         input_switch(
           id = ns("header"),
-          label = "Header",
+          label = tr_("Header"),
           value = TRUE
         ),
         ## Input: checkbox if file has row names
         input_switch(
           id = ns("rownames"),
-          label = "Row names",
+          label = tr_("Row names"),
           value = FALSE
         ),
         ## Input: select decimal
         radioButtons(
           inputId = ns("dec"),
-          label = "Decimal",
+          label = tr_("Decimal"),
           choices = c(Dot = ".", Comma = ","),
           selected = "."
         ),
         ## Input: select separator
         radioButtons(
           inputId = ns("sep"),
-          label = "Separator",
+          label = tr_("Separator"),
           choices = c(Comma = ",", Semicolon = ";", Tab = "\t"),
           selected = ","
         ),
         ## Input: select quotes
         radioButtons(
           inputId = ns("quote"),
-          label = "Quote",
-          choices = c(None = "", "Double quote" = '"', "Single quote" = "'"),
+          label = tr_("Quote"),
+          choiceNames = c(tr_("None"), tr_("Double quote"), tr_("Single quote")),
+          choiceValues = c("", '"', "'"),
           selected = '"'
         )
       ),
@@ -96,7 +97,7 @@ import_modal <- function(ns) {
         ## Input: lines of the data to skip
         numericInput(
           inputId = ns("skip"),
-          label = "Lines of the data file to skip:",
+          label = tr_("Lines of the data file to skip:"),
           value = 0,
           min = 0,
           step = 1
@@ -104,13 +105,13 @@ import_modal <- function(ns) {
         ## Input: missing string
         textInput(
           inputId = ns("na.strings"),
-          label = "String to be interpreted as missing value:",
+          label = tr_("String to be interpreted as missing value:"),
           value = ""
         ),
         ## Input: comment
         textInput(
           inputId = ns("comment"),
-          label = "Character to be interpreted as comment:",
+          label = tr_("Character to be interpreted as comment:"),
           value = "#"
         )
       )
@@ -142,19 +143,19 @@ import_server <- function(id) {
       query <- params[["data"]]
 
       if (!is.null(query)) {
-        msg <- sprintf("Reading data from %s...", query)
+        msg <- sprintf(tr_("Reading data from %s..."), query)
         id <- showNotification(msg, duration = NULL, closeButton = FALSE,
                                type = "message")
         on.exit(removeNotification(id), add = TRUE)
 
-        data$values <- notify(utils::read.csv(file = url(query)), "Data Input")
+        data$values <- notify(utils::read.csv(file = url(query)), tr_("Data Input"))
       }
       obs$destroy()
     })
 
     ## Read data file -----
     observe({
-      id <- showNotification("Reading data...", duration = NULL,
+      id <- showNotification(tr_("Reading data..."), duration = NULL,
                              closeButton = FALSE, type = "message")
       on.exit(removeNotification(id), add = TRUE)
 

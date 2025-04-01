@@ -15,29 +15,29 @@ coda_barplot_ui <- function(id) {
       width = 400,
       checkboxInput(
         inputId = ns("select_major"),
-        label = "Major elements",
+        label = tr_("Major elements"),
         value = TRUE
       ),
       checkboxInput(
         inputId = ns("select_minor"),
-        label = "Minor elements",
+        label = tr_("Minor elements"),
         value = TRUE
       ),
       checkboxInput(
         inputId = ns("select_trace"),
-        label = "Trace elements",
+        label = tr_("Trace elements"),
         value = TRUE
       ),
       hr(),
       checkboxInput(
         inputId = ns("order_columns"),
-        label = "Sort columns",
+        label = tr_("Sort columns"),
         value = FALSE
       ),
-      selectize_ui(id = ns("order_rows"), label = "Row order"),
+      selectize_ui(id = ns("order_rows"), label = tr_("Row order")),
       checkboxInput(
         inputId = ns("decreasing"),
-        label = "Decreasing row order",
+        label = tr_("Decreasing row order"),
         value = FALSE
       )
     ), # sidebar
@@ -50,13 +50,13 @@ coda_barplot_ui <- function(id) {
         ),
         numericInput(
           inputId = ns("space"),
-          label = "Gutter",
+          label = tr_("Gutter"),
           value = 0.2,
           min = 0, max = 0.5, step = 0.1
         )
       ),
       height = "100%",
-      title = "Barplot"
+      title = tr_("Barplot")
     )
   ) # layout_sidebar
 }

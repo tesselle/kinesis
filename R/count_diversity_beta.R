@@ -13,10 +13,10 @@ diversity_beta_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5("Principal Coordinates Analysis"),
+      h5(tr_("Principal Coordinates Analysis")),
       selectInput(
         inputId = ns("method"),
-        label = "Dissimilarity measure",
+        label = tr_("Dissimilarity measure"),
         choices = c(`Bray-Curtis` = "bray", `Dice-Sorenson` = "sorenson",
                     `Morisita-Horn` = "morisita"),
         multiple = FALSE
@@ -24,33 +24,33 @@ diversity_beta_ui <- function(id) {
       bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
       downloadButton(
         outputId = ns("download_beta"),
-        label = "Download dissimilarity matrix"
+        label = tr_("Download dissimilarity matrix")
       ),
       downloadButton(
         outputId = ns("download_pcoa"),
-        label = "Download PCoA results"
+        label = tr_("Download PCoA results")
       ),
       hr(),
-      ## Input: quantitative variable mapping
+      checkboxInput(
+        inputId = ns("pcoa_labels"),
+        label = tr_("Display labels"),
+        value = FALSE
+      ),
+      ## Input: variable mapping
       selectizeInput(
         inputId = ns("extra_quanti"),
-        label = "Alpha diversity",
+        label = tr_("Alpha diversity"),
         choices = NULL,
         selected = NULL,
         multiple = FALSE,
         options = list(plugins = "clear_button")
-      ),
-      checkboxInput(
-        inputId = ns("pcoa_labels"),
-        label = "Display labels",
-        value = FALSE
       )
     ), # sidebar
     layout_columns(
       col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
       output_plot(
         id = ns("plot_diss"),
-        title = "Dissimilarity",
+        title = tr_("Dissimilarity"),
         tools = list(
           select_color(inputId = ns("col_diss"), type = "sequential", default = "YlOrBr")
         ),
@@ -58,10 +58,10 @@ diversity_beta_ui <- function(id) {
       ),
       output_plot(
         id = ns("plot_pcoa"),
-        title = "PCoA",
+        title = tr_("PCoA"),
         tools = list(
           select_color(inputId = ns("col_pcoa"), type = "sequential", default = "YlOrBr"),
-          select_cex(inputId = ns("cex_pcoa"), default = c(1, 1))
+          select_cex(inputId = ns("cex_pcoa"))
         ),
         height = "100%"
       )
@@ -101,7 +101,7 @@ diversity_beta_server <- function(id, x, y) {
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = "Beta Diversity")
+    notify_change(session$ns("change"), x, old, title = tr_("Beta Diversity"))
 
     ## Compute similarity -----
     compute_beta <- ExtendedTask$new(
@@ -119,7 +119,7 @@ diversity_beta_server <- function(id, x, y) {
       bindEvent(input$go)
 
     results <- reactive({
-      notify(compute_beta$result(), title = "Beta Diversity")
+      notify(compute_beta$result(), title = tr_("Beta Diversity"))
     })
 
     ## Compute PCoA -----
@@ -146,9 +146,11 @@ diversity_beta_server <- function(id, x, y) {
     plot_pcoa <- reactive({
       req(analysis(), y())
 
+      ## Extra variables
       extra_quanti <- NULL
-      if (isTruthy(input$extra_quanti))
+      if (isTruthy(input$extra_quanti)) {
         extra_quanti <- y()[[input$extra_quanti]]
+      }
 
       function() {
         dimensio::plot(
@@ -156,7 +158,8 @@ diversity_beta_server <- function(id, x, y) {
           labels = input$pcoa_labels,
           extra_quanti = extra_quanti,
           color = get_color(input$col_pcoa),
-          size = get_value(input$cex_pcoa)
+          size = get_value(input$cex_pcoa),
+          panel.first = graphics::grid()
         )
       }
     })
