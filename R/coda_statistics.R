@@ -44,7 +44,7 @@ coda_summary_ui <- function(id) {
         gt::gt_output(outputId = ns("pip"))
       ),
       nav_panel(
-        title = tr_("Variation matrix"),
+        title = tr_("Variation Matrix"),
         layout_columns(
           col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
           output_plot(id = ns("heatmap")),

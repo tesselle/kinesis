@@ -170,5 +170,12 @@ diversity_beta_server <- function(id, x, y) {
 
     ## Download -----
     output$download_beta <- export_table(results, "beta")
+    output$download_pcoa <- downloadHandler(
+      filename = function() { make_file_name("pcoa", "zip") },
+      content = function(file) {
+        dimensio::export(analysis(), file = file, flags = "-r9Xj")
+      },
+      contentType = "application/zip"
+    )
   })
 }

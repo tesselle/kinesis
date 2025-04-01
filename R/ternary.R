@@ -22,8 +22,8 @@ ternary_ui <- function(id) {
           selectize_ui(id = ns("axis3"), label = tr_("Component Z")),
           ## Input: aesthetics mapping
           selectize_ui(id = ns("symbol_color"), label = tr_("Colors")),
-          selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shapes")),
-          selectize_ui(id = ns("symbol_size"), label = tr_("Symbol sizes")),
+          selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shape")),
+          selectize_ui(id = ns("symbol_size"), label = tr_("Symbol size")),
         ),
         accordion_panel(
           title = tr_("Layers"),

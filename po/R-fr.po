@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-01 17:52+0200\n"
+"POT-Creation-Date: 2025-04-01 19:17+0200\n"
 "PO-Revision-Date: 2025-04-01 17:29+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -232,8 +232,8 @@ msgstr ""
 msgid "Pivot Log-Ratio"
 msgstr ""
 
-#: coda_outliers.R:16
-msgid "Outliers detection"
+#: coda_outliers.R:16 coda_outliers.R:83
+msgid "Outliers Detection"
 msgstr ""
 
 #: coda_outliers.R:18
@@ -264,16 +264,12 @@ msgstr ""
 msgid "Plot"
 msgstr ""
 
-#: coda_outliers.R:47
+#: coda_outliers.R:47 count_occurrence.R:27
 msgid "Type of plot"
 msgstr ""
 
 #: coda_outliers.R:73
 msgid "Check your data."
-msgstr ""
-
-#: coda_outliers.R:83
-msgid "Outliers Detection"
 msgstr ""
 
 #: coda_statistics.R:16
@@ -304,8 +300,8 @@ msgstr ""
 msgid "PIP"
 msgstr ""
 
-#: coda_statistics.R:47
-msgid "Variation matrix"
+#: coda_statistics.R:47 coda_statistics.R:203
+msgid "Variation Matrix"
 msgstr ""
 
 #: coda_statistics.R:126
@@ -326,10 +322,6 @@ msgstr ""
 
 #: coda_statistics.R:190
 msgid "Proportionality Index of Parts"
-msgstr ""
-
-#: coda_statistics.R:203
-msgid "Variation Matrix"
 msgstr ""
 
 #: count_diversity_alpha.R:16 count_diversity_alpha.R:137
@@ -410,10 +402,6 @@ msgstr ""
 
 #: count_occurrence.R:22
 msgid "Binomial assessment"
-msgstr ""
-
-#: count_occurrence.R:27
-msgid "Plot type"
 msgstr ""
 
 #: help.R:76
@@ -756,7 +744,7 @@ msgstr ""
 msgid "Unknown graphics device."
 msgstr ""
 
-#: plot.R:186
+#: plot.R:186 ternary.R:26
 msgid "Symbol size"
 msgstr ""
 
@@ -905,11 +893,7 @@ msgid "Colors"
 msgstr ""
 
 #: ternary.R:25
-msgid "Symbol shapes"
-msgstr ""
-
-#: ternary.R:26
-msgid "Symbol sizes"
+msgid "Symbol shape"
 msgstr ""
 
 #: ternary.R:29

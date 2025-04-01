@@ -13,7 +13,7 @@ coda_outliers_ui <- function(id) {
   layout_sidebar(
     sidebar = sidebar(
       width = 400,
-      h5(tr_("Outliers detection")),
+      h5(tr_("Outliers Detection")),
       helpText(
         tr_("See"),
         cite_article("Filzmoser & Hron", "2008", "10.1007/s11004-007-9141-5", after = ";"),

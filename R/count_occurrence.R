@@ -24,7 +24,7 @@ occurrence_ui <- function(id) {
       ),
       radioButtons(
         inputId = ns("plot_type"),
-        label = tr_("Plot type"),
+        label = tr_("Type of plot"),
         choices = c("Heatmap", "Spot"),
       ),
       bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
