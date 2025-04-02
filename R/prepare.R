@@ -214,7 +214,7 @@ clean_ui <- function(id) {
       )
     ),
     tags$div(
-      "Clean values:",
+      tr_("Clean values:"),
       ## Input: remove whitespace
       checkboxInput(
         inputId = ns("remove_whitespace"),
@@ -223,7 +223,7 @@ clean_ui <- function(id) {
       )
     ),
     tags$div(
-      "Remove any non informative data:",
+      tr_("Remove any non informative data:"),
       ## Input: remove zero
       checkboxInput(
         inputId = ns("remove_zero_row"),
@@ -238,7 +238,7 @@ clean_ui <- function(id) {
       ## Input: remove constant
       checkboxInput(
         inputId = ns("remove_constant_column"),
-        label = "Remove constant columns",
+        label = tr_("Remove constant columns"),
         value = FALSE
       ),
       ## Input: remove all?

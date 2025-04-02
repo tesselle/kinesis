@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-01 19:17+0200\n"
+"POT-Creation-Date: 2025-04-02 15:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -448,7 +448,7 @@ msgid ""
 msgstr ""
 
 #: help.R:110
-msgid "For more information and relevant links see:"
+msgid "For more information and relevant links, see"
 msgstr ""
 
 #: home.R:22
@@ -659,7 +659,7 @@ msgstr ""
 msgid "Confidence ellipse"
 msgstr ""
 
-#: multivariate.R:69
+#: multivariate.R:69 ternary.R:83
 msgid "Ellipse level:"
 msgstr ""
 
@@ -779,8 +779,16 @@ msgstr ""
 msgid "First column as row names"
 msgstr ""
 
+#: prepare.R:217
+msgid "Clean values:"
+msgstr ""
+
 #: prepare.R:221
 msgid "Remove leading/trailing whitespace"
+msgstr ""
+
+#: prepare.R:226
+msgid "Remove any non informative data:"
 msgstr ""
 
 #: prepare.R:230
@@ -789,6 +797,10 @@ msgstr ""
 
 #: prepare.R:235
 msgid "Remove columns with zero"
+msgstr ""
+
+#: prepare.R:241
+msgid "Remove constant columns"
 msgstr ""
 
 #: prepare.R:247
@@ -933,10 +945,6 @@ msgstr ""
 
 #: ternary.R:76
 msgid "Wrap:"
-msgstr ""
-
-#: ternary.R:83
-msgid "Ellipse level"
 msgstr ""
 
 #: ternary.R:90

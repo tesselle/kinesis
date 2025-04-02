@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-01 19:17+0200\n"
+"POT-Creation-Date: 2025-04-02 15:08+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -371,7 +371,7 @@ msgstr "Richesse"
 
 #: count_diversity_beta.R:16
 msgid "Principal Coordinates Analysis"
-msgstr "Analyse des coordonnées principales"
+msgstr "Analyse en coordonnées principales"
 
 #: count_diversity_beta.R:19
 msgid "Dissimilarity measure"
@@ -487,8 +487,8 @@ msgstr ""
 "plus courants dans le domaine de l'archéologie."
 
 #: help.R:110
-msgid "For more information and relevant links see:"
-msgstr "Pour plus d'informations et de liens utiles, voir :"
+msgid "For more information and relevant links, see"
+msgstr "Pour plus d'informations et de liens utiles, voir"
 
 #: home.R:22
 msgid "Logo of the tesselle project."
@@ -703,7 +703,7 @@ msgstr "Ellipse de tolérance"
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:69
+#: multivariate.R:69 ternary.R:83
 msgid "Ellipse level:"
 msgstr "Niveau :"
 
@@ -825,9 +825,17 @@ msgstr "Sélectionner les colonnes :"
 msgid "First column as row names"
 msgstr "Première colonne comme noms de lignes"
 
+#: prepare.R:217
+msgid "Clean values:"
+msgstr "Nettoyer les données :"
+
 #: prepare.R:221
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
+
+#: prepare.R:226
+msgid "Remove any non informative data:"
+msgstr "Supprimer les données non informatives :"
 
 #: prepare.R:230
 msgid "Remove rows with zero"
@@ -836,6 +844,10 @@ msgstr "Supprimer les lignes contenant des zéros"
 #: prepare.R:235
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
+
+#: prepare.R:241
+msgid "Remove constant columns"
+msgstr "Supprimer les colonnes constantes"
 
 #: prepare.R:247
 msgid "Remove only if all values meet the condition"
@@ -959,11 +971,11 @@ msgstr "Carte de chaleur"
 
 #: ternary.R:45
 msgid "Bin"
-msgstr ""
+msgstr "Groupement par classe"
 
 #: ternary.R:51
 msgid "Number of bins"
-msgstr ""
+msgstr "Nombre de classes"
 
 #: ternary.R:57
 msgid "Transform"
@@ -979,15 +991,11 @@ msgstr "Groupes"
 
 #: ternary.R:76
 msgid "Wrap:"
-msgstr ""
-
-#: ternary.R:83
-msgid "Ellipse level"
-msgstr ""
+msgstr "Type d'enveloppe :"
 
 #: ternary.R:90
 msgid "Annotations"
-msgstr ""
+msgstr "Annotations"
 
 #: ternary.R:94
 msgid "Grid"

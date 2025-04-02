@@ -80,7 +80,7 @@ ternary_ui <- function(id) {
           ),
           checkboxGroupInput(
             inputId = ns("level"),
-            label = tr_("Ellipse level"),
+            label = tr_("Ellipse level:"),
             selected = "0.95",
             choiceNames = c("68%", "95%", "99%"),
             choiceValues = c("0.68", "0.95", "0.99")

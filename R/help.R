@@ -107,7 +107,7 @@ help_tesselle <- function(...) {
         tr_("They can be used to explore and analyze common data types in archaeology.")
       )),
       p(
-        tr_("For more information and relevant links see:"),
+        tr_("For more information and relevant links, see"),
         a("tesselle.org", href = url_tesselle(), target = "_blank",
           rel = "external", .noWS = "after"), "."
       )
