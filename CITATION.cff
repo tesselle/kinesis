@@ -85,7 +85,7 @@ references:
     orcid: https://orcid.org/0000-0001-5759-4944
   year: '2025'
   doi: 10.32614/CRAN.package.arkhe
-  version: '>= 1.9.0'
+  version: '>= 1.10.0'
 - type: software
   title: bslib
   abstract: 'bslib: Custom ''Bootstrap'' ''Sass'' Themes for ''shiny'' and ''rmarkdown'''
@@ -106,7 +106,7 @@ references:
     orcid: https://orcid.org/0000-0002-7111-0077
   year: '2025'
   doi: 10.32614/CRAN.package.bslib
-  version: '>= 0.8.0'
+  version: '>= 0.9.0'
 - type: software
   title: config
   abstract: 'config: Manage Environment Specific Configuration Values'
@@ -131,9 +131,9 @@ references:
     given-names: Nicolas
     email: nicolas.frerebeau@u-bordeaux-montaigne.fr
     orcid: https://orcid.org/0000-0001-5759-4944
-  year: '2025'
   doi: 10.32614/CRAN.package.dimensio
-  version: '>= 0.11.0'
+  version: '>= 0.13.0'
+  year: '2025'
 - type: software
   title: future
   abstract: 'future: Unified Parallel and Distributed Processing in R for Everyone'
@@ -210,7 +210,7 @@ references:
     orcid: https://orcid.org/0000-0001-5759-4944
   year: '2025'
   doi: 10.32614/CRAN.package.isopleuros
-  version: '>= 1.3.0'
+  version: '>= 1.4.0'
 - type: software
   title: kairos
   abstract: 'kairos: Analysis of Chronological Patterns from Archaeological Count
@@ -239,7 +239,7 @@ references:
     orcid: https://orcid.org/0000-0001-5759-4944
   year: '2025'
   doi: 10.32614/CRAN.package.khroma
-  version: '>= 1.15.0'
+  version: '>= 1.16.0'
 - type: software
   title: nexus
   abstract: 'nexus: Sourcing Archaeological Materials by Chemical Composition'
@@ -255,9 +255,9 @@ references:
     given-names: Anne
     email: anne.philippe@univ-nantes.fr
     orcid: https://orcid.org/0000-0002-5331-5087
-  year: '2025'
   doi: 10.32614/CRAN.package.nexus
   version: '>= 0.4.0'
+  year: '2025'
 - type: software
   title: promises
   abstract: 'promises: Abstractions for Promise-Based Asynchronous Programming'
@@ -362,7 +362,7 @@ references:
     orcid: https://orcid.org/0000-0001-5759-4944
   year: '2025'
   doi: 10.32614/CRAN.package.tabula
-  version: '>= 3.2.0'
+  version: '>= 3.2.1'
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'

@@ -14,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31)",
+  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
   "author": [
     {
       "@type": "Person",
@@ -80,7 +80,7 @@
       "@type": "SoftwareApplication",
       "identifier": "arkhe",
       "name": "arkhe",
-      "version": ">= 1.9.0",
+      "version": ">= 1.10.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -93,7 +93,7 @@
       "@type": "SoftwareApplication",
       "identifier": "bslib",
       "name": "bslib",
-      "version": ">= 0.8.0",
+      "version": ">= 0.9.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -119,7 +119,7 @@
       "@type": "SoftwareApplication",
       "identifier": "dimensio",
       "name": "dimensio",
-      "version": ">= 0.11.0",
+      "version": ">= 0.13.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -163,7 +163,7 @@
       "@type": "SoftwareApplication",
       "identifier": "isopleuros",
       "name": "isopleuros",
-      "version": ">= 1.3.0",
+      "version": ">= 1.4.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -189,7 +189,7 @@
       "@type": "SoftwareApplication",
       "identifier": "khroma",
       "name": "khroma",
-      "version": ">= 1.15.0",
+      "version": ">= 1.16.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -259,7 +259,7 @@
       "@type": "SoftwareApplication",
       "identifier": "tabula",
       "name": "tabula",
-      "version": ">= 3.2.0",
+      "version": ">= 3.2.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -278,7 +278,7 @@
   "applicationCategory": "ArchaeologicalScience",
   "isPartOf": "https://www.tesselle.org",
   "keywords": ["archaeology", "archaeological-science", "archaeometry", "shiny-apps", "r-package"],
-  "fileSize": "449.803KB",
+  "fileSize": "510.704KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",

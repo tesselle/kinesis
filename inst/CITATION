@@ -8,7 +8,7 @@ bibentry(
   journal      = "Advances in Archaeological Practice",
 #  volume       = "12",
 #  number       = "3",
-  page         = "1-7",
+#  page         = "1-7",
   doi          = "10.1017/aap.2024.10"
 )
 bibentry(
