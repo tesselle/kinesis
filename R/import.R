@@ -74,14 +74,16 @@ import_modal <- function(ns) {
         radioButtons(
           inputId = ns("dec"),
           label = tr_("Decimal"),
-          choices = c(Dot = ".", Comma = ","),
+          choiceNames = c(tr_("Dot"), tr_("Comma")),
+          choiceValues = c(".", ","),
           selected = "."
         ),
         ## Input: select separator
         radioButtons(
           inputId = ns("sep"),
           label = tr_("Separator"),
-          choices = c(Comma = ",", Semicolon = ";", Tab = "\t"),
+          choiceNames = c(tr_("Comma"), tr_("Semicolon"), tr_("Tab")),
+          choiceValues = c(",", ";", "\t"),
           selected = ","
         ),
         ## Input: select quotes

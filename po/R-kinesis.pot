@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-02 15:08+0200\n"
+"POT-Creation-Date: 2025-04-02 17:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ca.R:16 ca.R:106
+#: ca.R:16 ca.R:92
 msgid "Correspondence Analysis"
 msgstr ""
 
@@ -19,35 +19,39 @@ msgstr ""
 msgid "Supplementary individuals"
 msgstr ""
 
-#: ca.R:25 pca.R:41
-msgid "Supplementary variables"
+#: ca.R:24 pca.R:40
+msgid "Supplementary quantitative variables"
 msgstr ""
 
-#: ca.R:29 coda_hclust.R:28 count_occurrence.R:30 pca.R:45
+#: ca.R:29 pca.R:45
+msgid "Supplementary qualitative variables"
+msgstr ""
+
+#: ca.R:32 coda_hclust.R:28 count_occurrence.R:30 pca.R:48
 msgid "(Re)Compute"
 msgstr ""
 
-#: ca.R:32 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33 pca.R:48
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33 pca.R:51
 msgid "Download results"
 msgstr ""
 
-#: ca.R:133
+#: ca.R:119
 msgid "Chi-squared Test"
 msgstr ""
 
-#: ca.R:136
+#: ca.R:122
 msgid "Statistic: %.0f"
 msgstr ""
 
-#: ca.R:139
+#: ca.R:125
 msgid "Degrees of freedom: %.0f"
 msgstr ""
 
-#: ca.R:142
+#: ca.R:128
 msgid "p-value: %s"
 msgstr ""
 
-#: ca.R:145
+#: ca.R:131
 msgid "Cramer's V: %.2f"
 msgstr ""
 
@@ -451,6 +455,10 @@ msgstr ""
 msgid "For more information and relevant links, see"
 msgstr ""
 
+#: home.R:17
+msgid "Welcome!"
+msgstr ""
+
 #: home.R:22
 msgid "Logo of the tesselle project."
 msgstr ""
@@ -547,47 +555,63 @@ msgstr ""
 msgid "Decimal"
 msgstr ""
 
-#: import.R:83
+#: import.R:77
+msgid "Dot"
+msgstr ""
+
+#: import.R:77 import.R:85
+msgid "Comma"
+msgstr ""
+
+#: import.R:84
 msgid "Separator"
 msgstr ""
 
-#: import.R:90
+#: import.R:85
+msgid "Semicolon"
+msgstr ""
+
+#: import.R:85
+msgid "Tab"
+msgstr ""
+
+#: import.R:92
 msgid "Quote"
 msgstr ""
 
-#: import.R:91 ternary.R:45 ternary.R:77
+#: import.R:93 multivariate.R:54 ternary.R:45 ternary.R:77
 msgid "None"
 msgstr ""
 
-#: import.R:91
+#: import.R:93
 msgid "Double quote"
 msgstr ""
 
-#: import.R:91
+#: import.R:93
 msgid "Single quote"
 msgstr ""
 
-#: import.R:100
+#: import.R:102
 msgid "Lines of the data file to skip:"
 msgstr ""
 
-#: import.R:108
+#: import.R:110
 msgid "String to be interpreted as missing value:"
 msgstr ""
 
-#: import.R:114
+#: import.R:116
 msgid "Character to be interpreted as comment:"
 msgstr ""
 
-#: import.R:146
+#: import.R:148
 msgid "Reading data from %s..."
 msgstr ""
 
-#: import.R:151
+#: import.R:153
 msgid "Data Input"
 msgstr ""
 
-#: import.R:158
+#: import.R:160
 msgid "Reading data..."
 msgstr ""
 
@@ -639,71 +663,67 @@ msgstr ""
 msgid "Extra qualitative variable"
 msgstr ""
 
-#: multivariate.R:53 ternary.R:78
-msgid "Convex hull"
+#: multivariate.R:53 ternary.R:76
+msgid "Wrap:"
 msgstr ""
 
-#: multivariate.R:58
-msgid "Ellipse"
-msgstr ""
-
-#: multivariate.R:63
-msgid "Ellipse type:"
-msgstr ""
-
-#: multivariate.R:64 ternary.R:77
+#: multivariate.R:54 ternary.R:77
 msgid "Tolerance ellipse"
 msgstr ""
 
-#: multivariate.R:64 ternary.R:78
+#: multivariate.R:55 ternary.R:78
 msgid "Confidence ellipse"
 msgstr ""
 
-#: multivariate.R:69 ternary.R:83
+#: multivariate.R:55 ternary.R:78
+msgid "Convex hull"
+msgstr ""
+
+#: multivariate.R:60 multivariate.R:67 ternary.R:83
 msgid "Ellipse level:"
 msgstr ""
 
-#: multivariate.R:79 ternary.R:115
+#: multivariate.R:77 ternary.R:115
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 
-#: multivariate.R:80 ternary.R:116
+#: multivariate.R:78 ternary.R:116
 msgid "Double-click again to reset the zoom."
 msgstr ""
 
-#: multivariate.R:90
+#: multivariate.R:91
 msgid "Individuals factor map"
 msgstr ""
 
-#: multivariate.R:105
+#: multivariate.R:106
 msgid "Variables factor map"
 msgstr ""
 
-#: multivariate.R:117
+#: multivariate.R:118
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:122
+#: multivariate.R:127
 msgid "Variables"
 msgstr ""
 
-#: multivariate.R:131 multivariate.R:133
+#: multivariate.R:136 multivariate.R:138
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:343
+#: multivariate.R:366
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:348
+#: multivariate.R:371
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:353
+#: multivariate.R:376
 msgid "Squared cosinus"
 msgstr ""
 
-#: pca.R:21 pca.R:124
+#: pca.R:21 pca.R:110
 msgid "Principal Components Analysis"
 msgstr ""
 
@@ -941,10 +961,6 @@ msgstr ""
 
 #: ternary.R:72
 msgid "Group by"
-msgstr ""
-
-#: ternary.R:76
-msgid "Wrap:"
 msgstr ""
 
 #: ternary.R:90

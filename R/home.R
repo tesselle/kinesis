@@ -14,7 +14,7 @@ home_ui <- function(id, package) {
   layout_sidebar(
     sidebar = sidebar(
       width = 300,
-      title = "Welcome!",
+      title = tr_("Welcome!"),
       help_tesselle(),
       help_license(),
       tags$img(

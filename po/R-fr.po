@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-02 15:08+0200\n"
+"POT-Creation-Date: 2025-04-02 17:08+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.10.2\n"
 
-#: ca.R:16 ca.R:106
+#: ca.R:16 ca.R:92
 msgid "Correspondence Analysis"
 msgstr "Analyse des correspondances"
 
@@ -21,36 +21,40 @@ msgstr "Analyse des correspondances"
 msgid "Supplementary individuals"
 msgstr "Individus supplémentaires"
 
-#: ca.R:25 pca.R:41
-msgid "Supplementary variables"
-msgstr "Variables supplémentaires"
+#: ca.R:24 pca.R:40
+msgid "Supplementary quantitative variables"
+msgstr "Variables quantitatives supplémentaires"
 
-#: ca.R:29 coda_hclust.R:28 count_occurrence.R:30 pca.R:45
+#: ca.R:29 pca.R:45
+msgid "Supplementary qualitative variables"
+msgstr "Variables qualitatives supplémentaires"
+
+#: ca.R:32 coda_hclust.R:28 count_occurrence.R:30 pca.R:48
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
-#: ca.R:32 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33
-#: pca.R:48
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33
+#: pca.R:51
 msgid "Download results"
 msgstr "Télécharger les résultats"
 
-#: ca.R:133
+#: ca.R:119
 msgid "Chi-squared Test"
 msgstr "Test du Khi carré"
 
-#: ca.R:136
+#: ca.R:122
 msgid "Statistic: %.0f"
 msgstr "Statistique : %.0f"
 
-#: ca.R:139
+#: ca.R:125
 msgid "Degrees of freedom: %.0f"
 msgstr "Degrés de liberté : %.0f"
 
-#: ca.R:142
+#: ca.R:128
 msgid "p-value: %s"
 msgstr "Probabilité critique : %s"
 
-#: ca.R:145
+#: ca.R:131
 msgid "Cramer's V: %.2f"
 msgstr "V de Cramér : %.2f"
 
@@ -490,6 +494,10 @@ msgstr ""
 msgid "For more information and relevant links, see"
 msgstr "Pour plus d'informations et de liens utiles, voir"
 
+#: home.R:17
+msgid "Welcome!"
+msgstr "Bienvenue !"
+
 #: home.R:22
 msgid "Logo of the tesselle project."
 msgstr "Logo du projet tesselle."
@@ -591,47 +599,63 @@ msgstr "Noms de lignes"
 msgid "Decimal"
 msgstr "Séparateur décimal"
 
-#: import.R:83
+#: import.R:77
+msgid "Dot"
+msgstr "Point"
+
+#: import.R:77 import.R:85
+msgid "Comma"
+msgstr "Virgule"
+
+#: import.R:84
 msgid "Separator"
 msgstr "Séparateur"
 
-#: import.R:90
+#: import.R:85
+msgid "Semicolon"
+msgstr "Point-virgule"
+
+#: import.R:85
+msgid "Tab"
+msgstr "Tabulation"
+
+#: import.R:92
 msgid "Quote"
 msgstr "Séparateur de chaîne de caractères"
 
-#: import.R:91 ternary.R:45 ternary.R:77
+#: import.R:93 multivariate.R:54 ternary.R:45 ternary.R:77
 msgid "None"
 msgstr "Aucun"
 
-#: import.R:91
+#: import.R:93
 msgid "Double quote"
 msgstr "Guillemet double"
 
-#: import.R:91
+#: import.R:93
 msgid "Single quote"
 msgstr "Guillemet simple"
 
-#: import.R:100
+#: import.R:102
 msgid "Lines of the data file to skip:"
 msgstr "Lignes du fichier de données à ignorer :"
 
-#: import.R:108
+#: import.R:110
 msgid "String to be interpreted as missing value:"
 msgstr "Chaîne de caractères à interpréter comme valeur manquante :"
 
-#: import.R:114
+#: import.R:116
 msgid "Character to be interpreted as comment:"
 msgstr "Caractère à interpréter comme un commentaire :"
 
-#: import.R:146
+#: import.R:148
 msgid "Reading data from %s..."
 msgstr "Lecture des données à partir de %s..."
 
-#: import.R:151
+#: import.R:153
 msgid "Data Input"
 msgstr "Saisie des données"
 
-#: import.R:158
+#: import.R:160
 msgid "Reading data..."
 msgstr "Lecture des données..."
 
@@ -677,79 +701,75 @@ msgstr "Étiqueter les variables"
 
 #: multivariate.R:44
 msgid "Extra quantitative variable"
-msgstr "Variable quantitative supplémentaire"
+msgstr "Variable quantitative illustrative"
 
 #: multivariate.R:48
 msgid "Extra qualitative variable"
-msgstr "Variable qualitative supplémentaire"
+msgstr "Variable qualitative illustrative"
 
-#: multivariate.R:53 ternary.R:78
-msgid "Convex hull"
-msgstr "Enveloppe convexe"
+#: multivariate.R:53 ternary.R:76
+msgid "Wrap:"
+msgstr "Type d'enveloppe :"
 
-#: multivariate.R:58
-msgid "Ellipse"
-msgstr "Ellipse"
-
-#: multivariate.R:63
-msgid "Ellipse type:"
-msgstr "Type d'ellipse :"
-
-#: multivariate.R:64 ternary.R:77
+#: multivariate.R:54 ternary.R:77
 msgid "Tolerance ellipse"
 msgstr "Ellipse de tolérance"
 
-#: multivariate.R:64 ternary.R:78
+#: multivariate.R:55 ternary.R:78
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:69 ternary.R:83
+#: multivariate.R:55 ternary.R:78
+msgid "Convex hull"
+msgstr "Enveloppe convexe"
+
+#: multivariate.R:60 multivariate.R:67 ternary.R:83
 msgid "Ellipse level:"
 msgstr "Niveau :"
 
-#: multivariate.R:79 ternary.R:115
+#: multivariate.R:77 ternary.R:115
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 "Cliquez et faites glisser pour sélectionner une zone, puis double-cliquez "
 "pour effectuer un zoom avant."
 
-#: multivariate.R:80 ternary.R:116
+#: multivariate.R:78 ternary.R:116
 msgid "Double-click again to reset the zoom."
 msgstr "Double-cliquez à nouveau pour réinitialiser le zoom."
 
-#: multivariate.R:90
+#: multivariate.R:91
 msgid "Individuals factor map"
 msgstr "Plan factoriel des individus"
 
-#: multivariate.R:105
+#: multivariate.R:106
 msgid "Variables factor map"
 msgstr "Plan factoriel des variables"
 
-#: multivariate.R:117
+#: multivariate.R:118
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:122
+#: multivariate.R:127
 msgid "Variables"
 msgstr "Variables"
 
-#: multivariate.R:131 multivariate.R:133
+#: multivariate.R:136 multivariate.R:138
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:343
+#: multivariate.R:366
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:348
+#: multivariate.R:371
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:353
+#: multivariate.R:376
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
-#: pca.R:21 pca.R:124
+#: pca.R:21 pca.R:110
 msgid "Principal Components Analysis"
 msgstr "Analyse en composantes principales"
 
@@ -988,10 +1008,6 @@ msgstr "Enveloppes"
 #: ternary.R:72
 msgid "Group by"
 msgstr "Groupes"
-
-#: ternary.R:76
-msgid "Wrap:"
-msgstr "Type d'enveloppe :"
 
 #: ternary.R:90
 msgid "Annotations"

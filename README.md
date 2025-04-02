@@ -92,6 +92,19 @@ run_app("seriation")
 | `source` | Compositional Data Analysis | [bronze data](https://analytics.huma-num.fr/tesselle/source?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/bronze.csv) |
 | `ternary` | Ternary Plot | [bronze data](https://analytics.huma-num.fr/tesselle/ternary?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/bronze.csv) |
 
+## Translation
+
+This package provides translations of the user interface. The preferred
+language is by default taken from the locale. This can be overridden by
+setting of the environment variable `LANGUAGE` (you only need to do this
+once per session):
+
+``` r
+Sys.setenv(LANGUAGE = "<language code>")
+```
+
+Languages currently available are English (`en`) and French (`fr`).
+
 ## Contributing
 
 Please note that the **kinesis** project is released with a [Contributor
