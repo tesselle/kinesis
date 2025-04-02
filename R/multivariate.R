@@ -48,21 +48,19 @@ multivariate_ui <- function(id) {
         label = tr_("Extra qualitative variable")
       ),
       ## Input: add ellipses
-      checkboxInput(
-        inputId = ns("wrap_hull"),
-        label = tr_("Convex hull"),
-        value = FALSE
-      ),
-      checkboxInput(
-        inputId = ns("wrap_ellipse"),
-        label = tr_("Ellipse"),
-        value = FALSE
-      ),
       radioButtons(
+        inputId = ns("wrap"),
+        label = tr_("Wrap:"),
+        choiceNames = c(tr_("None"), tr_("Tolerance ellipse"),
+                        tr_("Confidence ellipse"), tr_("Convex hull")),
+        choiceValues = c("none", "tolerance", "confidence", "hull"),
+      ),
+      checkboxGroupInput(
         inputId = ns("ellipse_type"),
-        label = tr_("Ellipse type:"),
-        choiceNames = c(tr_("Tolerance ellipse"), tr_("Confidence ellipse")),
-        choiceValues = c("tolerance", "confidence")
+        label = tr_("Ellipse level:"),
+        selected = "0.95",
+        choiceNames = c("68%", "95%", "99%"),
+        choiceValues = c("0.68", "0.95", "0.99")
       ),
       checkboxGroupInput(
         inputId = ns("ellipse_level"),
@@ -84,7 +82,10 @@ multivariate_ui <- function(id) {
           id = ns("plot_ind"),
           tools = list(
             select_color(inputId = ns("col_ind")),
-            select_pch(inputId = ns("pch"), default = NULL),
+            select_pch(
+              inputId = ns("pch"),
+              default = c(16, 17, 15, 3, 7, 8, 2, 18, 1, 2)
+            ),
             select_cex(inputId = ns("cex"))
           ),
           title = tr_("Individuals factor map"),
@@ -115,6 +116,10 @@ multivariate_ui <- function(id) {
     ## Individuals -----
     nav_panel(
       title = tr_("Individuals"),
+      layout_column_wrap(
+        output_plot(id = ns("plot_cos2_1")),
+        output_plot(id = ns("plot_cos2_2"))
+      ),
       gt::gt_output(outputId = ns("info_ind"))
     ),
     ## Variables -----
@@ -233,9 +238,11 @@ multivariate_server <- function(id, x, y) {
 
       ## Envelope
       ellipse <- NULL
-      if (isTRUE(input$wrap_ellipse)) {
-        ellipse <- list(type = input$ellipse_type,
-                        level = as.numeric(input$ellipse_level))
+      if (any(input$wrap %in% c("confidence", "tolerance"))) {
+        ellipse <- list(
+          type = input$wrap,
+          level = as.numeric(input$ellipse_level)
+        )
       }
 
       function() {
@@ -248,7 +255,7 @@ multivariate_server <- function(id, x, y) {
           extra_quali = extra_quali,
           extra_quanti = extra_quanti,
           ellipse = ellipse,
-          hull = input$wrap_hull,
+          hull = isTRUE(input$wrap == "hull"),
           color = get_color(input$col_ind),
           symbol = get_value(as.integer(input$pch)),
           size = input$cex,
@@ -276,6 +283,20 @@ multivariate_server <- function(id, x, y) {
           ylim = range_var$y,
           panel.first = graphics::grid()
         )
+      }
+    })
+
+    plot_cos2_1 <- reactive({
+      req(x())
+      function() {
+        dimensio::viz_cos2(x = x(), margin = 1, axes = axis1())
+      }
+    })
+
+    plot_cos2_2 <- reactive({
+      req(x())
+      function() {
+        dimensio::viz_cos2(x = x(), margin = 1, axes = axis2())
       }
     })
 
@@ -308,6 +329,8 @@ multivariate_server <- function(id, x, y) {
     ## Render plots -----
     render_plot("plot_ind", x = plot_ind)
     render_plot("plot_var", x = plot_var)
+    render_plot("plot_cos2_1", x = plot_cos2_1)
+    render_plot("plot_cos2_2", x = plot_cos2_2)
     render_plot("plot_contrib_1", x = plot_contrib_1)
     render_plot("plot_contrib_2", x = plot_contrib_2)
     render_plot("screeplot", x = plot_eigen)

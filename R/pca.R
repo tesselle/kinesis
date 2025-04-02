@@ -30,17 +30,20 @@ pca_ui <- function(id, center = TRUE, scale = TRUE, help = NULL) {
         label = tr_("Scale"),
         value = scale
       ),
-      selectizeInput(
-        inputId = ns("sup_row"),
+      selectize_ui(
+        id = ns("sup_row"),
         label = tr_("Supplementary individuals"),
-        choices = NULL, selected = NULL, multiple = TRUE,
-        options = list(plugins = "remove_button")
+        multiple = TRUE
       ),
-      selectizeInput(
-        inputId = ns("sup_col"),
-        label = tr_("Supplementary variables"),
-        choices = NULL, selected = NULL, multiple = TRUE,
-        options = list(plugins = "remove_button")
+      selectize_ui(
+        id = ns("sup_col"),
+        label = tr_("Supplementary quantitative variables"),
+        multiple = TRUE
+      ),
+      selectize_ui(
+        id = ns("sup_quali"),
+        label = tr_("Supplementary qualitative variables"),
+        multiple = TRUE
       ),
       bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
@@ -70,28 +73,10 @@ pca_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    observe({
-      freezeReactiveValue(input, "sup_row")
-      updateSelectizeInput(
-        inputId = "sup_row",
-        choices = c(Choose = "", rownames(x())),
-        server = TRUE
-      )
-      freezeReactiveValue(input, "sup_col")
-      updateSelectizeInput(
-        inputId = "sup_col",
-        choices = c(Choose = "", colnames(x())),
-        server = TRUE
-      )
-    })
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "sup_row",
-                           selected = state$input$sup_row)
-      updateSelectizeInput(session, inputId = "sup_col",
-                           selected = state$input$sup_col)
-    })
+    row_names <- reactive({ rownames(x()) })
+    sup_row <- vector_select_server("sup_row", x = row_names)
+    sup_col <- column_select_server("sup_col", x = x, find_col = is.numeric)
+    sup_quali <- column_select_server("sup_quali", x = x, find_col = Negate(is.numeric))
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
@@ -107,7 +92,8 @@ pca_server <- function(id, x) {
             scale = scale,
             rank = rank,
             sup_row = arkhe::seek_rows(x, names = sup_row),
-            sup_col = arkhe::seek_columns(x, names = sup_col)
+            sup_col = arkhe::seek_columns(x, names = sup_col),
+            sup_quali = arkhe::seek_columns(x, names = sup_quali)
           )
         })
       }
@@ -116,7 +102,7 @@ pca_server <- function(id, x) {
 
     observe({
       compute_pca$invoke(x(), input$center, input$scale, input$rank,
-                         input$sup_row, input$sup_col, input$sup_quali)
+                         sup_row(), sup_col(), sup_quali())
     }) |>
       bindEvent(input$go)
 

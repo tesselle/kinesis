@@ -14,17 +14,20 @@ ca_ui <- function(id) {
     sidebar = sidebar(
       width = 400,
       title = tr_("Correspondence Analysis"),
-      selectizeInput(
-        inputId = ns("sup_row"),
+      selectize_ui(
+        id = ns("sup_row"),
         label = tr_("Supplementary individuals"),
-        choices = NULL, selected = NULL, multiple = TRUE,
-        options = list(plugins = "remove_button")
+        multiple = TRUE
       ),
-      selectizeInput(
-        inputId = ns("sup_col"),
-        label = tr_("Supplementary variables"),
-        choices = NULL, selected = NULL, multiple = TRUE,
-        options = list(plugins = "remove_button")
+      selectize_ui(
+        id = ns("sup_col"),
+        label = tr_("Supplementary quantitative variables"),
+        multiple = TRUE
+      ),
+      selectize_ui(
+        id = ns("sup_quali"),
+        label = tr_("Supplementary qualitative variables"),
+        multiple = TRUE
       ),
       bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
@@ -55,28 +58,10 @@ ca_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    observe({
-      freezeReactiveValue(input, "sup_row")
-      updateSelectizeInput(
-        inputId = "sup_row",
-        choices = c(Choose = "", rownames(x())),
-        server = TRUE
-      )
-      freezeReactiveValue(input, "sup_col")
-      updateSelectizeInput(
-        inputId = "sup_col",
-        choices = c(Choose = "", colnames(x())),
-        server = TRUE
-      )
-    })
-
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "sup_row",
-                           selected = state$input$sup_row)
-      updateSelectizeInput(session, inputId = "sup_col",
-                           selected = state$input$sup_col)
-    })
+    row_names <- reactive({ rownames(x()) })
+    sup_row <- vector_select_server("sup_row", x = row_names)
+    sup_col <- column_select_server("sup_col", x = x, find_col = is.numeric)
+    sup_quali <- column_select_server("sup_quali", x = x, find_col = Negate(is.numeric))
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
@@ -84,13 +69,14 @@ ca_server <- function(id, x) {
 
     ## Compute CA -----
     compute_ca <- ExtendedTask$new(
-      function(x, rank, sup_row, sup_col) {
+      function(x, rank, sup_row, sup_col, sup_quali) {
         promises::future_promise({
           dimensio::ca(
             object = x,
             rank = rank,
             sup_row = arkhe::seek_rows(x, names = sup_row),
-            sup_col = arkhe::seek_columns(x, names = sup_col)
+            sup_col = arkhe::seek_columns(x, names = sup_col),
+            sup_quali = arkhe::seek_columns(x, names = sup_quali)
           )
         })
       }
@@ -98,7 +84,7 @@ ca_server <- function(id, x) {
       bslib::bind_task_button("go")
 
     observe({
-      compute_ca$invoke(x(), input$rank, input$sup_row, input$sup_col)
+      compute_ca$invoke(x(), input$rank, sup_row(), sup_col(), sup_quali())
     }) |>
       bindEvent(input$go)
 
