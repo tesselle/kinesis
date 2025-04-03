@@ -1,3 +1,4 @@
+Sys.setenv(LANGUAGE = "en") # Force locale
 library("shiny")
 
 bronze <- read.csv("bronze.csv")

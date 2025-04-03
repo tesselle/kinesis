@@ -1,3 +1,5 @@
+Sys.setenv(LANGUAGE = "en") # Force locale
+
 ## Configuration file ==========================================================
 expect_error(get_config("pca", file = NA, active = NA),
              "Could not find the configuration file")

@@ -1,3 +1,4 @@
+Sys.setenv(LANGUAGE = "en") # Force locale
 library("shiny")
 using("tinysnapshot")
 
