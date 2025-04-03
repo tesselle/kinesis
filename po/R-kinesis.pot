@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-02 17:08+0200\n"
+"POT-Creation-Date: 2025-04-03 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,11 +27,11 @@ msgstr ""
 msgid "Supplementary qualitative variables"
 msgstr ""
 
-#: ca.R:32 coda_hclust.R:28 count_occurrence.R:30 pca.R:48
+#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_occurrence.R:31 pca.R:48
 msgid "(Re)Compute"
 msgstr ""
 
-#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33 pca.R:51
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:34 pca.R:51
 msgid "Download results"
 msgstr ""
 
@@ -327,27 +327,19 @@ msgstr ""
 msgid "Proportionality Index of Parts"
 msgstr ""
 
-#: count_diversity_alpha.R:16 count_diversity_alpha.R:137
+#: count_diversity_alpha.R:16 count_diversity_alpha.R:95
 msgid "Diversity Measures"
 msgstr ""
 
-#: count_diversity_alpha.R:25
-msgid "Results"
-msgstr ""
-
-#: count_diversity_alpha.R:29
-msgid "Definitions"
-msgstr ""
-
-#: count_diversity_alpha.R:123
+#: count_diversity_alpha.R:81
 msgid "Heterogeneity"
 msgstr ""
 
-#: count_diversity_alpha.R:128
+#: count_diversity_alpha.R:86
 msgid "Dominance"
 msgstr ""
 
-#: count_diversity_alpha.R:133
+#: count_diversity_alpha.R:91
 msgid "Richness"
 msgstr ""
 
@@ -383,11 +375,15 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:104 count_diversity_beta.R:122
+#: count_diversity_beta.R:104 count_diversity_beta.R:122 count_diversity_docs.R:53
 msgid "Beta Diversity"
 msgstr ""
 
-#: count_occurrence.R:16 count_occurrence.R:70 count_occurrence.R:88
+#: count_diversity_docs.R:15
+msgid "Alpha Diversity"
+msgstr ""
+
+#: count_occurrence.R:16 count_occurrence.R:71 count_occurrence.R:89
 msgid "Co-Occurrence"
 msgstr ""
 
@@ -405,6 +401,14 @@ msgstr ""
 
 #: count_occurrence.R:22
 msgid "Binomial assessment"
+msgstr ""
+
+#: count_occurrence.R:28 ternary.R:44
+msgid "Heatmap"
+msgstr ""
+
+#: count_occurrence.R:28
+msgid "Spot"
 msgstr ""
 
 #: help.R:76
@@ -937,10 +941,6 @@ msgstr ""
 
 #: ternary.R:39
 msgid "Density contour"
-msgstr ""
-
-#: ternary.R:44
-msgid "Heatmap"
 msgstr ""
 
 #: ternary.R:45

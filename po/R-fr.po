@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-02 17:08+0200\n"
+"POT-Creation-Date: 2025-04-03 14:37+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -29,11 +29,12 @@ msgstr "Variables quantitatives supplémentaires"
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:32 coda_hclust.R:28 count_occurrence.R:30 pca.R:48
+#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_occurrence.R:31
+#: pca.R:48
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
-#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:33
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:34
 #: pca.R:51
 msgid "Download results"
 msgstr "Télécharger les résultats"
@@ -348,28 +349,20 @@ msgstr ""
 msgid "Proportionality Index of Parts"
 msgstr "Indice de proportionnalité des parties"
 
-#: count_diversity_alpha.R:16 count_diversity_alpha.R:137
+#: count_diversity_alpha.R:16 count_diversity_alpha.R:95
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
-#: count_diversity_alpha.R:25
-msgid "Results"
-msgstr "Résultats"
-
-#: count_diversity_alpha.R:29
-msgid "Definitions"
-msgstr "Définitions"
-
-#: count_diversity_alpha.R:123
+#: count_diversity_alpha.R:81
 msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
-#: count_diversity_alpha.R:128
+#: count_diversity_alpha.R:86
 #, fuzzy
 msgid "Dominance"
 msgstr "Domination"
 
-#: count_diversity_alpha.R:133
+#: count_diversity_alpha.R:91
 msgid "Richness"
 msgstr "Richesse"
 
@@ -406,10 +399,15 @@ msgid "PCoA"
 msgstr "ACoP"
 
 #: count_diversity_beta.R:104 count_diversity_beta.R:122
+#: count_diversity_docs.R:53
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
 
-#: count_occurrence.R:16 count_occurrence.R:70 count_occurrence.R:88
+#: count_diversity_docs.R:15
+msgid "Alpha Diversity"
+msgstr "Diversité alpha"
+
+#: count_occurrence.R:16 count_occurrence.R:71 count_occurrence.R:89
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
@@ -429,6 +427,14 @@ msgstr "Fréquences relatives"
 #, fuzzy
 msgid "Binomial assessment"
 msgstr "Test binomial"
+
+#: count_occurrence.R:28 ternary.R:44
+msgid "Heatmap"
+msgstr "Carte de chaleur"
+
+#: count_occurrence.R:28
+msgid "Spot"
+msgstr "Points"
 
 #: help.R:76
 msgid ""
@@ -984,10 +990,6 @@ msgstr "Afficher les points"
 #: ternary.R:39
 msgid "Density contour"
 msgstr "Contours de densité"
-
-#: ternary.R:44
-msgid "Heatmap"
-msgstr "Carte de chaleur"
 
 #: ternary.R:45
 msgid "Bin"

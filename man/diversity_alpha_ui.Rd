@@ -19,6 +19,7 @@ Other count data modules:
 \code{\link{diversity_alpha_server}()},
 \code{\link{diversity_beta_server}()},
 \code{\link{diversity_beta_ui}()},
+\code{\link{diversity_docs_ui}()},
 \code{\link{occurrence_server}()},
 \code{\link{occurrence_ui}()}
 }

@@ -25,7 +25,8 @@ occurrence_ui <- function(id) {
       radioButtons(
         inputId = ns("plot_type"),
         label = tr_("Type of plot"),
-        choices = c("Heatmap", "Spot"),
+        choiceNames = c(tr_("Heatmap"), tr_("Spot")),
+        choiceValues = c("heatmap", "spot")
       ),
       bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
@@ -93,9 +94,8 @@ occurrence_server <- function(id, x) {
       req(results())
       fun <- switch(
         input$plot_type,
-        color = "",
-        Heatmap = function(x, ...) tabula::plot_heatmap(x, ...),
-        Spot = function(x, ...) tabula::plot_spot(x, ...)
+        heatmap = function(x, ...) tabula::plot_heatmap(x, ...),
+        spot = function(x, ...) tabula::plot_spot(x, ...)
       )
 
       function() fun(results(), color = get_color(input$color))

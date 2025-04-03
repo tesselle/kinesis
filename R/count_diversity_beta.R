@@ -21,7 +21,7 @@ diversity_beta_ui <- function(id) {
                     `Morisita-Horn` = "morisita"),
         multiple = FALSE
       ),
-      bslib::input_task_button(id = ns("go"), label = "(Re)Compute"),
+      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
       downloadButton(
         outputId = ns("download_beta"),
         label = tr_("Download dissimilarity matrix")

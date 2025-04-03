@@ -27,6 +27,10 @@ function(request) {
       title = HTML("&#946; Diversity"),
       kinesis::diversity_beta_ui("beta")
     ),
+    bslib::nav_panel(
+      title = HTML("Definitions"),
+      kinesis::diversity_docs_ui("docs")
+    ),
     bslib::nav_spacer(),
     bslib::nav_item(bslib::input_dark_mode()),
     footer = kinesis::footer_ui("footer"),
