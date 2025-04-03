@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 19:05+0200\n"
+"POT-Creation-Date: 2025-04-03 19:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -531,6 +531,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: import.R:14
+msgid ""
+"Import your data and perform basic data cleansing and preparation steps."
+msgstr ""
+
 #: import.R:17
 msgid "Upload"
 msgstr ""
@@ -541,6 +546,28 @@ msgstr ""
 
 #: import.R:36 plot.R:141
 msgid "Cancel"
+msgstr ""
+
+#: import.R:44
+msgid "Select the location of, and the file you want to upload."
+msgstr ""
+
+#: import.R:45
+msgid "Please check the default settings and adjust them to your data."
+msgstr ""
+
+#: import.R:46
+msgid "This application only supports data encoded in UFT-8."
+msgstr ""
+
+#: import.R:49
+msgid "It assumes that you keep your data tidy:"
+msgstr ""
+
+#: import.R:50
+msgid ""
+"each variable must be saved in its own column and each sample must be saved "
+"in its own row."
 msgstr ""
 
 #: import.R:54
@@ -693,6 +720,10 @@ msgstr ""
 
 #: multivariate.R:70 ternary.R:83
 msgid "Ellipse level:"
+msgstr ""
+
+#: multivariate.R:78
+msgid "Results"
 msgstr ""
 
 #: multivariate.R:80 ternary.R:115

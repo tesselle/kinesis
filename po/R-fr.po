@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 19:05+0200\n"
+"POT-Creation-Date: 2025-04-03 19:14+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -577,6 +577,13 @@ msgstr "Session"
 msgid "Close"
 msgstr "Fermer"
 
+#: import.R:14
+msgid ""
+"Import your data and perform basic data cleansing and preparation steps."
+msgstr ""
+"Importez vos données et effectuez les étapes élémentaires de nettoyage et de "
+"préparation."
+
 #: import.R:17
 msgid "Upload"
 msgstr "Téléverser"
@@ -588,6 +595,33 @@ msgstr "Importer des données"
 #: import.R:36 plot.R:141
 msgid "Cancel"
 msgstr "Annuler"
+
+#: import.R:44
+msgid "Select the location of, and the file you want to upload."
+msgstr ""
+"Sélectionnez l'emplacement et le fichier que vous souhaitez télécharger."
+
+#: import.R:45
+msgid "Please check the default settings and adjust them to your data."
+msgstr ""
+"Pensez à vérifier les paramètres par défaut et les adapter à vos données."
+
+#: import.R:46
+msgid "This application only supports data encoded in UFT-8."
+msgstr ""
+"Cette application ne prend en charge que les données encodées en UFT-8."
+
+#: import.R:49
+msgid "It assumes that you keep your data tidy:"
+msgstr "Cette application suppose que vos données sont bien structurées :"
+
+#: import.R:50
+msgid ""
+"each variable must be saved in its own column and each sample must be saved "
+"in its own row."
+msgstr ""
+"chaque variable doit correspondre à une colonne et chaque individu doit "
+"correspondre à une ligne."
 
 #: import.R:54
 msgid "Choose a CSV or a TSV file:"
@@ -740,6 +774,10 @@ msgstr "Enveloppe convexe"
 #: multivariate.R:70 ternary.R:83
 msgid "Ellipse level:"
 msgstr "Niveau :"
+
+#: multivariate.R:78
+msgid "Results"
+msgstr "Résultats"
 
 #: multivariate.R:80 ternary.R:115
 msgid "Click and drag to select an area, then double-click to zoom in."

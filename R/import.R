@@ -11,7 +11,7 @@ import_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    helpText("Import your data and perform basic data cleansing and preparation steps."),
+    helpText(tr_("Import your data and perform basic data cleansing and preparation steps.")),
     actionButton(
       inputId = ns("upload"),
       label = tr_("Upload"),
@@ -41,13 +41,13 @@ import_modal <- function(ns) {
       ## Input: select a file
       div(
         tags$p(
-          helpText("Select the location of, and the file you want to upload."),
-          helpText("Please check the default settings and adjust them to your data."),
-          helpText("This application only supports data encoded in UFT-8."),
+          helpText(tr_("Select the location of, and the file you want to upload.")),
+          helpText(tr_("Please check the default settings and adjust them to your data.")),
+          helpText(tr_("This application only supports data encoded in UFT-8.")),
         ),
         tags$p(
-          helpText("It assumes that you keep your data tidy:"),
-          helpText("each variable must be saved in its own column and each sample must be saved in its own row.")
+          helpText(tr_("It assumes that you keep your data tidy:")),
+          helpText(tr_("each variable must be saved in its own column and each sample must be saved in its own row."))
         ),
         fileInput(
           inputId = ns("file"),

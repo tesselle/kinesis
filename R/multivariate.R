@@ -75,7 +75,7 @@ multivariate_ui <- function(id) {
     ),
     ## Results -----
     nav_panel(
-      title = "Results",
+      title = tr_("Results"),
       helpText(
         tr_("Click and drag to select an area, then double-click to zoom in."),
         tr_("Double-click again to reset the zoom.")
