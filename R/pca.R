@@ -86,15 +86,13 @@ pca_server <- function(id, x) {
     compute_pca <- ExtendedTask$new(
       function(x, center, scale, rank, sup_row, sup_col, sup_quali) {
         promises::future_promise({
-          dimensio::pca(
-            object = x,
-            center = center,
-            scale = scale,
-            rank = rank,
-            sup_row = arkhe::seek_rows(x, names = sup_row),
-            sup_col = arkhe::seek_columns(x, names = sup_col),
-            sup_quali = arkhe::seek_columns(x, names = sup_quali)
-          )
+          param <- list(object = x, center = center, scale = scale, rank = rank,
+                        sup_row = arkhe::seek_rows(x, names = sup_row),
+                        sup_col = arkhe::seek_columns(x, names = sup_col))
+          if (is.data.frame(x)) {
+            param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
+          }
+          do.call(dimensio::pca, param)
         })
       }
     ) |>

@@ -71,13 +71,13 @@ ca_server <- function(id, x) {
     compute_ca <- ExtendedTask$new(
       function(x, rank, sup_row, sup_col, sup_quali) {
         promises::future_promise({
-          dimensio::ca(
-            object = x,
-            rank = rank,
-            sup_row = arkhe::seek_rows(x, names = sup_row),
-            sup_col = arkhe::seek_columns(x, names = sup_col),
-            sup_quali = arkhe::seek_columns(x, names = sup_quali)
-          )
+          param <- list(object = x, rank = rank,
+                        sup_row = arkhe::seek_rows(x, names = sup_row),
+                        sup_col = arkhe::seek_columns(x, names = sup_col))
+          if (is.data.frame(x)) {
+            param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
+          }
+          do.call(dimensio::ca, param)
         })
       }
     ) |>
