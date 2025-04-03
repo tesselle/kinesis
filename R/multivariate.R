@@ -30,13 +30,23 @@ multivariate_ui <- function(id) {
         multiple = FALSE,
       ),
       checkboxInput(
-        inputId = ns("lab_row"),
+        inputId = ns("lab_ind"),
         label = tr_("Label individuals"),
         value = FALSE
       ),
       checkboxInput(
-        inputId = ns("lab_col"),
+        inputId = ns("lab_var"),
         label = tr_("Label variables"),
+        value = TRUE
+      ),
+      checkboxInput(
+        inputId = ns("sup_ind"),
+        label = tr_("Display supplementary individuals"),
+        value = TRUE
+      ),
+      checkboxInput(
+        inputId = ns("sup_var"),
+        label = tr_("Display supplementary variables"),
         value = TRUE
       ),
       selectize_ui(
@@ -57,13 +67,6 @@ multivariate_ui <- function(id) {
       ),
       checkboxGroupInput(
         inputId = ns("ellipse_type"),
-        label = tr_("Ellipse level:"),
-        selected = "0.95",
-        choiceNames = c("68%", "95%", "99%"),
-        choiceValues = c("0.68", "0.95", "0.99")
-      ),
-      checkboxGroupInput(
-        inputId = ns("ellipse_level"),
         label = tr_("Ellipse level:"),
         selected = "0.95",
         choiceNames = c("68%", "95%", "99%"),
@@ -99,9 +102,7 @@ multivariate_ui <- function(id) {
         output_plot(
           id = ns("plot_var"),
           tools = list(
-            select_color(inputId = ns("col_var"), default = "YlOrBr"),
-            select_lty(inputId = ns("lty"), default = NULL),
-            select_cex(inputId = ns("lwd"), default = c(1, 1))
+            select_color(inputId = ns("col_var"))
           ),
           title = tr_("Variables factor map"),
           dblclick = ns("plot_var_dblclick"),
@@ -250,9 +251,9 @@ multivariate_server <- function(id, x, y) {
           x = x(),
           axes = c(axis1(), axis2()),
           active = TRUE,
-          sup = TRUE,
-          labels = input$lab_row,
-          extra_quali = extra_quali,
+          sup = input$sup_ind,
+          labels = input$lab_ind,
+          extra_quali = get_value(extra_quali, "observation"),
           extra_quanti = extra_quanti,
           ellipse = ellipse,
           hull = isTRUE(input$wrap == "hull"),
@@ -273,12 +274,12 @@ multivariate_server <- function(id, x, y) {
         dimensio::viz_variables(
           x = x(),
           axes = c(axis1(), axis2()),
-          active = TRUE, sup = TRUE,
-          labels = input$lab_col,
-          extra_quanti = get_value(input$extra_quanti),
+          active = TRUE,
+          sup = input$sup_var,
+          labels = input$lab_var,
+          extra_quali = "observation",
           color = get_color(input$col_var),
-          symbol = get_value(as.integer(input$lty)),
-          size = input$lwd,
+          symbol = c(1, 3),
           xlim = range_var$x,
           ylim = range_var$y,
           panel.first = graphics::grid()

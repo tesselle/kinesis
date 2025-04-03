@@ -228,7 +228,10 @@ select_lty <- function(inputId, default = "solid") {
 select_color <- function(inputId, type = NULL, default = "discreterainbow") {
   x <- khroma::info()
   x <- tapply(X = x$palette, INDEX = x$type, FUN = function(x) as.list(x))
-  if (!is.null(type)) x <- x[type]
+  if (!is.null(type)) {
+    type <- match.arg(type, choices = c("qualitative", "sequential", "diverging"))
+    x <- x[type]
+  }
 
   selectInput(
     inputId = inputId,
