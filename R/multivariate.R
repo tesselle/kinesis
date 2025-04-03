@@ -84,7 +84,7 @@ multivariate_ui <- function(id) {
         output_plot(
           id = ns("plot_ind"),
           tools = list(
-            select_color(inputId = ns("col_ind")),
+            select_color(ns("col_ind"), mono = TRUE),
             select_pch(
               inputId = ns("pch"),
               default = c(16, 17, 15, 3, 7, 8, 2, 18, 1, 2)
@@ -102,7 +102,7 @@ multivariate_ui <- function(id) {
         output_plot(
           id = ns("plot_var"),
           tools = list(
-            select_color(inputId = ns("col_var"))
+            select_color(ns("col_var"), mono = TRUE)
           ),
           title = tr_("Variables factor map"),
           dblclick = ns("plot_var_dblclick"),
@@ -246,6 +246,7 @@ multivariate_server <- function(id, x, y) {
         )
       }
 
+      col_ind <- get_color("col_ind")()
       function() {
         dimensio::viz_rows(
           x = x(),
@@ -257,7 +258,7 @@ multivariate_server <- function(id, x, y) {
           extra_quanti = extra_quanti,
           ellipse = ellipse,
           hull = isTRUE(input$wrap == "hull"),
-          color = get_color(input$col_ind),
+          color = col_ind,
           symbol = get_value(as.integer(input$pch)),
           size = input$cex,
           xlim = range_ind$x,
@@ -270,6 +271,8 @@ multivariate_server <- function(id, x, y) {
     ## Variables
     plot_var <- reactive({
       req(x())
+
+      col_var <- get_color("col_var")()
       function() {
         dimensio::viz_variables(
           x = x(),
@@ -278,7 +281,7 @@ multivariate_server <- function(id, x, y) {
           sup = input$sup_var,
           labels = input$lab_var,
           extra_quali = "observation",
-          color = get_color(input$col_var),
+          color = col_var,
           symbol = c(1, 3),
           xlim = range_var$x,
           ylim = range_var$y,

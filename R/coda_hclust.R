@@ -43,7 +43,7 @@ coda_hclust_ui <- function(id) {
     output_plot(
       id = ns("plot_dendro"),
       tools = list(
-        select_color(inputId = ns("col_dendro"), type = "qualitative")
+        select_color(id = ns("col_dendro"), type = "qualitative")
       ),
       title = tr_("Dendrogram")
     ),
@@ -105,6 +105,7 @@ coda_hclust_server <- function(id, x) {
     ## Dendrogram -----
     plot_dendro <- reactive({
       req(results(), input$cut)
+      col <- get_color("col_dendro")()
       function() {
         xlab <- sprintf(tr_("Aitchison distance, %s linkage"), results()$method)
         plot(results(), hang = -1, main = NULL, sub = "",
@@ -117,7 +118,6 @@ coda_hclust_server <- function(id, x) {
         i <- results()$order
         g <- results()$groups
         if (!is.null(g)) {
-          col <- get_color(input$col_dendro)
           col <- khroma::palette_color_discrete(col)(g)
           graphics::points(
             x = seq_along(i),

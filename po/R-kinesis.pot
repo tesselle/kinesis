@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 15:30+0200\n"
+"POT-Creation-Date: 2025-04-03 19:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,11 +151,11 @@ msgstr ""
 msgid "Decreasing row order"
 msgstr ""
 
-#: coda_barplot.R:53
+#: coda_barplot.R:50
 msgid "Gutter"
 msgstr ""
 
-#: coda_barplot.R:59
+#: coda_barplot.R:56
 msgid "Barplot"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr ""
 msgid "HCLUST"
 msgstr ""
 
-#: coda_hclust.R:109
+#: coda_hclust.R:110
 msgid "Aitchison distance, %s linkage"
 msgstr ""
 
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Alpha Diversity"
 msgstr ""
 
-#: count_occurrence.R:16 count_occurrence.R:71 count_occurrence.R:89
+#: count_occurrence.R:16 count_occurrence.R:69 count_occurrence.R:87
 msgid "Co-Occurrence"
 msgstr ""
 
@@ -707,19 +707,19 @@ msgstr ""
 msgid "Individuals factor map"
 msgstr ""
 
-#: multivariate.R:109
+#: multivariate.R:107
 msgid "Variables factor map"
 msgstr ""
 
-#: multivariate.R:121
+#: multivariate.R:119
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:130
+#: multivariate.R:128
 msgid "Variables"
 msgstr ""
 
-#: multivariate.R:139 multivariate.R:141
+#: multivariate.R:137 multivariate.R:139
 msgid "Screeplot"
 msgstr ""
 
@@ -787,8 +787,12 @@ msgstr ""
 msgid "Line type"
 msgstr ""
 
-#: plot.R:235
-msgid "Color palette"
+#: plot.R:250
+msgid "Monochrome"
+msgstr ""
+
+#: plot.R:259
+msgid "Color scheme"
 msgstr ""
 
 #: prepare.R:93

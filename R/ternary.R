@@ -118,7 +118,7 @@ ternary_ui <- function(id) {
     output_plot(
       id = ns("ternplot"),
       tools = list(
-        select_color(inputId = ns("col")),
+        select_color(id = ns("col")),
         select_pch(inputId = ns("pch"), default = NULL),
         select_cex(inputId = ns("cex"))
       ),
@@ -199,6 +199,7 @@ ternary_server <- function(id, x) {
 
       ## Graphical parameters
       col <- rep("black", n)
+      pal <- get_color("col")()
       border <- rep("black", n)
       pch <- get_value(as.integer(input$pch))
       cex <- get_value(as.integer(input$cex), 1)
@@ -213,11 +214,10 @@ ternary_server <- function(id, x) {
       ## Symbol colors
       if (isTruthy(symbol_color())) {
         symbol_color <- data_raw()[[symbol_color()]]
-        col <- get_color(input$col)
         if (is.double(symbol_color)) {
-          col <- khroma::palette_color_continuous(colors = col)(symbol_color)
+          col <- khroma::palette_color_continuous(pal)(symbol_color)
         } else {
-          col <- khroma::palette_color_discrete(colors = col)(symbol_color)
+          col <- khroma::palette_color_discrete(pal)(symbol_color)
         }
         if (identical(symbol_group, symbol_color)) border <- col
       }
@@ -292,7 +292,7 @@ ternary_server <- function(id, x) {
             isopleuros::ternary_image(
               f = fun_tile,
               n = bin,
-              palette = khroma::palette_color_continuous(get_color(input$col))
+              palette = khroma::palette_color_continuous(pal)
             )
           }
 

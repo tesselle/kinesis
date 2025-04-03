@@ -30,7 +30,7 @@ logratio_ui <- function(id) {
     output_plot(
       id = ns("plot"),
       tools = list(
-        select_color(inputId = ns("col")),
+        select_color(id = ns("col")),
         select_pch(inputId = ns("pch"), default = NULL)
       ),
       height = "100%",
@@ -91,7 +91,7 @@ logratio_server <- function(id, x, method) {
     ## Plot -----
     plot_log <- reactive({
       req(logratio())
-      col <- get_color(input$col)
+      col <- get_color("col")()
       pch <- get_value(as.integer(input$pch))
 
       function() {

@@ -225,30 +225,64 @@ select_lty <- function(inputId, default = "solid") {
   )
 }
 
-select_color <- function(inputId, type = NULL, default = "discreterainbow") {
+#' @param id A [`character`] vector to be used for the namespace.
+#' @noRd
+select_color <- function(id, type = NULL, mono = FALSE) {
+  ## Create a namespace function using the provided id
+  ns <- NS(id)
+
   x <- khroma::info()
   x <- tapply(X = x$palette, INDEX = x$type, FUN = function(x) as.list(x))
+
+  default <- "discreterainbow"
   if (!is.null(type)) {
-    type <- match.arg(type, choices = c("qualitative", "sequential", "diverging"))
+    choices <- c("qualitative", "sequential", "diverging")
+    type <- match.arg(type, choices, several.ok = TRUE)
+    if ("diverging" %in% type) default <- "BuRd"
+    if ("sequential" %in% type) default <- "YlOrBr"
     x <- x[type]
   }
 
-  selectInput(
-    inputId = inputId,
-    label = tr_("Color palette"),
-    choices = x,
-    selected = default,
-    multiple = FALSE
+  black <- NULL
+  if (mono) {
+    black <- checkboxInput(
+      inputId = ns("monochrome"),
+      label = tr_("Monochrome"),
+      value = FALSE
+    )
+  }
+
+  list(
+    black,
+    selectInput(
+      inputId = ns("scheme"),
+      label = tr_("Color scheme"),
+      choices = x,
+      selected = default,
+      multiple = FALSE
+    )
   )
 }
+#' @param id An ID string that corresponds with the ID used to call the module's
+#'  UI function.
+#' @note
+#'  Must be used OUTSIDE the function recording the plot.
+#' @noRd
+get_color <- function(id) {
+  moduleServer(id, function(input, output, session) {
 
-get_color <- function(palette) {
-  force(palette)
+    pal <- reactive({
+      if (isTRUE(input$monochrome)) return(function(n) rep("black", n))
 
-  function(n) {
-    col <- try(khroma::color(palette)(n), silent = TRUE)
-    if (!inherits(col, "try-error")) return(col)
-    khroma::color(palette, force = TRUE)(n)
-  }
+      scheme <- input$scheme
+      function(n) {
+        col <- try(khroma::color(scheme)(n), silent = TRUE)
+        if (!inherits(col, "try-error")) return(col)
+        khroma::color(scheme, force = TRUE)(n)
+      }
+    })
+
+    pal
+  })
 }
 

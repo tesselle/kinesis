@@ -52,7 +52,7 @@ diversity_beta_ui <- function(id) {
         id = ns("plot_diss"),
         title = tr_("Dissimilarity"),
         tools = list(
-          select_color(inputId = ns("col_diss"), type = "sequential", default = "YlOrBr")
+          select_color(id = ns("col_diss"), type = "sequential")
         ),
         height = "100%"
       ),
@@ -60,7 +60,7 @@ diversity_beta_ui <- function(id) {
         id = ns("plot_pcoa"),
         title = tr_("PCoA"),
         tools = list(
-          select_color(inputId = ns("col_pcoa"), type = "sequential", default = "YlOrBr"),
+          select_color(id = ns("col_pcoa"), type = "sequential"),
           select_cex(inputId = ns("cex_pcoa"))
         ),
         height = "100%"
@@ -132,10 +132,12 @@ diversity_beta_server <- function(id, x, y) {
     ## Plot -----
     plot_diss <- reactive({
       req(results())
+
+      col_diss <- get_color("col_diss")()
       function() {
         tabula::plot_heatmap(
           object = results(),
-          color = get_color(input$col_diss),
+          color = col_diss,
           diag = FALSE,
           upper = FALSE,
           fixed_ratio = TRUE
@@ -152,12 +154,13 @@ diversity_beta_server <- function(id, x, y) {
         extra_quanti <- y()[[input$extra_quanti]]
       }
 
+      col_pcoa <- get_color("col_pcoa")()
       function() {
         dimensio::plot(
           x = analysis(),
           labels = input$pcoa_labels,
           extra_quanti = extra_quanti,
-          color = get_color(input$col_pcoa),
+          color = col_pcoa,
           size = get_value(input$cex_pcoa),
           panel.first = graphics::grid()
         )

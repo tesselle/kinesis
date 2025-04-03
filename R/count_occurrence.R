@@ -38,10 +38,8 @@ occurrence_ui <- function(id) {
       col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
       output_plot(
         id = ns("plot"),
-        tools = select_color(
-          inputId = ns("color"),
-          type = c("sequential", "diverging"),
-          default = "YlOrBr"
+        tools = list(
+          select_color(id = ns("col"), type = c("sequential", "diverging"))
         )
       ),
       card(
@@ -98,7 +96,8 @@ occurrence_server <- function(id, x) {
         spot = function(x, ...) tabula::plot_spot(x, ...)
       )
 
-      function() fun(results(), color = get_color(input$color))
+      col <- get_color("col")()
+      function() fun(results(), color = col)
     })
 
     ## Render table -----

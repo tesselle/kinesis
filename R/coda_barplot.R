@@ -44,10 +44,7 @@ coda_barplot_ui <- function(id) {
     output_plot(
       id = ns("plot"),
       tools = list(
-        select_color(
-          inputId = ns("color_qualitative"),
-          type = "qualitative"
-        ),
+        select_color(id = ns("color_qualitative"), type = "qualitative"),
         numericInput(
           inputId = ns("space"),
           label = tr_("Gutter"),
@@ -99,7 +96,7 @@ coda_barplot_server <- function(id, x) {
     plot_bar <- reactive({
       req(data_bar())
 
-      col <- get_color(input$color_qualitative)
+      col <- get_color("color_qualitative")()
       pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
 
       function() {

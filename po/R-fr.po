@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 15:30+0200\n"
+"POT-Creation-Date: 2025-04-03 19:05+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -171,11 +171,11 @@ msgstr "Ordre des lignes"
 msgid "Decreasing row order"
 msgstr "Tri décroissant des lignes"
 
-#: coda_barplot.R:53
+#: coda_barplot.R:50
 msgid "Gutter"
 msgstr "Gouttière"
 
-#: coda_barplot.R:59
+#: coda_barplot.R:56
 msgid "Barplot"
 msgstr "Diagramme à barres"
 
@@ -211,7 +211,7 @@ msgstr "Dendrogramme"
 msgid "HCLUST"
 msgstr ""
 
-#: coda_hclust.R:109
+#: coda_hclust.R:110
 msgid "Aitchison distance, %s linkage"
 msgstr "Distance d'Aitchison (aggrégation : %s)"
 
@@ -407,7 +407,7 @@ msgstr "Diversité bêta"
 msgid "Alpha Diversity"
 msgstr "Diversité alpha"
 
-#: count_occurrence.R:16 count_occurrence.R:71 count_occurrence.R:89
+#: count_occurrence.R:16 count_occurrence.R:69 count_occurrence.R:87
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
@@ -755,19 +755,19 @@ msgstr "Double-cliquez à nouveau pour réinitialiser le zoom."
 msgid "Individuals factor map"
 msgstr "Plan factoriel des individus"
 
-#: multivariate.R:109
+#: multivariate.R:107
 msgid "Variables factor map"
 msgstr "Plan factoriel des variables"
 
-#: multivariate.R:121
+#: multivariate.R:119
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:130
+#: multivariate.R:128
 msgid "Variables"
 msgstr "Variables"
 
-#: multivariate.R:139 multivariate.R:141
+#: multivariate.R:137 multivariate.R:139
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
@@ -835,9 +835,13 @@ msgstr "Symbole"
 msgid "Line type"
 msgstr "Type de ligne"
 
-#: plot.R:235
-msgid "Color palette"
-msgstr "Palette de couleurs"
+#: plot.R:250
+msgid "Monochrome"
+msgstr "Monochrome"
+
+#: plot.R:259
+msgid "Color scheme"
+msgstr "Couleurs"
 
 #: prepare.R:93
 msgid "Dimensions"
