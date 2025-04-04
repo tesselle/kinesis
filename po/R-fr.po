@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 19:14+0200\n"
+"POT-Creation-Date: 2025-04-04 14:44+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -663,7 +663,7 @@ msgstr "Tabulation"
 msgid "Quote"
 msgstr "Séparateur de chaîne de caractères"
 
-#: import.R:93 multivariate.R:64 ternary.R:45 ternary.R:77
+#: import.R:93 multivariate.R:69 ternary.R:45 ternary.R:77
 msgid "None"
 msgstr "Aucun"
 
@@ -740,88 +740,92 @@ msgid "Label variables"
 msgstr "Étiqueter les variables"
 
 #: multivariate.R:44
+msgid "Highlight supplementary observations"
+msgstr "Surligner les observations supplémentaires"
+
+#: multivariate.R:49
 msgid "Display supplementary individuals"
 msgstr "Afficher les individus supplémentaires"
 
-#: multivariate.R:49
+#: multivariate.R:54
 msgid "Display supplementary variables"
 msgstr "Afficher les variables supplémentaires"
 
-#: multivariate.R:54
+#: multivariate.R:59
 msgid "Extra quantitative variable"
 msgstr "Variable quantitative illustrative"
 
-#: multivariate.R:58
+#: multivariate.R:63
 msgid "Extra qualitative variable"
 msgstr "Variable qualitative illustrative"
 
-#: multivariate.R:63 ternary.R:76
+#: multivariate.R:68 ternary.R:76
 msgid "Wrap:"
 msgstr "Type d'enveloppe :"
 
-#: multivariate.R:64 ternary.R:77
+#: multivariate.R:69 ternary.R:77
 msgid "Tolerance ellipse"
 msgstr "Ellipse de tolérance"
 
-#: multivariate.R:65 ternary.R:78
+#: multivariate.R:70 ternary.R:78
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:65 ternary.R:78
+#: multivariate.R:70 ternary.R:78
 msgid "Convex hull"
 msgstr "Enveloppe convexe"
 
-#: multivariate.R:70 ternary.R:83
+#: multivariate.R:75 ternary.R:83
 msgid "Ellipse level:"
 msgstr "Niveau :"
 
-#: multivariate.R:78
+#: multivariate.R:83
 msgid "Results"
 msgstr "Résultats"
 
-#: multivariate.R:80 ternary.R:115
+#: multivariate.R:85 ternary.R:115
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 "Cliquez et faites glisser pour sélectionner une zone, puis double-cliquez "
 "pour effectuer un zoom avant."
 
-#: multivariate.R:81 ternary.R:116
+#: multivariate.R:86 ternary.R:116
 msgid "Double-click again to reset the zoom."
 msgstr "Double-cliquez à nouveau pour réinitialiser le zoom."
 
-#: multivariate.R:94
+#: multivariate.R:99
 msgid "Individuals factor map"
 msgstr "Plan factoriel des individus"
 
-#: multivariate.R:107
+#: multivariate.R:112
 msgid "Variables factor map"
 msgstr "Plan factoriel des variables"
 
-#: multivariate.R:119
+#: multivariate.R:124
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:128
+#: multivariate.R:133
 msgid "Variables"
 msgstr "Variables"
 
-#: multivariate.R:137 multivariate.R:139
+#: multivariate.R:142 multivariate.R:144
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:370
+#: multivariate.R:378
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:375
+#: multivariate.R:383
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:380
+#: multivariate.R:388
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
-#: pca.R:21 pca.R:110
+#: pca.R:21 pca.R:108
 msgid "Principal Components Analysis"
 msgstr "Analyse en composantes principales"
 

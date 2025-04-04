@@ -40,6 +40,11 @@ multivariate_ui <- function(id) {
         value = TRUE
       ),
       checkboxInput(
+        inputId = ns("sup_obs"),
+        label = tr_("Highlight supplementary observations"),
+        value = FALSE
+      ),
+      checkboxInput(
         inputId = ns("sup_ind"),
         label = tr_("Display supplementary individuals"),
         value = TRUE
@@ -66,7 +71,7 @@ multivariate_ui <- function(id) {
         choiceValues = c("none", "tolerance", "confidence", "hull"),
       ),
       checkboxGroupInput(
-        inputId = ns("ellipse_type"),
+        inputId = ns("ellipse_level"),
         label = tr_("Ellipse level:"),
         selected = "0.95",
         choiceNames = c("68%", "95%", "99%"),
@@ -236,10 +241,13 @@ multivariate_server <- function(id, x, y) {
       if (isTruthy(col_quanti())) {
         extra_quanti <- extra()[[col_quanti()]]
       }
+      if (isTRUE(input$sup_obs)) {
+        extra_quali <- "observation"
+      }
 
       ## Envelope
       ellipse <- NULL
-      if (any(input$wrap %in% c("confidence", "tolerance"))) {
+      if (any(input$wrap %in% c("confidence", "tolerance")) && isFALSE(input$sup_obs)) {
         ellipse <- list(
           type = input$wrap,
           level = as.numeric(input$ellipse_level)
@@ -254,7 +262,7 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_ind,
           labels = input$lab_ind,
-          extra_quali = get_value(extra_quali, "observation"),
+          extra_quali = extra_quali,
           extra_quanti = extra_quanti,
           ellipse = ellipse,
           hull = isTRUE(input$wrap == "hull"),
@@ -280,7 +288,7 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_var,
           labels = input$lab_var,
-          extra_quali = "observation",
+          extra_quali = if (isTRUE(input$sup_obs)) "observation" else NULL,
           color = col_var,
           symbol = c(1, 3),
           xlim = range_var$x,

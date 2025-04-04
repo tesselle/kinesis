@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-03 19:14+0200\n"
+"POT-Creation-Date: 2025-04-04 14:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -610,7 +610,7 @@ msgstr ""
 msgid "Quote"
 msgstr ""
 
-#: import.R:93 multivariate.R:64 ternary.R:45 ternary.R:77
+#: import.R:93 multivariate.R:69 ternary.R:45 ternary.R:77
 msgid "None"
 msgstr ""
 
@@ -687,86 +687,90 @@ msgid "Label variables"
 msgstr ""
 
 #: multivariate.R:44
-msgid "Display supplementary individuals"
+msgid "Highlight supplementary observations"
 msgstr ""
 
 #: multivariate.R:49
-msgid "Display supplementary variables"
+msgid "Display supplementary individuals"
 msgstr ""
 
 #: multivariate.R:54
+msgid "Display supplementary variables"
+msgstr ""
+
+#: multivariate.R:59
 msgid "Extra quantitative variable"
 msgstr ""
 
-#: multivariate.R:58
+#: multivariate.R:63
 msgid "Extra qualitative variable"
 msgstr ""
 
-#: multivariate.R:63 ternary.R:76
+#: multivariate.R:68 ternary.R:76
 msgid "Wrap:"
 msgstr ""
 
-#: multivariate.R:64 ternary.R:77
+#: multivariate.R:69 ternary.R:77
 msgid "Tolerance ellipse"
 msgstr ""
 
-#: multivariate.R:65 ternary.R:78
+#: multivariate.R:70 ternary.R:78
 msgid "Confidence ellipse"
 msgstr ""
 
-#: multivariate.R:65 ternary.R:78
+#: multivariate.R:70 ternary.R:78
 msgid "Convex hull"
 msgstr ""
 
-#: multivariate.R:70 ternary.R:83
+#: multivariate.R:75 ternary.R:83
 msgid "Ellipse level:"
 msgstr ""
 
-#: multivariate.R:78
+#: multivariate.R:83
 msgid "Results"
 msgstr ""
 
-#: multivariate.R:80 ternary.R:115
+#: multivariate.R:85 ternary.R:115
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 
-#: multivariate.R:81 ternary.R:116
+#: multivariate.R:86 ternary.R:116
 msgid "Double-click again to reset the zoom."
 msgstr ""
 
-#: multivariate.R:94
+#: multivariate.R:99
 msgid "Individuals factor map"
 msgstr ""
 
-#: multivariate.R:107
+#: multivariate.R:112
 msgid "Variables factor map"
 msgstr ""
 
-#: multivariate.R:119
+#: multivariate.R:124
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:128
+#: multivariate.R:133
 msgid "Variables"
 msgstr ""
 
-#: multivariate.R:137 multivariate.R:139
+#: multivariate.R:142 multivariate.R:144
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:370
+#: multivariate.R:378
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:375
+#: multivariate.R:383
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:380
+#: multivariate.R:388
 msgid "Squared cosinus"
 msgstr ""
 
-#: pca.R:21 pca.R:110
+#: pca.R:21 pca.R:108
 msgid "Principal Components Analysis"
 msgstr ""
 
