@@ -39,7 +39,7 @@ mcd_ui <- function(id) {
 }
 
 # Server =======================================================================
-#' Co-Occurrence Server
+#' MCD Server
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
@@ -87,12 +87,17 @@ mcd_server <- function(id, x) {
       function() kairos::plot(results(), calendar = cal_out())
     })
 
+    ## Table -----
+    tbl <- reactive({
+      req(results())
+      as.data.frame(results(), calendar = cal_out())
+    })
+
     ## Render table -----
     output$table <- gt::render_gt({
-      req(results())
-      results() |>
-        as.data.frame(calendar = cal_out()) |>
-        gt::gt(rownames_to_stub = TRUE) |>
+      req(tbl())
+      tbl() |>
+        gt::gt(rowname_col = "sample") |>
         gt::fmt_number(decimals = 2) |>
         gt::sub_missing()
     })
@@ -101,6 +106,6 @@ mcd_server <- function(id, x) {
     render_plot("plot", x = map)
 
     ## Download -----
-    output$download <- export_table(results, "mcd")
+    output$download <- export_table(tbl, "mcd")
   })
 }
