@@ -15,6 +15,7 @@
 #'   Correspondence Analysis       \tab `ca`         \cr
 #'   Principal Components Analysis \tab `pca`        \cr
 #'   Diversity Measures            \tab `diversity`  \cr
+#'   Mean Ceramic Date             \tab `mcd`        \cr
 #'   Matrix Seriation              \tab `seriation`  \cr
 #'   Compositional Data Analysis   \tab `source`     \cr
 #'   Ternary Plot                  \tab `ternary`    \cr
@@ -27,7 +28,8 @@
 #' @family shiny apps
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("diversity", "seriation", "source", "ternary", "ca", "pca"),
+run_app <- function(app = c("diversity", "seriation", "mcd", "source",
+                            "ternary", "ca", "pca"),
                     bookmark = FALSE,
                     options = list(launch.browser = interactive())) {
   ## App selection

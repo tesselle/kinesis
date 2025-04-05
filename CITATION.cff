@@ -73,6 +73,24 @@ references:
   year: '2025'
   version: '>= 4.1'
 - type: software
+  title: aion
+  abstract: 'aion: Archaeological Time Series'
+  notes: Imports
+  url: https://packages.tesselle.org/aion/
+  repository: https://CRAN.R-project.org/package=aion
+  authors:
+  - family-names: Frerebeau
+    given-names: Nicolas
+    email: nicolas.frerebeau@u-bordeaux-montaigne.fr
+    orcid: https://orcid.org/0000-0001-5759-4944
+  - family-names: Roe
+    given-names: Joe
+    email: joseph.roe@iaw.unibe.ch
+    orcid: https://orcid.org/0000-0002-1011-1244
+  year: '2025'
+  doi: 10.32614/CRAN.package.aion
+  version: '>= 1.4.0'
+- type: software
   title: arkhe
   abstract: 'arkhe: Tools for Cleaning Rectangular Data'
   notes: Imports
@@ -131,9 +149,9 @@ references:
     given-names: Nicolas
     email: nicolas.frerebeau@u-bordeaux-montaigne.fr
     orcid: https://orcid.org/0000-0001-5759-4944
+  year: '2025'
   doi: 10.32614/CRAN.package.dimensio
   version: '>= 0.13.0'
-  year: '2025'
 - type: software
   title: future
   abstract: 'future: Unified Parallel and Distributed Processing in R for Everyone'
@@ -225,7 +243,7 @@ references:
     orcid: https://orcid.org/0000-0001-5759-4944
   year: '2025'
   doi: 10.32614/CRAN.package.kairos
-  version: '>= 2.2.0'
+  version: '>= 2.2.1'
 - type: software
   title: khroma
   abstract: 'khroma: Colour Schemes for Scientific Data Visualization'

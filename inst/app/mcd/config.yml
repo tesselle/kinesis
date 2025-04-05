@@ -1,0 +1,16 @@
+default:
+  production: TRUE
+  verbose: FALSE
+  name: "MCD"
+  title: "Mean Ceramic Date"
+  description: |
+    This application allows to compute the Mean Ceramic Dates (MCD) of a set of
+    archaeological assemblages. The MCD is a point estimate of the occupation of
+    an archaeological site (South 1977). It is estimated as the weighted mean
+    of the date midpoints of the ceramic types (based on absolute dates or the
+    known production interval) found in a given assemblage. The weights are
+    the relative frequencies of the respective types in the assemblage.
+
+test:
+  production: FALSE
+  verbose: TRUE

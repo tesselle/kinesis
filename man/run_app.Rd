@@ -5,7 +5,7 @@
 \title{Run an App}
 \usage{
 run_app(
-  app = c("diversity", "seriation", "source", "ternary", "ca", "pca"),
+  app = c("diversity", "seriation", "mcd", "source", "ternary", "ca", "pca"),
   bookmark = FALSE,
   options = list(launch.browser = interactive())
 )
@@ -32,6 +32,7 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 Correspondence Analysis       \tab \code{ca}         \cr
 Principal Components Analysis \tab \code{pca}        \cr
 Diversity Measures            \tab \code{diversity}  \cr
+Mean Ceramic Date             \tab \code{mcd}        \cr
 Matrix Seriation              \tab \code{seriation}  \cr
 Compositional Data Analysis   \tab \code{source}     \cr
 Ternary Plot                  \tab \code{ternary}    \cr

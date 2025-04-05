@@ -21,6 +21,7 @@ BugReports: https://codeberg.org/tesselle/kinesis/issues
 Depends: 
     R (>= 4.1)
 Imports: 
+    aion (>= 1.4.0),
     arkhe (>= 1.10.0),
     bslib (>= 0.9.0),
     config (>= 0.3.2),

@@ -68,6 +68,71 @@ make_file_name <- function(name, ext, project = NULL) {
 }
 
 # Widgets ======================================================================
+select_calendar <- function(id, default = "CE") {
+  ns <- NS(id)
+
+  selectizeInput(
+    inputId = ns("calendar"),
+    label = tr_("Calendar"),
+    choices = c("CE", "BCE", "BP", "AD", "BC"),
+    selected = default,
+    multiple = FALSE,
+    options = list(plugins = "remove_button")
+  )
+}
+get_calendar <- function(id) {
+  moduleServer(id, function(input, output, session) {
+
+    cal <- reactive({
+      aion::calendar(input$calendar)
+    })
+
+    cal
+  })
+}
+column_input_numeric_ui <- function(id) {
+  uiOutput(NS(id, "controls"))
+}
+column_input_numeric_server <- function(id, x) {
+  stopifnot(is.reactive(x))
+
+  moduleServer(id, function(input, output, session) {
+    ## Get variable names
+    vars <- reactive({ names(x()) })
+
+    ## Build UI
+    output$controls <- renderUI({
+      lapply(
+        X = vars(),
+        FUN = function(var) {
+          numericInput(
+            inputId = session$ns(paste0("num_", var)),
+            label = var,
+            value = 0
+          )
+        }
+      )
+    })
+
+    ## Get values
+    values <- reactive({
+      vapply(
+        X = paste0("num_", vars()),
+        FUN = function(var, input) input[[var]],
+        FUN.VALUE = numeric(1),
+        input = input
+      )
+    })
+
+    values
+  })
+}
+
+#' Updatable Select List
+#'
+#' @param id A [`character`] string specifying the namespace.
+#' @keywords internal
+#' @noRd
 selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
   ns <- NS(id)
   plugins <- ifelse(isTRUE(multiple), "remove_button", "clear_button")
@@ -85,7 +150,8 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 
 #' Update a Select List with Column Names
 #'
-#' @param id A [`character`] string specifying the namespace.
+#' @param id A [`character`] string specifying the namespace (must match
+#'  [selectize_ui()]).
 #' @param x A reactive `matrix`-like object.
 #' @param find_col A predicate [`function`] for column detection
 #'  (see [arkhe::detect()]).
@@ -143,7 +209,8 @@ column_select_server <- function(id, x, find_col = NULL,
 
 #' Update a Select List with a Vector
 #'
-#' @param id A [`character`] string specifying the namespace.
+#' @param id A [`character`] string specifying the namespace (must match
+#'  [selectize_ui()]).
 #' @param x A reactive [`character`] vector.
 #' @param exclude A reactive [`character`] vector of values to exclude.
 #' @param preserve A [`logical`] scalar: should existing selection be preserved

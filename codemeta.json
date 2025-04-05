@@ -78,6 +78,19 @@
     },
     "2": {
       "@type": "SoftwareApplication",
+      "identifier": "aion",
+      "name": "aion",
+      "version": ">= 1.4.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=aion"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
       "identifier": "arkhe",
       "name": "arkhe",
       "version": ">= 1.10.0",
@@ -89,7 +102,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=arkhe"
     },
-    "3": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "bslib",
       "name": "bslib",
@@ -102,7 +115,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=bslib"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "config",
       "name": "config",
@@ -115,7 +128,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=config"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "dimensio",
       "name": "dimensio",
@@ -128,7 +141,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dimensio"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "future",
       "name": "future",
@@ -141,12 +154,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=future"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "grDevices",
       "name": "grDevices"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
@@ -159,7 +172,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gt"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "isopleuros",
       "name": "isopleuros",
@@ -172,11 +185,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=isopleuros"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "kairos",
       "name": "kairos",
-      "version": ">= 2.2.0",
+      "version": ">= 2.2.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -185,7 +198,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=kairos"
     },
-    "11": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "khroma",
       "name": "khroma",
@@ -198,7 +211,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=khroma"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "nexus",
       "name": "nexus",
@@ -211,7 +224,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=nexus"
     },
-    "13": {
+    "14": {
       "@type": "SoftwareApplication",
       "identifier": "promises",
       "name": "promises",
@@ -224,7 +237,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=promises"
     },
-    "14": {
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "sass",
       "name": "sass",
@@ -237,7 +250,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=sass"
     },
-    "15": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
@@ -250,12 +263,12 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=shiny"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "tabula",
       "name": "tabula",
@@ -268,7 +281,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tabula"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
@@ -278,7 +291,7 @@
   "applicationCategory": "ArchaeologicalScience",
   "isPartOf": "https://www.tesselle.org",
   "keywords": ["archaeology", "archaeological-science", "archaeometry", "shiny-apps", "r-package"],
-  "fileSize": "510.704KB",
+  "fileSize": "530.24KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
