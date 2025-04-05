@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-04 14:44+0200\n"
+"POT-Creation-Date: 2025-04-05 16:19+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -29,13 +29,13 @@ msgstr "Variables quantitatives supplémentaires"
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_occurrence.R:31
-#: pca.R:48
+#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_mcd.R:20
+#: count_occurrence.R:31 pca.R:48
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
-#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:34
-#: pca.R:51
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_mcd.R:23
+#: count_occurrence.R:34 pca.R:51
 msgid "Download results"
 msgstr "Télécharger les résultats"
 
@@ -407,6 +407,18 @@ msgstr "Diversité bêta"
 msgid "Alpha Diversity"
 msgstr "Diversité alpha"
 
+#: count_mcd.R:16
+msgid "Mean Ceramic Date"
+msgstr "Date céramique moyenne"
+
+#: count_mcd.R:17
+msgid "Set the date midpoint (in years) of each ceramic type."
+msgstr "Saisissez la date (en années) de chaque type de céramique."
+
+#: count_mcd.R:58 count_mcd.R:81
+msgid "MCD"
+msgstr ""
+
 #: count_occurrence.R:16 count_occurrence.R:69 count_occurrence.R:87
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
@@ -711,11 +723,15 @@ msgstr "Vos données ne doivent pas contenir de valeurs manquantes."
 msgid "Your data should not contain zeros."
 msgstr "Vos données ne doivent pas contenir de zéros."
 
-#: kinesis-internal.R:268
+#: kinesis-internal.R:76
+msgid "Calendar"
+msgstr "Calendrier"
+
+#: kinesis-internal.R:335
 msgid "Your data seem to have changed."
 msgstr "Vos données semblent avoir été modifiées."
 
-#: kinesis-internal.R:269
+#: kinesis-internal.R:336
 msgid "You should perform your analysis again."
 msgstr "Vous devriez refaire votre analyse."
 
@@ -969,11 +985,11 @@ msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 msgid "Remove data points that fall outside a specification."
 msgstr "Supprimer les données ne respectant pas certaines conditions."
 
-#: run.R:37
+#: run.R:39
 msgid "Could not find the %s application."
 msgstr "Impossible de trouver l'application %s."
 
-#: run.R:83
+#: run.R:85
 msgid "Could not find the configuration file for %s."
 msgstr "Impossible de trouver le fichier de configuration pour %s."
 

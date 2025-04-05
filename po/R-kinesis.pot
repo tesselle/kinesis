@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-04 14:44+0200\n"
+"POT-Creation-Date: 2025-04-05 16:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,11 +27,11 @@ msgstr ""
 msgid "Supplementary qualitative variables"
 msgstr ""
 
-#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_occurrence.R:31 pca.R:48
+#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_mcd.R:20 count_occurrence.R:31 pca.R:48
 msgid "(Re)Compute"
 msgstr ""
 
-#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_occurrence.R:34 pca.R:51
+#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_mcd.R:23 count_occurrence.R:34 pca.R:51
 msgid "Download results"
 msgstr ""
 
@@ -383,6 +383,18 @@ msgstr ""
 msgid "Alpha Diversity"
 msgstr ""
 
+#: count_mcd.R:16
+msgid "Mean Ceramic Date"
+msgstr ""
+
+#: count_mcd.R:17
+msgid "Set the date midpoint (in years) of each ceramic type."
+msgstr ""
+
+#: count_mcd.R:58 count_mcd.R:81
+msgid "MCD"
+msgstr ""
+
 #: count_occurrence.R:16 count_occurrence.R:69 count_occurrence.R:87
 msgid "Co-Occurrence"
 msgstr ""
@@ -658,11 +670,15 @@ msgstr ""
 msgid "Your data should not contain zeros."
 msgstr ""
 
-#: kinesis-internal.R:268
+#: kinesis-internal.R:76
+msgid "Calendar"
+msgstr ""
+
+#: kinesis-internal.R:335
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:269
+#: kinesis-internal.R:336
 msgid "You should perform your analysis again."
 msgstr ""
 
@@ -914,11 +930,11 @@ msgstr ""
 msgid "Remove data points that fall outside a specification."
 msgstr ""
 
-#: run.R:37
+#: run.R:39
 msgid "Could not find the %s application."
 msgstr ""
 
-#: run.R:83
+#: run.R:85
 msgid "Could not find the configuration file for %s."
 msgstr ""
 

@@ -4,7 +4,7 @@ default:
   name: "diversity"
   title: "Diversity Measures"
   description: |
-    This app allows allows to compute several diversity measures from a count
+    This application allows to compute several diversity measures from a count
     table (absolute frequencies giving the number of individuals for each
     category, i.e. a contingency table).
 
