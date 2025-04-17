@@ -10,32 +10,35 @@ mcd_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      h5(tr_("Mean Ceramic Date")),
-      helpText(tr_("Set the date midpoint (in years) of each ceramic type.")),
-      column_input_numeric_ui(ns("dates")),
-      select_calendar(ns("calendar_input")),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download results")
-      )
-    ), # sidebar
-    layout_columns(
-      col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
-      output_plot(
-        id = ns("plot"),
-        tools = list(
-          select_calendar(ns("calendar_output"))
+  nav_panel(
+    title = tr_("Date"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        h5(tr_("Mean Ceramic Date")),
+        helpText(tr_("Set the date midpoint (in years) of each ceramic type.")),
+        column_input_numeric_ui(ns("dates")),
+        select_calendar(ns("calendar_input")),
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download results")
         )
-      ),
-      card(
-        gt::gt_output(outputId = ns("table"))
+      ), # sidebar
+      layout_columns(
+        col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
+        output_plot(
+          id = ns("plot"),
+          tools = list(
+            select_calendar(ns("calendar_output"))
+          )
+        ),
+        card(
+          gt::gt_output(outputId = ns("table"))
+        )
       )
-    )
-  ) # layout_sidebar
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

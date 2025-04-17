@@ -6,37 +6,40 @@
 #' @family coda modules
 #' @keywords internal
 #' @export
-logratio_ui <- function(id) {
+logratio_ui <- function(id, title) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = uiOutput(outputId = ns("title")),
-      helpText(tr_("Compute log-ratio transformation of compositional data.")),
-      checkboxInput(
-        inputId = ns("weights"),
-        label = tr_("Weighted log-ratio"),
-        value = FALSE
-      ),
-      uiOutput(outputId = ns("settings")),
-      downloadButton(outputId = ns("download_table"),
-                     label = tr_("Download log-ratio")),
-      ## Output: graph
-      plotOutput(outputId = ns("graph"))
-    ), # sidebar
-    ## Output: plot
-    output_plot(
-      id = ns("plot"),
-      tools = list(
-        select_color(id = ns("col")),
-        select_pch(inputId = ns("pch"), default = NULL)
-      ),
-      height = "100%",
-      title = tr_("Density")
-    )
-  ) # layout_sidebar
+  nav_panel(
+    title = title,
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        title = uiOutput(outputId = ns("title")),
+        helpText(tr_("Compute log-ratio transformation of compositional data.")),
+        checkboxInput(
+          inputId = ns("weights"),
+          label = tr_("Weighted log-ratio"),
+          value = FALSE
+        ),
+        uiOutput(outputId = ns("settings")),
+        downloadButton(outputId = ns("download_table"),
+                       label = tr_("Download log-ratio")),
+        ## Output: graph
+        plotOutput(outputId = ns("graph"))
+      ), # sidebar
+      ## Output: plot
+      output_plot(
+        id = ns("plot"),
+        tools = list(
+          select_color(id = ns("col")),
+          select_pch(inputId = ns("pch"), default = NULL)
+        ),
+        height = "100%",
+        title = tr_("Density")
+      )
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

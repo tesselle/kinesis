@@ -10,56 +10,59 @@ seriate_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      h5("Permutation"),
-      ## Input: checkbox if permute rows
-      checkboxInput(
-        inputId = ns("margin_row"),
-        label = tr_("Permute rows"),
-        value = TRUE
-      ),
-      ## Input: checkbox if permute columns
-      checkboxInput(
-        inputId = ns("margin_col"),
-        label = tr_("Permute columns"),
-        value = TRUE
-      ),
-      ## Input: select CA axes
-      numericInput(
-        inputId = ns("axes"),
-        label = tr_("CA dimension"),
-        value = 1,
-        min = 1,
-        max = 10,
-        step = 1
-      ),
-      ## Output: download
-      downloadButton(outputId = ns("export_table"),
-                     label = tr_("Export matrix")),
-      h5("Display"),
-      ## Input: select plot
-      checkboxInput(
-        inputId = ns("eppm"),
-        label = "EPPM",
-        value = FALSE
-      ),
-      checkboxInput(
-        inputId = ns("weights"),
-        label = tr_("Weights"),
-        value = FALSE
-      ),
-      h5("Significance"),
-      uiOutput(outputId = ns("coef"))
-    ), # sidebar
-    ## Output: plot reordered matrix
-    output_plot(
-      id = ns("plot_permute"),
-      height = "100%",
-      title = tr_("Rearranged matrix")
-    )
-  ) # layout_sidebar
+  nav_panel(
+    title = tr_("Seriation"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        h5("Permutation"),
+        ## Input: checkbox if permute rows
+        checkboxInput(
+          inputId = ns("margin_row"),
+          label = tr_("Permute rows"),
+          value = TRUE
+        ),
+        ## Input: checkbox if permute columns
+        checkboxInput(
+          inputId = ns("margin_col"),
+          label = tr_("Permute columns"),
+          value = TRUE
+        ),
+        ## Input: select CA axes
+        numericInput(
+          inputId = ns("axes"),
+          label = tr_("CA dimension"),
+          value = 1,
+          min = 1,
+          max = 10,
+          step = 1
+        ),
+        ## Output: download
+        downloadButton(outputId = ns("export_table"),
+                       label = tr_("Export matrix")),
+        h5("Display"),
+        ## Input: select plot
+        checkboxInput(
+          inputId = ns("eppm"),
+          label = "EPPM",
+          value = FALSE
+        ),
+        checkboxInput(
+          inputId = ns("weights"),
+          label = tr_("Weights"),
+          value = FALSE
+        ),
+        h5("Significance"),
+        uiOutput(outputId = ns("coef"))
+      ), # sidebar
+      ## Output: plot reordered matrix
+      output_plot(
+        id = ns("plot_permute"),
+        height = "100%",
+        title = tr_("Rearranged matrix")
+      )
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

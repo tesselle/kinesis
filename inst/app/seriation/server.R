@@ -12,7 +12,7 @@ function(input, output, session) {
 
   ## Switch tab (only happen once)
   observe({
-    bslib::nav_select(id = "main", selected = "Data")
+    bslib::nav_select(id = "main", selected = "data")
   }) |> bindEvent(data(), once = TRUE)
 
   ## CA

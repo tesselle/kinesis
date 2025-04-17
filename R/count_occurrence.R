@@ -10,43 +10,46 @@ occurrence_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      h5(tr_("Co-Occurrence")),
-      radioButtons(
-        inputId = ns("method"),
-        label = tr_("Method"),
-        choiceNames = c(tr_("Absolute frequency"),
-                        tr_("Relative frequency"),
-                        tr_("Binomial assessment")),
-        choiceValues = c("absolute", "relative", "binomial")
-      ),
-      radioButtons(
-        inputId = ns("plot_type"),
-        label = tr_("Type of plot"),
-        choiceNames = c(tr_("Heatmap"), tr_("Spot")),
-        choiceValues = c("heatmap", "spot")
-      ),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download results")
-      )
-    ), # sidebar
-    layout_columns(
-      col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
-      output_plot(
-        id = ns("plot"),
-        tools = list(
-          select_color(id = ns("col"), type = c("sequential", "diverging"))
+  nav_panel(
+    title = tr_("Co-Occurrence"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        h5(tr_("Co-Occurrence")),
+        radioButtons(
+          inputId = ns("method"),
+          label = tr_("Method"),
+          choiceNames = c(tr_("Absolute frequency"),
+                          tr_("Relative frequency"),
+                          tr_("Binomial assessment")),
+          choiceValues = c("absolute", "relative", "binomial")
+        ),
+        radioButtons(
+          inputId = ns("plot_type"),
+          label = tr_("Type of plot"),
+          choiceNames = c(tr_("Heatmap"), tr_("Spot")),
+          choiceValues = c("heatmap", "spot")
+        ),
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download results")
         )
-      ),
-      card(
-        gt::gt_output(outputId = ns("table"))
+      ), # sidebar
+      layout_columns(
+        col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
+        output_plot(
+          id = ns("plot"),
+          tools = list(
+            select_color(id = ns("col"), type = c("sequential", "diverging"))
+          )
+        ),
+        card(
+          gt::gt_output(outputId = ns("table"))
+        )
       )
-    )
-  ) # layout_sidebar
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

@@ -10,52 +10,55 @@ coda_barplot_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      checkboxInput(
-        inputId = ns("select_major"),
-        label = tr_("Major elements"),
-        value = TRUE
-      ),
-      checkboxInput(
-        inputId = ns("select_minor"),
-        label = tr_("Minor elements"),
-        value = TRUE
-      ),
-      checkboxInput(
-        inputId = ns("select_trace"),
-        label = tr_("Trace elements"),
-        value = TRUE
-      ),
-      hr(),
-      checkboxInput(
-        inputId = ns("order_columns"),
-        label = tr_("Sort columns"),
-        value = FALSE
-      ),
-      selectize_ui(id = ns("order_rows"), label = tr_("Row order")),
-      checkboxInput(
-        inputId = ns("decreasing"),
-        label = tr_("Decreasing row order"),
-        value = FALSE
-      )
-    ), # sidebar
-    output_plot(
-      id = ns("plot"),
-      tools = list(
-        select_color(id = ns("color_qualitative"), type = "qualitative"),
-        numericInput(
-          inputId = ns("space"),
-          label = tr_("Gutter"),
-          value = 0.2,
-          min = 0, max = 0.5, step = 0.1
+  nav_panel(
+    title = tr_("Bar Plot"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        checkboxInput(
+          inputId = ns("select_major"),
+          label = tr_("Major elements"),
+          value = TRUE
+        ),
+        checkboxInput(
+          inputId = ns("select_minor"),
+          label = tr_("Minor elements"),
+          value = TRUE
+        ),
+        checkboxInput(
+          inputId = ns("select_trace"),
+          label = tr_("Trace elements"),
+          value = TRUE
+        ),
+        hr(),
+        checkboxInput(
+          inputId = ns("order_columns"),
+          label = tr_("Sort columns"),
+          value = FALSE
+        ),
+        selectize_ui(id = ns("order_rows"), label = tr_("Row order")),
+        checkboxInput(
+          inputId = ns("decreasing"),
+          label = tr_("Decreasing row order"),
+          value = FALSE
         )
-      ),
-      height = "100%",
-      title = tr_("Barplot")
-    )
-  ) # layout_sidebar
+      ), # sidebar
+      output_plot(
+        id = ns("plot"),
+        tools = list(
+          select_color(id = ns("color_qualitative"), type = "qualitative"),
+          numericInput(
+            inputId = ns("space"),
+            label = tr_("Gutter"),
+            value = 0.2,
+            min = 0, max = 0.5, step = 0.1
+          )
+        ),
+        height = "100%",
+        title = tr_("Bar Plot")
+      )
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

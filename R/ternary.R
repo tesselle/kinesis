@@ -10,127 +10,130 @@ ternary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      accordion(
-        accordion_panel(
-          title = tr_("Aesthetic mappings"),
-          ## Input: select axes
-          selectize_ui(id = ns("axis1"), label = tr_("Component X")),
-          selectize_ui(id = ns("axis2"), label = tr_("Component Y")),
-          selectize_ui(id = ns("axis3"), label = tr_("Component Z")),
-          ## Input: aesthetics mapping
-          selectize_ui(id = ns("symbol_color"), label = tr_("Colors")),
-          selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shape")),
-          selectize_ui(id = ns("symbol_size"), label = tr_("Symbol size")),
-        ),
-        accordion_panel(
-          title = tr_("Layers"),
-          ## Input: add points
-          checkboxInput(
-            inputId = ns("points"),
-            label = tr_("Show points"),
-            value = TRUE
+  nav_panel(
+    title = tr_("Ternary Plot"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        accordion(
+          accordion_panel(
+            title = tr_("Variables"),
+            ## Input: select axes
+            selectize_ui(id = ns("axis1"), label = tr_("Component X")),
+            selectize_ui(id = ns("axis2"), label = tr_("Component Y")),
+            selectize_ui(id = ns("axis3"), label = tr_("Component Z")),
+            ## Input: aesthetics mapping
+            selectize_ui(id = ns("symbol_color"), label = tr_("Colors")),
+            selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shape")),
+            selectize_ui(id = ns("symbol_size"), label = tr_("Symbol size")),
           ),
-          ## Input: add density
-          checkboxInput(
-            inputId = ns("density"),
-            label = tr_("Density contour"),
-            value = FALSE
+          accordion_panel(
+            title = tr_("Layers"),
+            ## Input: add points
+            checkboxInput(
+              inputId = ns("points"),
+              label = tr_("Show points"),
+              value = TRUE
+            ),
+            ## Input: add density
+            checkboxInput(
+              inputId = ns("density"),
+              label = tr_("Density contour"),
+              value = FALSE
+            ),
+            radioButtons(
+              inputId = ns("tile"),
+              label = tr_("Heatmap"),
+              choiceNames = c(tr_("None"), tr_("Bin"), tr_("Density")),
+              choiceValues = c("none", "bin", "dens"),
+              selected = "none"
+            ),
+            sliderInput(
+              inputId = ns("bin"),
+              label = tr_("Number of bins"),
+              min = 5, max = 20,
+              value = 10, step = 1
+            )
           ),
-          radioButtons(
-            inputId = ns("tile"),
-            label = tr_("Heatmap"),
-            choiceNames = c(tr_("None"), tr_("Bin"), tr_("Density")),
-            choiceValues = c("none", "bin", "dens"),
-            selected = "none"
+          accordion_panel(
+            title = tr_("Transform"),
+            checkboxInput(
+              inputId = ns("center"),
+              label = tr_("Center"),
+              value = FALSE
+            ),
+            checkboxInput(
+              inputId = ns("scale"),
+              label = tr_("Scale"),
+              value = FALSE
+            )
           ),
-          sliderInput(
-            inputId = ns("bin"),
-            label = tr_("Number of bins"),
-            min = 5, max = 20,
-            value = 10, step = 1
+          accordion_panel(
+            title = tr_("Envelopes"),
+            ## Input: select group
+            selectize_ui(id = ns("group"), label = tr_("Group by")),
+            ## Input: add ellipses
+            radioButtons(
+              inputId = ns("wrap"),
+              label = tr_("Wrap:"),
+              choiceNames = c(tr_("None"), tr_("Tolerance ellipse"),
+                              tr_("Confidence ellipse"), tr_("Convex hull")),
+              choiceValues = c("none", "tol", "conf", "hull"),
+            ),
+            checkboxGroupInput(
+              inputId = ns("level"),
+              label = tr_("Ellipse level:"),
+              selected = "0.95",
+              choiceNames = c("68%", "95%", "99%"),
+              choiceValues = c("0.68", "0.95", "0.99")
+            )
+          ),
+          accordion_panel(
+            title = tr_("Annotations"),
+            ## Input: add a grid
+            checkboxInput(
+              inputId = ns("grid"),
+              label = tr_("Grid"),
+              value = TRUE
+            ),
+            ## Input: add labels
+            checkboxInput(
+              inputId = ns("labels"),
+              label = tr_("Labels"),
+              value = FALSE
+            )
+            ## Input: add a legend
+            # TODO
+            # checkboxInput(
+            #   inputId = ns("legend"),
+            #   label = tr_("Legend"),
+            #   value = TRUE
+            # )
           )
-        ),
-        accordion_panel(
-          title = tr_("Transform"),
-          checkboxInput(
-            inputId = ns("center"),
-            label = tr_("Center"),
-            value = FALSE
-          ),
-          checkboxInput(
-            inputId = ns("scale"),
-            label = tr_("Scale"),
-            value = FALSE
-          )
-        ),
-        accordion_panel(
-          title = tr_("Envelopes"),
-          ## Input: select group
-          selectize_ui(id = ns("group"), label = tr_("Group by")),
-          ## Input: add ellipses
-          radioButtons(
-            inputId = ns("wrap"),
-            label = tr_("Wrap:"),
-            choiceNames = c(tr_("None"), tr_("Tolerance ellipse"),
-                            tr_("Confidence ellipse"), tr_("Convex hull")),
-            choiceValues = c("none", "tol", "conf", "hull"),
-          ),
-          checkboxGroupInput(
-            inputId = ns("level"),
-            label = tr_("Ellipse level:"),
-            selected = "0.95",
-            choiceNames = c("68%", "95%", "99%"),
-            choiceValues = c("0.68", "0.95", "0.99")
-          )
-        ),
-        accordion_panel(
-          title = tr_("Annotations"),
-          ## Input: add a grid
-          checkboxInput(
-            inputId = ns("grid"),
-            label = tr_("Grid"),
-            value = TRUE
-          ),
-          ## Input: add labels
-          checkboxInput(
-            inputId = ns("labels"),
-            label = tr_("Labels"),
-            value = FALSE
-          )
-          ## Input: add a legend
-          # TODO
-          # checkboxInput(
-          #   inputId = ns("legend"),
-          #   label = tr_("Legend"),
-          #   value = TRUE
-          # )
         )
+      ), # sidebar
+      helpText(
+        tr_("Visualize your data in the ternary space."),
+        tr_("Click and drag to select an area, then double-click to zoom in."),
+        tr_("Double-click again to reset the zoom.")
+      ),
+      output_plot(
+        id = ns("ternplot"),
+        tools = list(
+          select_color(id = ns("col")),
+          select_pch(inputId = ns("pch"), default = NULL),
+          select_cex(inputId = ns("cex"))
+        ),
+        title = tr_("Ternary Plot"),
+        dblclick = ns("ternplot_dblclick"),
+        brush = brushOpts(
+          id = ns("ternplot_brush"),
+          resetOnNew = TRUE
+        ),
+        height = "100%"
       )
-    ), # sidebar
-    helpText(
-      tr_("Visualize your data in the ternary space."),
-      tr_("Click and drag to select an area, then double-click to zoom in."),
-      tr_("Double-click again to reset the zoom.")
-    ),
-    output_plot(
-      id = ns("ternplot"),
-      tools = list(
-        select_color(id = ns("col")),
-        select_pch(inputId = ns("pch"), default = NULL),
-        select_cex(inputId = ns("cex"))
-      ),
-      title = tr_("Ternary plot"),
-      dblclick = ns("ternplot_dblclick"),
-      brush = brushOpts(
-        id = ns("ternplot_brush"),
-        resetOnNew = TRUE
-      ),
-      height = "100%"
-    )
-  ) # layout_sidebar
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

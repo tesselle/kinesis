@@ -10,58 +10,62 @@ coda_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = tr_("Compositional Data"),
-      import_ui(ns("import")),
-      select_ui(ns("select")),
-      clean_ui(ns("clean"))
-    ), # sidebar
-    ## Output: value box
-    box_ui(ns("box")),
-    navset_card_pill(
-      placement = "above",
-      nav_panel(
-        title = tr_("Data"),
-        layout_sidebar(
-          sidebar = sidebar(
-            selectize_ui(
-              id = ns("group"),
-              label = tooltip(
-                trigger = span(
-                  tr_("Group"),
-                  icon("info-circle")
-                ),
-                tr_("You can use a qualitative variable to assign each sample to a (reference) group."),
-                tr_("Missing values will be interpreted as unassigned samples.")
-              )
-            ),
-            selectize_ui(
-              id = ns("condense"),
-              label = tooltip(
-                trigger = span(
-                  tr_("Condense"),
-                  icon("info-circle")
-                ),
-                tr_("You can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."),
-                tr_("Usefull if your data contain several observations for the same sample (e.g. repeated measurements).")
+  nav_panel(
+    title = tr_("Data"),
+    value = "data",
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        title = tr_("Compositional Data"),
+        import_ui(ns("import")),
+        select_ui(ns("select")),
+        clean_ui(ns("clean"))
+      ), # sidebar
+      ## Output: value box
+      box_ui(ns("box")),
+      navset_card_pill(
+        placement = "above",
+        nav_panel(
+          title = tr_("Data"),
+          layout_sidebar(
+            sidebar = sidebar(
+              selectize_ui(
+                id = ns("group"),
+                label = tooltip(
+                  trigger = span(
+                    tr_("Group"),
+                    icon("info-circle")
+                  ),
+                  tr_("You can use a qualitative variable to assign each sample to a (reference) group."),
+                  tr_("Missing values will be interpreted as unassigned samples.")
+                )
               ),
-              multiple = TRUE
-            ),
-          ), # sidebar
-          ## Output: display data
-          gt::gt_output(outputId = ns("table"))
-        ) # layout_sidebar
+              selectize_ui(
+                id = ns("condense"),
+                label = tooltip(
+                  trigger = span(
+                    tr_("Condense"),
+                    icon("info-circle")
+                  ),
+                  tr_("You can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."),
+                  tr_("Usefull if your data contain several observations for the same sample (e.g. repeated measurements).")
+                ),
+                multiple = TRUE
+              ),
+            ), # sidebar
+            ## Output: display data
+            gt::gt_output(outputId = ns("table"))
+          ) # layout_sidebar
+        ),
+        nav_panel(
+          title = tr_("Missing values"),
+          missing_ui(ns("missing"))
+        )
       ),
-      nav_panel(
-        title = tr_("Missing values"),
-        missing_ui(ns("missing"))
-      )
-    ),
-    border_radius = FALSE,
-    fillable = TRUE,
-  ) # layout_sidebar
+      border_radius = FALSE,
+      fillable = TRUE,
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

@@ -10,36 +10,39 @@ ca_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = tr_("Correspondence Analysis"),
-      selectize_ui(
-        id = ns("sup_row"),
-        label = tr_("Supplementary individuals"),
-        multiple = TRUE
-      ),
-      selectize_ui(
-        id = ns("sup_col"),
-        label = tr_("Supplementary quantitative variables"),
-        multiple = TRUE
-      ),
-      selectize_ui(
-        id = ns("sup_quali"),
-        label = tr_("Supplementary qualitative variables"),
-        multiple = TRUE
-      ),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download results")
-      ),
-      uiOutput(outputId = ns("chi2"))
-    ), # sidebar
-    multivariate_ui(ns("ca")),
-    border_radius = FALSE,
-    fillable = TRUE
-  )
+  nav_panel(
+    title = tr_("CA"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        title = tr_("Correspondence Analysis"),
+        selectize_ui(
+          id = ns("sup_row"),
+          label = tr_("Supplementary individuals"),
+          multiple = TRUE
+        ),
+        selectize_ui(
+          id = ns("sup_col"),
+          label = tr_("Supplementary quantitative variables"),
+          multiple = TRUE
+        ),
+        selectize_ui(
+          id = ns("sup_quali"),
+          label = tr_("Supplementary qualitative variables"),
+          multiple = TRUE
+        ),
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download results")
+        ),
+        uiOutput(outputId = ns("chi2"))
+      ), # sidebar
+      multivariate_ui(ns("ca")),
+      border_radius = FALSE,
+      fillable = TRUE
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

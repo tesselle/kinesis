@@ -10,31 +10,35 @@ prepare_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = tr_("Data"),
-      import_ui(ns("import")),
-      select_ui(ns("select")),
-      clean_ui(ns("clean")),
-      # filter_ui(ns("filter"))
-    ), # sidebar
-    ## Output: value box
-    box_ui(ns("box")),
-    navset_card_pill(
-      placement = "above",
-      nav_panel(
+  nav_panel(
+    title = tr_("Data"),
+    value = "data",
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
         title = tr_("Data"),
-        gt::gt_output(outputId = ns("table"))
+        import_ui(ns("import")),
+        select_ui(ns("select")),
+        clean_ui(ns("clean")),
+        # filter_ui(ns("filter"))
+      ), # sidebar
+      ## Output: value box
+      box_ui(ns("box")),
+      navset_card_pill(
+        placement = "above",
+        nav_panel(
+          title = tr_("Data"),
+          gt::gt_output(outputId = ns("table"))
+        ),
+        nav_panel(
+          title = tr_("Missing values"),
+          missing_ui(ns("missing"))
+        )
       ),
-      nav_panel(
-        title = tr_("Missing values"),
-        missing_ui(ns("missing"))
-      )
-    ),
-    border_radius = FALSE,
-    fillable = TRUE,
-  ) # layout_sidebar
+      border_radius = FALSE,
+      fillable = TRUE,
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

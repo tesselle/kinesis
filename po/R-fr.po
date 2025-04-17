@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-05 16:19+0200\n"
+"POT-Creation-Date: 2025-04-17 17:33+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -13,65 +13,69 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.10.2\n"
 
-#: ca.R:16 ca.R:92
+#: ca.R:14
+msgid "CA"
+msgstr "AFC"
+
+#: ca.R:18 ca.R:95
 msgid "Correspondence Analysis"
 msgstr "Analyse des correspondances"
 
-#: ca.R:19 pca.R:35
+#: ca.R:21 pca.R:37
 msgid "Supplementary individuals"
 msgstr "Individus supplémentaires"
 
-#: ca.R:24 pca.R:40
+#: ca.R:26 pca.R:42
 msgid "Supplementary quantitative variables"
 msgstr "Variables quantitatives supplémentaires"
 
-#: ca.R:29 pca.R:45
+#: ca.R:31 pca.R:47
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:32 coda_hclust.R:28 count_diversity_beta.R:24 count_mcd.R:20
-#: count_occurrence.R:31 pca.R:48
+#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:26 count_mcd.R:22
+#: count_occurrence.R:33 pca.R:50
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
-#: ca.R:35 coda_outliers.R:36 count_diversity_alpha.R:19 count_mcd.R:23
-#: count_occurrence.R:34 pca.R:51
+#: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25
+#: count_occurrence.R:36 pca.R:53
 msgid "Download results"
 msgstr "Télécharger les résultats"
 
-#: ca.R:119
+#: ca.R:122
 msgid "Chi-squared Test"
 msgstr "Test du Khi carré"
 
-#: ca.R:122
+#: ca.R:125
 msgid "Statistic: %.0f"
 msgstr "Statistique : %.0f"
 
-#: ca.R:125
+#: ca.R:128
 msgid "Degrees of freedom: %.0f"
 msgstr "Degrés de liberté : %.0f"
 
-#: ca.R:128
+#: ca.R:131
 msgid "p-value: %s"
 msgstr "Probabilité critique : %s"
 
-#: ca.R:131
+#: ca.R:134
 msgid "Cramer's V: %.2f"
 msgstr "V de Cramér : %.2f"
 
-#: coda.R:16 coda.R:109
-msgid "Compositional Data"
-msgstr "Données de composition"
-
-#: coda.R:26 prepare.R:16 prepare.R:27
+#: coda.R:14 coda.R:29 prepare.R:14 prepare.R:19 prepare.R:30
 msgid "Data"
 msgstr "Données"
 
-#: coda.R:33
-msgid "Group"
-msgstr "Groupe"
+#: coda.R:19 coda.R:113
+msgid "Compositional Data"
+msgstr "Données de composition"
 
 #: coda.R:36
+msgid "Group"
+msgstr "Grouper"
+
+#: coda.R:39
 msgid ""
 "You can use a qualitative variable to assign each sample to a (reference) "
 "group."
@@ -79,26 +83,26 @@ msgstr ""
 "Vous pouvez utiliser une variable qualitative pour attribuer chaque "
 "échantillon à un groupe (de référence)."
 
-#: coda.R:37
+#: coda.R:40
 msgid "Missing values will be interpreted as unassigned samples."
 msgstr ""
 "Les valeurs manquantes seront interprétées comme des échantillons non "
 "attribués."
 
-#: coda.R:44
+#: coda.R:47
 msgid "Condense"
 msgstr "Condenser"
 
-#: coda.R:47
+#: coda.R:50
 msgid ""
 "You can use one or more categorical variable to split the data into subsets "
 "and compute the compositional mean for each."
 msgstr ""
 "Vous pouvez utiliser une ou plusieurs variables catégorielles pour diviser "
-"les données en sous-ensembles et calculer la moyenne de composition pour "
-"chacun d'entre eux."
+"les données en sous-ensembles et calculer la composition moyenne de chacun "
+"d'entre eux."
 
-#: coda.R:48
+#: coda.R:51
 msgid ""
 "Usefull if your data contain several observations for the same sample (e.g. "
 "repeated measurements)."
@@ -106,11 +110,11 @@ msgstr ""
 "Utile si vos données contiennent plusieurs observations pour le même "
 "échantillon (par ex., mesures répétées)."
 
-#: coda.R:58 prepare.R:31 prepare.R:101
+#: coda.R:61 prepare.R:34 prepare.R:105
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
-#: coda.R:195
+#: coda.R:199
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
@@ -119,7 +123,7 @@ msgstr ""
 "des valeurs inférieures à la limite de détection (c'est-à-dire de petites "
 "valeurs inconnues)."
 
-#: coda.R:196
+#: coda.R:200
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
@@ -127,7 +131,7 @@ msgstr ""
 "Dans ce cas, vous pouvez définir ci-dessous la limite de détection pour "
 "chaque partie de la composition."
 
-#: coda.R:197
+#: coda.R:201
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
@@ -135,316 +139,349 @@ msgstr ""
 "Si toutes les limites sont spécifiées, les zéros seront remplacés par une "
 "fraction de ces limites."
 
-#: coda.R:198
+#: coda.R:202
 msgid "For computational details, see"
 msgstr "Pour plus de détails sur les calculs, voir"
 
-#: coda.R:203
+#: coda.R:207
 msgid "Fraction"
 msgstr "Fraction"
 
-#: coda.R:209
+#: coda.R:213
 msgid "Replace zero"
 msgstr "Remplacer les zéro"
 
-#: coda_barplot.R:18
+#: coda_barplot.R:14 coda_barplot.R:58
+msgid "Bar Plot"
+msgstr "Diagramme en barres"
+
+#: coda_barplot.R:20
 msgid "Major elements"
 msgstr "Éléments majeurs"
 
-#: coda_barplot.R:23
+#: coda_barplot.R:25
 msgid "Minor elements"
 msgstr "Éléments mineurs"
 
-#: coda_barplot.R:28
+#: coda_barplot.R:30
 msgid "Trace elements"
 msgstr "Éléments traces"
 
-#: coda_barplot.R:34
+#: coda_barplot.R:36
 msgid "Sort columns"
 msgstr "Trier les colonnes"
 
-#: coda_barplot.R:37
+#: coda_barplot.R:39
 msgid "Row order"
 msgstr "Ordre des lignes"
 
-#: coda_barplot.R:40
+#: coda_barplot.R:42
 msgid "Decreasing row order"
 msgstr "Tri décroissant des lignes"
 
-#: coda_barplot.R:50
+#: coda_barplot.R:52
 msgid "Gutter"
 msgstr "Gouttière"
 
-#: coda_barplot.R:56
-msgid "Barplot"
-msgstr "Diagramme à barres"
-
-#: coda_hclust.R:15 coda_hclust.R:95
-msgid "Hierarchical Clustering"
-msgstr "Regroupement hiérarchique"
-
-#: coda_hclust.R:18
-msgid "Distance method"
-msgstr "Distance"
-
-#: coda_hclust.R:23
-msgid "Clustering linkage"
-msgstr "Indice d'agrégation"
-
-#: coda_hclust.R:31
-msgid "Desired number of clusters"
-msgstr "Nombre de groupes souhaité"
-
-#: coda_hclust.R:36
-msgid "Download distances"
-msgstr "Télécharger la matrice de distance"
-
-#: coda_hclust.R:40
-msgid "Download clusters"
-msgstr "Télécharger les groupes"
-
-#: coda_hclust.R:48
-msgid "Dendrogram"
-msgstr "Dendrogramme"
-
-#: coda_hclust.R:72
+#: coda_hclust.R:13 coda_hclust.R:75
 msgid "HCLUST"
 msgstr ""
 
-#: coda_hclust.R:110
+#: coda_hclust.R:17 coda_hclust.R:98
+msgid "Hierarchical Clustering"
+msgstr "Regroupement hiérarchique"
+
+#: coda_hclust.R:20
+msgid "Distance method"
+msgstr "Distance"
+
+#: coda_hclust.R:25
+msgid "Clustering linkage"
+msgstr "Indice d'agrégation"
+
+#: coda_hclust.R:33
+msgid "Desired number of clusters"
+msgstr "Nombre de groupes souhaité"
+
+#: coda_hclust.R:38
+msgid "Download distances"
+msgstr "Télécharger la matrice de distance"
+
+#: coda_hclust.R:42
+msgid "Download clusters"
+msgstr "Télécharger les groupes"
+
+#: coda_hclust.R:50
+msgid "Dendrogram"
+msgstr "Dendrogramme"
+
+#: coda_hclust.R:113
 msgid "Aitchison distance, %s linkage"
 msgstr "Distance d'Aitchison (aggrégation : %s)"
 
-#: coda_logratio.R:17
+#: coda_logratio.R:19
 msgid "Compute log-ratio transformation of compositional data."
 msgstr ""
 "Calculer la transformation en rapports logarithmiques des données de "
 "composition."
 
-#: coda_logratio.R:20
+#: coda_logratio.R:22
 msgid "Weighted log-ratio"
 msgstr "Rapports logarithmiques pondérés"
 
-#: coda_logratio.R:25
+#: coda_logratio.R:27
 msgid "Download log-ratio"
 msgstr "Télécharger les rapports logarithmiques"
 
-#: coda_logratio.R:37 ternary.R:45
+#: coda_logratio.R:39 ternary.R:47
 msgid "Density"
 msgstr "Densité"
 
-#: coda_logratio.R:63
+#: coda_logratio.R:66
 msgid "Rationing part:"
 msgstr "Dénominateur :"
 
-#: coda_logratio.R:64
+#: coda_logratio.R:67
 msgid "Pivotal variable:"
 msgstr "Variable pivot :"
 
-#: coda_logratio.R:121
+#: coda_logratio.R:124
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:122
+#: coda_logratio.R:125
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:123
+#: coda_logratio.R:126
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:124
+#: coda_logratio.R:127
 msgid "Pivot Log-Ratio"
 msgstr ""
 
-#: coda_outliers.R:16 coda_outliers.R:83
+#: coda_outliers.R:14
+msgid "Outliers"
+msgstr "Valeurs aberrantes"
+
+#: coda_outliers.R:18 coda_outliers.R:86
 msgid "Outliers Detection"
 msgstr "Détection des valeurs aberrantes"
 
-#: coda_outliers.R:18
+#: coda_outliers.R:20
 msgid "See"
 msgstr "Voir"
 
-#: coda_outliers.R:24
+#: coda_outliers.R:26
 msgid "Multivariate location estimation"
 msgstr "Estimation de position multivariée"
 
-#: coda_outliers.R:25
+#: coda_outliers.R:27
 msgid "Minimum volume ellipsoid"
 msgstr "Ellipsoïde de volume minimal"
 
-#: coda_outliers.R:26
+#: coda_outliers.R:28
 msgid "Minimum covariance determinant"
 msgstr "Déterminant de covariance minimal"
 
-#: coda_outliers.R:31
+#: coda_outliers.R:33
 msgid "Quantile"
 msgstr "Quantile"
 
-#: coda_outliers.R:35
+#: coda_outliers.R:37
 msgid "(Re)Detect"
 msgstr "(Re)Détecter"
 
-#: coda_outliers.R:42
+#: coda_outliers.R:44
 msgid "Plot"
 msgstr "Graphique"
 
-#: coda_outliers.R:47 count_occurrence.R:27
+#: coda_outliers.R:49 count_occurrence.R:29
 msgid "Type of plot"
 msgstr "Type de graphique"
 
-#: coda_outliers.R:73
+#: coda_outliers.R:76
 msgid "Check your data."
 msgstr "Vérifiez vos données."
 
-#: coda_statistics.R:16
+#: coda_statistics.R:14
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: coda_statistics.R:18
 msgid "Data summary and descriptive statistics."
 msgstr "Résumé des données et statistiques descriptives."
 
-#: coda_statistics.R:19
+#: coda_statistics.R:21
 msgid "Download tables"
 msgstr "Télécharger les tableaux"
 
-#: coda_statistics.R:22
+#: coda_statistics.R:23
+msgid "Univariate statistics"
+msgstr "Statistiques univariées"
+
+#: coda_statistics.R:24
 msgid "Select a part"
 msgstr "Sélectionnez une partie"
 
-#: coda_statistics.R:25
+#: coda_statistics.R:27
 msgid "Histogram"
 msgstr "Histogramme"
 
-#: coda_statistics.R:34
+#: coda_statistics.R:32
+msgid "Multivariate statistics"
+msgstr "Statistiques multivariées"
+
+#: coda_statistics.R:36
 msgid "Location"
 msgstr "Position"
 
-#: coda_statistics.R:39
+#: coda_statistics.R:41
 msgid "Covariance"
 msgstr "Covariance"
 
-#: coda_statistics.R:43
+#: coda_statistics.R:45
 msgid "PIP"
 msgstr ""
 
-#: coda_statistics.R:47 coda_statistics.R:203
+#: coda_statistics.R:49 coda_statistics.R:206
 msgid "Variation Matrix"
 msgstr "Matrice de variation"
 
-#: coda_statistics.R:126
+#: coda_statistics.R:129
 msgid "Total variation"
 msgstr "Variation totale"
 
-#: coda_statistics.R:152
+#: coda_statistics.R:155
 msgid "Compositional Mean"
 msgstr "Moyenne compositionnelle"
 
-#: coda_statistics.R:161
+#: coda_statistics.R:164
 msgid "Percentile Table"
 msgstr "Tableau des quantiles"
 
-#: coda_statistics.R:173
+#: coda_statistics.R:176
 msgid "Centered Log-Ratio Covariance"
 msgstr ""
 
-#: coda_statistics.R:190
+#: coda_statistics.R:193
 msgid "Proportionality Index of Parts"
 msgstr "Indice de proportionnalité des parties"
 
-#: count_diversity_alpha.R:16 count_diversity_alpha.R:95
+#: count_diversity_alpha.R:14
+msgid "&#945; Diversity"
+msgstr "Diversité &#945;"
+
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:98
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
-#: count_diversity_alpha.R:81
+#: count_diversity_alpha.R:84
 msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
-#: count_diversity_alpha.R:86
+#: count_diversity_alpha.R:89
 #, fuzzy
 msgid "Dominance"
 msgstr "Domination"
 
-#: count_diversity_alpha.R:91
+#: count_diversity_alpha.R:94
 msgid "Richness"
 msgstr "Richesse"
 
-#: count_diversity_beta.R:16
+#: count_diversity_beta.R:14
+msgid "&#946; Diversity"
+msgstr "Diversité &#946;"
+
+#: count_diversity_beta.R:18
 msgid "Principal Coordinates Analysis"
 msgstr "Analyse en coordonnées principales"
 
-#: count_diversity_beta.R:19
+#: count_diversity_beta.R:21
 msgid "Dissimilarity measure"
 msgstr "Mesure de dissimilarité"
 
-#: count_diversity_beta.R:27
+#: count_diversity_beta.R:29
 msgid "Download dissimilarity matrix"
 msgstr "Télécharger la matrice de dissimilarité"
 
-#: count_diversity_beta.R:31
+#: count_diversity_beta.R:33
 msgid "Download PCoA results"
 msgstr "Télécharger les résultats (ACoP)"
 
-#: count_diversity_beta.R:36
+#: count_diversity_beta.R:38
 msgid "Display labels"
 msgstr "Afficher les étiquettes"
 
-#: count_diversity_beta.R:42
+#: count_diversity_beta.R:44
 msgid "Alpha diversity"
 msgstr "Diversité alpha"
 
-#: count_diversity_beta.R:53
+#: count_diversity_beta.R:55
 msgid "Dissimilarity"
 msgstr "Dissimilarité"
 
-#: count_diversity_beta.R:61
+#: count_diversity_beta.R:63
 msgid "PCoA"
 msgstr "ACoP"
 
-#: count_diversity_beta.R:104 count_diversity_beta.R:122
-#: count_diversity_docs.R:58
+#: count_diversity_beta.R:107 count_diversity_beta.R:125
+#: count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
 
-#: count_diversity_docs.R:15
+#: count_diversity_docs.R:13
+msgid "Definitions"
+msgstr "Définitions"
+
+#: count_diversity_docs.R:17
 msgid "Alpha Diversity"
 msgstr "Diversité alpha"
 
-#: count_mcd.R:16
+#: count_mcd.R:14
+msgid "Date"
+msgstr "Date"
+
+#: count_mcd.R:18
 msgid "Mean Ceramic Date"
 msgstr "Date céramique moyenne"
 
-#: count_mcd.R:17
+#: count_mcd.R:19
 msgid "Set the date midpoint (in years) of each ceramic type."
 msgstr "Saisissez la date (en années) de chaque type de céramique."
 
-#: count_mcd.R:58 count_mcd.R:81
+#: count_mcd.R:61 count_mcd.R:84
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:16 count_occurrence.R:69 count_occurrence.R:87
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:72
+#: count_occurrence.R:90
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
-#: count_occurrence.R:19
+#: count_occurrence.R:21
 msgid "Method"
 msgstr "Méthode"
 
-#: count_occurrence.R:20
+#: count_occurrence.R:22
 msgid "Absolute frequency"
 msgstr "Fréquences absolues"
 
-#: count_occurrence.R:21
+#: count_occurrence.R:23
 msgid "Relative frequency"
 msgstr "Fréquences relatives"
 
-#: count_occurrence.R:22
+#: count_occurrence.R:24
 #, fuzzy
 msgid "Binomial assessment"
 msgstr "Test binomial"
 
-#: count_occurrence.R:28 ternary.R:44
+#: count_occurrence.R:30 ternary.R:46
 msgid "Heatmap"
 msgstr "Carte de chaleur"
 
-#: count_occurrence.R:28
+#: count_occurrence.R:30
 msgid "Spot"
 msgstr "Points"
 
@@ -512,27 +549,31 @@ msgstr ""
 msgid "For more information and relevant links, see"
 msgstr "Pour plus d'informations et de liens utiles, voir"
 
-#: home.R:17
+#: home.R:15
+msgid "Home"
+msgstr "Accueil"
+
+#: home.R:19
 msgid "Welcome!"
 msgstr "Bienvenue !"
 
-#: home.R:22
+#: home.R:24
 msgid "Logo of the tesselle project."
 msgstr "Logo du projet tesselle."
 
-#: home.R:29
+#: home.R:31
 msgid "Overview"
 msgstr "Aperçu"
 
-#: home.R:42
+#: home.R:44
 msgid "How to cite"
 msgstr "Citation"
 
-#: home.R:46
+#: home.R:48
 msgid "Bookmark"
 msgstr "Signet"
 
-#: home.R:48
+#: home.R:50
 msgid ""
 "You can save the state of the application and get a URL which will restore "
 "the application with that state."
@@ -540,7 +581,7 @@ msgstr ""
 "Vous pouvez sauvegarder l'état de l'application et obtenir une URL qui "
 "restaurera l'application dans cet état."
 
-#: home.R:49
+#: home.R:51
 msgid ""
 "You can then copy the URL and save it for later, or share it with others so "
 "they can visit the application in the bookmarked state."
@@ -549,43 +590,39 @@ msgstr ""
 "partager avec d'autres personnes afin qu'elles puissent visiter "
 "l'application dans l'état enregistré."
 
-#: home.R:52
+#: home.R:54
 msgid "This is not intended for long-term storage."
 msgstr "Ceci n'est pas destiné à un stockage à long terme."
 
-#: home.R:53
+#: home.R:55
 msgid "There is no guarantee as to how long your bookmark will last."
 msgstr "Il n'y a aucune garantie quant à la durée de vie de votre signet."
 
-#: home.R:58
+#: home.R:60
 msgid "Bookmarking is currently disabled."
 msgstr "Les signets sont actuellement désactivés."
 
-#: home.R:79
+#: home.R:82 home.R:153
 msgid "Session info"
 msgstr "Session"
 
-#: home.R:82
+#: home.R:85
 msgid "Source code"
 msgstr "Code source"
 
-#: home.R:85
+#: home.R:88
 msgid "Report a bug or request"
 msgstr "Signaler un bug"
 
-#: home.R:105
+#: home.R:108
 msgid "Last saved at %s."
 msgstr "Dernière sauvegarde le %s."
 
-#: home.R:121
+#: home.R:124
 msgid "Restoring from state bookmarked at %s."
 msgstr "Restauration à partir de l'état mis en signet le %s."
 
-#: home.R:150
-msgid "Session Info"
-msgstr "Session"
-
-#: home.R:154
+#: home.R:157
 msgid "Close"
 msgstr "Fermer"
 
@@ -675,7 +712,7 @@ msgstr "Tabulation"
 msgid "Quote"
 msgstr "Séparateur de chaîne de caractères"
 
-#: import.R:93 multivariate.R:69 ternary.R:45 ternary.R:77
+#: import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
 msgid "None"
 msgstr "Aucun"
 
@@ -775,23 +812,23 @@ msgstr "Variable quantitative illustrative"
 msgid "Extra qualitative variable"
 msgstr "Variable qualitative illustrative"
 
-#: multivariate.R:68 ternary.R:76
+#: multivariate.R:68 ternary.R:78
 msgid "Wrap:"
 msgstr "Type d'enveloppe :"
 
-#: multivariate.R:69 ternary.R:77
+#: multivariate.R:69 ternary.R:79
 msgid "Tolerance ellipse"
 msgstr "Ellipse de tolérance"
 
-#: multivariate.R:70 ternary.R:78
+#: multivariate.R:70 ternary.R:80
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:70 ternary.R:78
+#: multivariate.R:70 ternary.R:80
 msgid "Convex hull"
 msgstr "Enveloppe convexe"
 
-#: multivariate.R:75 ternary.R:83
+#: multivariate.R:75 ternary.R:85
 msgid "Ellipse level:"
 msgstr "Niveau :"
 
@@ -799,13 +836,13 @@ msgstr "Niveau :"
 msgid "Results"
 msgstr "Résultats"
 
-#: multivariate.R:85 ternary.R:115
+#: multivariate.R:85 ternary.R:117
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 "Cliquez et faites glisser pour sélectionner une zone, puis double-cliquez "
 "pour effectuer un zoom avant."
 
-#: multivariate.R:86 ternary.R:116
+#: multivariate.R:86 ternary.R:118
 msgid "Double-click again to reset the zoom."
 msgstr "Double-cliquez à nouveau pour réinitialiser le zoom."
 
@@ -821,7 +858,7 @@ msgstr "Plan factoriel des variables"
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:133
+#: multivariate.R:133 ternary.R:20
 msgid "Variables"
 msgstr "Variables"
 
@@ -829,35 +866,47 @@ msgstr "Variables"
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:378
+#: multivariate.R:379
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:383
+#: multivariate.R:384
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:388
+#: multivariate.R:389
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
-#: pca.R:21 pca.R:108
+#: pca.R:19
+msgid "PCA"
+msgstr "ACP"
+
+#: pca.R:23 pca.R:117
 msgid "Principal Components Analysis"
 msgstr "Analyse en composantes principales"
 
-#: pca.R:25 ternary.R:60
+#: pca.R:27 ternary.R:62
 msgid "Center"
 msgstr "Centrer"
 
-#: pca.R:30 ternary.R:65
+#: pca.R:32 ternary.R:67
 msgid "Scale"
 msgstr "Réduire"
+
+#: pca.R:89
+msgid ""
+"PCA is computed on centered log-ratio (CLR), you should check the data "
+"transformation first."
+msgstr ""
+"L'ACP est calculée sur les rapports logarithmiques centrés (CLR), vous "
+"devriez d'abord vérifier la transformation des données."
 
 #: plot.R:17
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:108
+#: plot.R:22 prepare.R:112
 msgid "Download"
 msgstr "Télécharger"
 
@@ -881,7 +930,7 @@ msgstr "Hauteur (in)"
 msgid "Unknown graphics device."
 msgstr "Périphérique graphique inconnu."
 
-#: plot.R:186 ternary.R:26
+#: plot.R:186 ternary.R:28
 msgid "Symbol size"
 msgstr "Taille des symboles"
 
@@ -901,87 +950,87 @@ msgstr "Monochrome"
 msgid "Color scheme"
 msgstr "Couleurs"
 
-#: prepare.R:93
+#: prepare.R:97
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:97
+#: prepare.R:101
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:105
+#: prepare.R:109
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:136
+#: prepare.R:140
 msgid "Select columns:"
 msgstr "Sélectionner les colonnes :"
 
-#: prepare.R:213
+#: prepare.R:217
 msgid "First column as row names"
 msgstr "Première colonne comme noms de lignes"
 
-#: prepare.R:217
+#: prepare.R:221
 msgid "Clean values:"
 msgstr "Nettoyer les données :"
 
-#: prepare.R:221
+#: prepare.R:225
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:226
+#: prepare.R:230
 msgid "Remove any non informative data:"
 msgstr "Supprimer les données non informatives :"
 
-#: prepare.R:230
+#: prepare.R:234
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:235
+#: prepare.R:239
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:241
+#: prepare.R:245
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:247
+#: prepare.R:251
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:265
+#: prepare.R:269
 msgid "Rownames"
 msgstr "Noms des lignes"
 
-#: prepare.R:310
+#: prepare.R:314
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:316
+#: prepare.R:320
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:322
+#: prepare.R:326
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:324
+#: prepare.R:328
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:325
+#: prepare.R:329
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:326
+#: prepare.R:330
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:327
+#: prepare.R:331
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
-#: prepare.R:398
+#: prepare.R:402
 msgid "Remove data points that fall outside a specification."
 msgstr "Supprimer les données ne respectant pas certaines conditions."
 
@@ -993,113 +1042,113 @@ msgstr "Impossible de trouver l'application %s."
 msgid "Could not find the configuration file for %s."
 msgstr "Impossible de trouver le fichier de configuration pour %s."
 
-#: seriate.R:20
+#: seriate.R:14
+msgid "Seriation"
+msgstr "Sériation"
+
+#: seriate.R:22
 msgid "Permute rows"
 msgstr "Permuter les lignes"
 
-#: seriate.R:26
+#: seriate.R:28
 msgid "Permute columns"
 msgstr "Permuter les colonnes"
 
-#: seriate.R:32
+#: seriate.R:34
 msgid "CA dimension"
 msgstr "Axe factoriel"
 
-#: seriate.R:40
+#: seriate.R:42
 msgid "Export matrix"
 msgstr "Télécharger la matrice"
 
-#: seriate.R:50
+#: seriate.R:52
 msgid "Weights"
 msgstr "Masses"
 
-#: seriate.R:60
+#: seriate.R:62
 msgid "Rearranged matrix"
 msgstr "Matrice permutée"
 
-#: seriate.R:84
+#: seriate.R:87
 msgid "Compute the seriation order first."
-msgstr "Calculer d'abord l'ordre de sériation."
+msgstr "Calculez d'abord l'ordre de sériation."
 
-#: seriate.R:124
+#: seriate.R:127
 msgid "Goodness of fit: %.3f"
 msgstr "Qualité de l'ajustement : %.3f"
 
-#: ternary.R:18
-msgid "Aesthetic mappings"
-msgstr ""
+#: ternary.R:14 ternary.R:127
+msgid "Ternary Plot"
+msgstr "Diagramme ternaire"
 
-#: ternary.R:20
+#: ternary.R:22
 msgid "Component X"
 msgstr "Composant X"
 
-#: ternary.R:21
+#: ternary.R:23
 msgid "Component Y"
 msgstr "Composant Y"
 
-#: ternary.R:22
+#: ternary.R:24
 msgid "Component Z"
 msgstr "Composant Z"
 
-#: ternary.R:24
+#: ternary.R:26
 msgid "Colors"
 msgstr "Couleurs"
 
-#: ternary.R:25
+#: ternary.R:27
 msgid "Symbol shape"
 msgstr "Forme des symboles"
 
-#: ternary.R:29
+#: ternary.R:31
 msgid "Layers"
 msgstr "Couches"
 
-#: ternary.R:33
+#: ternary.R:35
 msgid "Show points"
 msgstr "Afficher les points"
 
-#: ternary.R:39
+#: ternary.R:41
 msgid "Density contour"
 msgstr "Contours de densité"
 
-#: ternary.R:45
+#: ternary.R:47
 msgid "Bin"
 msgstr "Groupement par classe"
 
-#: ternary.R:51
+#: ternary.R:53
 msgid "Number of bins"
 msgstr "Nombre de classes"
 
-#: ternary.R:57
+#: ternary.R:59
 msgid "Transform"
 msgstr "Transformation"
 
-#: ternary.R:70
+#: ternary.R:72
 msgid "Envelopes"
 msgstr "Enveloppes"
 
-#: ternary.R:72
+#: ternary.R:74
 msgid "Group by"
 msgstr "Groupes"
 
-#: ternary.R:90
+#: ternary.R:92
 msgid "Annotations"
 msgstr "Annotations"
 
-#: ternary.R:94
+#: ternary.R:96
 msgid "Grid"
 msgstr "Grille"
 
-#: ternary.R:100
+#: ternary.R:102
 msgid "Labels"
 msgstr "Étiquettes"
 
-#: ternary.R:114
+#: ternary.R:116
 msgid "Visualize your data in the ternary space."
 msgstr "Visualisez vos données dans un espace ternaire."
-
-#: ternary.R:125
-msgid "Ternary plot"
-msgstr "Diagramme ternaire"
 
 #: kinesis-internal.R:29
 msgid "Select at least %d row."

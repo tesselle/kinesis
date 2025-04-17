@@ -10,19 +10,22 @@ diversity_alpha_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      h5(tr_("Diversity Measures")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download results")
+  nav_panel(
+    title = HTML(tr_("&#945; Diversity")),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        h5(tr_("Diversity Measures")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download results")
+        )
+      ), # sidebar
+      card(
+        gt::gt_output(outputId = ns("measures"))
       )
-    ), # sidebar
-    card(
-      gt::gt_output(outputId = ns("measures"))
-    )
-  )# layout_sidebar
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

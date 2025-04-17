@@ -165,7 +165,8 @@ multivariate_server <- function(id, x, y) {
 
   moduleServer(id, function(input, output, session) {
     ## Illustrative variables -----
-    extra <- reactive({ as.data.frame(y()) }) |> bindEvent(x())
+    extra <- reactive({ as.data.frame(y()) }) |>
+      bindEvent(x())
     col_quali <- column_select_server("extra_quali", x = extra,
                                       find_col = Negate(is.numeric))
     col_quanti <- column_select_server("extra_quanti", x = extra,
@@ -265,7 +266,7 @@ multivariate_server <- function(id, x, y) {
           extra_quali = extra_quali,
           extra_quanti = extra_quanti,
           ellipse = ellipse,
-          hull = isTRUE(input$wrap == "hull"),
+          hull = isTRUE(input$wrap == "hull") && isFALSE(input$sup_obs),
           color = col_ind,
           symbol = get_value(as.integer(input$pch)),
           size = input$cex,

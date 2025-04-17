@@ -9,47 +9,50 @@ coda_hclust_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = tr_("Hierarchical Clustering"),
-      selectInput(
-        inputId = ns("dist"),
-        label = tr_("Distance method"),
-        choices = c(Aitchison = "euclidean")
+  nav_panel(
+    title = tr_("HCLUST"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        title = tr_("Hierarchical Clustering"),
+        selectInput(
+          inputId = ns("dist"),
+          label = tr_("Distance method"),
+          choices = c(Aitchison = "euclidean")
+        ),
+        selectInput(
+          inputId = ns("clust"),
+          label = tr_("Clustering linkage"),
+          choices = c("ward.D", "ward.D2", "single", "complete",
+                      "average", "mcquitty", "median", "centroid"),
+          selected = "ward.D2"
+        ),
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        numericInput(
+          inputId = ns("cut"),
+          label = tr_("Desired number of clusters"),
+          value = 1, min = 1, max = NA, step = 1
+        ),
+        downloadButton(
+          outputId = ns("download_dist"),
+          label = tr_("Download distances")
+        ),
+        downloadButton(
+          outputId = ns("download_clust"),
+          label = tr_("Download clusters")
+        )
+      ), # sidebar
+      output_plot(
+        id = ns("plot_dendro"),
+        tools = list(
+          select_color(id = ns("col_dendro"), type = "qualitative")
+        ),
+        title = tr_("Dendrogram")
       ),
-      selectInput(
-        inputId = ns("clust"),
-        label = tr_("Clustering linkage"),
-        choices = c("ward.D", "ward.D2", "single", "complete",
-                    "average", "mcquitty", "median", "centroid"),
-        selected = "ward.D2"
-      ),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      numericInput(
-        inputId = ns("cut"),
-        label = tr_("Desired number of clusters"),
-        value = 1, min = 1, max = NA, step = 1
-      ),
-      downloadButton(
-        outputId = ns("download_dist"),
-        label = tr_("Download distances")
-      ),
-      downloadButton(
-        outputId = ns("download_clust"),
-        label = tr_("Download clusters")
-      )
-    ), # sidebar
-    output_plot(
-      id = ns("plot_dendro"),
-      tools = list(
-        select_color(id = ns("col_dendro"), type = "qualitative")
-      ),
-      title = tr_("Dendrogram")
-    ),
-    border_radius = FALSE,
-    fillable = TRUE
-  )
+      border_radius = FALSE,
+      fillable = TRUE
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

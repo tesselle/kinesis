@@ -10,50 +10,53 @@ coda_summary_ui <- function(id) {
   ## Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      helpText(tr_("Data summary and descriptive statistics.")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download tables")
-      ),
-      h5("Univariate statistics"),
-      selectize_ui(id = ns("hist_select"), label = tr_("Select a part")),
-      output_plot(
-        id = ns("hist"),
-        title = tr_("Histogram"),
-        note = info_article(author = "Filzmoser et al.", year = "2009",
-                            doi = "10.1016/j.scitotenv.2009.08.008")
-      )
-    ),
-    h5("Multivariate statistics"),
-    navset_card_pill(
-      placement = "above",
-      nav_panel(
-        title = tr_("Location"),
-        gt::gt_output(outputId = ns("mean")),
-        gt::gt_output(outputId = ns("quantile"))
-      ),
-      nav_panel(
-        title = tr_("Covariance"),
-        gt::gt_output(outputId = ns("covariance"))
-      ),
-      nav_panel(
-        title = tr_("PIP"),
-        gt::gt_output(outputId = ns("pip"))
-      ),
-      nav_panel(
-        title = tr_("Variation Matrix"),
-        layout_columns(
-          col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
-          output_plot(id = ns("heatmap")),
-          output_plot(id = ns("dendrogram"))
+  nav_panel(
+    title = tr_("Statistics"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        helpText(tr_("Data summary and descriptive statistics.")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download tables")
         ),
-        gt::gt_output(outputId = ns("variation"))
-      )
-    ) # navset_card_underline
-  ) # layout_sidebar
+        h5(tr_("Univariate statistics")),
+        selectize_ui(id = ns("hist_select"), label = tr_("Select a part")),
+        output_plot(
+          id = ns("hist"),
+          title = tr_("Histogram"),
+          note = info_article(author = "Filzmoser et al.", year = "2009",
+                              doi = "10.1016/j.scitotenv.2009.08.008")
+        )
+      ),
+      h5(tr_("Multivariate statistics")),
+      navset_card_pill(
+        placement = "above",
+        nav_panel(
+          title = tr_("Location"),
+          gt::gt_output(outputId = ns("mean")),
+          gt::gt_output(outputId = ns("quantile"))
+        ),
+        nav_panel(
+          title = tr_("Covariance"),
+          gt::gt_output(outputId = ns("covariance"))
+        ),
+        nav_panel(
+          title = tr_("PIP"),
+          gt::gt_output(outputId = ns("pip"))
+        ),
+        nav_panel(
+          title = tr_("Variation Matrix"),
+          layout_columns(
+            col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
+            output_plot(id = ns("heatmap")),
+            output_plot(id = ns("dendrogram"))
+          ),
+          gt::gt_output(outputId = ns("variation"))
+        )
+      ) # navset_card_underline
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

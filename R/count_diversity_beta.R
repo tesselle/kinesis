@@ -10,63 +10,66 @@ diversity_beta_ui <- function(id) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      h5(tr_("Principal Coordinates Analysis")),
-      selectInput(
-        inputId = ns("method"),
-        label = tr_("Dissimilarity measure"),
-        choices = c(`Bray-Curtis` = "bray", `Dice-Sorenson` = "sorenson",
-                    `Morisita-Horn` = "morisita"),
-        multiple = FALSE
-      ),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      downloadButton(
-        outputId = ns("download_beta"),
-        label = tr_("Download dissimilarity matrix")
-      ),
-      downloadButton(
-        outputId = ns("download_pcoa"),
-        label = tr_("Download PCoA results")
-      ),
-      hr(),
-      checkboxInput(
-        inputId = ns("pcoa_labels"),
-        label = tr_("Display labels"),
-        value = FALSE
-      ),
-      ## Input: variable mapping
-      selectizeInput(
-        inputId = ns("extra_quanti"),
-        label = tr_("Alpha diversity"),
-        choices = NULL,
-        selected = NULL,
-        multiple = FALSE,
-        options = list(plugins = "clear_button")
-      )
-    ), # sidebar
-    layout_columns(
-      col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
-      output_plot(
-        id = ns("plot_diss"),
-        title = tr_("Dissimilarity"),
-        tools = list(
-          select_color(id = ns("col_diss"), type = "sequential")
+  nav_panel(
+    title = HTML(tr_("&#946; Diversity")),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        h5(tr_("Principal Coordinates Analysis")),
+        selectInput(
+          inputId = ns("method"),
+          label = tr_("Dissimilarity measure"),
+          choices = c(`Bray-Curtis` = "bray", `Dice-Sorenson` = "sorenson",
+                      `Morisita-Horn` = "morisita"),
+          multiple = FALSE
         ),
-        height = "100%"
-      ),
-      output_plot(
-        id = ns("plot_pcoa"),
-        title = tr_("PCoA"),
-        tools = list(
-          select_color(id = ns("col_pcoa"), type = "sequential"),
-          select_cex(inputId = ns("cex_pcoa"))
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        downloadButton(
+          outputId = ns("download_beta"),
+          label = tr_("Download dissimilarity matrix")
         ),
-        height = "100%"
+        downloadButton(
+          outputId = ns("download_pcoa"),
+          label = tr_("Download PCoA results")
+        ),
+        hr(),
+        checkboxInput(
+          inputId = ns("pcoa_labels"),
+          label = tr_("Display labels"),
+          value = FALSE
+        ),
+        ## Input: variable mapping
+        selectizeInput(
+          inputId = ns("extra_quanti"),
+          label = tr_("Alpha diversity"),
+          choices = NULL,
+          selected = NULL,
+          multiple = FALSE,
+          options = list(plugins = "clear_button")
+        )
+      ), # sidebar
+      layout_columns(
+        col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
+        output_plot(
+          id = ns("plot_diss"),
+          title = tr_("Dissimilarity"),
+          tools = list(
+            select_color(id = ns("col_diss"), type = "sequential")
+          ),
+          height = "100%"
+        ),
+        output_plot(
+          id = ns("plot_pcoa"),
+          title = tr_("PCoA"),
+          tools = list(
+            select_color(id = ns("col_pcoa"), type = "sequential"),
+            select_cex(inputId = ns("cex_pcoa"))
+          ),
+          height = "100%"
+        )
       )
-    )
-  ) # layout_sidebar
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================

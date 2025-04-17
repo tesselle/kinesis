@@ -11,55 +11,58 @@ home_ui <- function(id, package) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 300,
-      title = tr_("Welcome!"),
-      help_tesselle(),
-      help_license(),
-      tags$img(
-        src = "static/tesselle.png",
-        alt = tr_("Logo of the tesselle project."),
-        style = "width: 75%; margin: auto;"
-      )
-    ), # sidebar
-    navset_card_pill(
-      placement = "above",
-      nav_panel(
-        title = tr_("Overview"),
-        h3(get_option("title")),
-        markdown(get_option("description")),
-        help_warranty(),
-        tags$p(
-          class = "logo",
-          tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
-                 tags$img(src = "static/logo-archeosciences.svg")),
-          tags$a(href = "https://www.huma-num.fr", rel = "external",
-                 tags$img(src = "static/logo-humanum.svg"))
+  nav_panel(
+    title = tr_("Home"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 300,
+        title = tr_("Welcome!"),
+        help_tesselle(),
+        help_license(),
+        tags$img(
+          src = "static/tesselle.png",
+          alt = tr_("Logo of the tesselle project."),
+          style = "width: 75%; margin: auto;"
         )
-      ),
-      nav_panel(
-        title = tr_("How to cite"),
-        help_cite(package)
-      ),
-      nav_panel(
-        title = tr_("Bookmark"),
-        tags$p(
-          tr_("You can save the state of the application and get a URL which will restore the application with that state."),
-          tr_("You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state.")
+      ), # sidebar
+      navset_card_pill(
+        placement = "above",
+        nav_panel(
+          title = tr_("Overview"),
+          h3(get_option("title")),
+          markdown(get_option("description")),
+          help_warranty(),
+          tags$p(
+            class = "logo",
+            tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
+                   tags$img(src = "static/logo-archeosciences.svg")),
+            tags$a(href = "https://www.huma-num.fr", rel = "external",
+                   tags$img(src = "static/logo-humanum.svg"))
+          )
         ),
-        tags$p(
-          tr_("This is not intended for long-term storage."),
-          tr_("There is no guarantee as to how long your bookmark will last.")
+        nav_panel(
+          title = tr_("How to cite"),
+          help_cite(package)
         ),
-        if (get_option("bookmark")) {
-          tags$div(class = "d-grid d-md-block", bookmarkButton())
-        } else {
-          tags$p(tr_("Bookmarking is currently disabled."))
-        }
-      )
-    ) # navset_card_pill
-  ) # layout_sidebar
+        nav_panel(
+          title = tr_("Bookmark"),
+          tags$p(
+            tr_("You can save the state of the application and get a URL which will restore the application with that state."),
+            tr_("You can then copy the URL and save it for later, or share it with others so they can visit the application in the bookmarked state.")
+          ),
+          tags$p(
+            tr_("This is not intended for long-term storage."),
+            tr_("There is no guarantee as to how long your bookmark will last.")
+          ),
+          if (get_option("bookmark")) {
+            tags$div(class = "d-grid d-md-block", bookmarkButton())
+          } else {
+            tags$p(tr_("Bookmarking is currently disabled."))
+          }
+        )
+      ) # navset_card_pill
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 #' Footer UI
@@ -147,7 +150,7 @@ footer_server  <- function(id) {
     observeEvent(input$session, {
       showModal(
         modalDialog(
-          title = tr_("Session Info"),
+          title = tr_("Session info"),
           info_session(),
           size = "xl",
           easyClose = TRUE,

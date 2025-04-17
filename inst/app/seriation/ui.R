@@ -7,22 +7,10 @@ function(request) {
   bslib::page_navbar(
     title = toupper(kinesis::get_option("name")),
     id = "main",
-    bslib::nav_panel(
-      title = "Home",
-      kinesis::home_ui("home", package = "kairos")
-    ),
-    bslib::nav_panel(
-      title = "Data",
-      kinesis::prepare_ui("prepare")
-    ),
-    bslib::nav_panel(
-      title = "Analysis",
-      kinesis::ca_ui("ca")
-    ), # navbarMenu
-    bslib::nav_panel(
-      title = "Seriation",
-      kinesis::seriate_ui("seriate")
-    ),
+    kinesis::home_ui("home", package = "kairos"),
+    kinesis::prepare_ui("prepare"),
+    kinesis::ca_ui("ca"),
+    kinesis::seriate_ui("seriate"),
     bslib::nav_spacer(),
     bslib::nav_item(bslib::input_dark_mode()),
     footer = kinesis::footer_ui("footer"),

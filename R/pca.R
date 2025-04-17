@@ -15,46 +15,49 @@ pca_ui <- function(id, center = TRUE, scale = TRUE, help = NULL) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
-  layout_sidebar(
-    sidebar = sidebar(
-      width = 400,
-      title = tr_("Principal Components Analysis"),
-      helpText(help),
-      checkboxInput(
-        inputId = ns("center"),
-        label = tr_("Center"),
-        value = center
-      ),
-      checkboxInput(
-        inputId = ns("scale"),
-        label = tr_("Scale"),
-        value = scale
-      ),
-      selectize_ui(
-        id = ns("sup_row"),
-        label = tr_("Supplementary individuals"),
-        multiple = TRUE
-      ),
-      selectize_ui(
-        id = ns("sup_col"),
-        label = tr_("Supplementary quantitative variables"),
-        multiple = TRUE
-      ),
-      selectize_ui(
-        id = ns("sup_quali"),
-        label = tr_("Supplementary qualitative variables"),
-        multiple = TRUE
-      ),
-      bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
-      downloadButton(
-        outputId = ns("download"),
-        label = tr_("Download results")
-      )
-    ), # sidebar
-    multivariate_ui(ns("pca")),
-    border_radius = FALSE,
-    fillable = TRUE
-  )
+  nav_panel(
+    title = tr_("PCA"),
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        title = tr_("Principal Components Analysis"),
+        helpText(textOutput(ns("help"))),
+        checkboxInput(
+          inputId = ns("center"),
+          label = tr_("Center"),
+          value = center
+        ),
+        checkboxInput(
+          inputId = ns("scale"),
+          label = tr_("Scale"),
+          value = scale
+        ),
+        selectize_ui(
+          id = ns("sup_row"),
+          label = tr_("Supplementary individuals"),
+          multiple = TRUE
+        ),
+        selectize_ui(
+          id = ns("sup_col"),
+          label = tr_("Supplementary quantitative variables"),
+          multiple = TRUE
+        ),
+        selectize_ui(
+          id = ns("sup_quali"),
+          label = tr_("Supplementary qualitative variables"),
+          multiple = TRUE
+        ),
+        bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+        downloadButton(
+          outputId = ns("download"),
+          label = tr_("Download results")
+        )
+      ), # sidebar
+      multivariate_ui(ns("pca")),
+      border_radius = FALSE,
+      fillable = TRUE
+    ) # layout_sidebar
+  ) # nav_panel
 }
 
 # Server =======================================================================
@@ -81,6 +84,12 @@ pca_server <- function(id, x) {
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
     notify_change(session$ns("change"), x, old, title = "PCA")
+    output$help <- renderText({
+      if (inherits(x(), "LogRatio")) {
+        txt <- tr_("PCA is computed on centered log-ratio (CLR), you should check the data transformation first.")
+        return(txt)
+      }
+    })
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
