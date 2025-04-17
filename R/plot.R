@@ -227,22 +227,25 @@ select_lty <- function(inputId, default = "solid") {
 
 #' @param id A [`character`] vector to be used for the namespace.
 #' @noRd
-select_color <- function(id, type = NULL, mono = FALSE) {
-  ## Create a namespace function using the provided id
-  ns <- NS(id)
+select_color <- function(id, type = c("qualitative", "sequential", "diverging"),
+                         mono = FALSE) {
+  type <- match.arg(type, several.ok = TRUE)
 
-  x <- khroma::info()
-  x <- tapply(X = x$palette, INDEX = x$type, FUN = function(x) as.list(x))
+  schemes <- list(
+    qualitative = c("discreterainbow", "bright", "vibrant", "muted",
+                    "highcontrast", "mediumcontrast", "light", "okabeito"),
+    diverging = c("sunset", "nightfall", "BuRd", "PRGn"),
+    sequential = c("YlOrBr", "iridescent", "incandescent", "smoothrainbow")
+  )
 
+  schemes <- schemes[type]
   default <- "discreterainbow"
-  if (!is.null(type)) {
-    choices <- c("qualitative", "sequential", "diverging")
-    type <- match.arg(type, choices, several.ok = TRUE)
+  if (length(type) == 1) {
     if ("diverging" %in% type) default <- "BuRd"
     if ("sequential" %in% type) default <- "YlOrBr"
-    x <- x[type]
   }
 
+  ns <- NS(id)
   black <- NULL
   if (mono) {
     black <- checkboxInput(
@@ -257,7 +260,7 @@ select_color <- function(id, type = NULL, mono = FALSE) {
     selectInput(
       inputId = ns("scheme"),
       label = tr_("Color scheme"),
-      choices = x,
+      choices = schemes,
       selected = default,
       multiple = FALSE
     )
