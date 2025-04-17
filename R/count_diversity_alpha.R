@@ -42,13 +42,19 @@ diversity_alpha_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    alpha <- reactive({
+    ## Get count data -----
+    counts <- reactive({
       req(x())
+      arkhe::keep_columns(x(), f = is.numeric)
+    })
+
+    alpha <- reactive({
+      req(counts())
 
       notify(
         {
           index <- t(apply(
-            X = x(),
+            X = counts(),
             MARGIN = 1,
             FUN = function(x) {
               c(
@@ -69,7 +75,7 @@ diversity_alpha_server <- function(id, x) {
               )
             }
           ))
-          rownames(index) <- rownames(x())
+          rownames(index) <- rownames(counts())
           as.data.frame(index)
         },
         title = "Alpha diversity"

@@ -39,13 +39,18 @@ diversity_beta_ui <- function(id) {
           value = FALSE
         ),
         ## Input: variable mapping
-        selectizeInput(
-          inputId = ns("extra_quanti"),
-          label = tr_("Alpha diversity"),
-          choices = NULL,
-          selected = NULL,
-          multiple = FALSE,
-          options = list(plugins = "clear_button")
+        selectize_ui(
+          id = ns("extra_quanti"),
+          label = tr_("Alpha diversity")
+        ),
+        selectize_ui(
+          id = ns("extra_quali"),
+          label = tr_("Group by")
+        ),
+        checkboxInput(
+          inputId = ns("hull"),
+          label = tr_("Convex hull"),
+          value = FALSE
         )
       ), # sidebar
       layout_columns(
@@ -62,7 +67,7 @@ diversity_beta_ui <- function(id) {
           id = ns("plot_pcoa"),
           title = tr_("PCoA"),
           tools = list(
-            select_color(id = ns("col_pcoa"), type = "sequential"),
+            select_color(id = ns("col_pcoa"), type = c("qualitative", "sequential")),
             select_cex(inputId = ns("cex_pcoa"))
           ),
           height = "100%"
@@ -89,22 +94,20 @@ diversity_beta_server <- function(id, x, y) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    observe({
-      freezeReactiveValue(input, "extra_quanti")
-      updateSelectInput(session, inputId = "extra_quanti",
-                        choices = c(None = "", colnames(y())))
-    }) |>
-      bindEvent(y())
+    extra_quali <- column_select_server("extra_quali", x = x,
+                                        find_col = Negate(is.numeric))
+    extra_quanti <- column_select_server("extra_quanti", x = y,
+                                         find_col = is.numeric)
 
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "extra_quanti",
-                           selected = state$input$extra_quanti)
+    ## Get count data -----
+    counts <- reactive({
+      req(x())
+      arkhe::keep_columns(x(), f = is.numeric)
     })
 
     ## Check data -----
-    old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = tr_("Beta Diversity"))
+    old <- reactive({ counts() }) |> bindEvent(input$go)
+    notify_change(session$ns("change"), counts, old, title = tr_("Beta Diversity"))
 
     ## Compute similarity -----
     compute_beta <- ExtendedTask$new(
@@ -117,7 +120,7 @@ diversity_beta_server <- function(id, x, y) {
       bslib::bind_task_button("go")
 
     observe({
-      compute_beta$invoke(x(), input$method)
+      compute_beta$invoke(counts(), input$method)
     }) |>
       bindEvent(input$go)
 
@@ -149,20 +152,26 @@ diversity_beta_server <- function(id, x, y) {
     })
 
     plot_pcoa <- reactive({
-      req(analysis(), y())
+      req(analysis(), x(), y())
 
       ## Extra variables
-      extra_quanti <- NULL
-      if (isTruthy(input$extra_quanti)) {
-        extra_quanti <- y()[[input$extra_quanti]]
+      extra_quali <- extra_quanti <- NULL
+      if (isTruthy(extra_quali())) {
+        extra_quali <- x()[[extra_quali()]]
+      }
+      if (isTruthy(extra_quanti())) {
+        extra_quanti <- y()[[extra_quanti()]]
       }
 
       col_pcoa <- get_color("col_pcoa")()
+
       function() {
         dimensio::plot(
           x = analysis(),
           labels = input$pcoa_labels,
           extra_quanti = extra_quanti,
+          extra_quali = extra_quali,
+          hull = input$hull,
           color = col_pcoa,
           size = get_value(input$cex_pcoa),
           panel.first = graphics::grid()

@@ -35,8 +35,8 @@ diversity_docs_ui <- function(id) {
             tags$dd("The Simpson dominance provides an indication of the probability that two randomly chosen individuals belong to the same type."),
             tags$dt(cite_article("Berger-Parker", 1970, "10.1126/science.168.3937.1345")),
             tags$dd(
-              "The Berger-Parker index expresses the proportional importance of the most abundant type.
-            This metric is highly biased by sample size and richness."
+              "The Berger-Parker index expresses the proportional importance of the most abundant type.",
+              "This metric is highly biased by sample size and richness."
             )
           ),
 
@@ -58,7 +58,17 @@ diversity_docs_ui <- function(id) {
       ),
       card(
         card_title(tr_("Beta Diversity")),
-        card_body()
+        tags$dl(
+          tags$dt(cite_article("Bray-Curtis", 1957, doi = "10.2307/1942268")),
+          tags$dd("Bray and Curtis modified version of the Dice-Sorensen index."),
+          tags$dt(cite_article("Dice", 1945, doi = "10.2307/1932409"), "- Sorensen (1948)"),
+          tags$dd(),
+          tags$dt("Morisita-Horn", cite_article("Horn", 1966, doi = "10.1086/282436", text = FALSE)),
+          tags$dd(
+            "Horn modified version of the Morisita overlap index.",
+            "This index is based on the assumption that increasing the size of the samples will increase the diversity."
+          ),
+        )
       )
     ) # layout_columns
   ) # nav_panel

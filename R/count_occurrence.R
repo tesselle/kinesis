@@ -67,9 +67,15 @@ occurrence_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Get count data -----
+    counts <- reactive({
+      req(x())
+      arkhe::keep_columns(x(), f = is.numeric)
+    })
+
     ## Check data -----
-    old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = tr_("Co-Occurrence"))
+    old <- reactive({ counts() }) |> bindEvent(input$go)
+    notify_change(session$ns("change"), counts, old, title = tr_("Co-Occurrence"))
 
     ## Compute index -----
     compute_occur <- ExtendedTask$new(
@@ -82,7 +88,7 @@ occurrence_server <- function(id, x) {
       bslib::bind_task_button("go")
 
     observe({
-      compute_occur$invoke(x(), input$method)
+      compute_occur$invoke(counts(), input$method)
     }) |>
       bindEvent(input$go)
 
