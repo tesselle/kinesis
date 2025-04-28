@@ -24,12 +24,6 @@ occurrence_ui <- function(id) {
                           tr_("Binomial assessment")),
           choiceValues = c("absolute", "relative", "binomial")
         ),
-        radioButtons(
-          inputId = ns("plot_type"),
-          label = tr_("Type of plot"),
-          choiceNames = c(tr_("Heatmap"), tr_("Spot")),
-          choiceValues = c("heatmap", "spot")
-        ),
         bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
         downloadButton(
           outputId = ns("download"),
@@ -99,14 +93,8 @@ occurrence_server <- function(id, x) {
     ## Plot -----
     map <- reactive({
       req(results())
-      fun <- switch(
-        input$plot_type,
-        heatmap = function(x, ...) tabula::plot_heatmap(x, ...),
-        spot = function(x, ...) tabula::plot_spot(x, ...)
-      )
-
       col <- get_color("col")()
-      function() fun(results(), color = col)
+      function() tabula::plot_heatmap(results(), color = col)
     })
 
     ## Render table -----

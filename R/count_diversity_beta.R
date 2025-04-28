@@ -19,7 +19,8 @@ diversity_beta_ui <- function(id) {
         selectInput(
           inputId = ns("method"),
           label = tr_("Dissimilarity measure"),
-          choices = c(`Bray-Curtis` = "bray", `Dice-Sorenson` = "sorenson",
+          # TODO: change 'sorenson' to 'sorensen'
+          choices = c(`Bray-Curtis` = "bray", `Dice-Sorensen` = "sorenson",
                       `Morisita-Horn` = "morisita"),
           multiple = FALSE
         ),

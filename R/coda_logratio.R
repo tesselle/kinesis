@@ -2,6 +2,7 @@
 #' Log-Ratio UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @param title A [`character`] string giving the sidebar title.
 #' @seealso [logratio_server()]
 #' @family coda modules
 #' @keywords internal

@@ -4,10 +4,12 @@
 \alias{logratio_ui}
 \title{Log-Ratio UI}
 \usage{
-logratio_ui(id)
+logratio_ui(id, title)
 }
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
+
+\item{title}{A \code{\link{character}} string giving the sidebar title.}
 }
 \description{
 Log-Ratio UI

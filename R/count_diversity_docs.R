@@ -49,9 +49,9 @@ diversity_docs_ui <- function(id) {
             tags$dd(""),
             tags$dt("Chao 1", cite_article("Chao", 1984, text = FALSE)),
             tags$dd("An estimate of total species richness."),
-            tags$dt("ACE", cite_article("Chao & Lee", 1992, doi = "10.1080/01621459.1992.10475194", text = FALSE)),
+            tags$dt("ACE", cite_article("Chao & Lee", 1992, "10.1080/01621459.1992.10475194", text = FALSE)),
             tags$dd("Abundance-based Coverage Estimator."),
-            tags$dt("Squares Estimator", cite_article("Alroy", 2018, doi = "10.1111/ele.13152", text = FALSE)),
+            tags$dt("Squares Estimator", cite_article("Alroy", 2018, "10.1111/ele.13152", text = FALSE)),
             tags$dd("")
           )
         )
@@ -59,11 +59,11 @@ diversity_docs_ui <- function(id) {
       card(
         card_title(tr_("Beta Diversity")),
         tags$dl(
-          tags$dt(cite_article("Bray-Curtis", 1957, doi = "10.2307/1942268")),
+          tags$dt(cite_article("Bray-Curtis", 1957, "10.2307/1942268")),
           tags$dd("Bray and Curtis modified version of the Dice-Sorensen index."),
-          tags$dt(cite_article("Dice", 1945, doi = "10.2307/1932409"), "- Sorensen (1948)"),
+          tags$dt(cite_article("Dice", 1945, "10.2307/1932409"), "- Sorensen (1948)"),
           tags$dd(),
-          tags$dt("Morisita-Horn", cite_article("Horn", 1966, doi = "10.1086/282436", text = FALSE)),
+          tags$dt("Morisita-Horn", cite_article("Horn", 1966, "10.1086/282436", text = FALSE)),
           tags$dd(
             "Horn modified version of the Morisita overlap index.",
             "This index is based on the assumption that increasing the size of the samples will increase the diversity."

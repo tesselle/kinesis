@@ -2,7 +2,7 @@
 % Please edit documentation in R/count_mcd.R
 \name{mcd_server}
 \alias{mcd_server}
-\title{Co-Occurrence Server}
+\title{MCD Server}
 \usage{
 mcd_server(id, x)
 }
@@ -16,7 +16,7 @@ UI function.}
 A reactive \code{\link{data.frame}}.
 }
 \description{
-Co-Occurrence Server
+MCD Server
 }
 \seealso{
 \code{\link[=mcd_ui]{mcd_ui()}}

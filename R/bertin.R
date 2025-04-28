@@ -18,7 +18,7 @@ bertin_ui <- function(id, title = NULL) {
         ## Input: select plot
         radioButtons(
           inputId = ns("type"),
-          label = tr_("Type of plot"),
+          label = tr_("Plot type"),
           selected = "ford",
           choiceNames = c(tr_("Ford diagram"), tr_("Bertin barplot"),
                           tr_("Bertin scalogram"), tr_("Heatmap")),
