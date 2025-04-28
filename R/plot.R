@@ -24,6 +24,8 @@ output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
     )
   )
 
+  footer <- if (!is.null(note)) card_footer(note) else NULL
+
   card(
     id = ns("card"),
     full_screen = TRUE,
@@ -34,7 +36,7 @@ output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
     card_body(
       plotOutput(outputId = ns("plot"), ...)
     ),
-    if (!is.null(note)) card_footer(note)
+    footer
   )
 }
 

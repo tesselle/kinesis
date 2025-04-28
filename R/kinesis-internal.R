@@ -332,8 +332,8 @@ notify_change <- function(id, x, y, title = "Important message") {
       if (identical(x(), y())) {
         removeNotification(id)
       } else {
-        txt <- c(tr_("Your data seem to have changed."),
-                 tr_("You should perform your analysis again."))
+        txt <- paste(tr_("Your data seem to have changed."),
+                     tr_("You should perform your analysis again."), sep = " ")
         show_notification(id = id, text = txt, title = title,
                           duration = NULL, closeButton = FALSE,
                           type = "warning")
