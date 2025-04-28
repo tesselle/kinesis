@@ -15,6 +15,9 @@ function(input, output, session) {
     bslib::nav_select(id = "main", selected = "data")
   }) |> bindEvent(data(), once = TRUE)
 
+  ## Plot
+  kinesis::bertin_server("bertin", x = data)
+
   ## Diversity
   alpha <- kinesis::diversity_alpha_server("alpha", x = data)
   kinesis::diversity_beta_server("beta", x = data, y = alpha)

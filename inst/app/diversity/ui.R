@@ -9,6 +9,7 @@ function(request) {
     id = "main",
     kinesis::home_ui("home", package = "tabula"),
     kinesis::prepare_ui("prepare"),
+    kinesis::bertin_ui("bertin"),
     kinesis::occurrence_ui("occurrence"),
     kinesis::diversity_alpha_ui("alpha"),
     kinesis::diversity_beta_ui("beta"),
