@@ -10,11 +10,6 @@ function(input, output, session) {
   ## Data
   coda <- kinesis::coda_server("coda")
 
-  ## Switch tab (only happen once)
-  observe({
-    bslib::nav_select(id = "main", selected = "data")
-  }) |> bindEvent(coda(), once = TRUE)
-
   ## Statistics
   kinesis::coda_summary_server("coda_summary", coda)
   # kinesis::coda_outliers_server("outliers", coda)
