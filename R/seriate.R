@@ -15,7 +15,7 @@ seriate_ui <- function(id) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
-        h5("Permutation"),
+        title = tr_("Permutation"),
         ## Input: checkbox if permute rows
         checkboxInput(
           inputId = ns("margin_row"),
@@ -38,28 +38,44 @@ seriate_ui <- function(id) {
           step = 1
         ),
         ## Output: download
-        downloadButton(outputId = ns("export_table"),
-                       label = tr_("Export matrix")),
-        h5("Display"),
-        ## Input: select plot
-        checkboxInput(
-          inputId = ns("eppm"),
-          label = "EPPM",
-          value = FALSE
-        ),
-        checkboxInput(
-          inputId = ns("weights"),
-          label = tr_("Weights"),
-          value = FALSE
-        ),
-        h5("Significance"),
-        uiOutput(outputId = ns("coef"))
+        downloadButton(
+          outputId = ns("export_table"),
+          label = tr_("Export matrix")
+        )
       ), # sidebar
       ## Output: plot reordered matrix
-      output_plot(
-        id = ns("plot_permute"),
-        height = "100%",
-        title = tr_("Rearranged matrix")
+      navset_card_pill(
+        bertin_ui(
+          id = ns("plot"),
+          title = tr_("Rearranged matrix")
+        ),
+        nav_panel(
+          title = tr_("Significance"),
+          layout_sidebar(
+            sidebar = sidebar(
+              helpText(
+                HTML(sprintf(
+                  tr_("Test the significance of the seriation solutions according to %s."),
+                  cite_article(author = "Porcic", year = "2013", doi = "10.1016/j.jas.2013.07.013")
+                ))
+              ),
+              sliderInput(
+                inputId = ns("replicates"),
+                label = tr_("Bootstrap replicates"),
+                min = 0, max = 1000, value = 0, step = 100
+              ),
+              bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
+            ), # sidebar
+            layout_columns(
+              col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
+              tags$ul(
+                tags$li(textOutput(outputId = ns("signif_obs"))),
+                tags$li(textOutput(outputId = ns("signif_coef")))
+              ),
+              output_plot(id = ns("hist"), title = "Histogram of randomized total number of modes")
+            )
+          )
+        )
       )
     ) # layout_sidebar
   ) # nav_panel
@@ -93,11 +109,6 @@ seriate_server  <- function(id, x, order) {
       kairos::as_seriation(order(), margin = margin, axes = input$axes)
     })
 
-    coef_seriate <- reactive({
-      req(data_seriate())
-      kairos::assess(data_seriate(), axes = input$axes, n = 0)
-    })
-
     ## Permute -----
     data_permute <- reactive({
       req(x())
@@ -105,29 +116,53 @@ seriate_server  <- function(id, x, order) {
       kairos::permute(x(), data_seriate())
     })
 
-    ## Plot -----
-    plot_permute <- reactive({
-      req(data_permute())
-      function() {
-        tabula::plot_ford(
-          object = data_permute(),
-          weights = input$weights,
-          EPPM = input$eppm
+    ## Test seriation -----
+    compute_test <- ExtendedTask$new(
+      function(x, axes, n) {
+        promises::future_promise(
+          expr = { kairos::assess(x, axes = axes, n = n) },
+          seed = TRUE
         )
+      }
+    ) |>
+      bslib::bind_task_button("go")
+
+    observe({
+      compute_test$invoke(data_seriate(), axes = input$axes, n = input$replicates)
+    }) |>
+      bindEvent(input$go)
+
+    results <- reactive({
+      notify(compute_test$result(), title = tr_("Significance of Seriation"))
+    })
+
+    ## Plot -----
+    hist_random <- reactive({
+      req(length(results()$random) > 0)
+      function() {
+        h <- hist(results()$random, plot = FALSE)
+        p05 <- quantile(results()$random, probs = 0.05)
+        plot(h, xlab = NULL, main = NULL, las = 1)
+        abline(v = p05, col = "red", lwd = 2)
+        axis(side = 3, at = p05, label = "5th percentile", col.axis = "red", lwd = 0)
       }
     })
 
     ## Render plot -----
-    render_plot("plot_permute", x = plot_permute)
+    bertin_server("plot", x = data_permute)
+    render_plot("hist", x = hist_random)
 
     ## Render values -----
-    output$coef <- renderUI({
-      tags$div(
-        tags$ul(
-          tags$li(sprintf(tr_("Goodness of fit: %.3f"), coef_seriate()$coef))
-        ),
-        info_article(author = "Porcic", year = "2013",
-                     doi = "10.1016/j.jas.2013.07.013")
+    output$signif_coef <- renderText({
+      coef <- if (isTruthy(results())) results()$coef else NA_real_
+      sprintf(tr_("Seriation coefficient: %.3f;"), coef)
+    })
+    output$signif_obs <- renderText({
+      observed <- if (isTruthy(results())) results()$observed else NA_integer_
+      expected <- if (isTruthy(results())) results()$expected else NA_integer_
+      sprintf(
+        tr_("Observed total number of modes: %d (expected: %d);"),
+        observed, expected
       )
     })
 
