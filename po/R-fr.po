@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-28 15:06+0200\n"
+"POT-Creation-Date: 2025-04-28 19:18+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -57,7 +57,7 @@ msgstr "Moyenne"
 msgid "Median"
 msgstr "Médiane"
 
-#: ca.R:14
+#: ca.R:14 ca.R:71
 msgid "CA"
 msgstr "AFC"
 
@@ -111,12 +111,12 @@ msgstr "V de Cramér : %.2f"
 msgid "Data"
 msgstr "Données"
 
-#: coda.R:19 coda.R:113
+#: coda.R:19 coda.R:114
 msgid "Compositional Data"
 msgstr "Données de composition"
 
-#: coda.R:36 count_diversity_beta.R:49 ternary.R:74
-msgid "Group"
+#: coda.R:36
+msgid "Group by"
 msgstr "Grouper"
 
 #: coda.R:39
@@ -133,11 +133,11 @@ msgstr ""
 "Les valeurs manquantes seront interprétées comme des échantillons non "
 "attribués."
 
-#: coda.R:47
-msgid "Condense"
+#: coda.R:48
+msgid "Condense by"
 msgstr "Condenser"
 
-#: coda.R:50
+#: coda.R:51
 msgid ""
 "You can use one or more categorical variable to split the data into subsets "
 "and compute the compositional mean for each."
@@ -146,7 +146,7 @@ msgstr ""
 "les données en sous-ensembles et calculer la composition moyenne de chacun "
 "d'entre eux."
 
-#: coda.R:51
+#: coda.R:52
 msgid ""
 "Usefull if your data contain several observations for the same sample (e.g. "
 "repeated measurements)."
@@ -154,11 +154,15 @@ msgstr ""
 "Utile si vos données contiennent plusieurs observations pour le même "
 "échantillon (par ex., mesures répétées)."
 
-#: coda.R:61 prepare.R:34 prepare.R:105
+#: coda.R:62 prepare.R:34 prepare.R:102
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
-#: coda.R:199
+#: coda.R:164 multivariate.R:169 multivariate.R:173
+msgid "Group"
+msgstr "Groupe"
+
+#: coda.R:183
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
@@ -167,7 +171,7 @@ msgstr ""
 "des valeurs inférieures à la limite de détection (c'est-à-dire de petites "
 "valeurs inconnues)."
 
-#: coda.R:200
+#: coda.R:184
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
@@ -175,7 +179,7 @@ msgstr ""
 "Dans ce cas, vous pouvez définir ci-dessous la limite de détection pour "
 "chaque partie de la composition."
 
-#: coda.R:201
+#: coda.R:185
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
@@ -183,15 +187,15 @@ msgstr ""
 "Si toutes les limites sont spécifiées, les zéros seront remplacés par une "
 "fraction de ces limites."
 
-#: coda.R:202
+#: coda.R:186
 msgid "For computational details, see"
 msgstr "Pour plus de détails sur les calculs, voir"
 
-#: coda.R:207
+#: coda.R:191
 msgid "Fraction"
 msgstr "Fraction"
 
-#: coda.R:213
+#: coda.R:197
 msgid "Replace zero"
 msgstr "Remplacer les zéro"
 
@@ -413,20 +417,20 @@ msgstr "Indice de proportionnalité des parties"
 msgid "&#945; Diversity"
 msgstr "Diversité &#945;"
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:104
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:106
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
-#: count_diversity_alpha.R:90
+#: count_diversity_alpha.R:92
 msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
-#: count_diversity_alpha.R:95
+#: count_diversity_alpha.R:97
 #, fuzzy
 msgid "Dominance"
 msgstr "Domination"
 
-#: count_diversity_alpha.R:100
+#: count_diversity_alpha.R:102
 msgid "Richness"
 msgstr "Richesse"
 
@@ -458,6 +462,10 @@ msgstr "Afficher les étiquettes"
 msgid "Alpha diversity"
 msgstr "Diversité alpha"
 
+#: count_diversity_beta.R:49 ternary.R:74
+msgid "Groups"
+msgstr "Groupes"
+
 #: count_diversity_beta.R:53 multivariate.R:70 ternary.R:80
 msgid "Convex hull"
 msgstr "Enveloppe convexe"
@@ -470,7 +478,7 @@ msgstr "Dissimilarité"
 msgid "PCoA"
 msgstr "ACoP"
 
-#: count_diversity_beta.R:111 count_diversity_beta.R:129
+#: count_diversity_beta.R:113 count_diversity_beta.R:131
 #: count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
@@ -499,8 +507,8 @@ msgstr "Saisissez la date (en années) de chaque type de céramique."
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:72
-#: count_occurrence.R:90
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:74
+#: count_occurrence.R:92
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
@@ -796,11 +804,11 @@ msgstr "Vos données ne doivent pas contenir de zéros."
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: kinesis-internal.R:335
+#: kinesis-internal.R:334
 msgid "Your data seem to have changed."
 msgstr "Vos données semblent avoir été modifiées."
 
-#: kinesis-internal.R:336
+#: kinesis-internal.R:335
 msgid "You should perform your analysis again."
 msgstr "Vous devriez refaire votre analyse."
 
@@ -894,19 +902,31 @@ msgstr "Variables"
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:379
+#: multivariate.R:368
+msgid "Eigenvalues"
+msgstr "Valeurs propres"
+
+#: multivariate.R:368
+msgid "Explained var. (%)"
+msgstr "Var. expliquée (%)"
+
+#: multivariate.R:368
+msgid "Cumulative var. (%)"
+msgstr "Var. cumulée (%)"
+
+#: multivariate.R:394
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:384
+#: multivariate.R:399
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:389
+#: multivariate.R:404
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
-#: pca.R:19
+#: pca.R:19 pca.R:86
 msgid "PCA"
 msgstr "ACP"
 
@@ -934,7 +954,7 @@ msgstr ""
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:112
+#: plot.R:22 prepare.R:109
 msgid "Download"
 msgstr "Télécharger"
 
@@ -978,87 +998,87 @@ msgstr "Monochrome"
 msgid "Color scheme"
 msgstr "Couleurs"
 
-#: prepare.R:97
+#: prepare.R:94
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:101
+#: prepare.R:98
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:109
+#: prepare.R:106
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:140
+#: prepare.R:137
 msgid "Select columns:"
 msgstr "Sélectionner les colonnes :"
 
-#: prepare.R:217
+#: prepare.R:214
 msgid "First column as row names"
 msgstr "Première colonne comme noms de lignes"
 
-#: prepare.R:221
+#: prepare.R:218
 msgid "Clean values:"
 msgstr "Nettoyer les données :"
 
-#: prepare.R:225
+#: prepare.R:222
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:230
+#: prepare.R:227
 msgid "Remove any non informative data:"
 msgstr "Supprimer les données non informatives :"
 
-#: prepare.R:234
+#: prepare.R:231
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:239
+#: prepare.R:236
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:245
+#: prepare.R:242
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:251
+#: prepare.R:248
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:269
+#: prepare.R:266
 msgid "Rownames"
 msgstr "Noms des lignes"
 
-#: prepare.R:314
+#: prepare.R:310
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:320
+#: prepare.R:316
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:326
+#: prepare.R:322
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:328
+#: prepare.R:324
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:329
+#: prepare.R:325
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:330
+#: prepare.R:326
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:331
+#: prepare.R:327
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
-#: prepare.R:402
+#: prepare.R:398
 msgid "Remove data points that fall outside a specification."
 msgstr "Supprimer les données ne respectant pas certaines conditions."
 

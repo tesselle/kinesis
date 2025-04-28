@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-28 15:06+0200\n"
+"POT-Creation-Date: 2025-04-28 19:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Median"
 msgstr ""
 
-#: ca.R:14
+#: ca.R:14 ca.R:71
 msgid "CA"
 msgstr ""
 
@@ -107,12 +107,12 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#: coda.R:19 coda.R:113
+#: coda.R:19 coda.R:114
 msgid "Compositional Data"
 msgstr ""
 
-#: coda.R:36 count_diversity_beta.R:49 ternary.R:74
-msgid "Group"
+#: coda.R:36
+msgid "Group by"
 msgstr ""
 
 #: coda.R:39
@@ -125,53 +125,57 @@ msgstr ""
 msgid "Missing values will be interpreted as unassigned samples."
 msgstr ""
 
-#: coda.R:47
-msgid "Condense"
+#: coda.R:48
+msgid "Condense by"
 msgstr ""
 
-#: coda.R:50
+#: coda.R:51
 msgid ""
 "You can use one or more categorical variable to split the data into subsets "
 "and compute the compositional mean for each."
 msgstr ""
 
-#: coda.R:51
+#: coda.R:52
 msgid ""
 "Usefull if your data contain several observations for the same sample (e.g. "
 "repeated measurements)."
 msgstr ""
 
-#: coda.R:61 prepare.R:34 prepare.R:105
+#: coda.R:62 prepare.R:34 prepare.R:102
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:199
+#: coda.R:164 multivariate.R:169 multivariate.R:173
+msgid "Group"
+msgstr ""
+
+#: coda.R:183
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:200
+#: coda.R:184
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:201
+#: coda.R:185
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:202
+#: coda.R:186
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:207
+#: coda.R:191
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:213
+#: coda.R:197
 msgid "Replace zero"
 msgstr ""
 
@@ -391,19 +395,19 @@ msgstr ""
 msgid "&#945; Diversity"
 msgstr ""
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:104
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:106
 msgid "Diversity Measures"
 msgstr ""
 
-#: count_diversity_alpha.R:90
+#: count_diversity_alpha.R:92
 msgid "Heterogeneity"
 msgstr ""
 
-#: count_diversity_alpha.R:95
+#: count_diversity_alpha.R:97
 msgid "Dominance"
 msgstr ""
 
-#: count_diversity_alpha.R:100
+#: count_diversity_alpha.R:102
 msgid "Richness"
 msgstr ""
 
@@ -435,6 +439,10 @@ msgstr ""
 msgid "Alpha diversity"
 msgstr ""
 
+#: count_diversity_beta.R:49 ternary.R:74
+msgid "Groups"
+msgstr ""
+
 #: count_diversity_beta.R:53 multivariate.R:70 ternary.R:80
 msgid "Convex hull"
 msgstr ""
@@ -447,7 +455,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:111 count_diversity_beta.R:129 count_diversity_docs.R:60
+#: count_diversity_beta.R:113 count_diversity_beta.R:131 count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr ""
 
@@ -475,7 +483,7 @@ msgstr ""
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:72 count_occurrence.R:90
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:74 count_occurrence.R:92
 msgid "Co-Occurrence"
 msgstr ""
 
@@ -742,11 +750,11 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: kinesis-internal.R:335
+#: kinesis-internal.R:334
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:336
+#: kinesis-internal.R:335
 msgid "You should perform your analysis again."
 msgstr ""
 
@@ -838,19 +846,31 @@ msgstr ""
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:379
+#: multivariate.R:368
+msgid "Eigenvalues"
+msgstr ""
+
+#: multivariate.R:368
+msgid "Explained var. (%)"
+msgstr ""
+
+#: multivariate.R:368
+msgid "Cumulative var. (%)"
+msgstr ""
+
+#: multivariate.R:394
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:384
+#: multivariate.R:399
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:389
+#: multivariate.R:404
 msgid "Squared cosinus"
 msgstr ""
 
-#: pca.R:19
+#: pca.R:19 pca.R:86
 msgid "PCA"
 msgstr ""
 
@@ -876,7 +896,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:22 prepare.R:112
+#: plot.R:22 prepare.R:109
 msgid "Download"
 msgstr ""
 
@@ -920,87 +940,87 @@ msgstr ""
 msgid "Color scheme"
 msgstr ""
 
-#: prepare.R:97
+#: prepare.R:94
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:101
+#: prepare.R:98
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:109
+#: prepare.R:106
 msgid "Export your data for futur use."
 msgstr ""
 
-#: prepare.R:140
+#: prepare.R:137
 msgid "Select columns:"
 msgstr ""
 
-#: prepare.R:217
+#: prepare.R:214
 msgid "First column as row names"
 msgstr ""
 
-#: prepare.R:221
+#: prepare.R:218
 msgid "Clean values:"
 msgstr ""
 
-#: prepare.R:225
+#: prepare.R:222
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:230
+#: prepare.R:227
 msgid "Remove any non informative data:"
 msgstr ""
 
-#: prepare.R:234
+#: prepare.R:231
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:239
+#: prepare.R:236
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:245
+#: prepare.R:242
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:251
+#: prepare.R:248
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:269
+#: prepare.R:266
 msgid "Rownames"
 msgstr ""
 
-#: prepare.R:314
+#: prepare.R:310
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:320
+#: prepare.R:316
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:326
+#: prepare.R:322
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:328
+#: prepare.R:324
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:329
+#: prepare.R:325
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:330
+#: prepare.R:326
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:331
+#: prepare.R:327
 msgid "Remove columns with missing values"
 msgstr ""
 
-#: prepare.R:402
+#: prepare.R:398
 msgid "Remove data points that fall outside a specification."
 msgstr ""
 
