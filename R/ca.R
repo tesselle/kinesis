@@ -68,7 +68,7 @@ ca_server <- function(id, x) {
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = "CA")
+    notify_change(session$ns("change"), x, old, title = tr_("CA"))
 
     ## Compute CA -----
     compute_ca <- ExtendedTask$new(

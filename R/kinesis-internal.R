@@ -164,7 +164,7 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @seealso [selectize_ui()]
 #' @keywords internal
 #' @noRd
-column_select_server <- function(id, x, find_col = NULL,
+column_select_server <- function(id, x, find_col = NULL, selected = NULL,
                                  preserve = TRUE, none = TRUE,
                                  server = TRUE) {
   stopifnot(is.reactive(x))
@@ -173,7 +173,6 @@ column_select_server <- function(id, x, find_col = NULL,
     ## Update UI
     observe({
       choices <- colnames(x())
-      selected <- NULL
       if (!is.null(choices) && is.function(find_col)) {
         selection <- which(arkhe::detect(x = x(), f = find_col, margin = 2))
         choices <- choices[selection]

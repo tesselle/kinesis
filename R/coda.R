@@ -33,18 +33,19 @@ coda_ui <- function(id) {
                 id = ns("group"),
                 label = tooltip(
                   trigger = span(
-                    tr_("Group"),
+                    tr_("Group by"),
                     icon("info-circle")
                   ),
                   tr_("You can use a qualitative variable to assign each sample to a (reference) group."),
                   tr_("Missing values will be interpreted as unassigned samples.")
-                )
+                ),
+                multiple = TRUE
               ),
               selectize_ui(
                 id = ns("condense"),
                 label = tooltip(
                   trigger = span(
-                    tr_("Condense"),
+                    tr_("Condense by"),
                     icon("info-circle")
                   ),
                   tr_("You can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."),
@@ -120,7 +121,7 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
 
       out <- coda()
       if (isTruthy(col_group())) {
-        out <- nexus::group(out, by = data_raw()[[col_group()]], verbose = verbose)
+        out <- nexus::group(out, by = data_raw()[col_group()], verbose = verbose)
       }
 
       out

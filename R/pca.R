@@ -83,7 +83,7 @@ pca_server <- function(id, x) {
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), x, old, title = "PCA")
+    notify_change(session$ns("change"), x, old, title = tr_("PCA"))
     output$help <- renderText({
       if (inherits(x(), "LogRatio")) {
         txt <- tr_("PCA is computed on centered log-ratio (CLR), you should check the data transformation first.")

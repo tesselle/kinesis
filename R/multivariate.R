@@ -165,12 +165,30 @@ multivariate_server <- function(id, x, y) {
 
   moduleServer(id, function(input, output, session) {
     ## Illustrative variables -----
-    extra <- reactive({ as.data.frame(y()) }) |>
+    ## Set group_var for nexus::GroupedComposition objects
+    extra <- reactive({ as.data.frame(y(), group_var = tr_("Group")) }) |>
       bindEvent(x())
     col_quali <- column_select_server("extra_quali", x = extra,
-                                      find_col = Negate(is.numeric))
+                                      find_col = Negate(is.numeric),
+                                      selected = tr_("Group"))
     col_quanti <- column_select_server("extra_quanti", x = extra,
                                        find_col = is.numeric)
+    extra_quali <- reactive({
+      if (isTRUE(input$sup_obs)) {
+        "observation"
+      } else if (isTruthy(col_quali())) {
+        extra()[[col_quali()]]
+      } else {
+        NULL
+      }
+    })
+    extra_quanti <- reactive({
+      if (isTruthy(col_quanti())) {
+        extra()[[col_quanti()]]
+      } else {
+        NULL
+      }
+    })
 
     ## Eigenvalues -----
     eigen <- reactive({
@@ -234,28 +252,23 @@ multivariate_server <- function(id, x, y) {
     plot_ind <- reactive({
       req(x())
 
-      ## Extra variables
-      extra_quali <- extra_quanti <- NULL
-      if (isTruthy(col_quali())) {
-        extra_quali <- extra()[[col_quali()]]
-      }
-      if (isTruthy(col_quanti())) {
-        extra_quanti <- extra()[[col_quanti()]]
-      }
-      if (isTRUE(input$sup_obs)) {
-        extra_quali <- "observation"
-      }
-
       ## Envelope
       ellipse <- NULL
-      if (any(input$wrap %in% c("confidence", "tolerance")) && isFALSE(input$sup_obs)) {
-        ellipse <- list(
-          type = input$wrap,
-          level = as.numeric(input$ellipse_level)
-        )
+      hull <- FALSE
+      if (isFALSE(input$sup_obs)) {
+        if (any(input$wrap %in% c("confidence", "tolerance"))) {
+          ellipse <- list(
+            type = input$wrap,
+            level = as.numeric(input$ellipse_level)
+          )
+        }
+        if (isTRUE(input$wrap == "hull")) {
+          hull <- TRUE
+        }
       }
 
       col_ind <- get_color("col_ind")()
+      pch_ind <- get_value(as.integer(input$pch))
       function() {
         dimensio::viz_rows(
           x = x(),
@@ -263,12 +276,12 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_ind,
           labels = input$lab_ind,
-          extra_quali = extra_quali,
-          extra_quanti = extra_quanti,
+          extra_quali = extra_quali(),
+          extra_quanti = extra_quanti(),
           ellipse = ellipse,
-          hull = isTRUE(input$wrap == "hull") && isFALSE(input$sup_obs),
+          hull = hull,
           color = col_ind,
-          symbol = get_value(as.integer(input$pch)),
+          symbol = pch_ind,
           size = input$cex,
           xlim = range_ind$x,
           ylim = range_ind$y,
