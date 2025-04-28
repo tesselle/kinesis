@@ -46,7 +46,7 @@ diversity_beta_ui <- function(id) {
         ),
         selectize_ui(
           id = ns("extra_quali"),
-          label = tr_("Group")
+          label = tr_("Groups")
         ),
         checkboxInput(
           inputId = ns("hull"),
@@ -85,12 +85,14 @@ diversity_beta_ui <- function(id) {
 #'  UI function.
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @param y A reactive `data.frame` returned by [diversity_alpha_server()].
+#' @param verbose A [`logical`] scalar: should \R report extra information on
+#'  progress?
 #' @return A reactive [`data.frame`].
 #' @seealso [diversity_beta_ui()]
 #' @family count data modules
 #' @keywords internal
 #' @export
-diversity_beta_server <- function(id, x, y) {
+diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -103,7 +105,7 @@ diversity_beta_server <- function(id, x, y) {
     ## Get count data -----
     counts <- reactive({
       req(x())
-      arkhe::keep_columns(x(), f = is.numeric)
+      arkhe::keep_columns(x(), f = is.numeric, verbose = verbose)
     })
 
     ## Check data -----

@@ -36,7 +36,8 @@ bertin_ui <- function(id, title = NULL) {
             inputId = ns("weights"),
             label = tr_("Weights"),
             value = FALSE
-          )
+          ),
+          helpText(info_article(author = "Desachy", year = "2004", doi = "10.3406/pica.2004.2396")),
         ),
         conditionalPanel(
           condition = "input.type == 'barplot'",
@@ -85,7 +86,7 @@ bertin_server  <- function(id, x) {
       threshold <- switch(
         input$threshold,
         mean = mean,
-        median = median,
+        median = stats::median,
         none = NULL
       )
 

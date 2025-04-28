@@ -136,11 +136,11 @@ seriate_server  <- function(id, x, order) {
     hist_random <- reactive({
       req(length(results()$random) > 0)
       function() {
-        h <- hist(results()$random, plot = FALSE)
-        p05 <- quantile(results()$random, probs = 0.05)
+        h <- graphics::hist(results()$random, plot = FALSE)
+        p05 <- stats::quantile(results()$random, probs = 0.05)
         plot(h, xlab = NULL, main = NULL, las = 1)
-        abline(v = p05, col = "red", lwd = 2)
-        axis(side = 3, at = p05, label = "5th percentile", col.axis = "red", lwd = 0)
+        graphics::abline(v = p05, col = "red", lwd = 2)
+        graphics::axis(side = 3, at = p05, label = "5th percentile", col.axis = "red", lwd = 0)
       }
     })
 

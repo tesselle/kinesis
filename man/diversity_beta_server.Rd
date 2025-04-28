@@ -4,7 +4,7 @@
 \alias{diversity_beta_server}
 \title{Beta Diversity Server}
 \usage{
-diversity_beta_server(id, x, y)
+diversity_beta_server(id, x, y, verbose = get_option("verbose", FALSE))
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -13,6 +13,9 @@ UI function.}
 \item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 
 \item{y}{A reactive \code{data.frame} returned by \code{\link[=diversity_alpha_server]{diversity_alpha_server()}}.}
+
+\item{verbose}{A \code{\link{logical}} scalar: should \R report extra information on
+progress?}
 }
 \value{
 A reactive \code{\link{data.frame}}.

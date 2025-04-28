@@ -4,13 +4,16 @@
 \alias{diversity_alpha_server}
 \title{Alpha Diversity Server}
 \usage{
-diversity_alpha_server(id, x)
+diversity_alpha_server(id, x, verbose = get_option("verbose", FALSE))
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
 \item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
+
+\item{verbose}{A \code{\link{logical}} scalar: should \R report extra information on
+progress?}
 }
 \description{
 Alpha Diversity Server

@@ -382,7 +382,7 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       req(data_missing())
       function() {
         col <- if (anyNA(data_missing())) c("#DDDDDD", "#BB5566") else "#DDDDDD"
-        tabula::plot_heatmap(object = is.na(data_missing()), col = col,
+        tabula::plot_heatmap(object = is.na(data_missing()), color = col,
                              fixed_ratio = FALSE)
       }
     })
