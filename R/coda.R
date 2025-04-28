@@ -54,7 +54,7 @@ coda_ui <- function(id) {
               ),
             ), # sidebar
             ## Output: display data
-            gt::gt_output(outputId = ns("table"))
+            tableOutput(outputId = ns("table"))
           ) # layout_sidebar
         ),
         nav_panel(
@@ -157,33 +157,16 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
     })
 
     ## Render tables -----
-    output$table <- gt::render_gt({
-      req(data_valid())
-      if (nexus::is_grouped(data_valid())) {
-        gt <- data_valid() |>
-          as.data.frame() |>
-          gt::gt(rownames_to_stub = TRUE, groupname_col = ".group")
-      } else {
-        gt <- data_valid() |>
-          as.data.frame() |>
-          gt::gt(rownames_to_stub = TRUE)
-      }
-      gt |>
-        gt::fmt_percent(decimals = 3) |>
-        gt::sub_missing() |>
-        # gt::tab_style_body(
-        #   fn = function(x) is.na(x),
-        #   style = gt::cell_text(color = "red3")
-        # ) |>
-        # gt::tab_style_body(
-        #   fn = function(x) x == 0,
-        #   style = gt::cell_text(color = "orange")
-        # ) |>
-        gt::opt_interactive(
-          use_compact_mode = TRUE,
-          use_page_size_select = TRUE
-        )
-    })
+    output$table <- renderTable(
+      expr = {
+        req(data_valid())
+        as.data.frame(data_valid(), group_var = tr_("Group"))
+      },
+      rownames = TRUE,
+      colnames = TRUE,
+      digits = 3,
+      na = "-"
+    )
 
     data_valid
   })

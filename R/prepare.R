@@ -19,7 +19,7 @@ prepare_ui <- function(id) {
         title = tr_("Data"),
         import_ui(ns("import")),
         select_ui(ns("select")),
-        clean_ui(ns("clean")),
+        clean_ui(ns("clean"))
         # filter_ui(ns("filter"))
       ), # sidebar
       ## Output: value box
@@ -28,7 +28,7 @@ prepare_ui <- function(id) {
         placement = "above",
         nav_panel(
           title = tr_("Data"),
-          gt::gt_output(outputId = ns("table"))
+          tableOutput(outputId = ns("table"))
         ),
         nav_panel(
           title = tr_("Missing values"),
@@ -67,15 +67,12 @@ prepare_server <- function(id, choose = function(...) TRUE,
     box_server("box", x = data_clean)
 
     ## Render table -----
-    output$table <- gt::render_gt({
-      data_clean() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::sub_missing() |>
-        gt::opt_interactive(
-          use_compact_mode = TRUE,
-          use_page_size_select = TRUE
-        )
-    })
+    output$table <- renderTable(
+      expr = { data_clean() },
+      rownames = TRUE,
+      colnames = TRUE,
+      na = "-"
+    )
 
     data_clean
   })
@@ -268,7 +265,6 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
           arkhe::assign_rownames(out, column = 1, remove = TRUE),
           title = tr_("Rownames")
         )
-        if (!is.null(out)) x <- out
       }
 
       ## Clean whitespace

@@ -142,7 +142,7 @@ multivariate_ui <- function(id) {
       title = tr_("Screeplot"),
       layout_column_wrap(
         output_plot(id = ns("screeplot"), title = tr_("Screeplot")),
-        gt::gt_output(outputId = ns("variance"))
+        tableOutput(outputId = ns("variance"))
       )
     )
   )
@@ -349,16 +349,18 @@ multivariate_server <- function(id, x, y) {
     render_plot("screeplot", x = plot_eigen)
 
     ## Render tables -----
-    output$variance <- gt::render_gt({
-      eigen() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::fmt_number(columns = 2, decimals = 3) |>
-        gt::fmt_percent(columns = c(3, 4), decimals = 2, scale_values = FALSE) |>
-        gt::opt_interactive(
-          use_compact_mode = TRUE,
-          use_page_size_select = TRUE
-        )
-    })
+    output$variance <- renderTable(
+      expr = {
+        e <- eigen()
+        colnames(e) <- c(tr_("Eigenvalues"), tr_("Explained var. (%)"), tr_("Cumulative var. (%)"))
+        e
+      },
+      rownames = TRUE,
+      colnames = TRUE,
+      digits = 2,
+      na = "-"
+    )
+
     output$info_ind <- gt::render_gt({
       req(x())
       multivariate_summary(x(), axes = c(axis1(), axis2()), margin = 1)

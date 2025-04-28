@@ -39,7 +39,7 @@ occurrence_ui <- function(id) {
           )
         ),
         card(
-          gt::gt_output(outputId = ns("table"))
+          tableOutput(outputId = ns("table"))
         )
       )
     ) # layout_sidebar
@@ -98,15 +98,16 @@ occurrence_server <- function(id, x) {
     })
 
     ## Render table -----
-    output$table <- gt::render_gt({
-      req(results())
-      results() |>
-        as.matrix() |>
-        as.data.frame() |>
-        gt::gt(rownames_to_stub = TRUE) |>
-        gt::fmt_number(decimals = 2) |>
-        gt::sub_missing()
-    })
+    output$table <- renderTable(
+      expr = {
+        req(results())
+        as.matrix(results())
+      },
+      rownames = TRUE,
+      colnames = TRUE,
+      digits = 2,
+      na = "-"
+    )
 
     ## Render plot -----
     render_plot("plot", x = map)
