@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-17 17:33+0200\n"
+"POT-Creation-Date: 2025-04-28 15:06+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -12,6 +12,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.10.2\n"
+
+#: bertin.R:15 coda_outliers.R:44
+msgid "Plot"
+msgstr "Graphique"
+
+#: bertin.R:21
+msgid "Plot type"
+msgstr "Type de graphique"
+
+#: bertin.R:23
+msgid "Ford diagram"
+msgstr "Diagramme de Ford"
+
+#: bertin.R:23
+msgid "Bertin barplot"
+msgstr "Diagramme de Bertin"
+
+#: bertin.R:24
+msgid "Bertin scalogram"
+msgstr "Scalogramme"
+
+#: bertin.R:24 ternary.R:46
+msgid "Heatmap"
+msgstr "Carte de chaleur"
+
+#: bertin.R:37
+msgid "Weights"
+msgstr "Masses"
+
+#: bertin.R:46
+msgid "Threshold"
+msgstr "Seuil"
+
+#: bertin.R:48 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
+msgid "None"
+msgstr "Aucun"
+
+#: bertin.R:48
+msgid "Mean"
+msgstr "Moyenne"
+
+#: bertin.R:48
+msgid "Median"
+msgstr "Médiane"
 
 #: ca.R:14
 msgid "CA"
@@ -33,13 +77,13 @@ msgstr "Variables quantitatives supplémentaires"
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:26 count_mcd.R:22
-#: count_occurrence.R:33 pca.R:50
+#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22
+#: count_occurrence.R:27 pca.R:50 seriate.R:63
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
 #: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25
-#: count_occurrence.R:36 pca.R:53
+#: count_occurrence.R:30 pca.R:53
 msgid "Download results"
 msgstr "Télécharger les résultats"
 
@@ -71,7 +115,7 @@ msgstr "Données"
 msgid "Compositional Data"
 msgstr "Données de composition"
 
-#: coda.R:36
+#: coda.R:36 count_diversity_beta.R:49 ternary.R:74
 msgid "Group"
 msgstr "Grouper"
 
@@ -219,45 +263,45 @@ msgstr "Dendrogramme"
 msgid "Aitchison distance, %s linkage"
 msgstr "Distance d'Aitchison (aggrégation : %s)"
 
-#: coda_logratio.R:19
+#: coda_logratio.R:20
 msgid "Compute log-ratio transformation of compositional data."
 msgstr ""
 "Calculer la transformation en rapports logarithmiques des données de "
 "composition."
 
-#: coda_logratio.R:22
+#: coda_logratio.R:23
 msgid "Weighted log-ratio"
 msgstr "Rapports logarithmiques pondérés"
 
-#: coda_logratio.R:27
+#: coda_logratio.R:28
 msgid "Download log-ratio"
 msgstr "Télécharger les rapports logarithmiques"
 
-#: coda_logratio.R:39 ternary.R:47
+#: coda_logratio.R:40 ternary.R:47
 msgid "Density"
 msgstr "Densité"
 
-#: coda_logratio.R:66
+#: coda_logratio.R:67
 msgid "Rationing part:"
 msgstr "Dénominateur :"
 
-#: coda_logratio.R:67
+#: coda_logratio.R:68
 msgid "Pivotal variable:"
 msgstr "Variable pivot :"
 
-#: coda_logratio.R:124
+#: coda_logratio.R:125
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:125
+#: coda_logratio.R:126
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:126
+#: coda_logratio.R:127
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:127
+#: coda_logratio.R:128
 msgid "Pivot Log-Ratio"
 msgstr ""
 
@@ -293,11 +337,7 @@ msgstr "Quantile"
 msgid "(Re)Detect"
 msgstr "(Re)Détecter"
 
-#: coda_outliers.R:44
-msgid "Plot"
-msgstr "Graphique"
-
-#: coda_outliers.R:49 count_occurrence.R:29
+#: coda_outliers.R:49
 msgid "Type of plot"
 msgstr "Type de graphique"
 
@@ -373,20 +413,20 @@ msgstr "Indice de proportionnalité des parties"
 msgid "&#945; Diversity"
 msgstr "Diversité &#945;"
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:98
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:104
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
-#: count_diversity_alpha.R:84
+#: count_diversity_alpha.R:90
 msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
-#: count_diversity_alpha.R:89
+#: count_diversity_alpha.R:95
 #, fuzzy
 msgid "Dominance"
 msgstr "Domination"
 
-#: count_diversity_alpha.R:94
+#: count_diversity_alpha.R:100
 msgid "Richness"
 msgstr "Richesse"
 
@@ -402,31 +442,35 @@ msgstr "Analyse en coordonnées principales"
 msgid "Dissimilarity measure"
 msgstr "Mesure de dissimilarité"
 
-#: count_diversity_beta.R:29
+#: count_diversity_beta.R:30
 msgid "Download dissimilarity matrix"
 msgstr "Télécharger la matrice de dissimilarité"
 
-#: count_diversity_beta.R:33
+#: count_diversity_beta.R:34
 msgid "Download PCoA results"
 msgstr "Télécharger les résultats (ACoP)"
 
-#: count_diversity_beta.R:38
+#: count_diversity_beta.R:39
 msgid "Display labels"
 msgstr "Afficher les étiquettes"
 
-#: count_diversity_beta.R:44
+#: count_diversity_beta.R:45
 msgid "Alpha diversity"
 msgstr "Diversité alpha"
 
-#: count_diversity_beta.R:55
+#: count_diversity_beta.R:53 multivariate.R:70 ternary.R:80
+msgid "Convex hull"
+msgstr "Enveloppe convexe"
+
+#: count_diversity_beta.R:61
 msgid "Dissimilarity"
 msgstr "Dissimilarité"
 
-#: count_diversity_beta.R:63
+#: count_diversity_beta.R:69
 msgid "PCoA"
 msgstr "ACoP"
 
-#: count_diversity_beta.R:107 count_diversity_beta.R:125
+#: count_diversity_beta.R:111 count_diversity_beta.R:129
 #: count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
@@ -476,14 +520,6 @@ msgstr "Fréquences relatives"
 #, fuzzy
 msgid "Binomial assessment"
 msgstr "Test binomial"
-
-#: count_occurrence.R:30 ternary.R:46
-msgid "Heatmap"
-msgstr "Carte de chaleur"
-
-#: count_occurrence.R:30
-msgid "Spot"
-msgstr "Points"
 
 #: help.R:76
 msgid ""
@@ -641,7 +677,7 @@ msgstr "Téléverser"
 msgid "Import Data"
 msgstr "Importer des données"
 
-#: import.R:36 plot.R:141
+#: import.R:36 plot.R:143
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -711,10 +747,6 @@ msgstr "Tabulation"
 #: import.R:92
 msgid "Quote"
 msgstr "Séparateur de chaîne de caractères"
-
-#: import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
-msgid "None"
-msgstr "Aucun"
 
 #: import.R:93
 msgid "Double quote"
@@ -824,10 +856,6 @@ msgstr "Ellipse de tolérance"
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:70 ternary.R:80
-msgid "Convex hull"
-msgstr "Enveloppe convexe"
-
 #: multivariate.R:75 ternary.R:85
 msgid "Ellipse level:"
 msgstr "Niveau :"
@@ -910,43 +938,43 @@ msgstr "Outils"
 msgid "Download"
 msgstr "Télécharger"
 
-#: plot.R:112
+#: plot.R:114
 msgid "Save plot - Preview"
 msgstr "Enregistrer le graphique - Aperçu"
 
-#: plot.R:124
+#: plot.R:126
 msgid "File name"
 msgstr "Nom du fichier"
 
-#: plot.R:129
+#: plot.R:131
 msgid "Width (in)"
 msgstr "Largeur (in)"
 
-#: plot.R:135
+#: plot.R:137
 msgid "Height (in)"
 msgstr "Hauteur (in)"
 
-#: plot.R:172
+#: plot.R:174
 msgid "Unknown graphics device."
 msgstr "Périphérique graphique inconnu."
 
-#: plot.R:186 ternary.R:28
+#: plot.R:188 ternary.R:28
 msgid "Symbol size"
 msgstr "Taille des symboles"
 
-#: plot.R:206
+#: plot.R:208
 msgid "Symbol"
 msgstr "Symbole"
 
-#: plot.R:220
+#: plot.R:222
 msgid "Line type"
 msgstr "Type de ligne"
 
-#: plot.R:250
+#: plot.R:255
 msgid "Monochrome"
 msgstr "Monochrome"
 
-#: plot.R:259
+#: plot.R:264
 msgid "Color scheme"
 msgstr "Couleurs"
 
@@ -1046,6 +1074,10 @@ msgstr "Impossible de trouver le fichier de configuration pour %s."
 msgid "Seriation"
 msgstr "Sériation"
 
+#: seriate.R:18
+msgid "Permutation"
+msgstr "Permutation"
+
 #: seriate.R:22
 msgid "Permute rows"
 msgstr "Permuter les lignes"
@@ -1058,25 +1090,41 @@ msgstr "Permuter les colonnes"
 msgid "CA dimension"
 msgstr "Axe factoriel"
 
-#: seriate.R:42
+#: seriate.R:43
 msgid "Export matrix"
 msgstr "Télécharger la matrice"
 
-#: seriate.R:52
-msgid "Weights"
-msgstr "Masses"
-
-#: seriate.R:62
+#: seriate.R:50
 msgid "Rearranged matrix"
 msgstr "Matrice permutée"
 
-#: seriate.R:87
+#: seriate.R:53
+msgid "Significance"
+msgstr "Significativité"
+
+#: seriate.R:56
+msgid "Test the significance of the seriation solutions."
+msgstr "Tester la significativité des solutions de sériation."
+
+#: seriate.R:60
+msgid "Bootstrap replicates"
+msgstr "Réplications bootstrap"
+
+#: seriate.R:99
 msgid "Compute the seriation order first."
 msgstr "Calculez d'abord l'ordre de sériation."
 
-#: seriate.R:127
-msgid "Goodness of fit: %.3f"
-msgstr "Qualité de l'ajustement : %.3f"
+#: seriate.R:132
+msgid "Significance of Seriation"
+msgstr "significativité de la sériation"
+
+#: seriate.R:154
+msgid "Seriation coefficient: %.3f;"
+msgstr "Coefficient de sériation : %.3f ;"
+
+#: seriate.R:160
+msgid "Observed total number of modes: %d (expected: %d);"
+msgstr "Nombre total de modes observé : %d (attendu : %d) ;"
 
 #: ternary.R:14 ternary.R:127
 msgid "Ternary Plot"
@@ -1129,10 +1177,6 @@ msgstr "Transformation"
 #: ternary.R:72
 msgid "Envelopes"
 msgstr "Enveloppes"
-
-#: ternary.R:74
-msgid "Group by"
-msgstr "Groupes"
 
 #: ternary.R:92
 msgid "Annotations"

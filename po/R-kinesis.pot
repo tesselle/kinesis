@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-17 17:33+0200\n"
+"POT-Creation-Date: 2025-04-28 15:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,6 +10,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: bertin.R:15 coda_outliers.R:44
+msgid "Plot"
+msgstr ""
+
+#: bertin.R:21
+msgid "Plot type"
+msgstr ""
+
+#: bertin.R:23
+msgid "Ford diagram"
+msgstr ""
+
+#: bertin.R:23
+msgid "Bertin barplot"
+msgstr ""
+
+#: bertin.R:24
+msgid "Bertin scalogram"
+msgstr ""
+
+#: bertin.R:24 ternary.R:46
+msgid "Heatmap"
+msgstr ""
+
+#: bertin.R:37
+msgid "Weights"
+msgstr ""
+
+#: bertin.R:46
+msgid "Threshold"
+msgstr ""
+
+#: bertin.R:48 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
+msgid "None"
+msgstr ""
+
+#: bertin.R:48
+msgid "Mean"
+msgstr ""
+
+#: bertin.R:48
+msgid "Median"
+msgstr ""
 
 #: ca.R:14
 msgid "CA"
@@ -31,11 +75,11 @@ msgstr ""
 msgid "Supplementary qualitative variables"
 msgstr ""
 
-#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:26 count_mcd.R:22 count_occurrence.R:33 pca.R:50
+#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22 count_occurrence.R:27 pca.R:50 seriate.R:63
 msgid "(Re)Compute"
 msgstr ""
 
-#: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:36 pca.R:53
+#: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:30 pca.R:53
 msgid "Download results"
 msgstr ""
 
@@ -67,7 +111,7 @@ msgstr ""
 msgid "Compositional Data"
 msgstr ""
 
-#: coda.R:36
+#: coda.R:36 count_diversity_beta.R:49 ternary.R:74
 msgid "Group"
 msgstr ""
 
@@ -199,43 +243,43 @@ msgstr ""
 msgid "Aitchison distance, %s linkage"
 msgstr ""
 
-#: coda_logratio.R:19
+#: coda_logratio.R:20
 msgid "Compute log-ratio transformation of compositional data."
 msgstr ""
 
-#: coda_logratio.R:22
+#: coda_logratio.R:23
 msgid "Weighted log-ratio"
 msgstr ""
 
-#: coda_logratio.R:27
+#: coda_logratio.R:28
 msgid "Download log-ratio"
 msgstr ""
 
-#: coda_logratio.R:39 ternary.R:47
+#: coda_logratio.R:40 ternary.R:47
 msgid "Density"
 msgstr ""
 
-#: coda_logratio.R:66
+#: coda_logratio.R:67
 msgid "Rationing part:"
 msgstr ""
 
-#: coda_logratio.R:67
+#: coda_logratio.R:68
 msgid "Pivotal variable:"
 msgstr ""
 
-#: coda_logratio.R:124
+#: coda_logratio.R:125
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:125
+#: coda_logratio.R:126
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:126
+#: coda_logratio.R:127
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:127
+#: coda_logratio.R:128
 msgid "Pivot Log-Ratio"
 msgstr ""
 
@@ -271,11 +315,7 @@ msgstr ""
 msgid "(Re)Detect"
 msgstr ""
 
-#: coda_outliers.R:44
-msgid "Plot"
-msgstr ""
-
-#: coda_outliers.R:49 count_occurrence.R:29
+#: coda_outliers.R:49
 msgid "Type of plot"
 msgstr ""
 
@@ -351,19 +391,19 @@ msgstr ""
 msgid "&#945; Diversity"
 msgstr ""
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:98
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:104
 msgid "Diversity Measures"
 msgstr ""
 
-#: count_diversity_alpha.R:84
+#: count_diversity_alpha.R:90
 msgid "Heterogeneity"
 msgstr ""
 
-#: count_diversity_alpha.R:89
+#: count_diversity_alpha.R:95
 msgid "Dominance"
 msgstr ""
 
-#: count_diversity_alpha.R:94
+#: count_diversity_alpha.R:100
 msgid "Richness"
 msgstr ""
 
@@ -379,31 +419,35 @@ msgstr ""
 msgid "Dissimilarity measure"
 msgstr ""
 
-#: count_diversity_beta.R:29
+#: count_diversity_beta.R:30
 msgid "Download dissimilarity matrix"
 msgstr ""
 
-#: count_diversity_beta.R:33
+#: count_diversity_beta.R:34
 msgid "Download PCoA results"
 msgstr ""
 
-#: count_diversity_beta.R:38
+#: count_diversity_beta.R:39
 msgid "Display labels"
 msgstr ""
 
-#: count_diversity_beta.R:44
+#: count_diversity_beta.R:45
 msgid "Alpha diversity"
 msgstr ""
 
-#: count_diversity_beta.R:55
+#: count_diversity_beta.R:53 multivariate.R:70 ternary.R:80
+msgid "Convex hull"
+msgstr ""
+
+#: count_diversity_beta.R:61
 msgid "Dissimilarity"
 msgstr ""
 
-#: count_diversity_beta.R:63
+#: count_diversity_beta.R:69
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:107 count_diversity_beta.R:125 count_diversity_docs.R:60
+#: count_diversity_beta.R:111 count_diversity_beta.R:129 count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr ""
 
@@ -449,14 +493,6 @@ msgstr ""
 
 #: count_occurrence.R:24
 msgid "Binomial assessment"
-msgstr ""
-
-#: count_occurrence.R:30 ternary.R:46
-msgid "Heatmap"
-msgstr ""
-
-#: count_occurrence.R:30
-msgid "Spot"
 msgstr ""
 
 #: help.R:76
@@ -592,7 +628,7 @@ msgstr ""
 msgid "Import Data"
 msgstr ""
 
-#: import.R:36 plot.R:141
+#: import.R:36 plot.R:143
 msgid "Cancel"
 msgstr ""
 
@@ -656,10 +692,6 @@ msgstr ""
 
 #: import.R:92
 msgid "Quote"
-msgstr ""
-
-#: import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
-msgid "None"
 msgstr ""
 
 #: import.R:93
@@ -770,10 +802,6 @@ msgstr ""
 msgid "Confidence ellipse"
 msgstr ""
 
-#: multivariate.R:70 ternary.R:80
-msgid "Convex hull"
-msgstr ""
-
 #: multivariate.R:75 ternary.R:85
 msgid "Ellipse level:"
 msgstr ""
@@ -852,43 +880,43 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: plot.R:112
+#: plot.R:114
 msgid "Save plot - Preview"
 msgstr ""
 
-#: plot.R:124
+#: plot.R:126
 msgid "File name"
 msgstr ""
 
-#: plot.R:129
+#: plot.R:131
 msgid "Width (in)"
 msgstr ""
 
-#: plot.R:135
+#: plot.R:137
 msgid "Height (in)"
 msgstr ""
 
-#: plot.R:172
+#: plot.R:174
 msgid "Unknown graphics device."
 msgstr ""
 
-#: plot.R:186 ternary.R:28
+#: plot.R:188 ternary.R:28
 msgid "Symbol size"
 msgstr ""
 
-#: plot.R:206
+#: plot.R:208
 msgid "Symbol"
 msgstr ""
 
-#: plot.R:220
+#: plot.R:222
 msgid "Line type"
 msgstr ""
 
-#: plot.R:250
+#: plot.R:255
 msgid "Monochrome"
 msgstr ""
 
-#: plot.R:259
+#: plot.R:264
 msgid "Color scheme"
 msgstr ""
 
@@ -988,6 +1016,10 @@ msgstr ""
 msgid "Seriation"
 msgstr ""
 
+#: seriate.R:18
+msgid "Permutation"
+msgstr ""
+
 #: seriate.R:22
 msgid "Permute rows"
 msgstr ""
@@ -1000,24 +1032,40 @@ msgstr ""
 msgid "CA dimension"
 msgstr ""
 
-#: seriate.R:42
+#: seriate.R:43
 msgid "Export matrix"
 msgstr ""
 
-#: seriate.R:52
-msgid "Weights"
-msgstr ""
-
-#: seriate.R:62
+#: seriate.R:50
 msgid "Rearranged matrix"
 msgstr ""
 
-#: seriate.R:87
+#: seriate.R:53
+msgid "Significance"
+msgstr ""
+
+#: seriate.R:56
+msgid "Test the significance of the seriation solutions."
+msgstr ""
+
+#: seriate.R:60
+msgid "Bootstrap replicates"
+msgstr ""
+
+#: seriate.R:99
 msgid "Compute the seriation order first."
 msgstr ""
 
-#: seriate.R:127
-msgid "Goodness of fit: %.3f"
+#: seriate.R:132
+msgid "Significance of Seriation"
+msgstr ""
+
+#: seriate.R:154
+msgid "Seriation coefficient: %.3f;"
+msgstr ""
+
+#: seriate.R:160
+msgid "Observed total number of modes: %d (expected: %d);"
 msgstr ""
 
 #: ternary.R:14 ternary.R:127
@@ -1070,10 +1118,6 @@ msgstr ""
 
 #: ternary.R:72
 msgid "Envelopes"
-msgstr ""
-
-#: ternary.R:74
-msgid "Group by"
 msgstr ""
 
 #: ternary.R:92

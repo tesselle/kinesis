@@ -71,7 +71,7 @@ ternary_ui <- function(id) {
           accordion_panel(
             title = tr_("Envelopes"),
             ## Input: select group
-            selectize_ui(id = ns("group"), label = tr_("Group by")),
+            selectize_ui(id = ns("group"), label = tr_("Group")),
             ## Input: add ellipses
             radioButtons(
               inputId = ns("wrap"),

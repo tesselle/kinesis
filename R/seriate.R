@@ -53,12 +53,8 @@ seriate_ui <- function(id) {
           title = tr_("Significance"),
           layout_sidebar(
             sidebar = sidebar(
-              helpText(
-                HTML(sprintf(
-                  tr_("Test the significance of the seriation solutions according to %s."),
-                  cite_article(author = "Porcic", year = "2013", doi = "10.1016/j.jas.2013.07.013")
-                ))
-              ),
+              helpText(tr_("Test the significance of the seriation solutions.")),
+              helpText(info_article(author = "Porcic", year = "2013", doi = "10.1016/j.jas.2013.07.013")),
               sliderInput(
                 inputId = ns("replicates"),
                 label = tr_("Bootstrap replicates"),

@@ -46,7 +46,7 @@ diversity_beta_ui <- function(id) {
         ),
         selectize_ui(
           id = ns("extra_quali"),
-          label = tr_("Group by")
+          label = tr_("Group")
         ),
         checkboxInput(
           inputId = ns("hull"),
