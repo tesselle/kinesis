@@ -8,4 +8,7 @@
 options(shiny.maxRequestSize = 30*1024^2)
 
 ## Set future strategy =========================================================
-future::plan(future::multisession)
+future::plan(
+  strategy = future::multisession,
+  workers = getOption("kinesis.workers") %||% 1
+)
