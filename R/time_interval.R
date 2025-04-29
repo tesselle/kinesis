@@ -96,15 +96,17 @@ time_interval_server <- function(id, x) {
     ## Plot -----
     plot <- reactive({
       req(results())
+      grp <- NULL
       col <- "black"
       if (length(groups()) > 0) {
+        grp <- groups()
         pal <- get_color("color")()
-        col <- khroma::palette_color_discrete(pal)(groups())
+        col <- khroma::palette_color_discrete(pal)(grp)
       }
       function() {
-        aion::plot(results(), calendar = aion::CE(), col = col)
+        aion::plot(results(), calendar = aion::CE(), groups = grp, col = col)
         if (length(groups()) > 0) {
-          graphics::legend(x = "topleft", legend = unique(groups()),
+          graphics::legend(x = "topleft", legend = unique(grp),
                            fill = unique(col))
         }
       }
