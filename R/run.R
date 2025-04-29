@@ -12,6 +12,7 @@
 #' @details
 #'  \tabular{ll}{
 #'   **Application name**          \tab  **Keyword** \cr
+#'   Aoristic Analysis             \tab `aoristic`   \cr
 #'   Correspondence Analysis       \tab `ca`         \cr
 #'   Principal Components Analysis \tab `pca`        \cr
 #'   Diversity Measures            \tab `diversity`  \cr
@@ -28,8 +29,8 @@
 #' @family shiny apps
 #' @author N. Frerebeau
 #' @export
-run_app <- function(app = c("diversity", "seriation", "mcd", "source",
-                            "ternary", "ca", "pca"),
+run_app <- function(app = c("diversity", "seriation", "aoristic", "mcd",
+                            "source", "ternary", "ca", "pca"),
                     bookmark = FALSE,
                     options = list(launch.browser = interactive())) {
   ## App selection

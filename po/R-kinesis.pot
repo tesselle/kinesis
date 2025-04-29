@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-28 19:18+0200\n"
+"POT-Creation-Date: 2025-04-29 13:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,6 +10,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: aorisitc.R:14
+msgid "Analysis"
+msgstr ""
+
+#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:92
+msgid "Aoristic Analysis"
+msgstr ""
+
+#: aorisitc.R:21
+msgid "Temporal step size"
+msgstr ""
+
+#: aorisitc.R:28
+msgid "Beginning of the time window"
+msgstr ""
+
+#: aorisitc.R:33
+msgid "End of the time window"
+msgstr ""
+
+#: aorisitc.R:39
+msgid "Weigth"
+msgstr ""
+
+#: aorisitc.R:43 ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22 count_occurrence.R:27 pca.R:50
+msgid "(Re)Compute"
+msgstr ""
+
+#: aorisitc.R:46 ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:30 pca.R:53
+msgid "Download results"
+msgstr ""
 
 #: bertin.R:15 coda_outliers.R:44
 msgid "Plot"
@@ -39,19 +71,19 @@ msgstr ""
 msgid "Weights"
 msgstr ""
 
-#: bertin.R:46
+#: bertin.R:47
 msgid "Threshold"
 msgstr ""
 
-#: bertin.R:48 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
+#: bertin.R:49 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
 msgid "None"
 msgstr ""
 
-#: bertin.R:48
+#: bertin.R:49
 msgid "Mean"
 msgstr ""
 
-#: bertin.R:48
+#: bertin.R:49
 msgid "Median"
 msgstr ""
 
@@ -75,14 +107,6 @@ msgstr ""
 msgid "Supplementary qualitative variables"
 msgstr ""
 
-#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22 count_occurrence.R:27 pca.R:50 seriate.R:63
-msgid "(Re)Compute"
-msgstr ""
-
-#: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:30 pca.R:53
-msgid "Download results"
-msgstr ""
-
 #: ca.R:122
 msgid "Chi-squared Test"
 msgstr ""
@@ -103,7 +127,7 @@ msgstr ""
 msgid "Cramer's V: %.2f"
 msgstr ""
 
-#: coda.R:14 coda.R:29 prepare.R:14 prepare.R:19 prepare.R:30
+#: coda.R:14 coda.R:29 prepare.R:14 prepare.R:19 prepare.R:29
 msgid "Data"
 msgstr ""
 
@@ -141,7 +165,7 @@ msgid ""
 "repeated measurements)."
 msgstr ""
 
-#: coda.R:62 prepare.R:34 prepare.R:102
+#: coda.R:62 prepare.R:33 prepare.R:100
 msgid "Missing values"
 msgstr ""
 
@@ -439,7 +463,7 @@ msgstr ""
 msgid "Alpha diversity"
 msgstr ""
 
-#: count_diversity_beta.R:49 ternary.R:74
+#: count_diversity_beta.R:49 ternary.R:74 time_interval.R:35
 msgid "Groups"
 msgstr ""
 
@@ -746,7 +770,7 @@ msgstr ""
 msgid "Your data should not contain zeros."
 msgstr ""
 
-#: kinesis-internal.R:76
+#: kinesis-internal.R:76 time_interval.R:29
 msgid "Calendar"
 msgstr ""
 
@@ -896,7 +920,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:22 prepare.R:109
+#: plot.R:22 prepare.R:107
 msgid "Download"
 msgstr ""
 
@@ -940,95 +964,91 @@ msgstr ""
 msgid "Color scheme"
 msgstr ""
 
-#: prepare.R:94
+#: prepare.R:92
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:98
+#: prepare.R:96
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:106
+#: prepare.R:104
 msgid "Export your data for futur use."
 msgstr ""
 
-#: prepare.R:137
+#: prepare.R:135
 msgid "Select columns:"
 msgstr ""
 
-#: prepare.R:214
+#: prepare.R:212
 msgid "First column as row names"
 msgstr ""
 
-#: prepare.R:218
+#: prepare.R:216
 msgid "Clean values:"
 msgstr ""
 
-#: prepare.R:222
+#: prepare.R:220
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:227
+#: prepare.R:225
 msgid "Remove any non informative data:"
 msgstr ""
 
-#: prepare.R:231
+#: prepare.R:229
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:236
+#: prepare.R:234
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:242
+#: prepare.R:240
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:248
+#: prepare.R:246
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:266
+#: prepare.R:264
 msgid "Rownames"
 msgstr ""
 
-#: prepare.R:310
+#: prepare.R:308
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:316
+#: prepare.R:314
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:322
+#: prepare.R:320
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:324
+#: prepare.R:322
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:325
+#: prepare.R:323
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:326
+#: prepare.R:324
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:327
+#: prepare.R:325
 msgid "Remove columns with missing values"
 msgstr ""
 
-#: prepare.R:398
-msgid "Remove data points that fall outside a specification."
-msgstr ""
-
-#: run.R:39
+#: run.R:40
 msgid "Could not find the %s application."
 msgstr ""
 
-#: run.R:85
+#: run.R:86
 msgid "Could not find the configuration file for %s."
 msgstr ""
 
@@ -1060,32 +1080,8 @@ msgstr ""
 msgid "Rearranged matrix"
 msgstr ""
 
-#: seriate.R:53
-msgid "Significance"
-msgstr ""
-
-#: seriate.R:56
-msgid "Test the significance of the seriation solutions."
-msgstr ""
-
-#: seriate.R:60
-msgid "Bootstrap replicates"
-msgstr ""
-
-#: seriate.R:99
+#: seriate.R:76
 msgid "Compute the seriation order first."
-msgstr ""
-
-#: seriate.R:132
-msgid "Significance of Seriation"
-msgstr ""
-
-#: seriate.R:154
-msgid "Seriation coefficient: %.3f;"
-msgstr ""
-
-#: seriate.R:160
-msgid "Observed total number of modes: %d (expected: %d);"
 msgstr ""
 
 #: ternary.R:14 ternary.R:127
@@ -1154,6 +1150,22 @@ msgstr ""
 
 #: ternary.R:116
 msgid "Visualize your data in the ternary space."
+msgstr ""
+
+#: time_interval.R:14
+msgid "Intervals"
+msgstr ""
+
+#: time_interval.R:18
+msgid "Time Intervals"
+msgstr ""
+
+#: time_interval.R:21
+msgid "Lower temporal boundary"
+msgstr ""
+
+#: time_interval.R:25
+msgid "Upper temporal boundary"
 msgstr ""
 
 #: kinesis-internal.R:29

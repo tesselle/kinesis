@@ -5,7 +5,7 @@
 \title{Run an App}
 \usage{
 run_app(
-  app = c("diversity", "seriation", "mcd", "source", "ternary", "ca", "pca"),
+  app = c("diversity", "seriation", "aoristic", "mcd", "source", "ternary", "ca", "pca"),
   bookmark = FALSE,
   options = list(launch.browser = interactive())
 )
@@ -29,6 +29,7 @@ A wrapper for \code{\link[shiny:shinyApp]{shiny::shinyAppDir()}}.
 \details{
 \tabular{ll}{
 \strong{Application name}          \tab  \strong{Keyword} \cr
+Aoristic Analysis             \tab \code{aoristic}   \cr
 Correspondence Analysis       \tab \code{ca}         \cr
 Principal Components Analysis \tab \code{pca}        \cr
 Diversity Measures            \tab \code{diversity}  \cr

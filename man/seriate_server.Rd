@@ -24,7 +24,11 @@ CA Seriation Server
 \code{\link[=seriate_ui]{seriate_ui()}}
 
 Other chronology modules: 
-\code{\link{seriate_ui}()}
+\code{\link{aoristic_server}()},
+\code{\link{aoristic_ui}()},
+\code{\link{seriate_ui}()},
+\code{\link{time_interval_server}()},
+\code{\link{time_interval_ui}()}
 }
 \concept{chronology modules}
 \keyword{internal}

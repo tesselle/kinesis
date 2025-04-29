@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-04-28 19:18+0200\n"
+"POT-Creation-Date: 2025-04-29 13:51+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -12,6 +12,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.10.2\n"
+
+#: aorisitc.R:14
+msgid "Analysis"
+msgstr "Analyse"
+
+#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:92
+msgid "Aoristic Analysis"
+msgstr "Analyse Aoristique"
+
+#: aorisitc.R:21
+msgid "Temporal step size"
+msgstr "Taille du pas temporel"
+
+#: aorisitc.R:28
+msgid "Beginning of the time window"
+msgstr "Début de la fenêtre temporelle"
+
+#: aorisitc.R:33
+msgid "End of the time window"
+msgstr "Fin de la fenêtre temporelle"
+
+#: aorisitc.R:39
+msgid "Weigth"
+msgstr "Pondération"
+
+#: aorisitc.R:43 ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27
+#: count_mcd.R:22 count_occurrence.R:27 pca.R:50
+msgid "(Re)Compute"
+msgstr "(Re)Calculer"
+
+#: aorisitc.R:46 ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21
+#: count_mcd.R:25 count_occurrence.R:30 pca.R:53
+msgid "Download results"
+msgstr "Télécharger les résultats"
 
 #: bertin.R:15 coda_outliers.R:44
 msgid "Plot"
@@ -41,19 +75,19 @@ msgstr "Carte de chaleur"
 msgid "Weights"
 msgstr "Masses"
 
-#: bertin.R:46
+#: bertin.R:47
 msgid "Threshold"
 msgstr "Seuil"
 
-#: bertin.R:48 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
+#: bertin.R:49 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
 msgid "None"
 msgstr "Aucun"
 
-#: bertin.R:48
+#: bertin.R:49
 msgid "Mean"
 msgstr "Moyenne"
 
-#: bertin.R:48
+#: bertin.R:49
 msgid "Median"
 msgstr "Médiane"
 
@@ -77,16 +111,6 @@ msgstr "Variables quantitatives supplémentaires"
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22
-#: count_occurrence.R:27 pca.R:50 seriate.R:63
-msgid "(Re)Compute"
-msgstr "(Re)Calculer"
-
-#: ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25
-#: count_occurrence.R:30 pca.R:53
-msgid "Download results"
-msgstr "Télécharger les résultats"
-
 #: ca.R:122
 msgid "Chi-squared Test"
 msgstr "Test du Khi carré"
@@ -107,7 +131,7 @@ msgstr "Probabilité critique : %s"
 msgid "Cramer's V: %.2f"
 msgstr "V de Cramér : %.2f"
 
-#: coda.R:14 coda.R:29 prepare.R:14 prepare.R:19 prepare.R:30
+#: coda.R:14 coda.R:29 prepare.R:14 prepare.R:19 prepare.R:29
 msgid "Data"
 msgstr "Données"
 
@@ -154,7 +178,7 @@ msgstr ""
 "Utile si vos données contiennent plusieurs observations pour le même "
 "échantillon (par ex., mesures répétées)."
 
-#: coda.R:62 prepare.R:34 prepare.R:102
+#: coda.R:62 prepare.R:33 prepare.R:100
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
@@ -462,7 +486,7 @@ msgstr "Afficher les étiquettes"
 msgid "Alpha diversity"
 msgstr "Diversité alpha"
 
-#: count_diversity_beta.R:49 ternary.R:74
+#: count_diversity_beta.R:49 ternary.R:74 time_interval.R:35
 msgid "Groups"
 msgstr "Groupes"
 
@@ -800,7 +824,7 @@ msgstr "Vos données ne doivent pas contenir de valeurs manquantes."
 msgid "Your data should not contain zeros."
 msgstr "Vos données ne doivent pas contenir de zéros."
 
-#: kinesis-internal.R:76
+#: kinesis-internal.R:76 time_interval.R:29
 msgid "Calendar"
 msgstr "Calendrier"
 
@@ -954,7 +978,7 @@ msgstr ""
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:109
+#: plot.R:22 prepare.R:107
 msgid "Download"
 msgstr "Télécharger"
 
@@ -998,95 +1022,91 @@ msgstr "Monochrome"
 msgid "Color scheme"
 msgstr "Couleurs"
 
-#: prepare.R:94
+#: prepare.R:92
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:98
+#: prepare.R:96
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:106
+#: prepare.R:104
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:137
+#: prepare.R:135
 msgid "Select columns:"
 msgstr "Sélectionner les colonnes :"
 
-#: prepare.R:214
+#: prepare.R:212
 msgid "First column as row names"
 msgstr "Première colonne comme noms de lignes"
 
-#: prepare.R:218
+#: prepare.R:216
 msgid "Clean values:"
 msgstr "Nettoyer les données :"
 
-#: prepare.R:222
+#: prepare.R:220
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:227
+#: prepare.R:225
 msgid "Remove any non informative data:"
 msgstr "Supprimer les données non informatives :"
 
-#: prepare.R:231
+#: prepare.R:229
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:236
+#: prepare.R:234
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:242
+#: prepare.R:240
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:248
+#: prepare.R:246
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:266
+#: prepare.R:264
 msgid "Rownames"
 msgstr "Noms des lignes"
 
-#: prepare.R:310
+#: prepare.R:308
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:316
+#: prepare.R:314
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:322
+#: prepare.R:320
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:324
+#: prepare.R:322
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:325
+#: prepare.R:323
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:326
+#: prepare.R:324
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:327
+#: prepare.R:325
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
-#: prepare.R:398
-msgid "Remove data points that fall outside a specification."
-msgstr "Supprimer les données ne respectant pas certaines conditions."
-
-#: run.R:39
+#: run.R:40
 msgid "Could not find the %s application."
 msgstr "Impossible de trouver l'application %s."
 
-#: run.R:85
+#: run.R:86
 msgid "Could not find the configuration file for %s."
 msgstr "Impossible de trouver le fichier de configuration pour %s."
 
@@ -1118,33 +1138,9 @@ msgstr "Télécharger la matrice"
 msgid "Rearranged matrix"
 msgstr "Matrice permutée"
 
-#: seriate.R:53
-msgid "Significance"
-msgstr "Significativité"
-
-#: seriate.R:56
-msgid "Test the significance of the seriation solutions."
-msgstr "Tester la significativité des solutions de sériation."
-
-#: seriate.R:60
-msgid "Bootstrap replicates"
-msgstr "Réplications bootstrap"
-
-#: seriate.R:99
+#: seriate.R:76
 msgid "Compute the seriation order first."
 msgstr "Calculez d'abord l'ordre de sériation."
-
-#: seriate.R:132
-msgid "Significance of Seriation"
-msgstr "significativité de la sériation"
-
-#: seriate.R:154
-msgid "Seriation coefficient: %.3f;"
-msgstr "Coefficient de sériation : %.3f ;"
-
-#: seriate.R:160
-msgid "Observed total number of modes: %d (expected: %d);"
-msgstr "Nombre total de modes observé : %d (attendu : %d) ;"
 
 #: ternary.R:14 ternary.R:127
 msgid "Ternary Plot"
@@ -1213,6 +1209,22 @@ msgstr "Étiquettes"
 #: ternary.R:116
 msgid "Visualize your data in the ternary space."
 msgstr "Visualisez vos données dans un espace ternaire."
+
+#: time_interval.R:14
+msgid "Intervals"
+msgstr "Intervalles"
+
+#: time_interval.R:18
+msgid "Time Intervals"
+msgstr "Intervalles de temps"
+
+#: time_interval.R:21
+msgid "Lower temporal boundary"
+msgstr "Limite temporelle inférieure"
+
+#: time_interval.R:25
+msgid "Upper temporal boundary"
+msgstr "Limite temporelle supérieure"
 
 #: kinesis-internal.R:29
 msgid "Select at least %d row."

@@ -73,6 +73,7 @@ run_app("seriation")
 
 | Keyword     | Application name              | Example |
 |:------------|:------------------------------|:--------|
+| `aoristic`  | Aoristic Analysis             | [temporal data](https://analytics.huma-num.fr/tesselle/aoristic?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/loire.csv) |
 | `ca`        | Correspondence Analysis       | [ceramic data](https://analytics.huma-num.fr/tesselle/ca?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/zuni.csv) |
 | `pca`       | Principal Components Analysis | |
 | `diversity` | Diversity Measures            | [ceramic data](https://analytics.huma-num.fr/tesselle/diversity?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/zuni.csv) |
