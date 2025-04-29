@@ -20,7 +20,6 @@ prepare_ui <- function(id) {
         import_ui(ns("import")),
         select_ui(ns("select")),
         clean_ui(ns("clean"))
-        # filter_ui(ns("filter"))
       ), # sidebar
       ## Output: value box
       box_ui(ns("box")),
@@ -61,7 +60,6 @@ prepare_server <- function(id, choose = function(...) TRUE,
       select_server("select", x = _, find_col = choose, use_col = select) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _)
-    # filter_server("filter", x = _)
 
     ## Render description -----
     box_server("box", x = data_clean)
@@ -390,64 +388,4 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     data_missing
   })
-}
-
-## Filter ----------------------------------------------------------------------
-filter_ui <- function(id) {
-  list(
-    helpText(tr_("Remove data points that fall outside a specification.")),
-    uiOutput(NS(id, "controls"))
-  )
-}
-filter_server <- function(id, x) {
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    ## Get variable names
-    vars <- reactive({ names(x()) })
-
-    ## Build UI
-    output$controls <- renderUI({
-      lapply(
-        X = vars(),
-        FUN = function(var) filter_build(x()[[var]], session$ns(var), var)
-      )
-    })
-
-    filter <- reactive({
-      each_var <- lapply(
-        X = vars(),
-        FUN = function(var, input) filter_var(x()[[var]], input[[var]]),
-        input = input
-      )
-      Reduce(f = `&`, x = each_var)
-    })
-
-    reactive({ x()[filter(), , drop = FALSE] })
-  })
-}
-filter_var <- function(x, val) {
-  if (is.null(val)) return(TRUE)
-  if (is.numeric(x)) {
-    !is.na(x) & x >= val[1] & x <= val[2]
-  } else if (is.character(x)) {
-    x %in% val
-  } else {
-    ## No control, so don't filter
-    TRUE
-  }
-}
-filter_build <- function(x, id, var, num = FALSE, char = TRUE) {
-  if (is.numeric(x) && isTRUE(num)) {
-    rng <- range(x, na.rm = TRUE)
-    sliderInput(inputId = id, label = var,
-                min = rng[1], max = rng[2], value = rng)
-  } else if (is.character(x) && isTRUE(char)) {
-    levs <- unique(x)
-    selectizeInput(inputId = id, label = var, choices = levs, selected = levs,
-                   multiple = TRUE, options = list(plugins = "remove_button"))
-  } else {
-    ## Not supported
-    NULL
-  }
 }

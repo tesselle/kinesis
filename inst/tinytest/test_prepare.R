@@ -62,37 +62,3 @@ testServer(kinesis:::missing_server, args = list(x = x), {
 
   session$setInputs(remove = "none")
 })
-
-# Filter =======================================================================
-testServer(kinesis:::filter_server, args = list(x = x), {
-  expect_equal(filter(), TRUE)
-
-  session$setInputs(
-    doi = fake$doi,
-    color = fake$color,
-    height = c(0.06, 0.79)
-  )
-  sub <- !is.na(fake$height) & fake$height >= 0.06 & fake$height <= 0.79
-  expect_equal(filter(), sub)
-
-  session$setInputs(
-    doi = fake$doi,
-    color = c("LightCoral", "DarkSlateBlue", "OrangeRed"),
-    height = c(0.06, 0.79)
-  )
-  sub <- !is.na(fake$height) & fake$height >= 0.06 & fake$height <= 0.79 &
-    fake$color %in% c("LightCoral", "DarkSlateBlue", "OrangeRed")
-  expect_equal(filter(), sub)
-})
-
-# Create sample data
-df <- data.frame(x = c(1, 2, 3), y = c("A", "B", "C"))
-
-# Filter data
-filter_html <- mapply(
-  FUN = kinesis:::filter_build, x = df, id = c("num", "char"), var = colnames(df),
-  MoreArgs = list(num = TRUE, char = TRUE)
-)
-expect_snapshot_print(as.character(filter_html), label = "filter_build")
-expect_equal(kinesis:::filter_var(x = df$x, val = c(1.5, 2.5)), c(FALSE, TRUE, FALSE))
-expect_equal(kinesis:::filter_var(x = df$y, val = "B"), c(FALSE, TRUE, FALSE))
