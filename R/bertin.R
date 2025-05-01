@@ -21,8 +21,8 @@ bertin_ui <- function(id, title = NULL) {
           label = tr_("Plot type"),
           selected = "ford",
           choiceNames = c(tr_("Ford diagram"), tr_("Bertin barplot"),
-                          tr_("Bertin scalogram"), tr_("Heatmap")),
-          choiceValues = c("ford", "barplot", "scalogram", "heatmap")
+                          tr_("Bertin scalogram"), tr_("Heatmap"), tr_("Rank diagram")),
+          choiceValues = c("ford", "barplot", "scalogram", "heatmap", "rank")
         ),
         conditionalPanel(
           condition = "input.type == 'ford'",
@@ -53,7 +53,12 @@ bertin_ui <- function(id, title = NULL) {
         conditionalPanel(
           condition = "input.type == 'heatmap'",
           ns = ns,
-          select_color(id = ns("col"), type = "sequential")
+          select_color(id = ns("col_quanti"), type = "sequential")
+        ),
+        conditionalPanel(
+          condition = "input.type == 'rank'",
+          ns = ns,
+          select_color(id = ns("col_quali"), type = "qualitative")
         )
       ),
       output_plot(
@@ -90,7 +95,8 @@ bertin_server  <- function(id, x) {
         none = NULL
       )
 
-      color <- get_color("col")()
+      color_quanti <- get_color("col_quanti")()
+      color_quali <- get_color("col_quali")()
       switch(
         input$type,
         ford = function()
@@ -100,7 +106,9 @@ bertin_server  <- function(id, x) {
         scalogram = function()
           tabula::plot_spot(x(), color = "black", legend = FALSE),
         heatmap = function()
-          tabula::plot_heatmap(x(), color = color, fixed_ratio = FALSE)
+          tabula::plot_heatmap(x(), color = color_quanti, fixed_ratio = FALSE),
+        rank = function()
+          tabula::plot_rank(x(), log = NULL, color = color_quali)
       )
     })
 
