@@ -4,7 +4,7 @@ default:
   name: "CA"
   title: "Correspondence Analysis"
   description: |
-    This app allows to computes a correspondence analysis based on the
+    This app allows to compute a correspondence analysis based on the
     singular value decomposition.
 
 test:

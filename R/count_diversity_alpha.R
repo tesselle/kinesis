@@ -53,6 +53,7 @@ diversity_alpha_server <- function(id, x, verbose = get_option("verbose", FALSE)
     alpha <- reactive({
       req(counts())
 
+      ## Compute index -----
       notify(
         {
           index <- t(apply(
@@ -63,7 +64,7 @@ diversity_alpha_server <- function(id, x, verbose = get_option("verbose", FALSE)
                 Size = sum(x),
                 Observed = tabula::observed(x),
                 ## Heterogeneity
-                Shanon = tabula::index_shannon(x, evenness = FALSE, unbiased = FALSE),
+                Shannon = tabula::index_shannon(x, evenness = FALSE, unbiased = FALSE),
                 Brillouin = tabula::index_brillouin(x, evenness = FALSE),
                 ## Dominance
                 Simpson = tabula::index_simpson(x, evenness = FALSE, unbiased = FALSE),

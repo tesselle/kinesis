@@ -4,7 +4,7 @@ default:
   name: "pca"
   title: "Principal Components Analysis"
   description: |
-    This app allows to computes a principal components analysis based on the
+    This app allows to compute a principal components analysis based on the
     singular value decomposition.
 
 test:
