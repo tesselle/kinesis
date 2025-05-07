@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-01 20:49+0200\n"
+"POT-Creation-Date: 2025-05-07 19:22+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Analysis"
 msgstr "Analyse"
 
-#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:92
+#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:91
 msgid "Aoristic Analysis"
 msgstr "Analyse Aoristique"
 
@@ -67,7 +67,7 @@ msgstr "Diagramme de Bertin"
 msgid "Bertin scalogram"
 msgstr "Scalogramme"
 
-#: bertin.R:24 ternary.R:46
+#: bertin.R:24 ternary.R:45
 msgid "Heatmap"
 msgstr "Carte de chaleur"
 
@@ -83,7 +83,8 @@ msgstr "Masses"
 msgid "Threshold"
 msgstr "Seuil"
 
-#: bertin.R:49 import.R:93 multivariate.R:69 ternary.R:47 ternary.R:79
+#: bertin.R:49 import.R:93 multivariate.R:69 scatter.R:35 ternary.R:46
+#: ternary.R:76
 msgid "None"
 msgstr "Aucun"
 
@@ -139,7 +140,7 @@ msgstr "V de Cramér : %.2f"
 msgid "Data"
 msgstr "Données"
 
-#: coda.R:19 coda.R:114
+#: coda.R:19 coda.R:115
 msgid "Compositional Data"
 msgstr "Données de composition"
 
@@ -182,15 +183,19 @@ msgstr ""
 "Utile si vos données contiennent plusieurs observations pour le même "
 "échantillon (par ex., mesures répétées)."
 
-#: coda.R:62 prepare.R:33 prepare.R:100
+#: coda.R:58 home.R:31 prepare.R:30
+msgid "Overview"
+msgstr "Aperçu"
+
+#: coda.R:63 prepare.R:34 prepare.R:103
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
-#: coda.R:164 multivariate.R:169 multivariate.R:173
+#: coda.R:165 multivariate.R:160 multivariate.R:164
 msgid "Group"
 msgstr "Groupe"
 
-#: coda.R:183
+#: coda.R:185
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
@@ -199,7 +204,7 @@ msgstr ""
 "des valeurs inférieures à la limite de détection (c'est-à-dire de petites "
 "valeurs inconnues)."
 
-#: coda.R:184
+#: coda.R:186
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
@@ -207,7 +212,7 @@ msgstr ""
 "Dans ce cas, vous pouvez définir ci-dessous la limite de détection pour "
 "chaque partie de la composition."
 
-#: coda.R:185
+#: coda.R:187
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
@@ -215,15 +220,15 @@ msgstr ""
 "Si toutes les limites sont spécifiées, les zéros seront remplacés par une "
 "fraction de ces limites."
 
-#: coda.R:186
+#: coda.R:188
 msgid "For computational details, see"
 msgstr "Pour plus de détails sur les calculs, voir"
 
-#: coda.R:191
+#: coda.R:193
 msgid "Fraction"
 msgstr "Fraction"
 
-#: coda.R:197
+#: coda.R:199
 msgid "Replace zero"
 msgstr "Remplacer les zéro"
 
@@ -259,11 +264,11 @@ msgstr "Tri décroissant des lignes"
 msgid "Gutter"
 msgstr "Gouttière"
 
-#: coda_hclust.R:13 coda_hclust.R:75
+#: coda_hclust.R:13 coda_hclust.R:73
 msgid "HCLUST"
 msgstr ""
 
-#: coda_hclust.R:17 coda_hclust.R:98
+#: coda_hclust.R:17 coda_hclust.R:96
 msgid "Hierarchical Clustering"
 msgstr "Regroupement hiérarchique"
 
@@ -287,11 +292,11 @@ msgstr "Télécharger la matrice de distance"
 msgid "Download clusters"
 msgstr "Télécharger les groupes"
 
-#: coda_hclust.R:50
+#: coda_hclust.R:48
 msgid "Dendrogram"
 msgstr "Dendrogramme"
 
-#: coda_hclust.R:113
+#: coda_hclust.R:114
 msgid "Aitchison distance, %s linkage"
 msgstr "Distance d'Aitchison (aggrégation : %s)"
 
@@ -309,31 +314,31 @@ msgstr "Rapports logarithmiques pondérés"
 msgid "Download log-ratio"
 msgstr "Télécharger les rapports logarithmiques"
 
-#: coda_logratio.R:40 ternary.R:47
+#: coda_logratio.R:37 ternary.R:46
 msgid "Density"
 msgstr "Densité"
 
-#: coda_logratio.R:67
+#: coda_logratio.R:64
 msgid "Rationing part:"
 msgstr "Dénominateur :"
 
-#: coda_logratio.R:68
+#: coda_logratio.R:65
 msgid "Pivotal variable:"
 msgstr "Variable pivot :"
 
-#: coda_logratio.R:125
+#: coda_logratio.R:122
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:126
+#: coda_logratio.R:123
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:127
+#: coda_logratio.R:124
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:128
+#: coda_logratio.R:125
 msgid "Pivot Log-Ratio"
 msgstr ""
 
@@ -445,20 +450,20 @@ msgstr "Indice de proportionnalité des parties"
 msgid "&#945; Diversity"
 msgstr "Diversité &#945;"
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:106
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:107
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
-#: count_diversity_alpha.R:92
+#: count_diversity_alpha.R:93
 msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
-#: count_diversity_alpha.R:97
+#: count_diversity_alpha.R:98
 #, fuzzy
 msgid "Dominance"
 msgstr "Domination"
 
-#: count_diversity_alpha.R:102
+#: count_diversity_alpha.R:103
 msgid "Richness"
 msgstr "Richesse"
 
@@ -490,11 +495,11 @@ msgstr "Afficher les étiquettes"
 msgid "Alpha diversity"
 msgstr "Diversité alpha"
 
-#: count_diversity_beta.R:49 ternary.R:74 time_interval.R:35
+#: count_diversity_beta.R:49 time_interval.R:35
 msgid "Groups"
 msgstr "Groupes"
 
-#: count_diversity_beta.R:53 multivariate.R:70 ternary.R:80
+#: count_diversity_beta.R:53 multivariate.R:70 scatter.R:36 ternary.R:77
 msgid "Convex hull"
 msgstr "Enveloppe convexe"
 
@@ -502,11 +507,11 @@ msgstr "Enveloppe convexe"
 msgid "Dissimilarity"
 msgstr "Dissimilarité"
 
-#: count_diversity_beta.R:69
+#: count_diversity_beta.R:67
 msgid "PCoA"
 msgstr "ACoP"
 
-#: count_diversity_beta.R:113 count_diversity_beta.R:131
+#: count_diversity_beta.R:108 count_diversity_beta.R:126
 #: count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
@@ -535,8 +540,8 @@ msgstr "Saisissez la date (en années) de chaque type de céramique."
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:74
-#: count_occurrence.R:92
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:73
+#: count_occurrence.R:91
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
@@ -556,6 +561,30 @@ msgstr "Fréquences relatives"
 #, fuzzy
 msgid "Binomial assessment"
 msgstr "Test binomial"
+
+#: graphics.R:17
+msgid "Qualitative scheme"
+msgstr "Palette qualitative"
+
+#: graphics.R:26
+msgid "Quantitative scheme"
+msgstr "Palette quantitative"
+
+#: graphics.R:36
+msgid "Fixed aspect ratio"
+msgstr ""
+
+#: graphics.R:44
+msgid "Symbol size"
+msgstr "Taille des symboles"
+
+#: graphics.R:64
+msgid "Symbol"
+msgstr "Symbole"
+
+#: graphics.R:78
+msgid "Line type"
+msgstr "Type de ligne"
 
 #: help.R:76
 msgid ""
@@ -632,10 +661,6 @@ msgstr "Bienvenue !"
 #: home.R:24
 msgid "Logo of the tesselle project."
 msgstr "Logo du projet tesselle."
-
-#: home.R:31
-msgid "Overview"
-msgstr "Aperçu"
 
 #: home.R:44
 msgid "How to cite"
@@ -872,27 +897,27 @@ msgstr "Afficher les individus supplémentaires"
 msgid "Display supplementary variables"
 msgstr "Afficher les variables supplémentaires"
 
-#: multivariate.R:59
+#: multivariate.R:59 scatter.R:24 ternary.R:27
 msgid "Extra quantitative variable"
 msgstr "Variable quantitative illustrative"
 
-#: multivariate.R:63
+#: multivariate.R:63 scatter.R:23 ternary.R:26
 msgid "Extra qualitative variable"
 msgstr "Variable qualitative illustrative"
 
-#: multivariate.R:68 ternary.R:78
+#: multivariate.R:68 scatter.R:34 ternary.R:75
 msgid "Wrap:"
 msgstr "Type d'enveloppe :"
 
-#: multivariate.R:69 ternary.R:79
+#: multivariate.R:69 scatter.R:35 ternary.R:76
 msgid "Tolerance ellipse"
 msgstr "Ellipse de tolérance"
 
-#: multivariate.R:70 ternary.R:80
+#: multivariate.R:70 scatter.R:36 ternary.R:77
 msgid "Confidence ellipse"
 msgstr "Ellipse de confiance"
 
-#: multivariate.R:75 ternary.R:85
+#: multivariate.R:75 scatter.R:41 ternary.R:82
 msgid "Ellipse level:"
 msgstr "Niveau :"
 
@@ -900,57 +925,57 @@ msgstr "Niveau :"
 msgid "Results"
 msgstr "Résultats"
 
-#: multivariate.R:85 ternary.R:117
+#: multivariate.R:85 scatter.R:49 ternary.R:114
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 "Cliquez et faites glisser pour sélectionner une zone, puis double-cliquez "
 "pour effectuer un zoom avant."
 
-#: multivariate.R:86 ternary.R:118
+#: multivariate.R:86 scatter.R:50 ternary.R:115
 msgid "Double-click again to reset the zoom."
 msgstr "Double-cliquez à nouveau pour réinitialiser le zoom."
 
-#: multivariate.R:99
+#: multivariate.R:92
 msgid "Individuals factor map"
 msgstr "Plan factoriel des individus"
 
-#: multivariate.R:112
+#: multivariate.R:103
 msgid "Variables factor map"
 msgstr "Plan factoriel des variables"
 
-#: multivariate.R:124
+#: multivariate.R:115
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:133 ternary.R:20
+#: multivariate.R:124 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr "Variables"
 
-#: multivariate.R:142 multivariate.R:144
+#: multivariate.R:133 multivariate.R:135
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:368
+#: multivariate.R:363
 msgid "Eigenvalues"
 msgstr "Valeurs propres"
 
-#: multivariate.R:368
+#: multivariate.R:363
 msgid "Explained var. (%)"
 msgstr "Var. expliquée (%)"
 
-#: multivariate.R:368
+#: multivariate.R:363
 msgid "Cumulative var. (%)"
 msgstr "Var. cumulée (%)"
 
-#: multivariate.R:394
+#: multivariate.R:389
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:399
+#: multivariate.R:394
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:404
+#: multivariate.R:399
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
@@ -962,11 +987,11 @@ msgstr "ACP"
 msgid "Principal Components Analysis"
 msgstr "Analyse en composantes principales"
 
-#: pca.R:27 ternary.R:62
+#: pca.R:27 ternary.R:61
 msgid "Center"
 msgstr "Centrer"
 
-#: pca.R:32 ternary.R:67
+#: pca.R:32 ternary.R:66
 msgid "Scale"
 msgstr "Réduire"
 
@@ -982,7 +1007,7 @@ msgstr ""
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:107
+#: plot.R:22 prepare.R:110
 msgid "Download"
 msgstr "Télécharger"
 
@@ -1006,113 +1031,113 @@ msgstr "Hauteur (in)"
 msgid "Unknown graphics device."
 msgstr "Périphérique graphique inconnu."
 
-#: plot.R:188 ternary.R:28
-msgid "Symbol size"
-msgstr "Taille des symboles"
-
-#: plot.R:208
-msgid "Symbol"
-msgstr "Symbole"
-
-#: plot.R:222
-msgid "Line type"
-msgstr "Type de ligne"
-
-#: plot.R:255
-msgid "Monochrome"
-msgstr "Monochrome"
-
-#: plot.R:264
-msgid "Color scheme"
-msgstr "Couleurs"
-
-#: prepare.R:92
+#: prepare.R:95
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:96
+#: prepare.R:99
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:104
+#: prepare.R:107
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:135
+#: prepare.R:138
 msgid "Select columns:"
 msgstr "Sélectionner les colonnes :"
 
-#: prepare.R:212
+#: prepare.R:215
 msgid "First column as row names"
 msgstr "Première colonne comme noms de lignes"
 
-#: prepare.R:216
+#: prepare.R:219
 msgid "Clean values:"
 msgstr "Nettoyer les données :"
 
-#: prepare.R:220
+#: prepare.R:223
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:225
+#: prepare.R:228
 msgid "Remove any non informative data:"
 msgstr "Supprimer les données non informatives :"
 
-#: prepare.R:229
+#: prepare.R:232
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:234
+#: prepare.R:237
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:240
+#: prepare.R:243
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:246
+#: prepare.R:249
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:264
+#: prepare.R:267
 msgid "Rownames"
 msgstr "Noms des lignes"
 
-#: prepare.R:308
+#: prepare.R:311
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:314
+#: prepare.R:317
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:320
+#: prepare.R:323
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:322
+#: prepare.R:325
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:323
+#: prepare.R:326
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:324
+#: prepare.R:327
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:325
+#: prepare.R:328
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
-#: run.R:40
+#: run.R:41
 msgid "Could not find the %s application."
 msgstr "Impossible de trouver l'application %s."
 
-#: run.R:86
+#: run.R:87
 msgid "Could not find the configuration file for %s."
 msgstr "Impossible de trouver le fichier de configuration pour %s."
+
+#: scatter.R:14 scatter.R:55
+msgid "Scatter Plot"
+msgstr "Diagramme de dispersion"
+
+#: scatter.R:20 ternary.R:22
+msgid "Component X"
+msgstr "Composant X"
+
+#: scatter.R:21 ternary.R:23
+msgid "Component Y"
+msgstr "Composant Y"
+
+#: scatter.R:28
+msgid "Linear regression"
+msgstr "Régression linéaire"
+
+#: scatter.R:46 ternary.R:93
+msgid "Grid"
+msgstr "Grille"
 
 #: seriate.R:14
 msgid "Seriation"
@@ -1146,71 +1171,51 @@ msgstr "Matrice permutée"
 msgid "Compute the seriation order first."
 msgstr "Calculez d'abord l'ordre de sériation."
 
-#: ternary.R:14 ternary.R:127
+#: ternary.R:14 ternary.R:120
 msgid "Ternary Plot"
 msgstr "Diagramme ternaire"
-
-#: ternary.R:22
-msgid "Component X"
-msgstr "Composant X"
-
-#: ternary.R:23
-msgid "Component Y"
-msgstr "Composant Y"
 
 #: ternary.R:24
 msgid "Component Z"
 msgstr "Composant Z"
 
-#: ternary.R:26
-msgid "Colors"
-msgstr "Couleurs"
-
-#: ternary.R:27
-msgid "Symbol shape"
-msgstr "Forme des symboles"
-
-#: ternary.R:31
+#: ternary.R:30
 msgid "Layers"
 msgstr "Couches"
 
-#: ternary.R:35
+#: ternary.R:34
 msgid "Show points"
 msgstr "Afficher les points"
 
-#: ternary.R:41
+#: ternary.R:40
 msgid "Density contour"
 msgstr "Contours de densité"
 
-#: ternary.R:47
+#: ternary.R:46
 msgid "Bin"
 msgstr "Groupement par classe"
 
-#: ternary.R:53
+#: ternary.R:52
 msgid "Number of bins"
 msgstr "Nombre de classes"
 
-#: ternary.R:59
+#: ternary.R:58
 msgid "Transform"
 msgstr "Transformation"
 
-#: ternary.R:72
+#: ternary.R:71
 msgid "Envelopes"
 msgstr "Enveloppes"
 
-#: ternary.R:92
+#: ternary.R:89
 msgid "Annotations"
 msgstr "Annotations"
 
-#: ternary.R:96
-msgid "Grid"
-msgstr "Grille"
-
-#: ternary.R:102
+#: ternary.R:99
 msgid "Labels"
 msgstr "Étiquettes"
 
-#: ternary.R:116
+#: ternary.R:113
 msgid "Visualize your data in the ternary space."
 msgstr "Visualisez vos données dans un espace ternaire."
 
