@@ -1,0 +1,11 @@
+default:
+  production: TRUE
+  verbose: FALSE
+  name: "SCATTER"
+  title: "Scatter Plot"
+  description: |
+    This app allows to draw a scatter plot.
+
+test:
+  production: FALSE
+  verbose: TRUE

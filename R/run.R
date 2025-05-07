@@ -17,6 +17,7 @@
 #'   Principal Components Analysis \tab `pca`        \cr
 #'   Diversity Measures            \tab `diversity`  \cr
 #'   Mean Ceramic Date             \tab `mcd`        \cr
+#'   Scatter Plot                  \tab `scatter`    \cr
 #'   Matrix Seriation              \tab `seriation`  \cr
 #'   Compositional Data Analysis   \tab `source`     \cr
 #'   Ternary Plot                  \tab `ternary`    \cr
@@ -30,7 +31,7 @@
 #' @author N. Frerebeau
 #' @export
 run_app <- function(app = c("diversity", "seriation", "aoristic", "mcd",
-                            "source", "ternary", "ca", "pca"),
+                            "source", "scatter", "ternary", "ca", "pca"),
                     bookmark = FALSE,
                     options = list(launch.browser = interactive())) {
   ## App selection
