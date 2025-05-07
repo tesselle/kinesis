@@ -55,6 +55,7 @@ coda_ui <- function(id) {
               ),
             ), # sidebar
             ## Output: display data
+            checkboxInput(inputId = ns("head"), label = tr_("Overview"), value = TRUE),
             tableOutput(outputId = ns("table"))
           ) # layout_sidebar
         ),
@@ -161,7 +162,8 @@ coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
     output$table <- renderTable(
       expr = {
         req(data_valid())
-        as.data.frame(data_valid(), group_var = tr_("Group"))
+        tbl <- as.data.frame(data_valid(), group_var = tr_("Group"))
+        if (isTRUE(input$head)) utils::head(tbl) else tbl
       },
       rownames = TRUE,
       colnames = TRUE,

@@ -27,6 +27,7 @@ prepare_ui <- function(id) {
         placement = "above",
         nav_panel(
           title = tr_("Data"),
+          checkboxInput(inputId = ns("head"), label = tr_("Overview"), value = TRUE),
           tableOutput(outputId = ns("table"))
         ),
         nav_panel(
@@ -66,7 +67,9 @@ prepare_server <- function(id, choose = function(...) TRUE,
 
     ## Render table -----
     output$table <- renderTable(
-      expr = { data_clean() },
+      expr = {
+        if (isTRUE(input$head)) utils::head(data_clean()) else data_clean()
+      },
       rownames = TRUE,
       colnames = TRUE,
       na = "-"
