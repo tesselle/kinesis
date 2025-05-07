@@ -38,18 +38,18 @@ validate_zero <- function(x) {
   validate(need(all(x != 0), tr_("Your data should not contain zeros.")))
 }
 
-#' Get a (Default) Value
+#' Default Value for Falsy
 #'
-#' @param x An \R object.
-#' @param default A default value to be used is `x` is not
-#'  [truthy][shiny::isTruthy()].
-#' @return `x` or `default`.
+#' Replaces a [falsy][shiny::isTruthy] value with a default value.
+#' @param x,y An object.
+#' @return If `x` is not [truthy][shiny::isTruthy()], returns `y`;
+#'  otherwise returns `x`.
 #' @keywords internal
 #' @noRd
-get_value <- function(x, default = NULL) {
-  if (!isTruthy(x)) return(default)
-  x
+`%|||%` <- function(x, y) {
+  if (isTruthy(x)) x else y
 }
+
 
 #' Make File Name
 #'

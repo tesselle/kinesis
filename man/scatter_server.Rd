@@ -19,6 +19,8 @@ Scatter Plot Server
 \code{\link[=scatter_ui]{scatter_ui()}}
 
 Other plot modules: 
+\code{\link{graphics_server}()},
+\code{\link{graphics_ui}()},
 \code{\link{scatter_ui}()},
 \code{\link{ternary_server}()},
 \code{\link{ternary_ui}()}

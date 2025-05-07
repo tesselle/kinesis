@@ -32,10 +32,7 @@ logratio_ui <- function(id, title) {
       ## Output: plot
       output_plot(
         id = ns("plot"),
-        tools = list(
-          select_color(id = ns("col")),
-          select_pch(inputId = ns("pch"), default = NULL)
-        ),
+        tools = graphics_ui(ns("par"), col_quant = FALSE, lty = FALSE, cex = FALSE),
         height = "100%",
         title = tr_("Density")
       )
@@ -80,7 +77,7 @@ logratio_server <- function(id, x, method) {
     logratio <- reactive({
       req(x())
 
-      pivot <- get_value(input$pivot, default = 1)
+      pivot <- input$pivot %|||% 1
       trans <- switch (
         method,
         clr = function(x) nexus::transform_clr(x, weights = input$weights),
@@ -92,18 +89,18 @@ logratio_server <- function(id, x, method) {
       notify(trans(x()), title = toupper(method))
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Plot -----
     plot_log <- reactive({
       req(logratio())
-      col <- get_color("col")()
-      pch <- get_value(as.integer(input$pch))
 
       function() {
         plot(
           logratio(),
-          palette_color = khroma::palette_color_discrete(col),
-          palette_symbol = khroma::palette_shape(pch),
-          pch = get_value(pch, 1)
+          palette_color = param$col_quali,
+          palette_symbol = param$pch
         )
       }
     })

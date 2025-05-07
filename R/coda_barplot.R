@@ -46,7 +46,7 @@ coda_barplot_ui <- function(id) {
       output_plot(
         id = ns("plot"),
         tools = list(
-          select_color(id = ns("color_qualitative"), type = "qualitative"),
+          graphics_ui(ns("par"), col_quant = FALSE, pch = FALSE, lty = FALSE, cex = FALSE),
           numericInput(
             inputId = ns("space"),
             label = tr_("Gutter"),
@@ -95,21 +95,24 @@ coda_barplot_server <- function(id, x) {
       x()[, elements, drop = FALSE]
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Build barplot -----
     plot_bar <- reactive({
       req(data_bar())
 
-      col <- get_color("color_qualitative")()
+      col <- param$pal_quali
       pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
 
       function() {
         nexus::barplot(
           height = data_bar(),
           order_columns = input$order_columns,
-          order_rows = get_value(col_bar()),
+          order_rows = col_bar() %|||% NULL,
           decreasing = input$decreasing,
           palette_color = pal,
-          space = get_value(input$space, 0)
+          space = input$space %|||%0
         )
       }
     })

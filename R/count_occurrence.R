@@ -34,9 +34,8 @@ occurrence_ui <- function(id) {
         col_widths = breakpoints(xs = c(12, 12), lg = c(6, 6)),
         output_plot(
           id = ns("plot"),
-          tools = list(
-            select_color(id = ns("col"), type = c("sequential", "diverging"))
-          )
+          tools = graphics_ui(ns("par"), col_quali = FALSE,
+                              pch = FALSE, lty = FALSE, cex = FALSE),
         ),
         card(
           tableOutput(outputId = ns("table"))
@@ -92,11 +91,13 @@ occurrence_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       notify(compute_occur$result(), title = tr_("Co-Occurrence"))
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Plot -----
     map <- reactive({
       req(results())
-      col <- get_color("col")()
-      function() tabula::plot_heatmap(results(), color = col)
+      function() tabula::plot_heatmap(results(), color = param$pal_quant)
     })
 
     ## Render table -----

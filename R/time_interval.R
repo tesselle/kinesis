@@ -37,9 +37,8 @@ time_interval_ui <- function(id) {
       ), # sidebar
       output_plot(
         id = ns("plot"),
-        tools = list(
-          select_color(ns("color"), type = "qualitative")
-        )
+        tools = graphics_ui(ns("par"), col_quant = FALSE, pch = FALSE,
+                            lty = FALSE, cex = FALSE)
       )
     ) # layout_sidebar
   ) # nav_panel
@@ -93,6 +92,9 @@ time_interval_server <- function(id, x) {
       )
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Plot -----
     plot <- reactive({
       req(results())
@@ -100,8 +102,7 @@ time_interval_server <- function(id, x) {
       col <- "black"
       if (length(groups()) > 0) {
         grp <- groups()
-        pal <- get_color("color")()
-        col <- khroma::palette_color_discrete(pal)(grp)
+        col <- param$col_quali(grp)
       }
       function() {
         aion::plot(results(), calendar = aion::CE(), groups = grp, col = col)

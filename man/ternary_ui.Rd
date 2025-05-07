@@ -16,6 +16,8 @@ Ternary Plot UI
 \code{\link[=ternary_server]{ternary_server()}}
 
 Other plot modules: 
+\code{\link{graphics_server}()},
+\code{\link{graphics_ui}()},
 \code{\link{scatter_server}()},
 \code{\link{scatter_ui}()},
 \code{\link{ternary_server}()}

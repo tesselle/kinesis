@@ -42,7 +42,8 @@ scatter_ui <- function(id) {
           selected = "0.95",
           choiceNames = c("68%", "95%", "99%"),
           choiceValues = c("0.68", "0.95", "0.99")
-        )
+        ),
+        checkboxInput(inputId = ns("grid"), label = tr_("Grid"), value = TRUE)
       ), # sidebar
       helpText(
         tr_("Click and drag to select an area, then double-click to zoom in."),
@@ -50,13 +51,7 @@ scatter_ui <- function(id) {
       ),
       output_plot(
         id = ns("plot"),
-        tools = list(
-          select_color(id = ns("col"), type = "qualitative"),
-          select_pch(inputId = ns("pch"), default = NULL),
-          select_cex(inputId = ns("cex")),
-          checkboxInput(inputId = ns("ratio"), label = tr_("Fixed aspect ratio"), value = FALSE),
-          checkboxInput(inputId = ns("grid"), label = tr_("Grid"), value = TRUE)
-        ),
+        tools = graphics_ui(ns("par"), col_quant = FALSE, lty = FALSE, asp = TRUE),
         title = tr_("Scatter Plot"),
         dblclick = ns("plot_dblclick"),
         brush = brushOpts(
@@ -109,31 +104,6 @@ scatter_server <- function(id, x) {
     }) |>
       bindEvent(input$plot_dblclick)
 
-    ## Graphical parameters -----
-    param <- reactiveValues(col = "black", pch = 16, cex = 1)
-    observe({
-      param$pal <- get_color("col")()
-      pch <- get_value(as.integer(input$pch))
-      if (isTruthy(extra_quali())) {
-        extra_quali <- x()[[extra_quali()]]
-        param$col <- khroma::palette_color_discrete(param$pal)(extra_quali)
-        param$pch <- khroma::palette_shape(pch)(extra_quali)
-      } else {
-        param$col <- "black"
-        param$border <- "black"
-        param$pch <- pch[[1L]] %||% 16
-      }
-    })
-    observe({
-      cex <- get_value(range(as.integer(input$cex)), 1)
-      if (isTruthy(extra_quanti())) {
-        extra_quanti <- x()[[extra_quanti()]]
-        param$cex <- khroma::palette_size_sequential(range = cex)(extra_quanti)
-      } else {
-        param$cex <- min(cex)
-      }
-    })
-
     ## Regression -----
     model <- reactive({
       req(x(), axis2(), axis1())
@@ -145,7 +115,7 @@ scatter_server <- function(id, x) {
         data = x(),
         INDICES = group,
         FUN = function(x) {
-          vars <- as.formula(sprintf("%s~%s", axis2(), axis1()))
+          vars <- stats::as.formula(sprintf("%s~%s", axis2(), axis1()))
           fit <- stats::lm(vars, data = x)
           pred <- stats::predict(fit, interval = "confidence", level = as.numeric(input$level))
           list(model = fit, predict = pred, response = x[[axis1()]])
@@ -168,6 +138,9 @@ scatter_server <- function(id, x) {
       )
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Build plot -----
     plot_scatter <- reactive({
       ## Select data
@@ -184,23 +157,26 @@ scatter_server <- function(id, x) {
           xlab = axis1(),
           ylab = axis2(),
           panel.first = if (isTRUE(input$grid)) graphics::grid() else NULL,
-          col = param$col,
-          pch = param$pch,
-          cex = param$cex,
-          asp = ifelse(isTRUE(input$ratio), 1, NA),
+          col = param$col_quali(x()[[extra_quali()]]),
+          pch = param$pch(x()[[extra_quali()]]),
+          cex = param$cex(x()[[extra_quanti()]]),
+          asp = param$asp,
           las = 1
         )
 
         ## Add regression
         if (length(model()) > 0) {
-          for (fit in model()) {
-            i <- order(fit$response)
-            lines(x = fit$response[i], y = fit$predict[i, 1], lwd = 2)
+          col_lines <- param$col_quali(names(model()))
+          for (i in seq_along(model())) {
+            fit <- model()[[i]]
+            k <- order(fit$response)
+            graphics::lines(x = fit$response[k], y = fit$predict[k, 1],
+                            col = col_lines[i], lwd = 2)
           }
         }
 
         ## Add ellipses
-        wrap()(x = x()[[axis1()]], y = x()[[axis2()]], color = param$pal)
+        wrap()(x = x()[[axis1()]], y = x()[[axis2()]], color = param$pal_quali)
 
         ## Add legend
         # TODO

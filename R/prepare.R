@@ -354,7 +354,7 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
       out <- data_replace()
 
       ## Remove missing values
-      choice <- get_value(input$remove, default = "")
+      choice <- input$remove %|||% ""
       fun <- switch(
         choice,
         zero = function(x) {

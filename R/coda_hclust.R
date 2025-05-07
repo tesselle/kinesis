@@ -44,9 +44,7 @@ coda_hclust_ui <- function(id) {
       ), # sidebar
       output_plot(
         id = ns("plot_dendro"),
-        tools = list(
-          select_color(id = ns("col_dendro"), type = "qualitative")
-        ),
+        tools = graphics_ui(ns("par"), col_quant = FALSE, lty = FALSE, cex = FALSE),
         title = tr_("Dendrogram")
       ),
       border_radius = FALSE,
@@ -105,10 +103,13 @@ coda_hclust_server <- function(id, x) {
       stats::cutree(results(), k = input$cut)
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Dendrogram -----
     plot_dendro <- reactive({
       req(results(), input$cut)
-      col <- get_color("col_dendro")()
+
       function() {
         xlab <- sprintf(tr_("Aitchison distance, %s linkage"), results()$method)
         plot(results(), hang = -1, main = NULL, sub = "",
@@ -121,17 +122,18 @@ coda_hclust_server <- function(id, x) {
         i <- results()$order
         g <- results()$groups
         if (!is.null(g)) {
-          col <- khroma::palette_color_discrete(col)(g)
+          col <- param$col_quali(g)
+          pch <- param$pch(g)
           graphics::points(
             x = seq_along(i),
             y = rep(0, length(i)),
             col = col[i],
-            pch = 16
+            pch = pch[i]
           )
 
           arg <- list(x = "topright", pch = 16, bty = "n")
           leg <- stats::aggregate(
-            data.frame(col = col),
+            data.frame(col = col, pch = pch),
             by = list(legend = g),
             FUN = unique
           )

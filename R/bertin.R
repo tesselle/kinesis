@@ -49,22 +49,13 @@ bertin_ui <- function(id, title = NULL) {
             choiceNames = c(tr_("None"), tr_("Mean"), tr_("Median")),
             choiceValues = c("none", "mean", "median")
           )
-        ),
-        conditionalPanel(
-          condition = "input.type == 'heatmap'",
-          ns = ns,
-          select_color(id = ns("col_quanti"), type = "sequential")
-        ),
-        conditionalPanel(
-          condition = "input.type == 'rank'",
-          ns = ns,
-          select_color(id = ns("col_quali"), type = "qualitative")
         )
       ),
       output_plot(
         id = ns("plot"),
         height = "100%",
-        title = title
+        title = title,
+        tools = graphics_ui(ns("par"), pch = FALSE, lty = FALSE, cex = FALSE)
       )
     )
   )
@@ -76,17 +67,25 @@ bertin_ui <- function(id, title = NULL) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @param verbose A [`logical`] scalar: should \R report extra information on
+#'  progress?
 #' @seealso [bertin_ui()]
 #' @family count data modules
 #' @keywords internal
 #' @export
-bertin_server  <- function(id, x) {
+bertin_server  <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
+    ## Get count data -----
+    counts <- reactive({
+      req(x())
+      arkhe::keep_columns(x(), f = is.numeric, verbose = verbose)
+    })
+
     ## Plot -----
     plot_permute <- reactive({
-      req(x())
+      req(counts())
 
       threshold <- switch(
         input$threshold,
@@ -95,20 +94,21 @@ bertin_server  <- function(id, x) {
         none = NULL
       )
 
-      color_quanti <- get_color("col_quanti")()
-      color_quali <- get_color("col_quali")()
+      ## Graphical parameters -----
+      param <- graphics_server("par")
+
       switch(
         input$type,
         ford = function()
-          tabula::plot_ford(x(), weights = input$weights, EPPM = input$eppm),
+          tabula::plot_ford(counts(), weights = input$weights, EPPM = input$eppm),
         barplot = function()
-          tabula::plot_bertin(x(), threshold = threshold),
+          tabula::plot_bertin(counts(), threshold = threshold),
         scalogram = function()
-          tabula::plot_spot(x(), color = "black", legend = FALSE),
+          tabula::plot_spot(counts(), color = "black", legend = FALSE),
         heatmap = function()
-          tabula::plot_heatmap(x(), color = color_quanti, fixed_ratio = FALSE),
+          tabula::plot_heatmap(counts(), color = param$pal_quant, fixed_ratio = FALSE),
         rank = function()
-          tabula::plot_rank(x(), log = NULL, color = color_quali)
+          tabula::plot_rank(counts(), log = NULL, color = param$pal_quali)
       )
     })
 

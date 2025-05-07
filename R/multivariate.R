@@ -88,14 +88,7 @@ multivariate_ui <- function(id) {
       layout_column_wrap(
         output_plot(
           id = ns("plot_ind"),
-          tools = list(
-            select_color(ns("col_ind"), mono = TRUE),
-            select_pch(
-              inputId = ns("pch"),
-              default = c(16, 17, 15, 3, 7, 8, 2, 18, 1, 2)
-            ),
-            select_cex(inputId = ns("cex"))
-          ),
+          tools = graphics_ui(ns("par_ind"), lty = FALSE),
           title = tr_("Individuals factor map"),
           dblclick = ns("plot_ind_dblclick"),
           brush = brushOpts(
@@ -106,9 +99,7 @@ multivariate_ui <- function(id) {
         ),
         output_plot(
           id = ns("plot_var"),
-          tools = list(
-            select_color(ns("col_var"), mono = TRUE)
-          ),
+          tools = graphics_ui(ns("par_var"), col_quant = FALSE, pch = FALSE, lty = FALSE, cex = FALSE),
           title = tr_("Variables factor map"),
           dblclick = ns("plot_var_dblclick"),
           brush = brushOpts(
@@ -174,20 +165,10 @@ multivariate_server <- function(id, x, y) {
     col_quanti <- column_select_server("extra_quanti", x = extra,
                                        find_col = is.numeric)
     extra_quali <- reactive({
-      if (isTRUE(input$sup_obs)) {
-        "observation"
-      } else if (isTruthy(col_quali())) {
-        extra()[[col_quali()]]
-      } else {
-        NULL
-      }
+      if (isTruthy(col_quali())) extra()[[col_quali()]] else NULL
     })
     extra_quanti <- reactive({
-      if (isTruthy(col_quanti())) {
-        extra()[[col_quanti()]]
-      } else {
-        NULL
-      }
+      if (isTruthy(col_quanti())) extra()[[col_quanti()]] else NULL
     })
 
     ## Eigenvalues -----
@@ -230,6 +211,10 @@ multivariate_server <- function(id, x, y) {
       as.numeric(input$axis2)
     })
 
+    ## Graphical parameters -----
+    param_ind <- graphics_server("par_ind")
+    param_var <- graphics_server("par_var")
+
     ## Plot -----
     ## Interactive zoom
     ## When a double-click happens, check if there's a brush on the plot.
@@ -252,23 +237,18 @@ multivariate_server <- function(id, x, y) {
     plot_ind <- reactive({
       req(x())
 
-      ## Envelope
-      ellipse <- NULL
-      hull <- FALSE
-      if (isFALSE(input$sup_obs)) {
-        if (any(input$wrap %in% c("confidence", "tolerance"))) {
-          ellipse <- list(
-            type = input$wrap,
-            level = as.numeric(input$ellipse_level)
-          )
-        }
-        if (isTRUE(input$wrap == "hull")) {
-          hull <- TRUE
-        }
+      ## Extra variables
+      col <- "black"
+      if (isTruthy(extra_quanti())) {
+        col <- param_ind$col_quant(extra_quanti())
       }
+      if (isTruthy(extra_quali())) {
+        col <- param_ind$col_quali(extra_quali())
+      }
+      cex <- param_ind$cex(extra_quanti())
+      pch <- param_ind$pch(extra_quali())
 
-      col_ind <- get_color("col_ind")()
-      pch_ind <- get_value(as.integer(input$pch))
+
       function() {
         dimensio::viz_rows(
           x = x(),
@@ -276,17 +256,33 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_ind,
           labels = input$lab_ind,
-          extra_quali = extra_quali(),
-          extra_quanti = extra_quanti(),
-          ellipse = ellipse,
-          hull = hull,
-          color = col_ind,
-          symbol = pch_ind,
-          size = input$cex,
+          extra_quali = if (isTRUE(input$sup_obs)) "observation" else NULL,
+          col = col,
+          pch = pch,
+          cex = cex,
           xlim = range_ind$x,
           ylim = range_ind$y,
           panel.first = graphics::grid()
         )
+
+        if (isFALSE(input$sup_obs)) {
+          if (any(input$wrap %in% c("confidence", "tolerance"))) {
+            dimensio::viz_ellipses(
+              x = x(),
+              group = extra_quali(),
+              type = input$wrap,
+              level = as.numeric(input$ellipse_level),
+              color = param_ind$pal_quali
+            )
+          }
+          if (isTRUE(input$wrap == "hull")) {
+            dimensio::viz_hull(
+              x = x(),
+              group = extra_quali(),
+              color = param_ind$pal_quali
+            )
+          }
+        }
       }
     })
 
@@ -294,7 +290,6 @@ multivariate_server <- function(id, x, y) {
     plot_var <- reactive({
       req(x())
 
-      col_var <- get_color("col_var")()
       function() {
         dimensio::viz_variables(
           x = x(),
@@ -303,7 +298,7 @@ multivariate_server <- function(id, x, y) {
           sup = input$sup_var,
           labels = input$lab_var,
           extra_quali = if (isTRUE(input$sup_obs)) "observation" else NULL,
-          color = col_var,
+          color = param_var$pal_quali,
           symbol = c(1, 3),
           xlim = range_var$x,
           ylim = range_var$y,

@@ -38,6 +38,5 @@
 
 #' @import shiny
 #' @import bslib
-#' @importFrom arkhe %||%
 #' @importFrom future plan multisession
 NULL

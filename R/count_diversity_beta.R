@@ -59,18 +59,13 @@ diversity_beta_ui <- function(id) {
         output_plot(
           id = ns("plot_diss"),
           title = tr_("Dissimilarity"),
-          tools = list(
-            select_color(id = ns("col_diss"), type = "sequential")
-          ),
+          tools = graphics_ui(ns("par_diss"), col_quali = FALSE, pch = FALSE, lty = FALSE, cex = FALSE),
           height = "100%"
         ),
         output_plot(
           id = ns("plot_pcoa"),
           title = tr_("PCoA"),
-          tools = list(
-            select_color(id = ns("col_pcoa"), type = c("qualitative", "sequential")),
-            select_cex(inputId = ns("cex_pcoa"))
-          ),
+          tools = graphics_ui(ns("par_pcoa"), lty = FALSE),
           height = "100%"
         )
       )
@@ -138,15 +133,18 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
       notify(dimensio::pcoa(results(), rank = 2))
     })
 
+    ## Graphical parameters -----
+    param_diss <- graphics_server("par_diss")
+    param_pcoa <- graphics_server("par_pcoa")
+
     ## Plot -----
     plot_diss <- reactive({
       req(results())
 
-      col_diss <- get_color("col_diss")()
       function() {
         tabula::plot_heatmap(
           object = results(),
-          color = col_diss,
+          color = param_diss$pal_quant,
           diag = FALSE,
           upper = FALSE,
           fixed_ratio = TRUE
@@ -158,27 +156,32 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
       req(analysis(), x(), y())
 
       ## Extra variables
-      extra_quali <- extra_quanti <- NULL
-      if (isTruthy(extra_quali())) {
-        extra_quali <- x()[[extra_quali()]]
+      col <- "black"
+      extra_quanti <- y()[[extra_quanti()]]
+      extra_quali <- x()[[extra_quali()]]
+      if (isTruthy(extra_quanti)) {
+        col <- param_pcoa$col_quant(extra_quanti)
       }
-      if (isTruthy(extra_quanti())) {
-        extra_quanti <- y()[[extra_quanti()]]
+      if (isTruthy(extra_quali)) {
+        col <- param_pcoa$col_quali(extra_quali)
       }
-
-      col_pcoa <- get_color("col_pcoa")()
+      cex <- param_pcoa$cex(extra_quanti)
+      pch <- param_pcoa$pch(extra_quali)
 
       function() {
         dimensio::plot(
           x = analysis(),
           labels = input$pcoa_labels,
-          extra_quanti = extra_quanti,
-          extra_quali = extra_quali,
-          hull = input$hull,
-          color = col_pcoa,
-          size = get_value(input$cex_pcoa),
+          col = col,
+          pch = pch,
+          cex = cex,
           panel.first = graphics::grid()
         )
+
+        if (isTRUE(input$hull)) {
+          dimensio::viz_hull(analysis(), group = extra_quali,
+                             color = param_pcoa$pal_quali)
+        }
       }
     })
 

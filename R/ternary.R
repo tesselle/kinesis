@@ -23,9 +23,8 @@ ternary_ui <- function(id) {
             selectize_ui(id = ns("axis2"), label = tr_("Component Y")),
             selectize_ui(id = ns("axis3"), label = tr_("Component Z")),
             ## Input: aesthetics mapping
-            selectize_ui(id = ns("symbol_color"), label = tr_("Colors")),
-            selectize_ui(id = ns("symbol_shape"), label = tr_("Symbol shape")),
-            selectize_ui(id = ns("symbol_size"), label = tr_("Symbol size")),
+            selectize_ui(id = ns("extra_quali"), label = tr_("Extra qualitative variable")),
+            selectize_ui(id = ns("extra_quanti"), label = tr_("Extra quantitative variable")),
           ),
           accordion_panel(
             title = tr_("Layers"),
@@ -70,8 +69,6 @@ ternary_ui <- function(id) {
           ),
           accordion_panel(
             title = tr_("Envelopes"),
-            ## Input: select group
-            selectize_ui(id = ns("group"), label = tr_("Groups")),
             ## Input: add ellipses
             radioButtons(
               inputId = ns("wrap"),
@@ -119,11 +116,7 @@ ternary_ui <- function(id) {
       ),
       output_plot(
         id = ns("ternplot"),
-        tools = list(
-          select_color(id = ns("col")),
-          select_pch(inputId = ns("pch"), default = NULL),
-          select_cex(inputId = ns("cex"))
-        ),
+        tools = graphics_ui(ns("par"), lty = FALSE),
         title = tr_("Ternary Plot"),
         dblclick = ns("ternplot_dblclick"),
         brush = brushOpts(
@@ -168,10 +161,8 @@ ternary_server <- function(id, x) {
     axis2 <- vector_select_server("axis2", x = quanti, exclude = axis1)
     axis12 <- reactive({ c(axis1(), axis2()) })
     axis3 <- vector_select_server("axis3", x = quanti, exclude = axis12)
-    symbol_color <- column_select_server("symbol_color", x = data_raw)
-    symbol_shape <- vector_select_server("symbol_shape", x = quali)
-    symbol_size <- vector_select_server("symbol_size", x = quanti)
-    symbol_group <- vector_select_server("group", x = quali)
+    extra_quali <- vector_select_server("extra_quali", x = quali)
+    extra_quanti <- vector_select_server("extra_quanti", x = quanti)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.
@@ -190,6 +181,9 @@ ternary_server <- function(id, x) {
       tern[rowSums(tern, na.rm = TRUE) != 0, , drop = FALSE]
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Build plot -----
     plot_ternary <- reactive({
       ## Select data
@@ -201,45 +195,15 @@ ternary_server <- function(id, x) {
       no_scale <- !input$center && !input$scale
 
       ## Graphical parameters
-      col <- rep("black", n)
-      pal <- get_color("col")()
-      border <- rep("black", n)
-      pch <- get_value(as.integer(input$pch))
-      cex <- get_value(as.integer(input$cex), 1)
-
-      ## Grouping variable
-      if (isTruthy(symbol_group())) {
-        symbol_group <- data_raw()[[symbol_group()]]
+      if (isTruthy(extra_quali())) {
+        symbol_group <- data_raw()[[extra_quali()]]
+        col <- param$col_quali(symbol_group)
       } else {
         symbol_group <- rep("", n)
+        col <- param$col_quant(data_raw()[[extra_quanti()]])
       }
-
-      ## Symbol colors
-      if (isTruthy(symbol_color())) {
-        symbol_color <- data_raw()[[symbol_color()]]
-        if (is.double(symbol_color)) {
-          col <- khroma::palette_color_continuous(pal)(symbol_color)
-        } else {
-          col <- khroma::palette_color_discrete(pal)(symbol_color)
-        }
-        if (identical(symbol_group, symbol_color)) border <- col
-      }
-
-      ## Symbol shapes
-      if (isTruthy(symbol_shape())) {
-        symbol_shape <- data_raw()[[symbol_shape()]]
-        pch <- khroma::palette_shape(symbols = pch)(symbol_shape)
-      } else {
-        pch <- pch[[1L]] %||% 16
-      }
-
-      ## Symbol sizes
-      if (isTruthy(symbol_size())) {
-        symbol_size <- data_raw()[[symbol_size()]]
-        cex <- khroma::palette_size_sequential(range = range(cex))(symbol_size)
-      } else {
-        cex <- min(cex)
-      }
+      pch <- param$pch(data_raw()[[extra_quali()]])
+      cex <- param$cex(data_raw()[[extra_quanti()]])
 
       ## Window
       range_coord <- list(x = NULL, y = NULL, z = NULL)
@@ -295,7 +259,7 @@ ternary_server <- function(id, x) {
             isopleuros::ternary_image(
               f = fun_tile,
               n = bin,
-              palette = khroma::palette_color_continuous(pal)
+              palette = param$col_quant
             )
           }
 
@@ -308,7 +272,7 @@ ternary_server <- function(id, x) {
           for (i in split(seq_len(n), f = symbol_group)) {
             z <- tern[i, , drop = FALSE]
             if (nrow(z) < 3) next
-            fun_wrap(z, lty = 1, border = border[i])
+            fun_wrap(z, lty = 1, border = col[i])
           }
         }
 
