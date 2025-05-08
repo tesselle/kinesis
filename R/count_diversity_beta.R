@@ -172,6 +172,8 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
         dimensio::plot(
           x = analysis(),
           labels = input$pcoa_labels,
+          extra_quali = extra_quali,
+          extra_quanti = extra_quanti,
           col = col,
           pch = pch,
           cex = cex,

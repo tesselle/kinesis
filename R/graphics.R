@@ -208,9 +208,7 @@ color <- function(scheme, default = "black") {
     }
   } else {
     function(n) {
-      col <- try(khroma::color(scheme)(n), silent = TRUE)
-      if (!inherits(col, "try-error")) return(col)
-      khroma::color(scheme, force = TRUE)(n)
+      notify(khroma::color(scheme)(n))
     }
   }
 }
@@ -227,7 +225,7 @@ protect <- function(f, default, ...) {
 
   function(x) {
     if (!isTruthy(x)) return(default)
-    f(...)(x)
+    notify(f(...)(x))
   }
 }
 

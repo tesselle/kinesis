@@ -103,7 +103,7 @@ coda_barplot_server <- function(id, x) {
       req(data_bar())
 
       col <- param$pal_quali
-      pal <- khroma::palette_color_discrete(col, domain = colnames(x()))
+      pal <- notify(khroma::palette_color_discrete(col, domain = colnames(x())))
 
       function() {
         nexus::barplot(

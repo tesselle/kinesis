@@ -248,7 +248,6 @@ multivariate_server <- function(id, x, y) {
       cex <- param_ind$cex(extra_quanti())
       pch <- param_ind$pch(extra_quali())
 
-
       function() {
         dimensio::viz_rows(
           x = x(),
@@ -256,7 +255,8 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_ind,
           labels = input$lab_ind,
-          extra_quali = if (isTRUE(input$sup_obs)) "observation" else NULL,
+          extra_quali = if (isTRUE(input$sup_obs)) "observation" else extra_quali(),
+          extra_quanti = extra_quanti(),
           col = col,
           pch = pch,
           cex = cex,
