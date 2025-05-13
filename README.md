@@ -83,16 +83,17 @@ library(kinesis)
 run_app("seriation")
 ```
 
-| Keyword | Application name | Example |
-|:---|:---|:---|
-| `aoristic` | Aoristic Analysis | [temporal data](https://analytics.huma-num.fr/tesselle/aoristic?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/loire.csv) |
-| `ca` | Correspondence Analysis | [ceramic data](https://analytics.huma-num.fr/tesselle/ca?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/zuni.csv) |
-| `pca` | Principal Components Analysis |  |
-| `diversity` | Diversity Measures | [ceramic data](https://analytics.huma-num.fr/tesselle/diversity?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/zuni.csv) |
-| `mcd` | Mean Ceramic Date |  |
-| `seriation` | Matrix Seriation | [ceramic data](https://analytics.huma-num.fr/tesselle/seriation?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/zuni.csv) |
-| `source` | Compositional Data Analysis | [bronze data](https://analytics.huma-num.fr/tesselle/source?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/bronze.csv) |
-| `ternary` | Ternary Plot | [bronze data](https://analytics.huma-num.fr/tesselle/ternary?data=https://codeberg.org/tesselle/folio/raw/branch/main/data-raw/bronze.csv) |
+| Keyword     | Application name              |
+|:------------|:------------------------------|
+| `aoristic`  | Aoristic Analysis             |
+| `ca`        | Correspondence Analysis       |
+| `pca`       | Principal Components Analysis |
+| `diversity` | Diversity Measures            |
+| `mcd`       | Mean Ceramic Date             |
+| `scatter`   | Scatter Plot                  |
+| `seriation` | Matrix Seriation              |
+| `source`    | Compositional Data Analysis   |
+| `ternary`   | Ternary Plot                  |
 
 ## Translation
 
