@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
+  data <- kinesis::prepare_server("prepare", demo = "iris")
 
   ## PCA
   results <- kinesis::pca_server("pca", x = data)

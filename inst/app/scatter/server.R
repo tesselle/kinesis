@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
+  data <- kinesis::prepare_server("prepare", demo = "iris")
 
   ## Plot
   results <- kinesis::scatter_server("scatter", x = data)

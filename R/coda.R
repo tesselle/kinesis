@@ -75,6 +75,8 @@ coda_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @param demo A [`character`] string specifying the name of a dataset (see
+#'  [import_server()]).
 #' @param verbose A [`logical`] scalar: should \R report extra information
 #'  on progress?
 #' @return A reactive [`nexus::CompositionMatrix-class`] object.
@@ -82,10 +84,10 @@ coda_ui <- function(id) {
 #' @family coda modules
 #' @keywords internal
 #' @export
-coda_server <- function(id, verbose = get_option("verbose", FALSE)) {
+coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE)) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
-    data_raw <- import_server("import")
+    data_raw <- import_server("import", demo = demo)
     data_clean <- data_raw |>
       select_server("select", x = _, find_col = is.numeric, min_col = 3) |>
       clean_server("clean", x = _)

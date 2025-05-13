@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
+  data <- kinesis::prepare_server("prepare", demo = "loire")
 
   ## Analysis
   intervals <- kinesis::time_interval_server("intervals", x = data)

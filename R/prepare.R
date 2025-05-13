@@ -48,16 +48,18 @@ prepare_ui <- function(id) {
 #'  UI function.
 #' @param choose A predicate [`function`] used to select columns.
 #' @param select A predicate [`function`] used to select columns.
+#' @param demo A [`character`] string specifying the name of a dataset (see
+#'  [import_server()]).
 #' @return A reactive `data.frame`.
 #' @seealso [prepare_ui()]
 #' @family generic modules
 #' @keywords internal
 #' @export
 prepare_server <- function(id, choose = function(...) TRUE,
-                           select = function(...) TRUE) {
+                           select = function(...) TRUE, demo = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
-    data_clean <- import_server("import") |>
+    data_clean <- import_server("import", demo = demo) |>
       select_server("select", x = _, find_col = choose, use_col = select) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _)

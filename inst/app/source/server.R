@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  coda <- kinesis::coda_server("coda")
+  coda <- kinesis::coda_server("coda", demo = "bronze")
 
   ## Statistics
   kinesis::coda_summary_server("coda_summary", coda)

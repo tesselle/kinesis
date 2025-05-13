@@ -16,6 +16,11 @@ import_ui <- function(id) {
       inputId = ns("upload"),
       label = tr_("Upload"),
       icon = icon("upload")
+    ),
+    actionButton(
+      inputId = ns("demo"),
+      label = tr_("Example data"),
+      icon = icon("book")
     )
   )
 }
@@ -126,12 +131,14 @@ import_modal <- function(ns) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @param demo A [`character`] string specifying the name of a dataset from
+#'  \pkg{folio} or \pkg{datasets}.
 #' @return A reactive `data.frame`.
 #' @seealso [import_ui()]
 #' @family generic modules
 #' @keywords internal
 #' @export
-import_server <- function(id) {
+import_server <- function(id, demo = NULL) {
   moduleServer(id, function(input, output, session) {
     data <- reactiveValues(values = NULL)
 
@@ -154,6 +161,17 @@ import_server <- function(id) {
       }
       obs$destroy()
     })
+
+    ## Load example data -----
+    observe({
+      req(demo)
+      tmp <- new.env(parent = emptyenv())
+      on.exit(rm(tmp), add = TRUE)
+
+      data(list = demo, package = c("folio", "datasets"), envir = tmp)
+      data$values <- get(demo, envir = tmp)
+    }) |>
+      bindEvent(input$demo)
 
     ## Read data file -----
     observe({

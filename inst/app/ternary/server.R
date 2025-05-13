@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare")
+  data <- kinesis::prepare_server("prepare", demo = "bronze")
 
   ## Ternary Plot
   kinesis::ternary_server("ternary", x = data)

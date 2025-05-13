@@ -4,11 +4,14 @@
 \alias{import_server}
 \title{Import Data Server}
 \usage{
-import_server(id)
+import_server(id, demo = NULL)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
+
+\item{demo}{A \code{\link{character}} string specifying the name of a dataset from
+\pkg{folio} or \pkg{datasets}.}
 }
 \value{
 A reactive \code{data.frame}.
