@@ -157,12 +157,12 @@ ternary_server <- function(id, x) {
       i <- which(arkhe::detect(x = data_raw(), f = Negate(is.numeric), margin = 2))
       colnames(data_raw())[i]
     })
-    axis1 <- vector_select_server("axis1", x = quanti)
-    axis2 <- vector_select_server("axis2", x = quanti, exclude = axis1)
+    axis1 <- updateSelectValues("axis1", x = quanti)
+    axis2 <- updateSelectValues("axis2", x = quanti, exclude = axis1)
     axis12 <- reactive({ c(axis1(), axis2()) })
-    axis3 <- vector_select_server("axis3", x = quanti, exclude = axis12)
-    extra_quali <- vector_select_server("extra_quali", x = quali)
-    extra_quanti <- vector_select_server("extra_quanti", x = quanti)
+    axis3 <- updateSelectValues("axis3", x = quanti, exclude = axis12)
+    extra_quali <- updateSelectValues("extra_quali", x = quali)
+    extra_quanti <- updateSelectValues("extra_quanti", x = quanti)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.

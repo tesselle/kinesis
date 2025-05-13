@@ -76,7 +76,7 @@ coda_barplot_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Select column -----
-    col_bar <- column_select_server("order_rows", x = x)
+    col_bar <- updateSelectVariables("order_rows", x = x)
 
     ## Subset -----
     data_bar <- reactive({

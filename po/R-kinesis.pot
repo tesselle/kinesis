@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-07 19:22+0200\n"
+"POT-Creation-Date: 2025-05-13 18:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Threshold"
 msgstr ""
 
-#: bertin.R:49 import.R:93 multivariate.R:69 scatter.R:35 ternary.R:46 ternary.R:76
+#: bertin.R:49 import.R:92 multivariate.R:69 scatter.R:35 ternary.R:46 ternary.R:76
 msgid "None"
 msgstr ""
 
@@ -135,7 +135,7 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#: coda.R:19 coda.R:115
+#: coda.R:19 coda.R:110
 msgid "Compositional Data"
 msgstr ""
 
@@ -169,45 +169,45 @@ msgid ""
 "repeated measurements)."
 msgstr ""
 
-#: coda.R:58 home.R:31 prepare.R:30
+#: coda.R:58 home.R:31
 msgid "Overview"
 msgstr ""
 
-#: coda.R:63 prepare.R:34 prepare.R:103
+#: coda.R:63 prepare.R:34 prepare.R:105
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:165 multivariate.R:160 multivariate.R:164
+#: coda.R:160 multivariate.R:160 multivariate.R:164
 msgid "Group"
 msgstr ""
 
-#: coda.R:185
+#: coda.R:180
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:186
+#: coda.R:181
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:187
+#: coda.R:182
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:188
+#: coda.R:183
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:193
+#: coda.R:188
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:199
+#: coda.R:194
 msgid "Replace zero"
 msgstr ""
 
@@ -399,27 +399,27 @@ msgstr ""
 msgid "PIP"
 msgstr ""
 
-#: coda_statistics.R:49 coda_statistics.R:206
+#: coda_statistics.R:49 coda_statistics.R:205
 msgid "Variation Matrix"
 msgstr ""
 
-#: coda_statistics.R:129
+#: coda_statistics.R:128
 msgid "Total variation"
 msgstr ""
 
-#: coda_statistics.R:155
+#: coda_statistics.R:154
 msgid "Compositional Mean"
 msgstr ""
 
-#: coda_statistics.R:164
+#: coda_statistics.R:163
 msgid "Percentile Table"
 msgstr ""
 
-#: coda_statistics.R:176
+#: coda_statistics.R:175
 msgid "Centered Log-Ratio Covariance"
 msgstr ""
 
-#: coda_statistics.R:193
+#: coda_statistics.R:192
 msgid "Proportionality Index of Parts"
 msgstr ""
 
@@ -427,19 +427,19 @@ msgstr ""
 msgid "&#945; Diversity"
 msgstr ""
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:107
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:78
 msgid "Diversity Measures"
 msgstr ""
 
-#: count_diversity_alpha.R:93
+#: count_diversity_alpha.R:64
 msgid "Heterogeneity"
 msgstr ""
 
-#: count_diversity_alpha.R:98
+#: count_diversity_alpha.R:69
 msgid "Dominance"
 msgstr ""
 
-#: count_diversity_alpha.R:103
+#: count_diversity_alpha.R:74
 msgid "Richness"
 msgstr ""
 
@@ -487,7 +487,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:108 count_diversity_beta.R:126 count_diversity_docs.R:60
+#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:60
 msgid "Beta Diversity"
 msgstr ""
 
@@ -684,105 +684,105 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: import.R:34
+#: import.R:22
+msgid "Example data"
+msgstr ""
+
+#: import.R:39
 msgid "Import Data"
 msgstr ""
 
-#: import.R:36 plot.R:143
+#: import.R:41 plot.R:143
 msgid "Cancel"
 msgstr ""
 
-#: import.R:44
+#: import.R:49
 msgid "Select the location of, and the file you want to upload."
 msgstr ""
 
-#: import.R:45
+#: import.R:50
 msgid "Please check the default settings and adjust them to your data."
 msgstr ""
 
-#: import.R:46
+#: import.R:51
 msgid "This application only supports data encoded in UFT-8."
 msgstr ""
 
-#: import.R:49
+#: import.R:54
 msgid "It assumes that you keep your data tidy:"
 msgstr ""
 
-#: import.R:50
+#: import.R:55
 msgid ""
 "each variable must be saved in its own column and each sample must be saved "
 "in its own row."
 msgstr ""
 
-#: import.R:54
+#: import.R:59
 msgid "Choose a CSV or a TSV file:"
 msgstr ""
 
-#: import.R:64
+#: import.R:69
 msgid "Header"
 msgstr ""
 
-#: import.R:70
-msgid "Row names"
-msgstr ""
-
-#: import.R:76
+#: import.R:75
 msgid "Decimal"
 msgstr ""
 
-#: import.R:77
+#: import.R:76
 msgid "Dot"
 msgstr ""
 
-#: import.R:77 import.R:85
+#: import.R:76 import.R:84
 msgid "Comma"
 msgstr ""
 
-#: import.R:84
+#: import.R:83
 msgid "Separator"
 msgstr ""
 
-#: import.R:85
+#: import.R:84
 msgid "Semicolon"
 msgstr ""
 
-#: import.R:85
+#: import.R:84
 msgid "Tab"
 msgstr ""
 
-#: import.R:92
+#: import.R:91
 msgid "Quote"
 msgstr ""
 
-#: import.R:93
+#: import.R:92
 msgid "Double quote"
 msgstr ""
 
-#: import.R:93
+#: import.R:92
 msgid "Single quote"
 msgstr ""
 
-#: import.R:102
+#: import.R:101
 msgid "Lines of the data file to skip:"
 msgstr ""
 
-#: import.R:110
+#: import.R:109
 msgid "String to be interpreted as missing value:"
 msgstr ""
 
-#: import.R:116
+#: import.R:115
 msgid "Character to be interpreted as comment:"
 msgstr ""
 
-#: import.R:148
+#: import.R:149
 msgid "Reading data from %s..."
 msgstr ""
 
-#: import.R:153
+#: import.R:154
 msgid "Data Input"
 msgstr ""
 
-#: import.R:160
+#: import.R:172
 msgid "Reading data..."
 msgstr ""
 
@@ -802,11 +802,11 @@ msgstr ""
 msgid "Calendar"
 msgstr ""
 
-#: kinesis-internal.R:334
+#: kinesis-internal.R:340
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:335
+#: kinesis-internal.R:341
 msgid "You should perform your analysis again."
 msgstr ""
 
@@ -890,7 +890,7 @@ msgstr ""
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:124 scatter.R:18 ternary.R:20
+#: multivariate.R:124 prepare.R:146 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr ""
 
@@ -898,27 +898,27 @@ msgstr ""
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:363
+#: multivariate.R:362
 msgid "Eigenvalues"
 msgstr ""
 
-#: multivariate.R:363
+#: multivariate.R:362
 msgid "Explained var. (%)"
 msgstr ""
 
-#: multivariate.R:363
+#: multivariate.R:362
 msgid "Cumulative var. (%)"
 msgstr ""
 
-#: multivariate.R:389
+#: multivariate.R:388
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:394
+#: multivariate.R:393
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:399
+#: multivariate.R:398
 msgid "Squared cosinus"
 msgstr ""
 
@@ -948,7 +948,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:22 prepare.R:110
+#: plot.R:22 prepare.R:112
 msgid "Download"
 msgstr ""
 
@@ -972,83 +972,83 @@ msgstr ""
 msgid "Unknown graphics device."
 msgstr ""
 
-#: prepare.R:95
+#: prepare.R:30
+msgid "Table overview"
+msgstr ""
+
+#: prepare.R:97
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:99
+#: prepare.R:101
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:107
+#: prepare.R:109
 msgid "Export your data for futur use."
 msgstr ""
 
-#: prepare.R:138
-msgid "Select columns:"
+#: prepare.R:144
+msgid "Select data"
 msgstr ""
 
-#: prepare.R:215
-msgid "First column as row names"
+#: prepare.R:145
+msgid "Sample names"
 msgstr ""
 
-#: prepare.R:219
-msgid "Clean values:"
+#: prepare.R:172
+msgid "Row names"
 msgstr ""
 
-#: prepare.R:223
+#: prepare.R:199
+msgid "Clean values"
+msgstr ""
+
+#: prepare.R:203
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:228
-msgid "Remove any non informative data:"
-msgstr ""
-
-#: prepare.R:232
+#: prepare.R:209
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:237
+#: prepare.R:214
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:243
+#: prepare.R:220
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:249
+#: prepare.R:226
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:267
-msgid "Rownames"
-msgstr ""
-
-#: prepare.R:311
+#: prepare.R:279
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:317
+#: prepare.R:285
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:323
+#: prepare.R:291
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:325
+#: prepare.R:293
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:326
+#: prepare.R:294
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:327
+#: prepare.R:295
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:328
+#: prepare.R:296
 msgid "Remove columns with missing values"
 msgstr ""
 

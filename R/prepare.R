@@ -27,7 +27,7 @@ prepare_ui <- function(id) {
         placement = "above",
         nav_panel(
           title = tr_("Data"),
-          checkboxInput(inputId = ns("head"), label = tr_("Overview"), value = TRUE),
+          checkboxInput(inputId = ns("head"), label = tr_("Table overview"), value = TRUE),
           tableOutput(outputId = ns("table"))
         ),
         nav_panel(
@@ -137,16 +137,13 @@ box_server <- function(id, x) {
 }
 
 ## Select ----------------------------------------------------------------------
-select_ui <- function(id, label = tr_("Select columns:")) {
+select_ui <- function(id) {
   ns <- NS(id)
 
-  checkboxGroupInput(
-    inputId = ns("checked"),
-    label = label,
-    choices = NULL,
-    selected = NULL,
-    inline = TRUE,
-    width = "100%"
+  tags$div(
+    h5(tr_("Select data")),
+    selectize_ui(id = ns("rownames"), label = tr_("Sample names")),
+    selectize_ui(id = ns("colnames"), label = tr_("Variables"), multiple = TRUE)
   )
 }
 #' @param id A [`character`] string specifying the namespace.
@@ -155,54 +152,42 @@ select_ui <- function(id, label = tr_("Select columns:")) {
 #'  (see [arkhe::detect()]).
 #' @param use_col A predicate [`function`] for column selection
 #'  (see [arkhe::detect()]).
-#' @param preserve A [`logical`] scalar: should existing selection be preserved
-#'  on update?
 #' @noRd
 select_server <- function(id, x, find_col = NULL, use_col = NULL,
-                          preserve = TRUE, min_row = 1, min_col = 1) {
+                          min_row = 1, min_col = 1) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    observe({
-      choices <- colnames(x())
-      selected <- NULL
-      col <- rep(TRUE, length(choices))
-      if (length(choices) > 0 && is.function(find_col)) {
-        col <- arkhe::detect(x = x(), f = find_col, margin = 2)
-        choices <- choices[which(col)]
-      }
-      if (length(choices) > 0 && is.function(use_col)) {
-        ok <- arkhe::detect(x = x(), f = use_col, margin = 2)
-        selected <- choices[which(col & ok)]
-      }
-      if (isTRUE(preserve)) {
-        ## Try to keep previous selection, if any
-        keep <- intersect(choices, input$checked)
-        if (length(keep) > 0) selected <- keep
-      }
-      freezeReactiveValue(input, "checked")
-      updateCheckboxGroupInput(
-        inputId = "checked",
-        choices = choices,
-        selected = selected
-      )
-    }) |>
-      bindEvent(x())
+    row_names <- updateSelectVariables(id = "rownames", x = x)
 
-    ## Bookmark
-    onRestored(function(state) {
-      updateCheckboxGroupInput(session, "checked", selected = state$input$checked)
+    ## Assign row names
+    named <- reactive({
+      req(x())
+      out <- notify(
+        {
+          column <- arkhe::seek_columns(x(), names = row_names())
+          arkhe::assign_rownames(x(), column = column %|||% 0, remove = TRUE)
+        },
+        title = tr_("Row names")
+      )
+      out
     })
 
+    ## Update UI
+    col_names <- updateSelectVariables(id = "colnames", x = named,
+                                       find = find_col, use = use_col)
+
     ## Select variables
-    reactive({
-      req(input$checked)
-      out <- arkhe::get_columns(x(), names = input$checked)
+    selected <- reactive({
+      out <- arkhe::get_columns(named(), names = col_names())
       validate_dim(out, i = min_row, j = min_col)
       out
     }) |>
+      bindEvent(col_names()) |>
       debounce(500)
+
+    selected
   })
 }
 
@@ -210,48 +195,37 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
 clean_ui <- function(id) {
   ns <- NS(id)
 
-  list(
-    tags$div(
-      checkboxInput(
-        inputId = ns("rownames"),
-        label = tr_("First column as row names")
-      )
+  tags$div(
+    h5(tr_("Clean values")),
+    ## Input: remove whitespace
+    checkboxInput(
+      inputId = ns("remove_whitespace"),
+      label = tr_("Remove leading/trailing whitespace"),
+      value = TRUE
     ),
-    tags$div(
-      tr_("Clean values:"),
-      ## Input: remove whitespace
-      checkboxInput(
-        inputId = ns("remove_whitespace"),
-        label = tr_("Remove leading/trailing whitespace"),
-        value = TRUE
-      )
+    ## Input: remove zero
+    checkboxInput(
+      inputId = ns("remove_zero_row"),
+      label = tr_("Remove rows with zero"),
+      value = FALSE
     ),
-    tags$div(
-      tr_("Remove any non informative data:"),
-      ## Input: remove zero
-      checkboxInput(
-        inputId = ns("remove_zero_row"),
-        label = tr_("Remove rows with zero"),
-        value = FALSE
-      ),
-      checkboxInput(
-        inputId = ns("remove_zero_column"),
-        label = tr_("Remove columns with zero"),
-        value = FALSE
-      ),
-      ## Input: remove constant
-      checkboxInput(
-        inputId = ns("remove_constant_column"),
-        label = tr_("Remove constant columns"),
-        value = FALSE
-      ),
-      ## Input: remove all?
-      checkboxInput(
-        inputId = ns("all"),
-        label = tr_("Remove only if all values meet the condition"),
-        value = TRUE,
-        width = "100%"
-      )
+    checkboxInput(
+      inputId = ns("remove_zero_column"),
+      label = tr_("Remove columns with zero"),
+      value = FALSE
+    ),
+    ## Input: remove constant
+    checkboxInput(
+      inputId = ns("remove_constant_column"),
+      label = tr_("Remove constant columns"),
+      value = FALSE
+    ),
+    ## Input: remove all?
+    checkboxInput(
+      inputId = ns("all"),
+      label = tr_("Remove only if all values meet the condition"),
+      value = TRUE,
+      width = "100%"
     )
   )
 }
@@ -261,14 +235,6 @@ clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   moduleServer(id, function(input, output, session) {
     reactive({
       out <- x()
-
-      ## Assign row names
-      if (isTruthy(out) && isTRUE(input$rownames)) {
-        out <- notify(
-          arkhe::assign_rownames(out, column = 1, remove = TRUE),
-          title = tr_("Rownames")
-        )
-      }
 
       ## Clean whitespace
       if (isTruthy(out) && isTRUE(input$remove_whitespace)) {

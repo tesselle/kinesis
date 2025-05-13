@@ -93,15 +93,8 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
       clean_server("clean", x = _)
 
     ## Update UI -----
-    col_group <- column_select_server(
-      id = "group",
-      x = data_raw,
-      find_col = Negate(is.numeric)
-    )
-    col_condense <- column_select_server(
-      id = "condense",
-      x = data_raw
-    )
+    col_group <- updateSelectVariables(id = "group", x = data_raw, find = Negate(is.numeric))
+    col_condense <- updateSelectVariables(id = "condense", x = data_raw)
 
     ## Compositions -----
     coda <- reactive({

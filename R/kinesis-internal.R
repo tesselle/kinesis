@@ -132,7 +132,6 @@ column_input_numeric_server <- function(id, x) {
 #'
 #' @param id A [`character`] string specifying the namespace.
 #' @keywords internal
-#' @noRd
 selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
   ns <- NS(id)
   plugins <- ifelse(isTRUE(multiple), "remove_button", "clear_button")
@@ -153,8 +152,12 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @param id A [`character`] string specifying the namespace (must match
 #'  [selectize_ui()]).
 #' @param x A reactive `matrix`-like object.
-#' @param find_col A predicate [`function`] for column detection
+#' @param find A predicate [`function`] for column detection
 #'  (see [arkhe::detect()]).
+#' @param find A predicate [`function`] for column selection
+#'  (see [arkhe::detect()]).
+#' @param selected A [`character`] vector specifying the initially selected
+#'  value(s).
 #' @param preserve A [`logical`] scalar: should existing selection be preserved
 #'  on update?
 #' @param none A [`logical`] scalar: should a placeholder be added as the first
@@ -163,19 +166,23 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @return A reactive [`character`] vector of column names.
 #' @seealso [selectize_ui()]
 #' @keywords internal
-#' @noRd
-column_select_server <- function(id, x, find_col = NULL, selected = NULL,
-                                 preserve = TRUE, none = TRUE,
-                                 server = TRUE) {
+updateSelectVariables <- function(id, x, find = NULL, use = NULL,
+                                  selected = NULL, preserve = TRUE, none = TRUE,
+                                  server = TRUE) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
     observe({
       choices <- colnames(x())
-      if (!is.null(choices) && is.function(find_col)) {
-        selection <- which(arkhe::detect(x = x(), f = find_col, margin = 2))
-        choices <- choices[selection]
+      found <- rep(TRUE, length(choices))
+      if (!is.null(choices) && is.function(find)) {
+        found <- which(arkhe::detect(x = x(), f = find, margin = 2))
+        choices <- choices[found]
+      }
+      if (length(choices) > 0 && is.function(use)) {
+        used <- arkhe::detect(x = x(), f = use, margin = 2)
+        selected <- choices[which(found & used)]
       }
       if (isTRUE(preserve)) {
         ## Try to keep previous selection, if any
@@ -220,8 +227,7 @@ column_select_server <- function(id, x, find_col = NULL, selected = NULL,
 #' @return A reactive [`character`] vector of column names.
 #' @seealso [selectize_ui()]
 #' @keywords internal
-#' @noRd
-vector_select_server <- function(id, x, exclude = reactive({ NULL }),
+updateSelectValues <- function(id, x, exclude = reactive({ NULL }),
                                  preserve = TRUE, none = TRUE, server = TRUE) {
   stopifnot(is.reactive(x))
   stopifnot(is.reactive(exclude))

@@ -62,9 +62,9 @@ ca_server <- function(id, x) {
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
     row_names <- reactive({ rownames(x()) })
-    sup_row <- vector_select_server("sup_row", x = row_names)
-    sup_col <- column_select_server("sup_col", x = x, find_col = is.numeric)
-    sup_quali <- column_select_server("sup_quali", x = x, find_col = Negate(is.numeric))
+    sup_row <- updateSelectValues("sup_row", x = row_names)
+    sup_col <- updateSelectVariables("sup_col", x = x, find = is.numeric)
+    sup_quali <- updateSelectVariables("sup_quali", x = x, find = Negate(is.numeric))
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)

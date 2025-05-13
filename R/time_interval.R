@@ -60,9 +60,9 @@ time_interval_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    col_lower <- column_select_server("lower", x = x, find_col = is.numeric)
-    col_upper <- column_select_server("upper", x = x, find_col = is.numeric)
-    col_groups <- column_select_server("groups", x = x, find_col = Negate(is.numeric))
+    col_lower <- updateSelectVariables("lower", x = x, find = is.numeric)
+    col_upper <- updateSelectVariables("upper", x = x, find = is.numeric)
+    col_groups <- updateSelectVariables("groups", x = x, find = Negate(is.numeric))
 
     lower <- reactive({
       req(col_lower())

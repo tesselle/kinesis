@@ -22,12 +22,12 @@ x <- reactiveVal(fake)
 
 # Select =======================================================================
 testServer(kinesis:::select_server, args = list(x = x), {
-  session$setInputs(checked = colnames(fake))
+  session$setInputs("colnames-selected" = colnames(fake))
   dataset <- session$getReturned()
   expect_equal(dataset(), fake)
 
-  session$setInputs(checked = c("doi", "color", "height"))
-  session$elapse(750)
+  session$setInputs("colnames-selected" = c("doi", "color", "height"))
+  session$elapse(2000)
   dataset <- session$getReturned()
   expect_equal(dataset(), fake[, c("doi", "color", "height")])
 })

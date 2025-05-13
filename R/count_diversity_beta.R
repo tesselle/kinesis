@@ -92,10 +92,8 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    extra_quali <- column_select_server("extra_quali", x = x,
-                                        find_col = Negate(is.numeric))
-    extra_quanti <- column_select_server("extra_quanti", x = y,
-                                         find_col = is.numeric)
+    extra_quali <- updateSelectVariables("extra_quali", x = x, find = Negate(is.numeric))
+    extra_quanti <- updateSelectVariables("extra_quanti", x = y, find = is.numeric)
 
     ## Get count data -----
     counts <- reactive({

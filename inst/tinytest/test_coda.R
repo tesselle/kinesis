@@ -9,12 +9,12 @@ testServer(kinesis:::coda_server, {
   session$setInputs("import-file" = list(datapath = path),
                     "import-header" = TRUE,
                     "import-sep" = ",", "import-dec" = ".",
-                    "import-quote" = "\"'", "import-rownames" = FALSE,
+                    "import-quote" = "\"'",
                     "import-na.strings" = "NA", "import-skip" = 0,
                     "import-comment" = "#", "import-go" = 1)
 
   expect_equal(data_raw(), bronze)
-  session$setInputs("select-checked" = parts, groups = "", condense = "")
+  session$setInputs("select-colnames-selected" = parts, groups = "", condense = "")
   session$elapse(2000)
   expect_equal(dim(coda()), c(369L, 8L))
   expect_equal(dim(data_group()), c(369L, 8L))

@@ -69,12 +69,6 @@ import_modal <- function(ns) {
           label = tr_("Header"),
           value = TRUE
         ),
-        ## Input: checkbox if file has row names
-        input_switch(
-          id = ns("rownames"),
-          label = tr_("Row names"),
-          value = FALSE
-        ),
         ## Input: select decimal
         radioButtons(
           inputId = ns("dec"),
@@ -186,7 +180,7 @@ import_server <- function(id, demo = NULL) {
           sep = input$sep,
           dec = input$dec,
           quote = input$quote,
-          row.names = if (isTRUE(input$rownames)) 1 else NULL,
+          row.names = NULL,
           na.strings = input$na.strings,
           skip = if (!is.na(input$skip)) input$skip else 0,
           comment.char = input$comment

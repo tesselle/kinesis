@@ -216,7 +216,7 @@ recycle <- function(x) {
   force(x)
 
   function(n) {
-    if (missing(n) || is.null(n)) n <- 1
+    if (missing(n) || length(n) < 1) n <- 1
     rep(x, length(n))
   }
 }
