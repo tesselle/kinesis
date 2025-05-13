@@ -50,39 +50,10 @@ diversity_alpha_server <- function(id, x, verbose = get_option("verbose", FALSE)
       arkhe::keep_columns(x(), f = is.numeric, verbose = verbose)
     })
 
+    ## Compute index -----
     alpha <- reactive({
       req(counts())
-
-      ## Compute index -----
-      notify(
-        {
-          index <- t(apply(
-            X = counts(),
-            MARGIN = 1,
-            FUN = function(x) {
-              c(
-                Size = sum(x),
-                Observed = tabula::observed(x),
-                ## Heterogeneity
-                Shannon = tabula::index_shannon(x, evenness = FALSE, unbiased = FALSE),
-                Brillouin = tabula::index_brillouin(x, evenness = FALSE),
-                ## Dominance
-                Simpson = tabula::index_simpson(x, evenness = FALSE, unbiased = FALSE),
-                Berger = tabula::index_berger(x),
-                ## Richness
-                Menhinick = tabula::index_menhinick(x),
-                Margalef = tabula::index_margalef(x),
-                Chao1 = tabula::index_chao1(x, unbiased = FALSE),
-                ACE = tabula::index_ace(x),
-                Squares = tabula::index_squares(x)
-              )
-            }
-          ))
-          rownames(index) <- rownames(counts())
-          as.data.frame(index)
-        },
-        title = "Alpha diversity"
-      )
+      notify({ tabula::diversity(counts()) }, title = "Alpha diversity")
     })
 
     ## Render table -----

@@ -21,8 +21,8 @@ bertin_ui <- function(id, title = NULL) {
           label = tr_("Plot type"),
           selected = "ford",
           choiceNames = c(tr_("Ford diagram"), tr_("Bertin barplot"),
-                          tr_("Bertin scalogram"), tr_("Heatmap"), tr_("Rank diagram")),
-          choiceValues = c("ford", "barplot", "scalogram", "heatmap", "rank")
+                          tr_("Bertin scalogram"), tr_("Heatmap")),
+          choiceValues = c("ford", "barplot", "scalogram", "heatmap")
         ),
         conditionalPanel(
           condition = "input.type == 'ford'",
@@ -106,9 +106,7 @@ bertin_server  <- function(id, x, verbose = get_option("verbose", FALSE)) {
         scalogram = function()
           tabula::plot_spot(counts(), color = "black", legend = FALSE),
         heatmap = function()
-          tabula::plot_heatmap(counts(), color = param$pal_quant, fixed_ratio = FALSE),
-        rank = function()
-          tabula::plot_rank(counts(), log = NULL, color = param$pal_quali)
+          tabula::plot_heatmap(counts(), color = param$pal_quant, fixed_ratio = FALSE)
       )
     })
 
