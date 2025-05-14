@@ -289,7 +289,15 @@ ternary_server <- function(id, x) {
         }
 
         ## Add legend
-        # TODO
+        if (isTruthy(extra_quali())) {
+          graphics::legend(
+            x = "topleft",
+            legend = unique(symbol_group),
+            col = unique(col),
+            pch = unique(pch),
+            bty = "n"
+          )
+        }
       }
     })
 

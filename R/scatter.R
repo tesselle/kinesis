@@ -49,16 +49,24 @@ scatter_ui <- function(id) {
         tr_("Click and drag to select an area, then double-click to zoom in."),
         tr_("Double-click again to reset the zoom.")
       ),
-      output_plot(
-        id = ns("plot"),
-        tools = graphics_ui(ns("par"), col_quant = FALSE, lty = FALSE, asp = TRUE),
-        title = tr_("Scatter Plot"),
-        dblclick = ns("plot_dblclick"),
-        brush = brushOpts(
-          id = ns("plot_brush"),
-          resetOnNew = TRUE
+      layout_columns(
+        col_widths = c(8, 4),
+        output_plot(
+          id = ns("plot"),
+          tools = graphics_ui(ns("par"), col_quant = FALSE, lty = FALSE, asp = TRUE),
+          title = tr_("Scatter Plot"),
+          click = ns("plot_click"),
+          dblclick = ns("plot_dblclick"),
+          brush = brushOpts(
+            id = ns("plot_brush"),
+            resetOnNew = TRUE
+          ),
+          height = "100%"
         ),
-        height = "100%"
+        card(
+          helpText(tr_("Click the plot to select rows of data.")),
+          tableOutput(outputId = ns("info"))
+        )
       )
     ) # layout_sidebar
   ) # nav_panel
@@ -103,8 +111,13 @@ scatter_server <- function(id, x) {
       range_plot$y <- brush_ylim(input$plot_brush)
     }) |>
       bindEvent(input$plot_dblclick)
+    info <- reactive({
+      ## With base graphics, need to tell it what the x and y variables are.
+      nearPoints(x(), input$plot_click, xvar = axis1(), yvar = axis2(),
+                 threshold = 5)
+    })
 
-    ## Regression -----
+    ## Linear regression -----
     model <- reactive({
       req(x(), axis2(), axis1())
       if (!isTRUE(input$regression)) return(NULL)
@@ -146,6 +159,10 @@ scatter_server <- function(id, x) {
       ## Select data
       req(x(), axis1(), axis2())
 
+      col <- param$col_quali(x()[[extra_quali()]])
+      pch <- param$pch(x()[[extra_quali()]])
+      cex = param$cex(x()[[extra_quanti()]])
+
       ## Build plot
       function() {
         graphics::plot(
@@ -157,9 +174,9 @@ scatter_server <- function(id, x) {
           xlab = axis1(),
           ylab = axis2(),
           panel.first = if (isTRUE(input$grid)) graphics::grid() else NULL,
-          col = param$col_quali(x()[[extra_quali()]]),
-          pch = param$pch(x()[[extra_quali()]]),
-          cex = param$cex(x()[[extra_quanti()]]),
+          col = col,
+          pch = pch,
+          cex = cex,
           asp = param$asp,
           las = 1
         )
@@ -179,9 +196,23 @@ scatter_server <- function(id, x) {
         wrap()(x = x()[[axis1()]], y = x()[[axis2()]], color = param$pal_quali)
 
         ## Add legend
-        # TODO
+        if (isTruthy(extra_quali())) {
+          graphics::legend(
+            x = "topleft",
+            legend = unique(x()[[extra_quali()]]),
+            col = unique(col),
+            pch = unique(pch)
+          )
+        }
       }
     })
+
+    ## Render table -----
+    output$info <- renderTable(
+      info(),
+      rownames = TRUE,
+      colnames = TRUE
+    )
 
     ## Render plot -----
     render_plot("plot", x = plot_scatter)
