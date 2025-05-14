@@ -40,11 +40,6 @@ multivariate_ui <- function(id) {
         value = TRUE
       ),
       checkboxInput(
-        inputId = ns("sup_obs"),
-        label = tr_("Highlight supplementary observations"),
-        value = FALSE
-      ),
-      checkboxInput(
         inputId = ns("sup_ind"),
         label = tr_("Display supplementary individuals"),
         value = TRUE
@@ -77,6 +72,7 @@ multivariate_ui <- function(id) {
         choiceNames = c("68%", "95%", "99%"),
         choiceValues = c("0.68", "0.95", "0.99")
       )
+      # TODO: legend
     ),
     ## Results -----
     nav_panel(
@@ -157,18 +153,12 @@ multivariate_server <- function(id, x, y) {
   moduleServer(id, function(input, output, session) {
     ## Illustrative variables -----
     ## Set group_var for nexus::GroupedComposition objects
-    extra <- reactive({ as.data.frame(y(), group_var = tr_("Group")) }) |>
-      bindEvent(x())
+    extra <- reactive({ as.data.frame(y(), group_var = tr_("Group")) })
     col_quali <- updateSelectVariables("extra_quali", x = extra,
-                                      find = Negate(is.numeric),
-                                      selected = tr_("Group"))
-    col_quanti <- updateSelectVariables("extra_quanti", x = extra, find = is.numeric)
-    extra_quali <- reactive({
-      if (isTruthy(col_quali())) extra()[[col_quali()]] else NULL
-    })
-    extra_quanti <- reactive({
-      if (isTruthy(col_quanti())) extra()[[col_quanti()]] else NULL
-    })
+                                       find = Negate(is.numeric),
+                                       selected = tr_("Group"))
+    col_quanti <- updateSelectVariables("extra_quanti", x = extra,
+                                        find = is.numeric)
 
     ## Eigenvalues -----
     eigen <- reactive({
@@ -185,12 +175,14 @@ multivariate_server <- function(id, x, y) {
     observe({
       freezeReactiveValue(input, "axis1")
       updateSelectizeInput(inputId = "axis1", choices = axes())
-    })
+    }) |>
+      bindEvent(axes())
     observe({
       choices <- axes()[-axis1()]
       freezeReactiveValue(input, "axis2")
       updateSelectizeInput(inputId = "axis2", choices = choices)
-    })
+    }) |>
+      bindEvent(axis1())
 
     ## Bookmark -----
     onRestored(function(state) {
@@ -234,18 +226,26 @@ multivariate_server <- function(id, x, y) {
 
     ## Individuals
     plot_ind <- reactive({
-      req(x())
-
+      req(x(), extra())
+print("ok")
       ## Extra variables
+      extra_quanti <- arkhe::seek_columns(extra(), names = col_quanti())
+      if (!is.null(extra_quanti)) extra_quanti <- extra()[[extra_quanti]]
+      extra_quali <- arkhe::seek_columns(extra(), names = col_quali())
+      if (!is.null(extra_quali)) extra_quali <- extra()[[extra_quali]]
+
       col <- "black"
-      if (isTruthy(extra_quanti())) {
-        col <- param_ind$col_quant(extra_quanti())
+      if (isTruthy(extra_quanti)) {
+        col <- param_ind$col_quant(extra_quanti)
       }
-      if (isTruthy(extra_quali())) {
-        col <- param_ind$col_quali(extra_quali())
+      if (isTruthy(extra_quali)) {
+        col <- param_ind$col_quali(extra_quali)
       }
-      cex <- param_ind$cex(extra_quanti())
-      pch <- param_ind$pch(extra_quali())
+      cex <- param_ind$cex(extra_quanti)
+      pch <- param_ind$pch(extra_quali)
+
+      add_ellipses <- any(input$wrap %in% c("confidence", "tolerance"))
+      add_hull <- isTRUE(input$wrap == "hull")
 
       function() {
         dimensio::viz_rows(
@@ -254,8 +254,8 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_ind,
           labels = input$lab_ind,
-          extra_quali = if (isTRUE(input$sup_obs)) "observation" else extra_quali(),
-          extra_quanti = extra_quanti(),
+          extra_quali = extra_quali %|||% "observation",
+          extra_quanti = extra_quanti,
           col = col,
           pch = pch,
           cex = cex,
@@ -264,23 +264,21 @@ multivariate_server <- function(id, x, y) {
           panel.first = graphics::grid()
         )
 
-        if (isFALSE(input$sup_obs)) {
-          if (any(input$wrap %in% c("confidence", "tolerance"))) {
-            dimensio::viz_ellipses(
-              x = x(),
-              group = extra_quali(),
-              type = input$wrap,
-              level = as.numeric(input$ellipse_level),
-              color = param_ind$pal_quali
-            )
-          }
-          if (isTRUE(input$wrap == "hull")) {
-            dimensio::viz_hull(
-              x = x(),
-              group = extra_quali(),
-              color = param_ind$pal_quali
-            )
-          }
+        if (add_ellipses) {
+          dimensio::viz_ellipses(
+            x = x(),
+            group = extra_quali,
+            type = input$wrap,
+            level = as.numeric(input$ellipse_level),
+            color = param_ind$pal_quali
+          )
+        }
+        if (add_hull) {
+          dimensio::viz_hull(
+            x = x(),
+            group = extra_quali,
+            color = param_ind$pal_quali
+          )
         }
       }
     })
@@ -289,6 +287,7 @@ multivariate_server <- function(id, x, y) {
     plot_var <- reactive({
       req(x())
 
+      print("ko")
       function() {
         dimensio::viz_variables(
           x = x(),
@@ -296,7 +295,7 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = input$sup_var,
           labels = input$lab_var,
-          extra_quali = if (isTRUE(input$sup_obs)) "observation" else NULL,
+          extra_quali = "observation",
           color = param_var$pal_quali,
           symbol = c(1, 3),
           xlim = range_var$x,

@@ -27,7 +27,10 @@ prepare_ui <- function(id) {
         placement = "above",
         nav_panel(
           title = tr_("Data"),
-          checkboxInput(inputId = ns("head"), label = tr_("Table overview"), value = TRUE),
+          checkboxInput(
+            inputId = ns("head"),
+            label = tr_("Table overview"),
+            value = TRUE),
           tableOutput(outputId = ns("table"))
         ),
         nav_panel(
@@ -55,8 +58,8 @@ prepare_ui <- function(id) {
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, choose = function(...) TRUE,
-                           select = function(...) TRUE, demo = NULL) {
+prepare_server <- function(id, choose = \(...) TRUE, select = \(...) TRUE,
+                           demo = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_clean <- import_server("import", demo = demo) |>
@@ -172,7 +175,8 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
         title = tr_("Row names")
       )
       out
-    })
+    }) |>
+      bindEvent(row_names())
 
     ## Update UI
     col_names <- updateSelectVariables(id = "colnames", x = named,
