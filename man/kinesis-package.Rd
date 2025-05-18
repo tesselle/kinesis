@@ -36,6 +36,7 @@ to be used for asynchronous (parallel) computing. Defaults to 1.
 Useful links:
 \itemize{
   \item \url{https://codeberg.org/tesselle/kinesis}
+  \item \url{https://tesselle.r-universe.dev/kinesis}
   \item \url{https://packages.tesselle.org/kinesis/}
   \item Report bugs at \url{https://codeberg.org/tesselle/kinesis/issues}
 }

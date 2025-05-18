@@ -16,6 +16,7 @@ Description: A collection of 'shiny' applications for the 'tesselle'
     packages.
 License: GPL (>= 3)
 URL: https://codeberg.org/tesselle/kinesis,
+    https://tesselle.r-universe.dev/kinesis,
     https://packages.tesselle.org/kinesis/
 BugReports: https://codeberg.org/tesselle/kinesis/issues
 Depends: 
