@@ -2,11 +2,17 @@ default:
   production: TRUE
   verbose: FALSE
   name: "diversity"
-  title: "Diversity Measures"
-  description: |
-    This application allows to compute several diversity measures from a count
-    table (absolute frequencies giving the number of individuals for each
-    category, i.e. a contingency table).
+  title:
+    en: "Diversity Index"
+    fr: "Indices de diversité"
+  description:
+    en: |
+      This application allows to compute several diversity measures from a count
+      table (absolute frequencies giving the number of individuals for each
+      category, i.e. a contingency table).
+    fr: |
+      Cette application permet de calculer plusieurs mesures de diversité à
+      partir d'un tableau de comptage (fréquences absolues).
 
 test:
   production: FALSE

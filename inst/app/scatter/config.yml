@@ -2,9 +2,14 @@ default:
   production: TRUE
   verbose: FALSE
   name: "SCATTER"
-  title: "Scatter Plot"
-  description: |
-    This app allows to draw a scatter plot.
+  title:
+    en: "Scatter Plot"
+    fr: "Diagramme de dispersion"
+  description:
+    en: |
+      This application allows to draw a scatter plot.
+    fr: |
+      Cette application permet de réaliser un diagramme de dispersion.
 
 test:
   production: FALSE

@@ -96,7 +96,7 @@ get_config <- function(app, file = NA, active = NA, use_parent = TRUE) {
               use_parent = use_parent)
 }
 
-#' Get Option
+#' Get App Options
 #'
 #' @param name A [`character`] string specifying the name of an option to get.
 #'  If `NULL` (the default), all options are returned.
@@ -110,4 +110,51 @@ get_option <- function(name = NULL, default = NULL) {
   } else {
     shiny::getShinyOption("kinesis_options")[[name]] %||% default
   }
+}
+
+#' Get Current Language
+#'
+#' @param default A [`character`] string specifying the default language
+#'  (ISO 639-2) if [`Sys.getenv("LANGUAGE")`][Sys.getenv] is not set. If `NULL`
+#'  (the default), uses [`Sys.getlocale("LC_COLLATE")`][Sys.getlocale].
+#' @return A [`character`] string (ISO 639-2).
+#' @author N. Frerebeau
+#' @keywords internal
+#' @noRd
+get_language <- function(default = NULL) {
+  ## Get current language
+  lang <- Sys.getenv("LANGUAGE", unset = NA)
+  if (is.na(lang) || nchar(lang) < 2)
+    lang <- default %||% Sys.getlocale("LC_COLLATE")
+  substr(lang, start = 1, stop = 2)
+}
+
+#' Get App Title
+#'
+#' @param default A [`character`] string specifying the default language
+#'  (see [get_language()]).
+#' @return A [`character`] string.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @noRd
+get_title <- function(default = NULL) {
+  lang <- get_language(default)
+  title <- get_option("title")[[lang]]
+  if (is.null(title)) title <- get_option("title")[["en"]] # Fallback to English
+  title
+}
+
+#' Get App Description
+#'
+#' @param default A [`character`] string specifying the default language
+#'  (see [get_language()]).
+#' @return A [`character`] string.
+#' @author N. Frerebeau
+#' @keywords internal
+#' @noRd
+get_description <- function(default = NULL) {
+  lang <- get_language(default)
+  desc <- get_option("description")[[lang]]
+  if (is.null(desc)) desc <- get_option("description")[["en"]] # Fallback to English
+  desc
 }

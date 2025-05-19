@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-14 14:57+0200\n"
+"POT-Creation-Date: 2025-05-19 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: coda.R:63 prepare.R:37 prepare.R:107
+#: coda.R:63 prepare.R:37 prepare.R:108
 msgid "Missing values"
 msgstr ""
 
@@ -562,44 +562,58 @@ msgid ""
 msgstr ""
 
 #: help.R:83
+msgid "You can import your data in CSV format."
+msgstr ""
+
+#: help.R:84 import.R:54
+msgid "It assumes that you keep your data tidy:"
+msgstr ""
+
+#: help.R:85 import.R:55
+msgid ""
+"each variable must be saved in its own column and each sample must be saved "
+"in its own row."
+msgstr ""
+
+#: help.R:93
 msgid ""
 "If you use this application in your research, you must report and cite it "
 "properly to ensure transparency of your results."
 msgstr ""
 
-#: help.R:84
+#: help.R:94
 msgid ""
 "Moreover, authors and maintainers of this project are more likely to "
 "continue their work if they see that it's being used and valued by the "
 "research community."
 msgstr ""
 
-#: help.R:86
+#: help.R:96
 msgid "To cite in your publications, please use:"
 msgstr ""
 
-#: help.R:94
+#: help.R:104
 msgid "This app is distributed as a free and open source R package:"
 msgstr ""
 
-#: help.R:105
+#: help.R:115
 msgid ""
 "This app is a part of the <strong>tesselle</strong> project, a collection of "
 "packages for research and teaching in archaeology."
 msgstr ""
 
-#: help.R:106
+#: help.R:116
 msgid ""
 "The <strong>tesselle</strong> packages focus on quantitative analysis "
 "methods developed for archaeology."
 msgstr ""
 
-#: help.R:107
+#: help.R:117
 msgid ""
 "They can be used to explore and analyze common data types in archaeology."
 msgstr ""
 
-#: help.R:110
+#: help.R:120
 msgid "For more information and relevant links, see"
 msgstr ""
 
@@ -615,59 +629,59 @@ msgstr ""
 msgid "Logo of the tesselle project."
 msgstr ""
 
-#: home.R:44
+#: home.R:45
 msgid "How to cite"
 msgstr ""
 
-#: home.R:48
+#: home.R:49
 msgid "Bookmark"
 msgstr ""
 
-#: home.R:50
+#: home.R:51
 msgid ""
 "You can save the state of the application and get a URL which will restore "
 "the application with that state."
 msgstr ""
 
-#: home.R:51
+#: home.R:52
 msgid ""
 "You can then copy the URL and save it for later, or share it with others so "
 "they can visit the application in the bookmarked state."
 msgstr ""
 
-#: home.R:54
+#: home.R:55
 msgid "This is not intended for long-term storage."
 msgstr ""
 
-#: home.R:55
+#: home.R:56
 msgid "There is no guarantee as to how long your bookmark will last."
 msgstr ""
 
-#: home.R:60
+#: home.R:61
 msgid "Bookmarking is currently disabled."
 msgstr ""
 
-#: home.R:82 home.R:153
+#: home.R:83 home.R:154
 msgid "Session info"
 msgstr ""
 
-#: home.R:85
+#: home.R:86
 msgid "Source code"
 msgstr ""
 
-#: home.R:88
+#: home.R:89
 msgid "Report a bug or request"
 msgstr ""
 
-#: home.R:108
+#: home.R:109
 msgid "Last saved at %s."
 msgstr ""
 
-#: home.R:124
+#: home.R:125
 msgid "Restoring from state bookmarked at %s."
 msgstr ""
 
-#: home.R:157
+#: home.R:158
 msgid "Close"
 msgstr ""
 
@@ -702,16 +716,6 @@ msgstr ""
 
 #: import.R:51
 msgid "This application only supports data encoded in UFT-8."
-msgstr ""
-
-#: import.R:54
-msgid "It assumes that you keep your data tidy:"
-msgstr ""
-
-#: import.R:55
-msgid ""
-"each variable must be saved in its own column and each sample must be saved "
-"in its own row."
 msgstr ""
 
 #: import.R:59
@@ -882,7 +886,7 @@ msgstr ""
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:120 prepare.R:148 scatter.R:18 ternary.R:20
+#: multivariate.R:120 prepare.R:149 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr ""
 
@@ -940,7 +944,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:22 prepare.R:114
+#: plot.R:22 prepare.R:115
 msgid "Download"
 msgstr ""
 
@@ -968,79 +972,79 @@ msgstr ""
 msgid "Table overview"
 msgstr ""
 
-#: prepare.R:99
+#: prepare.R:100
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:103
+#: prepare.R:104
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:111
+#: prepare.R:112
 msgid "Export your data for futur use."
 msgstr ""
 
-#: prepare.R:146
+#: prepare.R:147
 msgid "Select data"
 msgstr ""
 
-#: prepare.R:147
+#: prepare.R:148
 msgid "Sample names"
 msgstr ""
 
-#: prepare.R:174
+#: prepare.R:175
 msgid "Row names"
 msgstr ""
 
-#: prepare.R:202
+#: prepare.R:203
 msgid "Clean values"
 msgstr ""
 
-#: prepare.R:206
+#: prepare.R:207
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:212
+#: prepare.R:213
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:217
+#: prepare.R:218
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:223
+#: prepare.R:224
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:229
+#: prepare.R:230
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:282
+#: prepare.R:283
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:288
+#: prepare.R:289
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:294
+#: prepare.R:295
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:296
+#: prepare.R:297
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:297
+#: prepare.R:298
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:298
+#: prepare.R:299
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:299
+#: prepare.R:300
 msgid "Remove columns with missing values"
 msgstr ""
 

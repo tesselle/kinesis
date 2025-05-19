@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-14 14:57+0200\n"
+"POT-Creation-Date: 2025-05-19 14:26+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -183,7 +183,7 @@ msgstr ""
 msgid "Overview"
 msgstr "Aperçu"
 
-#: coda.R:63 prepare.R:37 prepare.R:107
+#: coda.R:63 prepare.R:37 prepare.R:108
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
@@ -591,6 +591,22 @@ msgstr ""
 "GARANTIE."
 
 #: help.R:83
+msgid "You can import your data in CSV format."
+msgstr "Vous pouvez importer vos données au format CSV."
+
+#: help.R:84 import.R:54
+msgid "It assumes that you keep your data tidy:"
+msgstr "Cette application suppose que vos données sont bien structurées :"
+
+#: help.R:85 import.R:55
+msgid ""
+"each variable must be saved in its own column and each sample must be saved "
+"in its own row."
+msgstr ""
+"chaque variable doit correspondre à une colonne et chaque individu doit "
+"correspondre à une ligne."
+
+#: help.R:93
 msgid ""
 "If you use this application in your research, you must report and cite it "
 "properly to ensure transparency of your results."
@@ -599,7 +615,7 @@ msgstr ""
 "devez en rendre compte et la citer correctement afin de garantir la "
 "transparence de vos résultats."
 
-#: help.R:84
+#: help.R:94
 msgid ""
 "Moreover, authors and maintainers of this project are more likely to "
 "continue their work if they see that it's being used and valued by the "
@@ -609,17 +625,17 @@ msgstr ""
 "poursuivre leur travail s'ils voient qu'il est utilisé et apprécié par la "
 "communauté des chercheurs."
 
-#: help.R:86
+#: help.R:96
 msgid "To cite in your publications, please use:"
 msgstr "Pour citer dans vos publications, veuillez utiliser :"
 
-#: help.R:94
+#: help.R:104
 msgid "This app is distributed as a free and open source R package:"
 msgstr ""
 "Cette application est distribuée sous la forme d'un package R libre et "
 "gratuit :"
 
-#: help.R:105
+#: help.R:115
 msgid ""
 "This app is a part of the <strong>tesselle</strong> project, a collection of "
 "packages for research and teaching in archaeology."
@@ -627,7 +643,7 @@ msgstr ""
 "Cette application fait partie du projet <strong>tesselle</strong>, une "
 "collection de packages pour la recherche et l'enseignement en archéologie."
 
-#: help.R:106
+#: help.R:116
 msgid ""
 "The <strong>tesselle</strong> packages focus on quantitative analysis "
 "methods developed for archaeology."
@@ -635,14 +651,14 @@ msgstr ""
 "Les packages du projet <strong>tesselle</strong> sont consacrés aux méthodes "
 "d'analyse quantitative développées pour l'archéologie."
 
-#: help.R:107
+#: help.R:117
 msgid ""
 "They can be used to explore and analyze common data types in archaeology."
 msgstr ""
 "Ils peuvent être utilisés pour explorer et analyser les types de données les "
 "plus courants dans le domaine de l'archéologie."
 
-#: help.R:110
+#: help.R:120
 msgid "For more information and relevant links, see"
 msgstr "Pour plus d'informations et de liens utiles, voir"
 
@@ -658,15 +674,15 @@ msgstr "Bienvenue !"
 msgid "Logo of the tesselle project."
 msgstr "Logo du projet tesselle."
 
-#: home.R:44
+#: home.R:45
 msgid "How to cite"
 msgstr "Citation"
 
-#: home.R:48
+#: home.R:49
 msgid "Bookmark"
 msgstr "Signet"
 
-#: home.R:50
+#: home.R:51
 msgid ""
 "You can save the state of the application and get a URL which will restore "
 "the application with that state."
@@ -674,7 +690,7 @@ msgstr ""
 "Vous pouvez sauvegarder l'état de l'application et obtenir une URL qui "
 "restaurera l'application dans cet état."
 
-#: home.R:51
+#: home.R:52
 msgid ""
 "You can then copy the URL and save it for later, or share it with others so "
 "they can visit the application in the bookmarked state."
@@ -683,39 +699,39 @@ msgstr ""
 "partager avec d'autres personnes afin qu'elles puissent visiter "
 "l'application dans l'état enregistré."
 
-#: home.R:54
+#: home.R:55
 msgid "This is not intended for long-term storage."
 msgstr "Ceci n'est pas destiné à un stockage à long terme."
 
-#: home.R:55
+#: home.R:56
 msgid "There is no guarantee as to how long your bookmark will last."
 msgstr "Il n'y a aucune garantie quant à la durée de vie de votre signet."
 
-#: home.R:60
+#: home.R:61
 msgid "Bookmarking is currently disabled."
 msgstr "Les signets sont actuellement désactivés."
 
-#: home.R:82 home.R:153
+#: home.R:83 home.R:154
 msgid "Session info"
 msgstr "Session"
 
-#: home.R:85
+#: home.R:86
 msgid "Source code"
 msgstr "Code source"
 
-#: home.R:88
+#: home.R:89
 msgid "Report a bug or request"
 msgstr "Signaler un bug"
 
-#: home.R:108
+#: home.R:109
 msgid "Last saved at %s."
 msgstr "Dernière sauvegarde le %s."
 
-#: home.R:124
+#: home.R:125
 msgid "Restoring from state bookmarked at %s."
 msgstr "Restauration à partir de l'état mis en signet le %s."
 
-#: home.R:157
+#: home.R:158
 msgid "Close"
 msgstr "Fermer"
 
@@ -756,18 +772,6 @@ msgstr ""
 msgid "This application only supports data encoded in UFT-8."
 msgstr ""
 "Cette application ne prend en charge que les données encodées en UFT-8."
-
-#: import.R:54
-msgid "It assumes that you keep your data tidy:"
-msgstr "Cette application suppose que vos données sont bien structurées :"
-
-#: import.R:55
-msgid ""
-"each variable must be saved in its own column and each sample must be saved "
-"in its own row."
-msgstr ""
-"chaque variable doit correspondre à une colonne et chaque individu doit "
-"correspondre à une ligne."
 
 #: import.R:59
 msgid "Choose a CSV or a TSV file:"
@@ -939,7 +943,7 @@ msgstr "Plan factoriel des variables"
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:120 prepare.R:148 scatter.R:18 ternary.R:20
+#: multivariate.R:120 prepare.R:149 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr "Variables"
 
@@ -999,7 +1003,7 @@ msgstr ""
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:114
+#: plot.R:22 prepare.R:115
 msgid "Download"
 msgstr "Télécharger"
 
@@ -1027,79 +1031,79 @@ msgstr "Périphérique graphique inconnu."
 msgid "Table overview"
 msgstr "Aperçu du tableau"
 
-#: prepare.R:99
+#: prepare.R:100
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:103
+#: prepare.R:104
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:111
+#: prepare.R:112
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:146
+#: prepare.R:147
 msgid "Select data"
 msgstr "Sélection"
 
-#: prepare.R:147
+#: prepare.R:148
 msgid "Sample names"
 msgstr "Noms des échantillons"
 
-#: prepare.R:174
+#: prepare.R:175
 msgid "Row names"
 msgstr "Noms de lignes"
 
-#: prepare.R:202
+#: prepare.R:203
 msgid "Clean values"
 msgstr "Nettoyage"
 
-#: prepare.R:206
+#: prepare.R:207
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:212
+#: prepare.R:213
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:217
+#: prepare.R:218
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:223
+#: prepare.R:224
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:229
+#: prepare.R:230
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:282
+#: prepare.R:283
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:288
+#: prepare.R:289
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:294
+#: prepare.R:295
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:296
+#: prepare.R:297
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:297
+#: prepare.R:298
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:298
+#: prepare.R:299
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:299
+#: prepare.R:300
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 

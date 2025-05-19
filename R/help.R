@@ -77,6 +77,16 @@ help_warranty <- function(...) {
   )
 }
 
+help_data <- function(...) {
+  withTags(
+    p(
+      tr_("You can import your data in CSV format."),
+      tr_("It assumes that you keep your data tidy:"),
+      tr_("each variable must be saved in its own column and each sample must be saved in its own row.")
+    )
+  )
+}
+
 help_cite <- function(package) {
   list(
     tags$p(

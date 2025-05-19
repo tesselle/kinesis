@@ -2,10 +2,16 @@ default:
   production: TRUE
   verbose: FALSE
   name: "pca"
-  title: "Principal Components Analysis"
-  description: |
-    This app allows to compute a principal components analysis based on the
-    singular value decomposition.
+  title:
+    en: "Principal Components Analysis"
+    fr: "Analyse en composantes principales"
+  description:
+    en: |
+      This application allows to compute a principal components analysis based
+      on the singular value decomposition.
+    fr: |
+      Cette application permet de réaliser une analyse en composantes
+      principales.
 
 test:
   production: FALSE

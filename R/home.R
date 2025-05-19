@@ -29,8 +29,9 @@ home_ui <- function(id, package) {
         placement = "above",
         nav_panel(
           title = tr_("Overview"),
-          h3(get_option("title")),
-          markdown(get_option("description")),
+          h3(get_title()),
+          markdown(get_description()),
+          help_data(),
           help_warranty(),
           tags$p(
             class = "logo",
@@ -54,7 +55,7 @@ home_ui <- function(id, package) {
             tr_("This is not intended for long-term storage."),
             tr_("There is no guarantee as to how long your bookmark will last.")
           ),
-          if (get_option("bookmark")) {
+          if (get_option("bookmark", FALSE)) {
             tags$div(class = "d-grid d-md-block", bookmarkButton())
           } else {
             tags$p(tr_("Bookmarking is currently disabled."))
