@@ -117,7 +117,10 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
       out <- coda()
       if (isTruthy(col_group())) {
-        out <- nexus::group(out, by = data_raw()[col_group()], verbose = verbose)
+        by <- data_raw()[col_group()]
+        if (all(lengths(by) == nrow(out))) {
+          out <- nexus::group(out, by = by, verbose = verbose)
+        }
       }
 
       out
@@ -129,7 +132,10 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
       out <- data_group()
       if (isTruthy(col_condense())) {
-        out <- nexus::condense(out, by = data_raw()[col_condense()], verbose = verbose)
+        by <- data_raw()[col_condense()]
+        if (all(lengths(by) == nrow(out))) {
+          out <- nexus::condense(out, by = by, ignore_na = FALSE, verbose = verbose)
+        }
       }
 
       out

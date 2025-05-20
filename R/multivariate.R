@@ -227,7 +227,7 @@ multivariate_server <- function(id, x, y) {
     ## Individuals
     plot_ind <- reactive({
       req(x(), extra())
-print("ok")
+
       ## Extra variables
       extra_quanti <- arkhe::seek_columns(extra(), names = col_quanti())
       if (!is.null(extra_quanti)) extra_quanti <- extra()[[extra_quanti]]
@@ -287,7 +287,6 @@ print("ok")
     plot_var <- reactive({
       req(x())
 
-      print("ko")
       function() {
         dimensio::viz_variables(
           x = x(),

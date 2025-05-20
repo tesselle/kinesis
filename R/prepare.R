@@ -179,8 +179,12 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
       bindEvent(row_names())
 
     ## Update UI
-    col_names <- updateSelectVariables(id = "colnames", x = named,
-                                       find = find_col, use = use_col)
+    col_names <- updateSelectVariables(
+      id = "colnames",
+      x = named,
+      find = find_col,
+      use = use_col
+    )
 
     ## Select variables
     selected <- reactive({
@@ -188,7 +192,7 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
       validate_dim(out, i = min_row, j = min_col)
       out
     }) |>
-      bindEvent(col_names()) |>
+      bindEvent(col_names(), ignoreNULL = FALSE) |>
       debounce(500)
 
     selected
@@ -205,7 +209,7 @@ clean_ui <- function(id) {
     checkboxInput(
       inputId = ns("remove_whitespace"),
       label = tr_("Remove leading/trailing whitespace"),
-      value = TRUE
+      value = FALSE
     ),
     ## Input: remove zero
     checkboxInput(

@@ -23,19 +23,22 @@ theme_ui <- function(version = "5", ...) {
 
 # Helpers ======================================================================
 validate_csv <- function(x) {
-  validate(need(x, message = tr_("Import a CSV file first.")))
+  validate(need(x, message = tr_("Import a CSV file first.")),
+           errorClass = "kinesis")
 }
 validate_dim <- function(x, i = 1, j = 1) {
   rows <- ngettext(i, "Select at least %d row.", "Select at least %d rows.")
   cols <- ngettext(j, "Select at least %d column.", "Select at least %d columns.")
-  validate(need(NROW(x) >= i, sprintf(rows, i)))
-  validate(need(NCOL(x) >= j, sprintf(cols, j)))
+  validate(need(NROW(x) >= i, sprintf(rows, i)), errorClass = "kinesis")
+  validate(need(NCOL(x) >= j, sprintf(cols, j)), errorClass = "kinesis")
 }
 validate_na <- function(x) {
-  validate(need(!anyNA(x), tr_("Your data should not contain missing values.")))
+  validate(need(!anyNA(x), tr_("Your data should not contain missing values.")),
+           errorClass = "kinesis")
 }
 validate_zero <- function(x) {
-  validate(need(all(x != 0), tr_("Your data should not contain zeros.")))
+  validate(need(all(x != 0), tr_("Your data should not contain zeros.")),
+           errorClass = "kinesis")
 }
 
 #' Default Value for Falsy
@@ -49,7 +52,6 @@ validate_zero <- function(x) {
 `%|||%` <- function(x, y) {
   if (isTruthy(x)) x else y
 }
-
 
 #' Make File Name
 #'
@@ -208,7 +210,10 @@ updateSelectVariables <- function(id, x, find = NULL, use = NULL,
       updateSelectizeInput(session, "selected", selected = state$input$selected)
     })
 
-    reactive({ input$selected }) |>
+    reactive({
+      req(x()) # Allow to display validation message
+      input$selected[which(input$selected != "")] # Remove placeholder
+    }) |>
       debounce(500)
   })
 }
