@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-19 14:26+0200\n"
+"POT-Creation-Date: 2025-05-20 18:44+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -187,11 +187,11 @@ msgstr "Aperçu"
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
-#: coda.R:160 multivariate.R:156 multivariate.R:159
+#: coda.R:166 multivariate.R:156 multivariate.R:159
 msgid "Group"
 msgstr "Groupe"
 
-#: coda.R:180
+#: coda.R:186
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
@@ -200,7 +200,7 @@ msgstr ""
 "des valeurs inférieures à la limite de détection (c'est-à-dire de petites "
 "valeurs inconnues)."
 
-#: coda.R:181
+#: coda.R:187
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
@@ -208,7 +208,7 @@ msgstr ""
 "Dans ce cas, vous pouvez définir ci-dessous la limite de détection pour "
 "chaque partie de la composition."
 
-#: coda.R:182
+#: coda.R:188
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
@@ -216,15 +216,15 @@ msgstr ""
 "Si toutes les limites sont spécifiées, les zéros seront remplacés par une "
 "fraction de ces limites."
 
-#: coda.R:183
+#: coda.R:189
 msgid "For computational details, see"
 msgstr "Pour plus de détails sur les calculs, voir"
 
-#: coda.R:188
+#: coda.R:194
 msgid "Fraction"
 msgstr "Fraction"
 
-#: coda.R:194
+#: coda.R:200
 msgid "Replace zero"
 msgstr "Remplacer les zéro"
 
@@ -455,9 +455,8 @@ msgid "Heterogeneity"
 msgstr "Hétérogénéité"
 
 #: count_diversity_alpha.R:69
-#, fuzzy
 msgid "Dominance"
-msgstr "Domination"
+msgstr "Dominance"
 
 #: count_diversity_alpha.R:74
 msgid "Richness"
@@ -508,7 +507,7 @@ msgid "PCoA"
 msgstr "ACoP"
 
 #: count_diversity_beta.R:106 count_diversity_beta.R:124
-#: count_diversity_docs.R:60
+#: count_diversity_docs.R:88
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
 
@@ -519,6 +518,42 @@ msgstr "Définitions"
 #: count_diversity_docs.R:17
 msgid "Alpha Diversity"
 msgstr "Diversité alpha"
+
+#: count_diversity_docs.R:20
+msgid "Heterogeneity index"
+msgstr "Indice d'hétérogénéité"
+
+#: count_diversity_docs.R:21
+msgid ""
+"The higher the heterogeneity value, the more diverse the individuals are in "
+"the dataset."
+msgstr ""
+"Plus la valeur de l'hétérogénéité est élevée, plus la diversité est forte."
+
+#: count_diversity_docs.R:35
+msgid "Dominance index"
+msgstr "Indice de dominance"
+
+#: count_diversity_docs.R:36
+msgid ""
+"Dominance is a measure of whether a community is dominated by certain types "
+"(an increase in the value means a decrease in diversity)."
+msgstr ""
+"La dominance est une mesure de la prépondérance de certains types dans une "
+"communauté (une augmentation de la dominance signifie une diminution de la "
+"diversité)."
+
+#: count_diversity_docs.R:52
+msgid "Richness index"
+msgstr "Richesse"
+
+#: count_diversity_docs.R:53
+msgid ""
+"Richness quantifies how many different types the dataset of interest "
+"contains, it does not take into account the abundances of the types."
+msgstr ""
+"La richesse quantifie le nombre de types différents que contient l'ensemble "
+"de données considéré, mais ne tient pas compte de l'abondance des types."
 
 #: count_mcd.R:14
 msgid "Date"
@@ -582,7 +617,7 @@ msgstr "Symbole"
 msgid "Line type"
 msgstr "Type de ligne"
 
-#: help.R:76
+#: help.R:83
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY."
@@ -590,15 +625,15 @@ msgstr ""
 "Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE "
 "GARANTIE."
 
-#: help.R:83
+#: help.R:90
 msgid "You can import your data in CSV format."
 msgstr "Vous pouvez importer vos données au format CSV."
 
-#: help.R:84 import.R:54
+#: help.R:91 import.R:54
 msgid "It assumes that you keep your data tidy:"
 msgstr "Cette application suppose que vos données sont bien structurées :"
 
-#: help.R:85 import.R:55
+#: help.R:92 import.R:55
 msgid ""
 "each variable must be saved in its own column and each sample must be saved "
 "in its own row."
@@ -606,7 +641,7 @@ msgstr ""
 "chaque variable doit correspondre à une colonne et chaque individu doit "
 "correspondre à une ligne."
 
-#: help.R:93
+#: help.R:100
 msgid ""
 "If you use this application in your research, you must report and cite it "
 "properly to ensure transparency of your results."
@@ -615,7 +650,7 @@ msgstr ""
 "devez en rendre compte et la citer correctement afin de garantir la "
 "transparence de vos résultats."
 
-#: help.R:94
+#: help.R:101
 msgid ""
 "Moreover, authors and maintainers of this project are more likely to "
 "continue their work if they see that it's being used and valued by the "
@@ -625,17 +660,17 @@ msgstr ""
 "poursuivre leur travail s'ils voient qu'il est utilisé et apprécié par la "
 "communauté des chercheurs."
 
-#: help.R:96
+#: help.R:103
 msgid "To cite in your publications, please use:"
 msgstr "Pour citer dans vos publications, veuillez utiliser :"
 
-#: help.R:104
+#: help.R:111
 msgid "This app is distributed as a free and open source R package:"
 msgstr ""
 "Cette application est distribuée sous la forme d'un package R libre et "
 "gratuit :"
 
-#: help.R:115
+#: help.R:122
 msgid ""
 "This app is a part of the <strong>tesselle</strong> project, a collection of "
 "packages for research and teaching in archaeology."
@@ -643,7 +678,7 @@ msgstr ""
 "Cette application fait partie du projet <strong>tesselle</strong>, une "
 "collection de packages pour la recherche et l'enseignement en archéologie."
 
-#: help.R:116
+#: help.R:123
 msgid ""
 "The <strong>tesselle</strong> packages focus on quantitative analysis "
 "methods developed for archaeology."
@@ -651,14 +686,14 @@ msgstr ""
 "Les packages du projet <strong>tesselle</strong> sont consacrés aux méthodes "
 "d'analyse quantitative développées pour l'archéologie."
 
-#: help.R:117
+#: help.R:124
 msgid ""
 "They can be used to explore and analyze common data types in archaeology."
 msgstr ""
 "Ils peuvent être utilisés pour explorer et analyser les types de données les "
 "plus courants dans le domaine de l'archéologie."
 
-#: help.R:120
+#: help.R:127
 msgid "For more information and relevant links, see"
 msgstr "Pour plus d'informations et de liens utiles, voir"
 
@@ -845,23 +880,23 @@ msgstr "Lecture des données..."
 msgid "Import a CSV file first."
 msgstr "Importez d'abord un fichier CSV."
 
-#: kinesis-internal.R:35
+#: kinesis-internal.R:36
 msgid "Your data should not contain missing values."
 msgstr "Vos données ne doivent pas contenir de valeurs manquantes."
 
-#: kinesis-internal.R:38
+#: kinesis-internal.R:40
 msgid "Your data should not contain zeros."
 msgstr "Vos données ne doivent pas contenir de zéros."
 
-#: kinesis-internal.R:76 time_interval.R:29
+#: kinesis-internal.R:78 time_interval.R:29
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: kinesis-internal.R:340
+#: kinesis-internal.R:345
 msgid "Your data seem to have changed."
 msgstr "Vos données semblent avoir été modifiées."
 
-#: kinesis-internal.R:341
+#: kinesis-internal.R:346
 msgid "You should perform your analysis again."
 msgstr "Vous devriez refaire votre analyse."
 
@@ -951,27 +986,27 @@ msgstr "Variables"
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Eigenvalues"
 msgstr "Valeurs propres"
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Explained var. (%)"
 msgstr "Var. expliquée (%)"
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Cumulative var. (%)"
 msgstr "Var. cumulée (%)"
 
-#: multivariate.R:387
+#: multivariate.R:386
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:392
+#: multivariate.R:391
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:397
+#: multivariate.R:396
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
@@ -1055,55 +1090,55 @@ msgstr "Noms des échantillons"
 msgid "Row names"
 msgstr "Noms de lignes"
 
-#: prepare.R:203
+#: prepare.R:207
 msgid "Clean values"
 msgstr "Nettoyage"
 
-#: prepare.R:207
+#: prepare.R:211
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:213
+#: prepare.R:217
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:218
+#: prepare.R:222
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:224
+#: prepare.R:228
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:230
+#: prepare.R:234
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:283
+#: prepare.R:287
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:289
+#: prepare.R:293
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:295
+#: prepare.R:299
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:297
+#: prepare.R:301
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:298
+#: prepare.R:302
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:299
+#: prepare.R:303
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:300
+#: prepare.R:304
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
@@ -1235,13 +1270,13 @@ msgstr "Limite temporelle inférieure"
 msgid "Upper temporal boundary"
 msgstr "Limite temporelle supérieure"
 
-#: kinesis-internal.R:29
+#: kinesis-internal.R:30
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
 msgstr[0] "Sélectionner au moins %d ligne."
 msgstr[1] "Sélectionner au moins %d lignes."
 
-#: kinesis-internal.R:30
+#: kinesis-internal.R:31
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
 msgstr[0] "Sélectionner au moins %d colonne."

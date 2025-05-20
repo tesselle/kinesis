@@ -51,8 +51,7 @@ cite_article <- function(author, year, doi = NULL, text = TRUE,
   if (is.null(doi)) {
     link <- tags$span(year, .noWS = "outside")
   } else {
-    url <- sprintf("https://doi.org/%s", doi)
-    link <- tags$a(year, href = url, target = "_blank", .noWS = "outside")
+    link <- url_doi(doi, label = year)
   }
 
   if (text) {
@@ -69,6 +68,14 @@ cite_article <- function(author, year, doi = NULL, text = TRUE,
 
 info_article <- function(...) {
   cite_article(..., before = icon("info-circle"), after = ".")
+}
+
+url_doi <- function(x, label = NULL, prefix = FALSE) {
+  if (is.null(label)) label <- x
+  url <- sprintf("https://doi.org/%s", x)
+  link <- tags$a(label, href = url, target = "_blank", role="doc-biblioref", .noWS = "after")
+  if (!prefix) return(link)
+  list("DOI:", link, ".")
 }
 
 help_warranty <- function(...) {

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-19 14:26+0200\n"
+"POT-Creation-Date: 2025-05-20 18:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,37 +173,37 @@ msgstr ""
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:160 multivariate.R:156 multivariate.R:159
+#: coda.R:166 multivariate.R:156 multivariate.R:159
 msgid "Group"
 msgstr ""
 
-#: coda.R:180
+#: coda.R:186
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:181
+#: coda.R:187
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:182
+#: coda.R:188
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:183
+#: coda.R:189
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:188
+#: coda.R:194
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:194
+#: coda.R:200
 msgid "Replace zero"
 msgstr ""
 
@@ -483,7 +483,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:60
+#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:88
 msgid "Beta Diversity"
 msgstr ""
 
@@ -493,6 +493,36 @@ msgstr ""
 
 #: count_diversity_docs.R:17
 msgid "Alpha Diversity"
+msgstr ""
+
+#: count_diversity_docs.R:20
+msgid "Heterogeneity index"
+msgstr ""
+
+#: count_diversity_docs.R:21
+msgid ""
+"The higher the heterogeneity value, the more diverse the individuals are in "
+"the dataset."
+msgstr ""
+
+#: count_diversity_docs.R:35
+msgid "Dominance index"
+msgstr ""
+
+#: count_diversity_docs.R:36
+msgid ""
+"Dominance is a measure of whether a community is dominated by certain types "
+"(an increase in the value means a decrease in diversity)."
+msgstr ""
+
+#: count_diversity_docs.R:52
+msgid "Richness index"
+msgstr ""
+
+#: count_diversity_docs.R:53
+msgid ""
+"Richness quantifies how many different types the dataset of interest "
+"contains, it does not take into account the abundances of the types."
 msgstr ""
 
 #: count_mcd.R:14
@@ -555,65 +585,65 @@ msgstr ""
 msgid "Line type"
 msgstr ""
 
-#: help.R:76
+#: help.R:83
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY."
 msgstr ""
 
-#: help.R:83
+#: help.R:90
 msgid "You can import your data in CSV format."
 msgstr ""
 
-#: help.R:84 import.R:54
+#: help.R:91 import.R:54
 msgid "It assumes that you keep your data tidy:"
 msgstr ""
 
-#: help.R:85 import.R:55
+#: help.R:92 import.R:55
 msgid ""
 "each variable must be saved in its own column and each sample must be saved "
 "in its own row."
 msgstr ""
 
-#: help.R:93
+#: help.R:100
 msgid ""
 "If you use this application in your research, you must report and cite it "
 "properly to ensure transparency of your results."
 msgstr ""
 
-#: help.R:94
+#: help.R:101
 msgid ""
 "Moreover, authors and maintainers of this project are more likely to "
 "continue their work if they see that it's being used and valued by the "
 "research community."
 msgstr ""
 
-#: help.R:96
+#: help.R:103
 msgid "To cite in your publications, please use:"
 msgstr ""
 
-#: help.R:104
+#: help.R:111
 msgid "This app is distributed as a free and open source R package:"
 msgstr ""
 
-#: help.R:115
+#: help.R:122
 msgid ""
 "This app is a part of the <strong>tesselle</strong> project, a collection of "
 "packages for research and teaching in archaeology."
 msgstr ""
 
-#: help.R:116
+#: help.R:123
 msgid ""
 "The <strong>tesselle</strong> packages focus on quantitative analysis "
 "methods developed for archaeology."
 msgstr ""
 
-#: help.R:117
+#: help.R:124
 msgid ""
 "They can be used to explore and analyze common data types in archaeology."
 msgstr ""
 
-#: help.R:120
+#: help.R:127
 msgid "For more information and relevant links, see"
 msgstr ""
 
@@ -790,23 +820,23 @@ msgstr ""
 msgid "Import a CSV file first."
 msgstr ""
 
-#: kinesis-internal.R:35
+#: kinesis-internal.R:36
 msgid "Your data should not contain missing values."
 msgstr ""
 
-#: kinesis-internal.R:38
+#: kinesis-internal.R:40
 msgid "Your data should not contain zeros."
 msgstr ""
 
-#: kinesis-internal.R:76 time_interval.R:29
+#: kinesis-internal.R:78 time_interval.R:29
 msgid "Calendar"
 msgstr ""
 
-#: kinesis-internal.R:340
+#: kinesis-internal.R:345
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:341
+#: kinesis-internal.R:346
 msgid "You should perform your analysis again."
 msgstr ""
 
@@ -894,27 +924,27 @@ msgstr ""
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Eigenvalues"
 msgstr ""
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Explained var. (%)"
 msgstr ""
 
-#: multivariate.R:361
+#: multivariate.R:360
 msgid "Cumulative var. (%)"
 msgstr ""
 
-#: multivariate.R:387
+#: multivariate.R:386
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:392
+#: multivariate.R:391
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:397
+#: multivariate.R:396
 msgid "Squared cosinus"
 msgstr ""
 
@@ -996,55 +1026,55 @@ msgstr ""
 msgid "Row names"
 msgstr ""
 
-#: prepare.R:203
+#: prepare.R:207
 msgid "Clean values"
 msgstr ""
 
-#: prepare.R:207
+#: prepare.R:211
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:213
+#: prepare.R:217
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:218
+#: prepare.R:222
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:224
+#: prepare.R:228
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:230
+#: prepare.R:234
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:283
+#: prepare.R:287
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:289
+#: prepare.R:293
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:295
+#: prepare.R:299
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:297
+#: prepare.R:301
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:298
+#: prepare.R:302
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:299
+#: prepare.R:303
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:300
+#: prepare.R:304
 msgid "Remove columns with missing values"
 msgstr ""
 
@@ -1176,13 +1206,13 @@ msgstr ""
 msgid "Upper temporal boundary"
 msgstr ""
 
-#: kinesis-internal.R:29
+#: kinesis-internal.R:30
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kinesis-internal.R:30
+#: kinesis-internal.R:31
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
 msgstr[0] ""
