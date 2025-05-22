@@ -56,7 +56,7 @@ coda_ui <- function(id) {
             ), # sidebar
             ## Output: display data
             checkboxInput(inputId = ns("head"), label = tr_("Overview"), value = TRUE),
-            tableOutput(outputId = ns("table"))
+            gt::gt_output(outputId = ns("table"))
           ) # layout_sidebar
         ),
         nav_panel(
@@ -160,17 +160,13 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
     })
 
     ## Render tables -----
-    output$table <- renderTable(
-      expr = {
+    output$table <- gt::render_gt({
         req(data_valid())
         tbl <- as.data.frame(data_valid(), group_var = tr_("Group"))
-        if (isTRUE(input$head)) utils::head(tbl) else tbl
-      },
-      rownames = TRUE,
-      colnames = TRUE,
-      digits = 3,
-      na = "-"
-    )
+        tbl <- if (isTRUE(input$head)) utils::head(tbl) else tbl
+        gt::gt(tbl, rownames_to_stub = TRUE) |>
+          gt::tab_options(table.width = "100%")
+      })
 
     data_valid
   })

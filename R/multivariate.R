@@ -354,17 +354,23 @@ multivariate_server <- function(id, x, y) {
     render_plot("screeplot", x = plot_eigen)
 
     ## Render tables -----
-    output$variance <- renderTable(
-      expr = {
-        e <- eigen()
-        colnames(e) <- c(tr_("Eigenvalues"), tr_("Explained var. (%)"), tr_("Cumulative var. (%)"))
-        e
-      },
-      rownames = TRUE,
-      colnames = TRUE,
-      digits = 2,
-      na = "-"
-    )
+    output$variance <- gt::render_gt({
+      gt::gt(eigen(), rownames_to_stub = TRUE) |>
+        gt::tab_options(table.width = "100%") |>
+        gt::fmt_number(
+          columns = c("eigenvalues"),
+          decimals = 3
+        ) |>
+        gt::fmt_percent(
+          columns = c("variance", "cumulative"),
+          scale_values = FALSE
+        ) |>
+        gt::cols_label(
+          eigenvalues = tr_("Eigenvalues"),
+          variance = tr_("Explained var. (%)"),
+          cumulative = tr_("Cumulative var. (%)")
+        )
+    })
 
     output$info_ind <- gt::render_gt({
       req(x())

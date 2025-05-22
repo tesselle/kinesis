@@ -31,7 +31,7 @@ prepare_ui <- function(id) {
             inputId = ns("head"),
             label = tr_("Table overview"),
             value = TRUE),
-          tableOutput(outputId = ns("table"))
+          gt::gt_output(outputId = ns("table"))
         ),
         nav_panel(
           title = tr_("Missing values"),
@@ -71,14 +71,11 @@ prepare_server <- function(id, choose = \(...) TRUE, select = \(...) TRUE,
     box_server("box", x = data_clean)
 
     ## Render table -----
-    output$table <- renderTable(
-      expr = {
-        if (isTRUE(input$head)) utils::head(data_clean()) else data_clean()
-      },
-      rownames = TRUE,
-      colnames = TRUE,
-      na = "-"
-    )
+    output$table <- gt::render_gt({
+      tbl <- if (isTRUE(input$head)) utils::head(data_clean()) else data_clean()
+      gt::gt(tbl, rownames_to_stub = TRUE) |>
+        gt::tab_options(table.width = "100%")
+    })
 
     data_clean
   })

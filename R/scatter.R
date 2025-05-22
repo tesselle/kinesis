@@ -65,7 +65,7 @@ scatter_ui <- function(id) {
         ),
         card(
           helpText(tr_("Click the plot to select rows of data.")),
-          tableOutput(outputId = ns("info"))
+          gt::gt_output(outputId = ns("info"))
         )
       )
     ) # layout_sidebar
@@ -208,11 +208,10 @@ scatter_server <- function(id, x) {
     })
 
     ## Render table -----
-    output$info <- renderTable(
-      info(),
-      rownames = TRUE,
-      colnames = TRUE
-    )
+    output$info <- gt::render_gt({
+      gt::gt(info(), rownames_to_stub = TRUE) |>
+        gt::tab_options(table.width = "100%")
+    })
 
     ## Render plot -----
     render_plot("plot", x = plot_scatter)
