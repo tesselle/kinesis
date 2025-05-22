@@ -24,6 +24,13 @@ logratio_ui <- function(id, title) {
           value = FALSE
         ),
         uiOutput(outputId = ns("settings")),
+        radioButtons(
+          inputId = ns("type"),
+          label = tr_("Plot type"),
+          selected = "scatter",
+          choiceNames = c(tr_("Scatter plot"), tr_("Boxplot")),
+          choiceValues = c("scatter", "boxplot")
+        ),
         downloadButton(outputId = ns("download_table"),
                        label = tr_("Download log-ratio")),
         ## Output: graph
@@ -96,12 +103,18 @@ logratio_server <- function(id, x, method) {
     plot_log <- reactive({
       req(logratio())
 
+      lvl <- ""
+      if (nexus::is_grouped(logratio())) lvl <- nexus::group_levels(logratio())
+      fun <- switch(
+        input$type,
+        scatter = function(x)
+          plot(x, color = param$col_quali(lvl), symbol = param$pch(lvl)),
+        boxplot = function(x)
+          boxplot(x, color = param$col_quali(lvl))
+      )
+
       function() {
-        plot(
-          logratio(),
-          palette_color = param$col_quali,
-          palette_symbol = param$pch
-        )
+        fun(logratio())
       }
     })
 

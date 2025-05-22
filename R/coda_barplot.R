@@ -75,9 +75,6 @@ coda_barplot_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select column -----
-    col_bar <- updateSelectVariables("order_rows", x = x)
-
     ## Subset -----
     data_bar <- reactive({
       req(x())
@@ -95,6 +92,9 @@ coda_barplot_server <- function(id, x) {
       x()[, elements, drop = FALSE]
     })
 
+    ## Select column -----
+    col_bar <- updateSelectVariables("order_rows", x = data_bar)
+
     ## Graphical parameters -----
     param <- graphics_server("par")
 
@@ -102,8 +102,10 @@ coda_barplot_server <- function(id, x) {
     plot_bar <- reactive({
       req(data_bar())
 
-      col <- param$pal_quali
-      pal <- notify(khroma::palette_color_discrete(col, domain = colnames(x())))
+      col <- notify({
+        pal <- khroma::palette_color_discrete(param$pal_quali, domain = colnames(x()))
+        pal(colnames(data_bar()))
+      })
 
       function() {
         nexus::barplot(
@@ -111,8 +113,8 @@ coda_barplot_server <- function(id, x) {
           order_columns = input$order_columns,
           order_rows = col_bar() %|||% NULL,
           decreasing = input$decreasing,
-          palette_color = pal,
-          space = input$space %|||%0
+          color = col,
+          space = input$space %|||% 0
         )
       }
     })
