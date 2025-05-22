@@ -1273,11 +1273,11 @@ msgstr "Limite temporelle supérieure"
 #: kinesis-internal.R:30
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
-msgstr[0] "Sélectionner au moins %d ligne."
-msgstr[1] "Sélectionner au moins %d lignes."
+msgstr[0] "Sélectionnez au moins %d ligne."
+msgstr[1] "Sélectionnez au moins %d lignes."
 
 #: kinesis-internal.R:31
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
-msgstr[0] "Sélectionner au moins %d colonne."
-msgstr[1] "Sélectionner au moins %d colonnes."
+msgstr[0] "Sélectionnez au moins %d colonne."
+msgstr[1] "Sélectionnez au moins %d colonnes."

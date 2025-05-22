@@ -29,8 +29,7 @@ theme_ui <- function(version = "5", ...) {
 
 # Helpers ======================================================================
 validate_csv <- function(x) {
-  validate(need(x, message = tr_("Import a CSV file first.")),
-           errorClass = "kinesis")
+  validate(need(x, message = tr_("Import a CSV file first.")))
 }
 validate_dim <- function(x, i = 1, j = 1) {
   rows <- ngettext(i, "Select at least %d row.", "Select at least %d rows.")
