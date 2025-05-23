@@ -110,7 +110,7 @@ logratio_server <- function(id, x, method) {
         scatter = function(x)
           plot(x, color = param$col_quali(lvl), symbol = param$pch(lvl)),
         boxplot = function(x)
-          boxplot(x, color = param$col_quali(lvl))
+          nexus::boxplot(x, color = param$col_quali(lvl))
       )
 
       function() {
