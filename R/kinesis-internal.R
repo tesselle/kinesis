@@ -14,10 +14,16 @@ tr_ <- function(...) {
 #' @keywords internal
 #' @export
 theme_ui <- function(version = "5", ...) {
-  path <- system.file("static", "custom.scss", package = "kinesis")
-  scss <- sass::sass_file(path)
+  path_style <- system.file("static", "custom.scss", package = "kinesis")
+  scss <- sass::sass_file(path_style)
 
-  bs <- bslib::bs_theme(version = version, ...)
+  bs <- bslib::bs_theme(
+    version = version,
+    base_font = c("luciole", "sans-serif"),
+    heading_font = c("luciole", "sans-serif"),
+    code_font = NULL,
+    ...
+  )
   bslib::bs_add_rules(bs, scss)
 }
 

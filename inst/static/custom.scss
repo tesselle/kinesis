@@ -1,3 +1,71 @@
+/* Luciole-Regular */
+@font-face {
+  font-family: 'luciole';
+  src: url('/static/fonts/Luciole-Regular.eot'); /* IE9 Compat Modes */
+  src:
+    local("Luciole Regular"),
+    local("Luciole-Regular"),
+    url('/static/fonts/Luciole-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url("/static/fonts/Luciole-Regular.woff2") format("woff2"), /* Modern Browsers */
+    url('/static/fonts/Luciole-Regular.woff') format('woff'),
+    url('/static/fonts/Luciole-Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+/* Luciole-Bold */
+@font-face {
+  font-family: 'luciole';
+  src: url('/static/fonts/Luciole-Bold.eot'); /* IE9 Compat Modes */
+  src:
+    local("Luciole Bold"),
+    local("Luciole-Bold"),
+    url('/static/fonts/Luciole-Bold.eot?#iefix') format('embedded-opentype'),
+    url("/static/fonts/Luciole-Bold.woff2") format("woff2"),
+    url('/static/fonts/Luciole-Bold.woff') format('woff'),
+    url('/static/fonts/Luciole-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: bold;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+/* Luciole-BoldItalic */
+@font-face {
+  font-family: 'luciole';
+  src: url('/static/fonts/Luciole-BoldItalic.eot'); /* IE9 Compat Modes */
+  src:
+    local("Luciole BoldItalic"),
+    local("Luciole-BoldItalic"),
+    url('/static/fonts/Luciole-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url("/static/fonts/Luciole-BoldItalic.woff2") format("woff2"),
+    url('/static/fonts/Luciole-BoldItalic.woff') format('woff'),
+    url('/static/fonts/Luciole-BoldItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: bold;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
+/* Luciole-Italic */
+@font-face {
+  font-family: 'luciole';
+  src: url('/static/fonts/Luciole-Italic.eot'); /* IE9 Compat Modes */
+  src:
+    local("Luciole Italic"),
+    local("Luciole-Italic"),
+    url('/static/fonts/Luciole-Italic.eot?#iefix') format('embedded-opentype'),
+    url("/static/fonts/Luciole-Italic.woff2") format("woff2"),
+    url('/static/fonts/Luciole-Italic.woff') format('woff'),
+    url('/static/fonts/Luciole-Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: normal;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+}
+
 .logo a {
   text-decoration: none;
 }
