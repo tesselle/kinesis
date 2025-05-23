@@ -83,6 +83,9 @@ bertin_server  <- function(id, x, verbose = get_option("verbose", FALSE)) {
       arkhe::keep_columns(x(), f = is.numeric, verbose = verbose)
     })
 
+    ## Graphical parameters -----
+    param <- graphics_server("par")
+
     ## Plot -----
     plot_permute <- reactive({
       req(counts())
@@ -93,9 +96,6 @@ bertin_server  <- function(id, x, verbose = get_option("verbose", FALSE)) {
         median = stats::median,
         none = NULL
       )
-
-      ## Graphical parameters -----
-      param <- graphics_server("par")
 
       switch(
         input$type,

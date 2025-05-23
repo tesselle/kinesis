@@ -92,8 +92,8 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    extra_quali <- updateSelectVariables("extra_quali", x = x, find = Negate(is.numeric))
-    extra_quanti <- updateSelectVariables("extra_quanti", x = y, find = is.numeric)
+    col_quali <- updateSelectVariables("extra_quali", x = x, find = Negate(is.numeric))
+    col_quanti <- updateSelectVariables("extra_quanti", x = y, find = is.numeric)
 
     ## Get count data -----
     counts <- reactive({
@@ -154,9 +154,12 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
       req(analysis(), x(), y())
 
       ## Extra variables
+      extra_quanti <- arkhe::seek_columns(y(), names = col_quanti())
+      if (!is.null(extra_quanti)) extra_quanti <- y()[[extra_quanti]]
+      extra_quali <- arkhe::seek_columns(x(), names = col_quali())
+      if (!is.null(extra_quali)) extra_quali <- x()[[extra_quali]]
+
       col <- "black"
-      extra_quanti <- y()[[extra_quanti()]]
-      extra_quali <- x()[[extra_quali()]]
       if (isTruthy(extra_quanti)) {
         col <- param_pcoa$col_quant(extra_quanti)
       }
