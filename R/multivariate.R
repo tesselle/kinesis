@@ -403,6 +403,15 @@ multivariate_summary <- function(x, axes, margin) {
       columns = gt::ends_with("cos2"),
       id = "cos2"
     ) |>
+    gt::cols_label(
+      dist = tr_("Distance")
+    ) |>
+    gt::cols_label_with(
+      columns = gt::starts_with("F"),
+      fn = function(x) {
+        paste(tr_("Axis"), regmatches(x, regexpr("[0-9]", x)), sep = " ")
+      }
+    ) |>
     gt::opt_interactive(
       use_compact_mode = TRUE,
       use_page_size_select = TRUE

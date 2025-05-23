@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-20 18:44+0200\n"
+"POT-Creation-Date: 2025-05-23 14:37+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -51,7 +51,7 @@ msgstr "Télécharger les résultats"
 msgid "Plot"
 msgstr "Graphique"
 
-#: bertin.R:21
+#: bertin.R:21 coda_logratio.R:29
 msgid "Plot type"
 msgstr "Type de graphique"
 
@@ -183,15 +183,15 @@ msgstr ""
 msgid "Overview"
 msgstr "Aperçu"
 
-#: coda.R:63 prepare.R:37 prepare.R:108
+#: coda.R:63 prepare.R:37 prepare.R:105
 msgid "Missing values"
 msgstr "Valeurs manquantes"
 
-#: coda.R:166 multivariate.R:156 multivariate.R:159
+#: coda.R:165 multivariate.R:156 multivariate.R:159
 msgid "Group"
 msgstr "Groupe"
 
-#: coda.R:186
+#: coda.R:182
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
@@ -200,7 +200,7 @@ msgstr ""
 "des valeurs inférieures à la limite de détection (c'est-à-dire de petites "
 "valeurs inconnues)."
 
-#: coda.R:187
+#: coda.R:183
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
@@ -208,7 +208,7 @@ msgstr ""
 "Dans ce cas, vous pouvez définir ci-dessous la limite de détection pour "
 "chaque partie de la composition."
 
-#: coda.R:188
+#: coda.R:184
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
@@ -216,15 +216,15 @@ msgstr ""
 "Si toutes les limites sont spécifiées, les zéros seront remplacés par une "
 "fraction de ces limites."
 
-#: coda.R:189
+#: coda.R:185
 msgid "For computational details, see"
 msgstr "Pour plus de détails sur les calculs, voir"
 
-#: coda.R:194
+#: coda.R:190
 msgid "Fraction"
 msgstr "Fraction"
 
-#: coda.R:200
+#: coda.R:196
 msgid "Replace zero"
 msgstr "Remplacer les zéro"
 
@@ -306,35 +306,43 @@ msgstr ""
 msgid "Weighted log-ratio"
 msgstr "Rapports logarithmiques pondérés"
 
-#: coda_logratio.R:28
+#: coda_logratio.R:31
+msgid "Scatter plot"
+msgstr "Diagramme de dispersion"
+
+#: coda_logratio.R:31
+msgid "Boxplot"
+msgstr "Boîtes à moustaches"
+
+#: coda_logratio.R:35
 msgid "Download log-ratio"
 msgstr "Télécharger les rapports logarithmiques"
 
-#: coda_logratio.R:37 ternary.R:46
+#: coda_logratio.R:44 ternary.R:46
 msgid "Density"
 msgstr "Densité"
 
-#: coda_logratio.R:64
+#: coda_logratio.R:71
 msgid "Rationing part:"
 msgstr "Dénominateur :"
 
-#: coda_logratio.R:65
+#: coda_logratio.R:72
 msgid "Pivotal variable:"
 msgstr "Variable pivot :"
 
-#: coda_logratio.R:122
+#: coda_logratio.R:135
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:123
+#: coda_logratio.R:136
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:124
+#: coda_logratio.R:137
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:125
+#: coda_logratio.R:138
 msgid "Pivot Log-Ratio"
 msgstr ""
 
@@ -446,7 +454,7 @@ msgstr "Indice de proportionnalité des parties"
 msgid "&#945; Diversity"
 msgstr "Diversité &#945;"
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:78
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:91
 msgid "Diversity Measures"
 msgstr "Mesures de diversité"
 
@@ -461,6 +469,14 @@ msgstr "Dominance"
 #: count_diversity_alpha.R:74
 msgid "Richness"
 msgstr "Richesse"
+
+#: count_diversity_alpha.R:79
+msgid "Sample size"
+msgstr "Effectif"
+
+#: count_diversity_alpha.R:80
+msgid "Observed richness"
+msgstr "Richesse observée"
 
 #: count_diversity_beta.R:14
 msgid "&#946; Diversity"
@@ -507,7 +523,7 @@ msgid "PCoA"
 msgstr "ACoP"
 
 #: count_diversity_beta.R:106 count_diversity_beta.R:124
-#: count_diversity_docs.R:88
+#: count_diversity_docs.R:86
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
 
@@ -519,22 +535,22 @@ msgstr "Définitions"
 msgid "Alpha Diversity"
 msgstr "Diversité alpha"
 
-#: count_diversity_docs.R:20
+#: count_diversity_docs.R:19
 msgid "Heterogeneity index"
 msgstr "Indice d'hétérogénéité"
 
-#: count_diversity_docs.R:21
+#: count_diversity_docs.R:20
 msgid ""
 "The higher the heterogeneity value, the more diverse the individuals are in "
 "the dataset."
 msgstr ""
 "Plus la valeur de l'hétérogénéité est élevée, plus la diversité est forte."
 
-#: count_diversity_docs.R:35
+#: count_diversity_docs.R:34
 msgid "Dominance index"
 msgstr "Indice de dominance"
 
-#: count_diversity_docs.R:36
+#: count_diversity_docs.R:35
 msgid ""
 "Dominance is a measure of whether a community is dominated by certain types "
 "(an increase in the value means a decrease in diversity)."
@@ -543,11 +559,11 @@ msgstr ""
 "communauté (une augmentation de la dominance signifie une diminution de la "
 "diversité)."
 
-#: count_diversity_docs.R:52
+#: count_diversity_docs.R:51
 msgid "Richness index"
 msgstr "Richesse"
 
-#: count_diversity_docs.R:53
+#: count_diversity_docs.R:52
 msgid ""
 "Richness quantifies how many different types the dataset of interest "
 "contains, it does not take into account the abundances of the types."
@@ -876,27 +892,27 @@ msgstr "Saisie des données"
 msgid "Reading data..."
 msgstr "Lecture des données..."
 
-#: kinesis-internal.R:26
+#: kinesis-internal.R:32
 msgid "Import a CSV file first."
 msgstr "Importez d'abord un fichier CSV."
 
-#: kinesis-internal.R:36
+#: kinesis-internal.R:41
 msgid "Your data should not contain missing values."
 msgstr "Vos données ne doivent pas contenir de valeurs manquantes."
 
-#: kinesis-internal.R:40
+#: kinesis-internal.R:45
 msgid "Your data should not contain zeros."
 msgstr "Vos données ne doivent pas contenir de zéros."
 
-#: kinesis-internal.R:78 time_interval.R:29
+#: kinesis-internal.R:83 time_interval.R:29
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: kinesis-internal.R:345
+#: kinesis-internal.R:350
 msgid "Your data seem to have changed."
 msgstr "Vos données semblent avoir été modifiées."
 
-#: kinesis-internal.R:346
+#: kinesis-internal.R:351
 msgid "You should perform your analysis again."
 msgstr "Vous devriez refaire votre analyse."
 
@@ -978,7 +994,7 @@ msgstr "Plan factoriel des variables"
 msgid "Individuals"
 msgstr "Individus"
 
-#: multivariate.R:120 prepare.R:149 scatter.R:18 ternary.R:20
+#: multivariate.R:120 prepare.R:146 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr "Variables"
 
@@ -986,29 +1002,37 @@ msgstr "Variables"
 msgid "Screeplot"
 msgstr "Diagramme d'éboulis"
 
-#: multivariate.R:360
+#: multivariate.R:369
 msgid "Eigenvalues"
 msgstr "Valeurs propres"
 
-#: multivariate.R:360
+#: multivariate.R:370
 msgid "Explained var. (%)"
 msgstr "Var. expliquée (%)"
 
-#: multivariate.R:360
+#: multivariate.R:371
 msgid "Cumulative var. (%)"
 msgstr "Var. cumulée (%)"
 
-#: multivariate.R:386
+#: multivariate.R:392
 msgid "Coordinates"
 msgstr "Coordonnées"
 
-#: multivariate.R:391
+#: multivariate.R:397
 msgid "Contribution"
 msgstr "Contribution"
 
-#: multivariate.R:396
+#: multivariate.R:402
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
+
+#: multivariate.R:407
+msgid "Distance"
+msgstr "Distance"
+
+#: multivariate.R:412
+msgid "Axis"
+msgstr "Axe"
 
 #: pca.R:19 pca.R:86
 msgid "PCA"
@@ -1038,7 +1062,7 @@ msgstr ""
 msgid "Tools"
 msgstr "Outils"
 
-#: plot.R:22 prepare.R:115
+#: plot.R:22 prepare.R:112
 msgid "Download"
 msgstr "Télécharger"
 
@@ -1066,79 +1090,79 @@ msgstr "Périphérique graphique inconnu."
 msgid "Table overview"
 msgstr "Aperçu du tableau"
 
-#: prepare.R:100
+#: prepare.R:97
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: prepare.R:104
+#: prepare.R:101
 msgid "Sparsity"
 msgstr "Sparsité"
 
-#: prepare.R:112
+#: prepare.R:109
 msgid "Export your data for futur use."
 msgstr "Exporter vos données pour une utilisation future."
 
-#: prepare.R:147
+#: prepare.R:144
 msgid "Select data"
 msgstr "Sélection"
 
-#: prepare.R:148
+#: prepare.R:145
 msgid "Sample names"
 msgstr "Noms des échantillons"
 
-#: prepare.R:175
+#: prepare.R:172
 msgid "Row names"
 msgstr "Noms de lignes"
 
-#: prepare.R:207
+#: prepare.R:204
 msgid "Clean values"
 msgstr "Nettoyage"
 
-#: prepare.R:211
+#: prepare.R:208
 msgid "Remove leading/trailing whitespace"
 msgstr "Supprimer les espaces blancs en début et en fin de texte"
 
-#: prepare.R:217
+#: prepare.R:214
 msgid "Remove rows with zero"
 msgstr "Supprimer les lignes contenant des zéros"
 
-#: prepare.R:222
+#: prepare.R:219
 msgid "Remove columns with zero"
 msgstr "Supprimer les colonnes contenant des zéros"
 
-#: prepare.R:228
+#: prepare.R:225
 msgid "Remove constant columns"
 msgstr "Supprimer les colonnes constantes"
 
-#: prepare.R:234
+#: prepare.R:231
 msgid "Remove only if all values meet the condition"
 msgstr "Ne supprimer que si toutes les valeurs remplissent la condition"
 
-#: prepare.R:287
+#: prepare.R:284
 msgid "Empty string as missing value"
 msgstr "Chaîne de caractères vide comme valeur manquante"
 
-#: prepare.R:293
+#: prepare.R:290
 msgid "Zero as missing value"
 msgstr "Zéro comme valeur manquante"
 
-#: prepare.R:299
+#: prepare.R:296
 msgid "Remove missing values:"
 msgstr "Supprimer les valeurs manquantes :"
 
-#: prepare.R:301
+#: prepare.R:298
 msgid "Keep as is"
 msgstr "Conserver en l'état"
 
-#: prepare.R:302
+#: prepare.R:299
 msgid "Replace missing values with zeros"
 msgstr "Remplacer les valeurs manquantes par des zéros"
 
-#: prepare.R:303
+#: prepare.R:300
 msgid "Remove rows with missing values"
 msgstr "Supprimer les lignes contenant des valeurs manquantes"
 
-#: prepare.R:304
+#: prepare.R:301
 msgid "Remove columns with missing values"
 msgstr "Supprimer les colonnes contenant des valeurs manquantes"
 
@@ -1270,13 +1294,13 @@ msgstr "Limite temporelle inférieure"
 msgid "Upper temporal boundary"
 msgstr "Limite temporelle supérieure"
 
-#: kinesis-internal.R:30
+#: kinesis-internal.R:35
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
 msgstr[0] "Sélectionnez au moins %d ligne."
 msgstr[1] "Sélectionnez au moins %d lignes."
 
-#: kinesis-internal.R:31
+#: kinesis-internal.R:36
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
 msgstr[0] "Sélectionnez au moins %d colonne."

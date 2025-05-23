@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-20 18:44+0200\n"
+"POT-Creation-Date: 2025-05-23 14:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Plot"
 msgstr ""
 
-#: bertin.R:21
+#: bertin.R:21 coda_logratio.R:29
 msgid "Plot type"
 msgstr ""
 
@@ -169,41 +169,41 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
-#: coda.R:63 prepare.R:37 prepare.R:108
+#: coda.R:63 prepare.R:37 prepare.R:105
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:166 multivariate.R:156 multivariate.R:159
+#: coda.R:165 multivariate.R:156 multivariate.R:159
 msgid "Group"
 msgstr ""
 
-#: coda.R:186
+#: coda.R:182
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:187
+#: coda.R:183
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:188
+#: coda.R:184
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:189
+#: coda.R:185
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:194
+#: coda.R:190
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:200
+#: coda.R:196
 msgid "Replace zero"
 msgstr ""
 
@@ -283,35 +283,43 @@ msgstr ""
 msgid "Weighted log-ratio"
 msgstr ""
 
-#: coda_logratio.R:28
+#: coda_logratio.R:31
+msgid "Scatter plot"
+msgstr ""
+
+#: coda_logratio.R:31
+msgid "Boxplot"
+msgstr ""
+
+#: coda_logratio.R:35
 msgid "Download log-ratio"
 msgstr ""
 
-#: coda_logratio.R:37 ternary.R:46
+#: coda_logratio.R:44 ternary.R:46
 msgid "Density"
 msgstr ""
 
-#: coda_logratio.R:64
+#: coda_logratio.R:71
 msgid "Rationing part:"
 msgstr ""
 
-#: coda_logratio.R:65
+#: coda_logratio.R:72
 msgid "Pivotal variable:"
 msgstr ""
 
-#: coda_logratio.R:122
+#: coda_logratio.R:135
 msgid "Centered Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:123
+#: coda_logratio.R:136
 msgid "Additive Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:124
+#: coda_logratio.R:137
 msgid "Isometric Log-Ratio"
 msgstr ""
 
-#: coda_logratio.R:125
+#: coda_logratio.R:138
 msgid "Pivot Log-Ratio"
 msgstr ""
 
@@ -423,7 +431,7 @@ msgstr ""
 msgid "&#945; Diversity"
 msgstr ""
 
-#: count_diversity_alpha.R:18 count_diversity_alpha.R:78
+#: count_diversity_alpha.R:18 count_diversity_alpha.R:91
 msgid "Diversity Measures"
 msgstr ""
 
@@ -437,6 +445,14 @@ msgstr ""
 
 #: count_diversity_alpha.R:74
 msgid "Richness"
+msgstr ""
+
+#: count_diversity_alpha.R:79
+msgid "Sample size"
+msgstr ""
+
+#: count_diversity_alpha.R:80
+msgid "Observed richness"
 msgstr ""
 
 #: count_diversity_beta.R:14
@@ -483,7 +499,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:88
+#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:86
 msgid "Beta Diversity"
 msgstr ""
 
@@ -495,31 +511,31 @@ msgstr ""
 msgid "Alpha Diversity"
 msgstr ""
 
-#: count_diversity_docs.R:20
+#: count_diversity_docs.R:19
 msgid "Heterogeneity index"
 msgstr ""
 
-#: count_diversity_docs.R:21
+#: count_diversity_docs.R:20
 msgid ""
 "The higher the heterogeneity value, the more diverse the individuals are in "
 "the dataset."
 msgstr ""
 
-#: count_diversity_docs.R:35
+#: count_diversity_docs.R:34
 msgid "Dominance index"
 msgstr ""
 
-#: count_diversity_docs.R:36
+#: count_diversity_docs.R:35
 msgid ""
 "Dominance is a measure of whether a community is dominated by certain types "
 "(an increase in the value means a decrease in diversity)."
 msgstr ""
 
-#: count_diversity_docs.R:52
+#: count_diversity_docs.R:51
 msgid "Richness index"
 msgstr ""
 
-#: count_diversity_docs.R:53
+#: count_diversity_docs.R:52
 msgid ""
 "Richness quantifies how many different types the dataset of interest "
 "contains, it does not take into account the abundances of the types."
@@ -816,27 +832,27 @@ msgstr ""
 msgid "Reading data..."
 msgstr ""
 
-#: kinesis-internal.R:26
+#: kinesis-internal.R:32
 msgid "Import a CSV file first."
 msgstr ""
 
-#: kinesis-internal.R:36
+#: kinesis-internal.R:41
 msgid "Your data should not contain missing values."
 msgstr ""
 
-#: kinesis-internal.R:40
+#: kinesis-internal.R:45
 msgid "Your data should not contain zeros."
 msgstr ""
 
-#: kinesis-internal.R:78 time_interval.R:29
+#: kinesis-internal.R:83 time_interval.R:29
 msgid "Calendar"
 msgstr ""
 
-#: kinesis-internal.R:345
+#: kinesis-internal.R:350
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:346
+#: kinesis-internal.R:351
 msgid "You should perform your analysis again."
 msgstr ""
 
@@ -916,7 +932,7 @@ msgstr ""
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:120 prepare.R:149 scatter.R:18 ternary.R:20
+#: multivariate.R:120 prepare.R:146 scatter.R:18 ternary.R:20
 msgid "Variables"
 msgstr ""
 
@@ -924,28 +940,36 @@ msgstr ""
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:360
+#: multivariate.R:369
 msgid "Eigenvalues"
 msgstr ""
 
-#: multivariate.R:360
+#: multivariate.R:370
 msgid "Explained var. (%)"
 msgstr ""
 
-#: multivariate.R:360
+#: multivariate.R:371
 msgid "Cumulative var. (%)"
 msgstr ""
 
-#: multivariate.R:386
+#: multivariate.R:392
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:391
+#: multivariate.R:397
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:396
+#: multivariate.R:402
 msgid "Squared cosinus"
+msgstr ""
+
+#: multivariate.R:407
+msgid "Distance"
+msgstr ""
+
+#: multivariate.R:412
+msgid "Axis"
 msgstr ""
 
 #: pca.R:19 pca.R:86
@@ -974,7 +998,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:22 prepare.R:115
+#: plot.R:22 prepare.R:112
 msgid "Download"
 msgstr ""
 
@@ -1002,79 +1026,79 @@ msgstr ""
 msgid "Table overview"
 msgstr ""
 
-#: prepare.R:100
+#: prepare.R:97
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:104
+#: prepare.R:101
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:112
+#: prepare.R:109
 msgid "Export your data for futur use."
 msgstr ""
 
-#: prepare.R:147
+#: prepare.R:144
 msgid "Select data"
 msgstr ""
 
-#: prepare.R:148
+#: prepare.R:145
 msgid "Sample names"
 msgstr ""
 
-#: prepare.R:175
+#: prepare.R:172
 msgid "Row names"
 msgstr ""
 
-#: prepare.R:207
+#: prepare.R:204
 msgid "Clean values"
 msgstr ""
 
-#: prepare.R:211
+#: prepare.R:208
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:217
+#: prepare.R:214
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:222
+#: prepare.R:219
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:228
+#: prepare.R:225
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:234
+#: prepare.R:231
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:287
+#: prepare.R:284
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:293
+#: prepare.R:290
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:299
+#: prepare.R:296
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:301
+#: prepare.R:298
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:302
+#: prepare.R:299
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:303
+#: prepare.R:300
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:304
+#: prepare.R:301
 msgid "Remove columns with missing values"
 msgstr ""
 
@@ -1206,13 +1230,13 @@ msgstr ""
 msgid "Upper temporal boundary"
 msgstr ""
 
-#: kinesis-internal.R:30
+#: kinesis-internal.R:35
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kinesis-internal.R:31
+#: kinesis-internal.R:36
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
 msgstr[0] ""

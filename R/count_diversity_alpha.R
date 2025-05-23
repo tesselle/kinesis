@@ -75,6 +75,19 @@ diversity_alpha_server <- function(id, x, verbose = get_option("verbose", FALSE)
           columns = c(7, 8, 9, 10, 11) + 1,
           id = "richness"
         ) |>
+        gt::cols_label(
+          size = tr_("Sample size"),
+          observed = tr_("Observed richness"),
+          shannon = "Shannon",
+          brillouin = "Brillouin",
+          simpson = "Simpson",
+          berger = "Berger-Parker",
+          menhinick = "Menhinick",
+          margalef = "Margalef",
+          chao1 = "Chao1",
+          ace = "ACE",
+          squares = "Squares"
+        ) |>
         gt::tab_header(title = tr_("Diversity Measures")) |>
         gt::fmt_number(decimals = 3) |>
         gt::sub_missing()
