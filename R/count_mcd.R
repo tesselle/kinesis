@@ -67,8 +67,8 @@ mcd_server <- function(id, x) {
 
     ## Compute MCD -----
     compute_mcd <- ExtendedTask$new(
-      function(...) {
-        mirai::mirai({ kairos::mcd(x, dates, calendar) }, ...)
+      function(x, dates, calendar) {
+        mirai::mirai({ kairos::mcd(x, dates, calendar) }, environment())
       }
     ) |>
       bslib::bind_task_button("go")

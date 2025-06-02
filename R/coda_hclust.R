@@ -74,7 +74,7 @@ coda_hclust_server <- function(id, x) {
 
     ## Compute cluster -----
     compute_hclust <- ExtendedTask$new(
-      function(...) {
+      function(x, method, clust) {
         mirai::mirai({
           clr <- nexus::transform_clr(x)
           d <- nexus::dist(clr, method = method)
@@ -82,7 +82,7 @@ coda_hclust_server <- function(id, x) {
           h$dist <- d
           if (nexus::is_grouped(x)) h$groups <- nexus::group_names(x)
           h
-        }, ...)
+        }, environment())
       }
     ) |>
       bslib::bind_task_button("go")

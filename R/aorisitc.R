@@ -94,10 +94,10 @@ aoristic_server <- function(id, x, y) {
 
     ## Compute analysis -----
     compute_ao <- ExtendedTask$new(
-      function(...) {
+      function(x, y, step, start, end, calendar, weight, groups) {
         mirai::mirai({
           kairos::aoristic(x, y, step, start, end, calendar, weight, groups)
-        }, ...)
+        }, environment())
       }
     ) |>
       bslib::bind_task_button("go")

@@ -93,7 +93,7 @@ pca_server <- function(id, x) {
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
-      function(...) {
+      function(x, center, scale, rank, sup_row, sup_col, sup_quali) {
         mirai::mirai({
           param <- list(object = x, center = center, scale = scale, rank = rank,
                         sup_row = arkhe::seek_rows(x, names = sup_row),
@@ -102,7 +102,7 @@ pca_server <- function(id, x) {
             param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
           }
           do.call(dimensio::pca, param)
-        }, ...)
+        }, environment())
       }
     ) |>
       bslib::bind_task_button("go")

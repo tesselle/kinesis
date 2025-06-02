@@ -72,7 +72,7 @@ ca_server <- function(id, x) {
 
     ## Compute CA -----
     compute_ca <- ExtendedTask$new(
-      function(...) {
+      function(x, rank, sup_row, sup_col, sup_quali) {
         mirai::mirai({
           param <- list(object = x, rank = rank,
                         sup_row = arkhe::seek_rows(x, names = sup_row),
@@ -81,7 +81,7 @@ ca_server <- function(id, x) {
             param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
           }
           do.call(dimensio::ca, param)
-        }, ...)
+        }, environment())
       }
     ) |>
       bslib::bind_task_button("go")

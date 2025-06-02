@@ -74,8 +74,8 @@ occurrence_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     ## Compute index -----
     compute_occur <- ExtendedTask$new(
-      function(...) {
-        mirai::mirai({ tabula::occurrence(x, method = tolower(method)) }, ...)
+      function(x, method) {
+        mirai::mirai({ tabula::occurrence(x, method = tolower(method)) }, environment())
       }
     ) |>
       bslib::bind_task_button("go")
