@@ -74,16 +74,14 @@ occurrence_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
     ## Compute index -----
     compute_occur <- ExtendedTask$new(
-      function(x, method) {
-        promises::future_promise({
-          tabula::occurrence(x, method = tolower(method))
-        })
+      function(...) {
+        mirai::mirai({ tabula::occurrence(x, method = tolower(method)) }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_occur$invoke(counts(), input$method)
+      compute_occur$invoke(x = counts(), method = input$method)
     }) |>
       bindEvent(input$go)
 

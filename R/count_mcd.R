@@ -67,16 +67,14 @@ mcd_server <- function(id, x) {
 
     ## Compute MCD -----
     compute_mcd <- ExtendedTask$new(
-      function(x, dates, calendar) {
-        promises::future_promise({
-          kairos::mcd(x, dates, calendar)
-        })
+      function(...) {
+        mirai::mirai({ kairos::mcd(x, dates, calendar) }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_mcd$invoke(x(), dates(), calendar = cal_in())
+      compute_mcd$invoke(x = x(), dates = dates(), calendar = cal_in())
     }) |>
       bindEvent(input$go)
 

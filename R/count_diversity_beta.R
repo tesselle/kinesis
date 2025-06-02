@@ -107,16 +107,14 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
 
     ## Compute similarity -----
     compute_beta <- ExtendedTask$new(
-      function(x, method) {
-        promises::future_promise({
-          1 - tabula::similarity(x, method = method)
-        })
+      function(...) {
+        mirai::mirai({ 1 - tabula::similarity(x, method) }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_beta$invoke(counts(), input$method)
+      compute_beta$invoke(x = counts(), method = input$method)
     }) |>
       bindEvent(input$go)
 

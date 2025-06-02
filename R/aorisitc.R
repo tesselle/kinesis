@@ -94,17 +94,19 @@ aoristic_server <- function(id, x, y) {
 
     ## Compute analysis -----
     compute_ao <- ExtendedTask$new(
-      function(x, y, step, start, end, calendar, weight, groups) {
-        promises::future_promise({
+      function(...) {
+        mirai::mirai({
           kairos::aoristic(x, y, step, start, end, calendar, weight, groups)
-        })
+        }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_ao$invoke(lower(), upper(), input$step, input$start, input$end,
-                        calendar(), input$weight, x()$groups)
+      compute_ao$invoke(x = lower(), y = upper(), step = input$step,
+                        start = input$start, end = input$end,
+                        calendar = calendar(), weight = input$weight,
+                        groups = x()$groups)
     }) |>
       bindEvent(input$go)
 

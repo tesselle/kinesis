@@ -93,8 +93,8 @@ pca_server <- function(id, x) {
 
     ## Compute PCA -----
     compute_pca <- ExtendedTask$new(
-      function(x, center, scale, rank, sup_row, sup_col, sup_quali) {
-        promises::future_promise({
+      function(...) {
+        mirai::mirai({
           param <- list(object = x, center = center, scale = scale, rank = rank,
                         sup_row = arkhe::seek_rows(x, names = sup_row),
                         sup_col = arkhe::seek_columns(x, names = sup_col))
@@ -102,14 +102,15 @@ pca_server <- function(id, x) {
             param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
           }
           do.call(dimensio::pca, param)
-        })
+        }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_pca$invoke(x(), input$center, input$scale, input$rank,
-                         sup_row(), sup_col(), sup_quali())
+      compute_pca$invoke(x = x(), center = input$center, scale = input$scale,
+                         rank = input$rank, sup_row = sup_row(),
+                         sup_col = sup_col(), sup_quali = sup_quali())
     }) |>
       bindEvent(input$go)
 

@@ -95,6 +95,15 @@ run_app("seriation")
 | `source`    | Compositional Data Analysis   |
 | `ternary`   | Ternary Plot                  |
 
+### Asynchronous backend
+
+``` r
+## Run app using 3 local daemons
+# install.packages("mirai")
+obj <- run_app("seriation")
+with(mirai::daemons(3), shiny::runApp(obj))
+```
+
 ## Translation
 
 This package provides translations of the user interface. The preferred

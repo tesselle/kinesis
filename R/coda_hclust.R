@@ -74,21 +74,21 @@ coda_hclust_server <- function(id, x) {
 
     ## Compute cluster -----
     compute_hclust <- ExtendedTask$new(
-      function(x, method, clust) {
-        promises::future_promise({
+      function(...) {
+        mirai::mirai({
           clr <- nexus::transform_clr(x)
           d <- nexus::dist(clr, method = method)
           h <- stats::hclust(d, method = clust)
           h$dist <- d
           if (nexus::is_grouped(x)) h$groups <- nexus::group_names(x)
           h
-        })
+        }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_hclust$invoke(x(), input$dist, input$clust)
+      compute_hclust$invoke(x = x(), method = input$dist, clust = input$clust)
     }) |>
       bindEvent(input$go)
 

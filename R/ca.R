@@ -72,8 +72,8 @@ ca_server <- function(id, x) {
 
     ## Compute CA -----
     compute_ca <- ExtendedTask$new(
-      function(x, rank, sup_row, sup_col, sup_quali) {
-        promises::future_promise({
+      function(...) {
+        mirai::mirai({
           param <- list(object = x, rank = rank,
                         sup_row = arkhe::seek_rows(x, names = sup_row),
                         sup_col = arkhe::seek_columns(x, names = sup_col))
@@ -81,13 +81,14 @@ ca_server <- function(id, x) {
             param$sup_quali <- arkhe::seek_columns(x, names = sup_quali)
           }
           do.call(dimensio::ca, param)
-        })
+        }, ...)
       }
     ) |>
       bslib::bind_task_button("go")
 
     observe({
-      compute_ca$invoke(x(), input$rank, sup_row(), sup_col(), sup_quali())
+      compute_ca$invoke(x = x(), rank = input$rank, sup_row = sup_row(),
+                        sup_col = sup_col(), sup_quali = sup_quali())
     }) |>
       bindEvent(input$go)
 

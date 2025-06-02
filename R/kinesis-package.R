@@ -24,7 +24,6 @@
 
 #' @import shiny
 #' @import bslib
-#' @importFrom future plan multisession
 NULL
 
 # Suppress R CMD check note "All declared Imports should be used."
