@@ -31,26 +31,26 @@ Imports:
     bslib (>= 0.9.0),
     config (>= 0.3.2),
     datasets,
-    dimensio (>= 0.13.0),
-    folio (>= 1.5.0),
+    dimensio (>= 0.14.0),
+    folio (>= 1.5.1),
     grDevices,
     gt (>= 1.0.0),
     isopleuros (>= 1.4.0),
-    kairos (>= 2.2.1),
+    kairos (>= 2.3.0),
     khroma (>= 1.16.0),
-    nexus (>= 0.5.0),
     mirai (>= 2.3.0),
+    nexus (>= 0.6.0),
     sass (>= 0.4.10),
     shiny (>= 1.10.0),
     stats,
-    tabula (>= 3.3.0),
+    tabula (>= 3.3.1),
     utils
 Suggests: 
-    tinytest,
-    tinysnapshot
+    tinysnapshot,
+    tinytest
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.2
 X-schema.org-applicationCategory: Archaeological Science
 X-schema.org-isPartOf: https://www.tesselle.org
 X-schema.org-keywords: archaeology, archaeological-science, archaeometry,
