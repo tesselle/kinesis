@@ -21,9 +21,10 @@ occurrence_ui <- function(id) {
           label = tr_("Method"),
           choiceNames = c(tr_("Absolute frequency"),
                           tr_("Relative frequency"),
-                          tr_("Binomial assessment")),
+                          tr_("Z-score")),
           choiceValues = c("absolute", "relative", "binomial")
         ),
+        info_article(author = "Kintigh", year = "2006", doi = "10.6067/XCV8J38QSS"),
         bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
         downloadButton(
           outputId = ns("download"),

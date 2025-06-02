@@ -17,7 +17,7 @@ coda_hclust_ui <- function(id) {
         title = tr_("Hierarchical Clustering"),
         selectInput(
           inputId = ns("dist"),
-          label = tr_("Distance method"),
+          label = tr_("Distance"),
           choices = c(Aitchison = "euclidean")
         ),
         selectInput(

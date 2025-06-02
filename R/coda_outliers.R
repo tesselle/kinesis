@@ -46,7 +46,7 @@ coda_outliers_ui <- function(id) {
         div(
           radioButtons(
             inputId = ns("type"),
-            label = tr_("Type of plot"),
+            label = tr_("Plot type"),
             choices = c("dotchart", "distance")
           ),
           tableOutput(outputId = ns("info"))

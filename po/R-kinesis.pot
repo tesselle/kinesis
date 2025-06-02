@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-23 14:37+0200\n"
+"POT-Creation-Date: 2025-06-02 19:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 msgid "Analysis"
 msgstr ""
 
-#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:91
+#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:114 time_interval.R:91
 msgid "Aoristic Analysis"
 msgstr ""
 
@@ -35,11 +35,11 @@ msgstr ""
 msgid "Weigth"
 msgstr ""
 
-#: aorisitc.R:43 ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22 count_occurrence.R:27 pca.R:50
+#: aorisitc.R:43 ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27 count_mcd.R:22 count_occurrence.R:28 pca.R:50
 msgid "(Re)Compute"
 msgstr ""
 
-#: aorisitc.R:46 ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:30 pca.R:53
+#: aorisitc.R:46 ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21 count_mcd.R:25 count_occurrence.R:31 pca.R:53
 msgid "Download results"
 msgstr ""
 
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Plot"
 msgstr ""
 
-#: bertin.R:21 coda_logratio.R:29
+#: bertin.R:21 coda_logratio.R:29 coda_outliers.R:49
 msgid "Plot type"
 msgstr ""
 
@@ -91,7 +91,7 @@ msgstr ""
 msgid "CA"
 msgstr ""
 
-#: ca.R:18 ca.R:95
+#: ca.R:18 ca.R:96
 msgid "Correspondence Analysis"
 msgstr ""
 
@@ -107,23 +107,23 @@ msgstr ""
 msgid "Supplementary qualitative variables"
 msgstr ""
 
-#: ca.R:122
+#: ca.R:123
 msgid "Chi-squared Test"
 msgstr ""
 
-#: ca.R:125
+#: ca.R:126
 msgid "Statistic: %.0f"
 msgstr ""
 
-#: ca.R:128
+#: ca.R:129
 msgid "Degrees of freedom: %.0f"
 msgstr ""
 
-#: ca.R:131
+#: ca.R:132
 msgid "p-value: %s"
 msgstr ""
 
-#: ca.R:134
+#: ca.R:135
 msgid "Cramer's V: %.2f"
 msgstr ""
 
@@ -247,8 +247,8 @@ msgstr ""
 msgid "Hierarchical Clustering"
 msgstr ""
 
-#: coda_hclust.R:20
-msgid "Distance method"
+#: coda_hclust.R:20 multivariate.R:407
+msgid "Distance"
 msgstr ""
 
 #: coda_hclust.R:25
@@ -353,10 +353,6 @@ msgstr ""
 
 #: coda_outliers.R:37
 msgid "(Re)Detect"
-msgstr ""
-
-#: coda_outliers.R:49
-msgid "Type of plot"
 msgstr ""
 
 #: coda_outliers.R:76
@@ -499,7 +495,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:106 count_diversity_beta.R:124 count_diversity_docs.R:86
+#: count_diversity_beta.R:106 count_diversity_beta.R:122 count_diversity_docs.R:86
 msgid "Beta Diversity"
 msgstr ""
 
@@ -553,11 +549,11 @@ msgstr ""
 msgid "Set the date midpoint (in years) of each ceramic type."
 msgstr ""
 
-#: count_mcd.R:61 count_mcd.R:84
+#: count_mcd.R:61 count_mcd.R:82
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:73 count_occurrence.R:91
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:74 count_occurrence.R:90
 msgid "Co-Occurrence"
 msgstr ""
 
@@ -574,7 +570,7 @@ msgid "Relative frequency"
 msgstr ""
 
 #: count_occurrence.R:24
-msgid "Binomial assessment"
+msgid "Z-score"
 msgstr ""
 
 #: graphics.R:17
@@ -964,10 +960,6 @@ msgstr ""
 msgid "Squared cosinus"
 msgstr ""
 
-#: multivariate.R:407
-msgid "Distance"
-msgstr ""
-
 #: multivariate.R:412
 msgid "Axis"
 msgstr ""
@@ -976,7 +968,7 @@ msgstr ""
 msgid "PCA"
 msgstr ""
 
-#: pca.R:23 pca.R:117
+#: pca.R:23 pca.R:118
 msgid "Principal Components Analysis"
 msgstr ""
 

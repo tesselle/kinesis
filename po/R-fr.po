@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
-"POT-Creation-Date: 2025-05-23 14:37+0200\n"
+"POT-Creation-Date: 2025-06-02 19:39+0200\n"
 "PO-Revision-Date: 2025-04-01 17:27+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Analysis"
 msgstr "Analyse"
 
-#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:112 time_interval.R:91
+#: aorisitc.R:18 aorisitc.R:93 aorisitc.R:114 time_interval.R:91
 msgid "Aoristic Analysis"
 msgstr "Analyse Aoristique"
 
@@ -38,12 +38,12 @@ msgid "Weigth"
 msgstr "Pondération"
 
 #: aorisitc.R:43 ca.R:34 coda_hclust.R:30 count_diversity_beta.R:27
-#: count_mcd.R:22 count_occurrence.R:27 pca.R:50
+#: count_mcd.R:22 count_occurrence.R:28 pca.R:50
 msgid "(Re)Compute"
 msgstr "(Re)Calculer"
 
 #: aorisitc.R:46 ca.R:37 coda_outliers.R:38 count_diversity_alpha.R:21
-#: count_mcd.R:25 count_occurrence.R:30 pca.R:53
+#: count_mcd.R:25 count_occurrence.R:31 pca.R:53
 msgid "Download results"
 msgstr "Télécharger les résultats"
 
@@ -51,7 +51,7 @@ msgstr "Télécharger les résultats"
 msgid "Plot"
 msgstr "Graphique"
 
-#: bertin.R:21 coda_logratio.R:29
+#: bertin.R:21 coda_logratio.R:29 coda_outliers.R:49
 msgid "Plot type"
 msgstr "Type de graphique"
 
@@ -96,7 +96,7 @@ msgstr "Médiane"
 msgid "CA"
 msgstr "AFC"
 
-#: ca.R:18 ca.R:95
+#: ca.R:18 ca.R:96
 msgid "Correspondence Analysis"
 msgstr "Analyse des correspondances"
 
@@ -112,23 +112,23 @@ msgstr "Variables quantitatives supplémentaires"
 msgid "Supplementary qualitative variables"
 msgstr "Variables qualitatives supplémentaires"
 
-#: ca.R:122
+#: ca.R:123
 msgid "Chi-squared Test"
 msgstr "Test du Khi carré"
 
-#: ca.R:125
+#: ca.R:126
 msgid "Statistic: %.0f"
 msgstr "Statistique : %.0f"
 
-#: ca.R:128
+#: ca.R:129
 msgid "Degrees of freedom: %.0f"
 msgstr "Degrés de liberté : %.0f"
 
-#: ca.R:131
+#: ca.R:132
 msgid "p-value: %s"
 msgstr "Probabilité critique : %s"
 
-#: ca.R:134
+#: ca.R:135
 msgid "Cramer's V: %.2f"
 msgstr "V de Cramér : %.2f"
 
@@ -262,14 +262,14 @@ msgstr "Gouttière"
 
 #: coda_hclust.R:13 coda_hclust.R:73
 msgid "HCLUST"
-msgstr ""
+msgstr "CAH"
 
 #: coda_hclust.R:17 coda_hclust.R:96
 msgid "Hierarchical Clustering"
 msgstr "Regroupement hiérarchique"
 
-#: coda_hclust.R:20
-msgid "Distance method"
+#: coda_hclust.R:20 multivariate.R:407
+msgid "Distance"
 msgstr "Distance"
 
 #: coda_hclust.R:25
@@ -377,10 +377,6 @@ msgstr "Quantile"
 #: coda_outliers.R:37
 msgid "(Re)Detect"
 msgstr "(Re)Détecter"
-
-#: coda_outliers.R:49
-msgid "Type of plot"
-msgstr "Type de graphique"
 
 #: coda_outliers.R:76
 msgid "Check your data."
@@ -522,7 +518,7 @@ msgstr "Dissimilarité"
 msgid "PCoA"
 msgstr "ACoP"
 
-#: count_diversity_beta.R:106 count_diversity_beta.R:124
+#: count_diversity_beta.R:106 count_diversity_beta.R:122
 #: count_diversity_docs.R:86
 msgid "Beta Diversity"
 msgstr "Diversité bêta"
@@ -583,12 +579,12 @@ msgstr "Date céramique moyenne"
 msgid "Set the date midpoint (in years) of each ceramic type."
 msgstr "Saisissez la date (en années) de chaque type de céramique."
 
-#: count_mcd.R:61 count_mcd.R:84
+#: count_mcd.R:61 count_mcd.R:82
 msgid "MCD"
 msgstr ""
 
-#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:73
-#: count_occurrence.R:91
+#: count_occurrence.R:14 count_occurrence.R:18 count_occurrence.R:74
+#: count_occurrence.R:90
 msgid "Co-Occurrence"
 msgstr "Cooccurrence"
 
@@ -605,9 +601,8 @@ msgid "Relative frequency"
 msgstr "Fréquences relatives"
 
 #: count_occurrence.R:24
-#, fuzzy
-msgid "Binomial assessment"
-msgstr "Test binomial"
+msgid "Z-score"
+msgstr "Cote Z"
 
 #: graphics.R:17
 msgid "Qualitative scheme"
@@ -619,7 +614,7 @@ msgstr "Palette quantitative"
 
 #: graphics.R:36
 msgid "Fixed aspect ratio"
-msgstr ""
+msgstr "Ratio d'affichage fixe"
 
 #: graphics.R:44
 msgid "Symbol size"
@@ -1026,10 +1021,6 @@ msgstr "Contribution"
 msgid "Squared cosinus"
 msgstr "Cosinus carré"
 
-#: multivariate.R:407
-msgid "Distance"
-msgstr "Distance"
-
 #: multivariate.R:412
 msgid "Axis"
 msgstr "Axe"
@@ -1038,7 +1029,7 @@ msgstr "Axe"
 msgid "PCA"
 msgstr "ACP"
 
-#: pca.R:23 pca.R:117
+#: pca.R:23 pca.R:118
 msgid "Principal Components Analysis"
 msgstr "Analyse en composantes principales"
 
