@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.1.0.9000\n"
 "POT-Creation-Date: 2025-06-02 19:39+0200\n"
-"PO-Revision-Date: 2025-04-01 17:27+0000\n"
+"PO-Revision-Date: 2025-06-03 17:58+0000\n"
 "Last-Translator: nfrerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>\n"
 "Language-Team: French <https://translate.codeberg.org/projects/tesselle/"
 "kinesis/fr/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: aorisitc.R:14
 msgid "Analysis"
@@ -816,8 +816,7 @@ msgstr ""
 
 #: import.R:51
 msgid "This application only supports data encoded in UFT-8."
-msgstr ""
-"Cette application ne prend en charge que les données encodées en UFT-8."
+msgstr "Cette application ne prend en charge que les données encodées en UFT-8."
 
 #: import.R:59
 msgid "Choose a CSV or a TSV file:"
