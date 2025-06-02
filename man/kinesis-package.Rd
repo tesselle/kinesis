@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A collection of 'shiny' applications for the 'tesselle' packages.
+A collection of 'shiny' applications for the 'tesselle' packages. This package provides applications for archaeological data analysis and visualization. These mainly, but not exclusively, include applications for chronological modelling (e.g. matrix seriation, aoristic analysis) and count data analysis (e.g. diversity measures, compositional data analysis).
 }
 \details{
 \tabular{ll}{
@@ -36,8 +36,8 @@ to be used for asynchronous (parallel) computing. Defaults to 1.
 Useful links:
 \itemize{
   \item \url{https://codeberg.org/tesselle/kinesis}
-  \item \url{https://tesselle.r-universe.dev/kinesis}
   \item \url{https://packages.tesselle.org/kinesis/}
+  \item \url{https://tesselle.r-universe.dev/kinesis}
   \item Report bugs at \url{https://codeberg.org/tesselle/kinesis/issues}
 }
 
@@ -48,8 +48,8 @@ Useful links:
 Other contributors:
 \itemize{
   \item Brice Lebrun (\href{https://orcid.org/0000-0001-7503-8685}{ORCID}) (Logo designer) [artist]
-  \item Université Bordeaux Montaigne (\href{https://ror.org/03pbgwk21}{ROR}) [funder]
-  \item CNRS (\href{https://ror.org/02feahw73}{ROR}) [funder]
+  \item Université Bordeaux Montaigne (03pbgwk21) [funder]
+  \item CNRS (02feahw73) [funder]
 }
 
 }
