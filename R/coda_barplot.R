@@ -89,11 +89,13 @@ coda_barplot_server <- function(id, x) {
       elements[which(is_trace)] <- input$select_trace
 
       if (!any(elements)) return(x())
-      x()[, elements, drop = FALSE]
+      z <- x()[, elements, drop = FALSE]
+      validate_dim(z, j = 3)
+      z
     })
 
     ## Select column -----
-    col_bar <- updateSelectVariables("order_rows", x = data_bar)
+    col_bar <- update_selectize_variables("order_rows", x = data_bar)
 
     ## Graphical parameters -----
     param <- graphics_server("par")

@@ -97,10 +97,13 @@ get_calendar <- function(id) {
     cal
   })
 }
-column_input_numeric_ui <- function(id) {
-  uiOutput(NS(id, "controls"))
-}
-column_input_numeric_server <- function(id, x) {
+
+#' Build Numeric Input
+#'
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @keywords internal
+build_numeric_input <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -133,6 +136,11 @@ column_input_numeric_server <- function(id, x) {
 
     values
   })
+}
+
+#' @rdname build_numeric_input
+render_numeric_input <- function(id) {
+  uiOutput(NS(id, "controls"))
 }
 
 #' Updatable Select List
@@ -173,9 +181,9 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @return A reactive [`character`] vector of column names.
 #' @seealso [selectize_ui()]
 #' @keywords internal
-updateSelectVariables <- function(id, x, find = NULL, use = NULL,
-                                  selected = NULL, preserve = TRUE, none = TRUE,
-                                  server = TRUE) {
+update_selectize_variables <- function(id, x, find = NULL, use = NULL,
+                                       selected = NULL, preserve = TRUE,
+                                       none = TRUE, server = TRUE) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -237,8 +245,9 @@ updateSelectVariables <- function(id, x, find = NULL, use = NULL,
 #' @return A reactive [`character`] vector of column names.
 #' @seealso [selectize_ui()]
 #' @keywords internal
-updateSelectValues <- function(id, x, exclude = reactive({ NULL }),
-                                 preserve = TRUE, none = TRUE, server = TRUE) {
+update_selectize_values <- function(id, x, exclude = reactive({ NULL }),
+                                    preserve = TRUE, none = TRUE,
+                                    server = TRUE) {
   stopifnot(is.reactive(x))
   stopifnot(is.reactive(exclude))
 

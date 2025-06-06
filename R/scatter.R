@@ -97,10 +97,10 @@ scatter_server <- function(id, x) {
       i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2, negate = TRUE))
       colnames(x())[i]
     })
-    axis1 <- updateSelectValues("axis1", x = quanti)
-    axis2 <- updateSelectValues("axis2", x = quanti, exclude = axis1)
-    extra_quali <- updateSelectValues("extra_quali", x = quali)
-    extra_quanti <- updateSelectValues("extra_quanti", x = quanti)
+    axis1 <- update_selectize_values("axis1", x = quanti)
+    axis2 <- update_selectize_values("axis2", x = quanti, exclude = axis1)
+    extra_quali <- update_selectize_values("extra_quali", x = quali)
+    extra_quanti <- update_selectize_values("extra_quanti", x = quanti)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.

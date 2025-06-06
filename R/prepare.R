@@ -159,7 +159,7 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    row_names <- updateSelectVariables(id = "rownames", x = x)
+    row_names <- update_selectize_variables(id = "rownames", x = x)
 
     ## Assign row names
     named <- reactive({
@@ -176,7 +176,7 @@ select_server <- function(id, x, find_col = NULL, use_col = NULL,
       bindEvent(row_names())
 
     ## Update UI
-    col_names <- updateSelectVariables(
+    col_names <- update_selectize_variables(
       id = "colnames",
       x = named,
       find = find_col,

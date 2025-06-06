@@ -154,11 +154,11 @@ multivariate_server <- function(id, x, y) {
     ## Illustrative variables -----
     ## Set group_var for nexus::GroupedComposition objects
     extra <- reactive({ as.data.frame(y(), group_var = tr_("Group")) })
-    col_quali <- updateSelectVariables("extra_quali", x = extra,
-                                       find = Negate(is.numeric),
-                                       selected = tr_("Group"))
-    col_quanti <- updateSelectVariables("extra_quanti", x = extra,
-                                        find = is.numeric)
+    col_quali <- update_selectize_variables("extra_quali", x = extra,
+                                            find = Negate(is.numeric),
+                                            selected = tr_("Group"))
+    col_quanti <- update_selectize_variables("extra_quanti", x = extra,
+                                             find = is.numeric)
 
     ## Eigenvalues -----
     eigen <- reactive({

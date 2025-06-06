@@ -94,7 +94,7 @@ coda_summary_server <- function(id, x) {
     })
 
     ## Histogram -----
-    col_hist <- updateSelectVariables("hist_select", x = x, preserve = FALSE, none = FALSE)
+    col_hist <- update_selectize_variables("hist_select", x = x, preserve = FALSE, none = FALSE)
     plot_hist <- reactive({
       req(x(), col_hist())
       function() nexus::hist(x(), select = col_hist())

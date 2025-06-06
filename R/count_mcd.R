@@ -17,7 +17,7 @@ mcd_ui <- function(id) {
         width = 400,
         h5(tr_("Mean Ceramic Date")),
         helpText(tr_("Set the date midpoint (in years) of each ceramic type.")),
-        column_input_numeric_ui(ns("dates")),
+        render_numeric_input(ns("dates")),
         select_calendar(ns("calendar_input")),
         bslib::input_task_button(id = ns("go"), label = tr_("(Re)Compute")),
         downloadButton(
@@ -61,7 +61,7 @@ mcd_server <- function(id, x) {
     notify_change(session$ns("change"), x, old, title = tr_("MCD"))
 
     ## Update UI -----
-    dates <- column_input_numeric_server("dates", x)
+    dates <- build_numeric_input("dates", x)
     cal_in <- get_calendar("calendar_input")
     cal_out <- get_calendar("calendar_output")
 
