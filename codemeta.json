@@ -2,19 +2,19 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "kinesis",
-  "description": "A collection of 'shiny' applications for the 'tesselle' packages.",
+  "description": "A collection of 'shiny' applications for the 'tesselle' packages. This package provides applications for archaeological data analysis and visualization. These mainly, but not exclusively, include applications for chronological modelling (e.g. matrix seriation, aoristic analysis) and count data analysis (e.g. diversity measures, compositional data analysis).",
   "name": "kinesis: 'shiny' Applications for the 'tesselle' Packages",
-  "relatedLink": "https://packages.tesselle.org/kinesis/",
+  "relatedLink": ["https://packages.tesselle.org/kinesis/", "https://tesselle.r-universe.dev/kinesis"],
   "codeRepository": "https://codeberg.org/tesselle/kinesis",
   "issueTracker": "https://codeberg.org/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.1.0.9000",
+  "version": "0.2.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.3 (2025-02-28)",
+  "runtimePlatform": "R version 4.5.0 (2025-04-11)",
   "author": [
     {
       "@type": "Person",
@@ -46,18 +46,6 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "tinytest",
-      "name": "tinytest",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=tinytest"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "tinysnapshot",
       "name": "tinysnapshot",
       "provider": {
@@ -67,6 +55,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=tinysnapshot"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tinytest",
+      "name": "tinytest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tinytest"
     }
   ],
   "softwareRequirements": {
@@ -74,13 +74,13 @@
       "@type": "SoftwareApplication",
       "identifier": "R",
       "name": "R",
-      "version": ">= 4.1"
+      "version": ">= 4.2"
     },
     "2": {
       "@type": "SoftwareApplication",
       "identifier": "aion",
       "name": "aion",
-      "version": ">= 1.4.0",
+      "version": ">= 1.5.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -93,7 +93,7 @@
       "@type": "SoftwareApplication",
       "identifier": "arkhe",
       "name": "arkhe",
-      "version": ">= 1.10.0",
+      "version": ">= 1.11.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -130,9 +130,14 @@
     },
     "6": {
       "@type": "SoftwareApplication",
+      "identifier": "datasets",
+      "name": "datasets"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
       "identifier": "dimensio",
       "name": "dimensio",
-      "version": ">= 0.13.0",
+      "version": ">= 0.14.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -141,29 +146,29 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dimensio"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
-      "identifier": "future",
-      "name": "future",
-      "version": ">= 1.34.0",
+      "identifier": "folio",
+      "name": "folio",
+      "version": ">= 1.5.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=future"
+      "sameAs": "https://CRAN.R-project.org/package=folio"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "grDevices",
       "name": "grDevices"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "gt",
       "name": "gt",
-      "version": ">= 0.11.1",
+      "version": ">= 1.0.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -172,7 +177,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gt"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "isopleuros",
       "name": "isopleuros",
@@ -185,11 +190,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=isopleuros"
     },
-    "11": {
+    "12": {
       "@type": "SoftwareApplication",
       "identifier": "kairos",
       "name": "kairos",
-      "version": ">= 2.2.1",
+      "version": ">= 2.3.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -198,7 +203,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=kairos"
     },
-    "12": {
+    "13": {
       "@type": "SoftwareApplication",
       "identifier": "khroma",
       "name": "khroma",
@@ -211,11 +216,24 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=khroma"
     },
-    "13": {
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "mirai",
+      "name": "mirai",
+      "version": ">= 2.3.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=mirai"
+    },
+    "15": {
       "@type": "SoftwareApplication",
       "identifier": "nexus",
       "name": "nexus",
-      "version": ">= 0.4.0",
+      "version": ">= 0.6.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -224,24 +242,11 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=nexus"
     },
-    "14": {
-      "@type": "SoftwareApplication",
-      "identifier": "promises",
-      "name": "promises",
-      "version": ">= 1.3.2",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=promises"
-    },
-    "15": {
+    "16": {
       "@type": "SoftwareApplication",
       "identifier": "sass",
       "name": "sass",
-      "version": ">= 0.4.9",
+      "version": ">= 0.4.10",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -250,7 +255,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=sass"
     },
-    "16": {
+    "17": {
       "@type": "SoftwareApplication",
       "identifier": "shiny",
       "name": "shiny",
@@ -263,16 +268,16 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=shiny"
     },
-    "17": {
+    "18": {
       "@type": "SoftwareApplication",
       "identifier": "stats",
       "name": "stats"
     },
-    "18": {
+    "19": {
       "@type": "SoftwareApplication",
       "identifier": "tabula",
       "name": "tabula",
-      "version": ">= 3.2.1",
+      "version": ">= 3.3.1",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -281,7 +286,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tabula"
     },
-    "19": {
+    "20": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
@@ -291,7 +296,7 @@
   "applicationCategory": "ArchaeologicalScience",
   "isPartOf": "https://www.tesselle.org",
   "keywords": ["archaeology", "archaeological-science", "archaeometry", "shiny-apps", "r-package"],
-  "fileSize": "530.24KB",
+  "fileSize": "2345.157KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
@@ -305,13 +310,16 @@
       ],
       "name": "{The tesselle Project: a Collection of R Packages for Research and Teaching in Archaeology}",
       "identifier": "10.1017/aap.2024.10",
+      "pagination": "424-430",
       "@id": "https://doi.org/10.1017/aap.2024.10",
       "sameAs": "https://doi.org/10.1017/aap.2024.10",
       "isPartOf": {
         "@type": "PublicationIssue",
+        "issueNumber": "4",
         "datePublished": "2024",
         "isPartOf": {
           "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "12",
           "name": "Advances in Archaeological Practice"
         }
       }
@@ -329,7 +337,7 @@
       "name": "{kinesis: 'shiny' Applications for the 'tesselle' Packages}",
       "identifier": "10.5281/zenodo.14645671",
       "url": "https://packages.tesselle.org/kinesis/",
-      "description": "R package version 0.1.0.9000",
+      "description": "R package version 0.2.0",
       "@id": "https://doi.org/10.5281/zenodo.14645671",
       "sameAs": "https://doi.org/10.5281/zenodo.14645671"
     }

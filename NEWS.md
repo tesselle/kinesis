@@ -1,4 +1,4 @@
-# kinesis 0.1.0.9000
+# kinesis 0.2.0
 ## Internals
 * Import **aion** (>= 1.5.0).
 * Import **arkhe** (>= 1.11.0).
