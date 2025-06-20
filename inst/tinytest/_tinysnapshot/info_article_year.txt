@@ -1,0 +1,5 @@
+<span>
+  <i class="fas fa-circle-info" role="presentation" aria-label="circle-info icon"></i>
+  Filzmoser et al.
+  (<span>2009</span>).
+</span>

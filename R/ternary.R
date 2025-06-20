@@ -15,6 +15,7 @@ ternary_ui <- function(id) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
+        title = tr_("Ternary Plot"),
         accordion(
           accordion_panel(
             title = tr_("Variables"),
@@ -117,7 +118,7 @@ ternary_ui <- function(id) {
       output_plot(
         id = ns("ternplot"),
         tools = graphics_ui(ns("par"), lty = FALSE),
-        title = tr_("Ternary Plot"),
+        title = tr_("Plot"),
         dblclick = ns("ternplot_dblclick"),
         brush = brushOpts(
           id = ns("ternplot_brush"),

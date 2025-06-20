@@ -73,7 +73,8 @@ info_article <- function(...) {
 url_doi <- function(x, label = NULL, prefix = FALSE) {
   if (is.null(label)) label <- x
   url <- sprintf("https://doi.org/%s", x)
-  link <- tags$a(label, href = url, target = "_blank", role="doc-biblioref", .noWS = "after")
+  no_ws <- if (prefix) c("after") else c("before", "after")
+  link <- tags$a(label, href = url, target = "_blank", role="doc-biblioref", .noWS = no_ws)
   if (!prefix) return(link)
   list("DOI:", link, ".")
 }

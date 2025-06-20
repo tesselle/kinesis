@@ -15,12 +15,12 @@ coda_summary_ui <- function(id) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
+        title = tr_("Descriptive Statistics"),
         helpText(tr_("Data summary and descriptive statistics.")),
         downloadButton(
           outputId = ns("download"),
           label = tr_("Download tables")
         ),
-        h5(tr_("Univariate statistics")),
         selectize_ui(id = ns("hist_select"), label = tr_("Select a part")),
         output_plot(
           id = ns("hist"),
@@ -29,7 +29,6 @@ coda_summary_ui <- function(id) {
                               doi = "10.1016/j.scitotenv.2009.08.008")
         )
       ),
-      h5(tr_("Multivariate statistics")),
       navset_card_pill(
         placement = "above",
         nav_panel(
@@ -47,12 +46,24 @@ coda_summary_ui <- function(id) {
         ),
         nav_panel(
           title = tr_("Variation Matrix"),
-          layout_columns(
-            col_widths = breakpoints(xs = c(12, 12), lg = c(4, 8)),
-            output_plot(id = ns("heatmap")),
-            output_plot(id = ns("dendrogram"))
-          ),
-          gt::gt_output(outputId = ns("variation"))
+          tabsetPanel(
+            type = c("pills"),
+            tabPanel(
+              title = tr_("Table"),
+              class = "pt-3",
+              gt::gt_output(outputId = ns("variation"))
+            ),
+            tabPanel(
+              title = tr_("Heatmap"),
+              class = "pt-3",
+              output_plot(id = ns("heatmap"))
+            ),
+            tabPanel(
+              title = tr_("Dendrogram"),
+              class = "pt-3",
+              output_plot(id = ns("dendrogram"))
+            )
+          )
         )
       ) # navset_card_underline
     ) # layout_sidebar

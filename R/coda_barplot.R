@@ -15,6 +15,7 @@ coda_barplot_ui <- function(id) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
+        title = tr_("Bar Plot"),
         checkboxInput(
           inputId = ns("select_major"),
           label = tr_("Major elements"),
@@ -55,7 +56,7 @@ coda_barplot_ui <- function(id) {
           )
         ),
         height = "100%",
-        title = tr_("Bar Plot")
+        title = tr_("Plot")
       )
     ) # layout_sidebar
   ) # nav_panel
