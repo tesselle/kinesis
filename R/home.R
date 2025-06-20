@@ -18,12 +18,7 @@ home_ui <- function(id, package) {
         width = 300,
         title = tr_("Welcome!"),
         help_tesselle(),
-        help_license(),
-        tags$img(
-          src = "static/tesselle.png",
-          alt = tr_("Logo of the tesselle project."),
-          style = "width: 75%; margin: auto;"
-        )
+        help_license()
       ), # sidebar
       navset_card_pill(
         placement = "above",
@@ -35,10 +30,12 @@ home_ui <- function(id, package) {
           help_warranty(),
           tags$p(
             class = "logo",
-            tags$a(href = "https://www.archeosciences-bordeaux.fr", rel = "external",
-                   tags$img(src = "static/logo-archeosciences.svg")),
-            tags$a(href = "https://www.huma-num.fr", rel = "external",
-                   tags$img(src = "static/logo-humanum.svg"))
+            tags$a(href = "https://www.tesselle.org/", rel = "external",
+                   tags$img(src = "static/tesselle.png", alt = tr_("Logo of the tesselle project."))),
+            tags$a(href = "https://www.archeosciences-bordeaux.fr/", rel = "external",
+                   tags$img(src = "static/logo-archeosciences.svg", alt = "UMR 6034 Arch&eacute;osciences Bordeaux")),
+            tags$a(href = "https://www.huma-num.fr/", rel = "external",
+                   tags$img(src = "static/logo-humanum.svg", alt = "IR* Huma-Num"))
           )
         ),
         nav_panel(
