@@ -13,11 +13,11 @@ Authors@R: c(
   )
 Maintainer: Nicolas Frerebeau <nicolas.frerebeau@u-bordeaux-montaigne.fr>
 Description: A collection of 'shiny' applications for the 'tesselle'
-    packages. This package provides applications for archaeological data
-    analysis and visualization. These mainly, but not exclusively, include
-    applications for chronological modelling (e.g. matrix seriation,
-    aoristic analysis) and count data analysis (e.g. diversity measures,
-    compositional data analysis).
+    packages <https://www.tesselle.org/>. This package provides
+    applications for archaeological data analysis and visualization. These
+    mainly, but not exclusively, include applications for chronological
+    modelling (e.g. matrix seriation, aoristic analysis) and count data
+    analysis (e.g. diversity measures, compositional data analysis).
 License: GPL (>= 3)
 URL: https://codeberg.org/tesselle/kinesis,
     https://packages.tesselle.org/kinesis/,

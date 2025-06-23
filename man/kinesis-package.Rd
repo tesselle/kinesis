@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A collection of 'shiny' applications for the 'tesselle' packages. This package provides applications for archaeological data analysis and visualization. These mainly, but not exclusively, include applications for chronological modelling (e.g. matrix seriation, aoristic analysis) and count data analysis (e.g. diversity measures, compositional data analysis).
+A collection of 'shiny' applications for the 'tesselle' packages \url{https://www.tesselle.org/}. This package provides applications for archaeological data analysis and visualization. These mainly, but not exclusively, include applications for chronological modelling (e.g. matrix seriation, aoristic analysis) and count data analysis (e.g. diversity measures, compositional data analysis).
 }
 \details{
 \tabular{ll}{
