@@ -20,8 +20,8 @@ theme_ui <- function(version = "5", ...) {
 
   bs <- bslib::bs_theme(
     version = version,
-    base_font = c("luciole", "sans-serif"),
-    heading_font = c("luciole", "sans-serif"),
+    base_font = c("sans-serif"),
+    heading_font = c("sans-serif"),
     code_font = NULL,
     ...
   )
