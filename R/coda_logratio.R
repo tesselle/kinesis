@@ -19,7 +19,10 @@ logratio_ui <- function(id, title) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
-        title = uiOutput(outputId = ns("title")),
+        title = textOutput(
+          outputId = ns("title"),
+          container = function(...) tags$header(..., class = "sidebar-title")
+        ),
         helpText(tr_("Compute log-ratio transformation of compositional data.")),
         checkboxInput(
           inputId = ns("weights"),
@@ -132,8 +135,8 @@ logratio_server <- function(id, x, method) {
     })
 
     ## Render title -----
-    output$title <- renderUI({
-      title <- switch(
+    output$title <- renderText({
+      switch(
         method,
         clr = tr_("Centered Log-Ratio"),
         alr = tr_("Additive Log-Ratio"),
@@ -141,7 +144,6 @@ logratio_server <- function(id, x, method) {
         plr = tr_("Pivot Log-Ratio"),
         ""
       )
-      tags$header(title, class = "sidebar-title")
     })
 
     ## Render table -----

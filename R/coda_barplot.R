@@ -90,12 +90,11 @@ coda_barplot_server <- function(id, x) {
       is_minor <- nexus::is_element_minor(x())
       is_trace <- nexus::is_element_trace(x())
 
-      elements[which(is_major)] <- input$select_major
-      elements[which(is_minor)] <- input$select_minor
-      elements[which(is_trace)] <- input$select_trace
+      elements[which(is_major)] <- isTRUE(input$select_major)
+      elements[which(is_minor)] <- isTRUE(input$select_minor)
+      elements[which(is_trace)] <- isTRUE(input$select_trace)
 
-      if (!any(elements)) return(x())
-      z <- x()[, elements, drop = FALSE]
+      z <- x()[, which(elements), drop = FALSE]
       validate_dim(z, j = 3)
       z
     })
@@ -118,9 +117,9 @@ coda_barplot_server <- function(id, x) {
       function() {
         nexus::barplot(
           height = data_bar(),
-          order_columns = input$order_columns,
+          order_columns = isTRUE(input$order_columns),
           order_rows = col_bar() %|||% NULL,
-          decreasing = input$decreasing,
+          decreasing = isTRUE(input$decreasing),
           color = col,
           space = input$space %|||% 0
         )

@@ -166,7 +166,7 @@ scatter_server <- function(id, x) {
 
       col <- param$col_quali(x()[[extra_quali()]])
       pch <- param$pch(x()[[extra_quali()]])
-      cex = param$cex(x()[[extra_quanti()]])
+      cex <- param$cex(x()[[extra_quanti()]])
 
       ## Build plot
       function() {

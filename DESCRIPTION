@@ -47,6 +47,8 @@ Imports:
     utils
 Suggests: 
     fontquiver,
+    rsvg,
+    svglite,
     tinysnapshot,
     tinytest
 Encoding: UTF-8

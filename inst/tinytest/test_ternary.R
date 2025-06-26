@@ -44,8 +44,8 @@ if (at_home()) {
     session$setInputs("extra_quanti-selected" = "")
     session$setInputs("extra_quali-selected" = "")
 
-    plot_ternary_none <- plot_ternary()
-    expect_snapshot_plot(plot_ternary_none, "plot_ternary_none")
+    plot_ternary_default <- plot_ternary()
+    expect_snapshot_plot(plot_ternary_default, "plot_ternary_default")
 
     session$setInputs("extra_quali-selected" = "dynasty")
     session$setInputs("par-col_quali" = "bright")
