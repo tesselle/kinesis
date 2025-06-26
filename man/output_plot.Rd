@@ -17,6 +17,9 @@ output_plot(id, ..., tools = NULL, title = NULL, note = NULL)
 
 \item{note}{A \code{\link{character}} string giving a note to be placed in the footer.}
 }
+\value{
+A \code{\link[htmltools:builder]{htmltools::div()}} tag.
+}
 \description{
 Plot UI
 }

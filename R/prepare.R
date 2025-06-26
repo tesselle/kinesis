@@ -2,6 +2,9 @@
 #' Prepare Data UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [prepare_server()]
 #' @family generic modules
 #' @keywords internal
@@ -53,7 +56,7 @@ prepare_ui <- function(id) {
 #' @param select A predicate [`function`] used to select columns.
 #' @param demo A [`character`] string specifying the name of a dataset (see
 #'  [import_server()]).
-#' @return A reactive `data.frame`.
+#' @return A reactive [`data.frame`].
 #' @seealso [prepare_ui()]
 #' @family generic modules
 #' @keywords internal
@@ -146,12 +149,16 @@ select_ui <- function(id) {
     selectize_ui(id = ns("colnames"), label = tr_("Variables"), multiple = TRUE)
   )
 }
+
 #' @param id A [`character`] string specifying the namespace.
 #' @param x A reactive `matrix`-like object.
 #' @param find_col A predicate [`function`] for column detection
 #'  (see [arkhe::detect()]).
 #' @param use_col A predicate [`function`] for column selection
 #'  (see [arkhe::detect()]).
+#' @param min_row An [`interger`] specifying the expected minimum number of rows.
+#' @param min_col An [`interger`] specifying the expected minimum number of columns.
+#' @return A reactive [`data.frame`].
 #' @noRd
 select_server <- function(id, x, find_col = NULL, use_col = NULL,
                           min_row = 1, min_col = 1) {
@@ -234,6 +241,13 @@ clean_ui <- function(id) {
     )
   )
 }
+
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `matrix`-like object.
+#' @param verbose A [`logical`] scalar: should \R report extra information on
+#'  progress?
+#' @return A reactive [`data.frame`].
+#' @noRd
 clean_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
@@ -306,6 +320,13 @@ missing_ui <- function(id) {
     output_plot(ns("heatmap"))
   )
 }
+
+#' @param id A [`character`] string specifying the namespace.
+#' @param x A reactive `matrix`-like object.
+#' @param verbose A [`logical`] scalar: should \R report extra information on
+#'  progress?
+#' @return A reactive [`data.frame`].
+#' @noRd
 missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 

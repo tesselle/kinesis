@@ -18,7 +18,7 @@ UI function.}
 progress?}
 }
 \value{
-A reactive \code{\link{data.frame}}.
+No return value, called for side effects.
 }
 \description{
 Beta Diversity Server

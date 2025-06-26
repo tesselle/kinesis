@@ -14,6 +14,14 @@ render_numeric_input(id)
 
 \item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 }
+\value{
+\itemize{
+\item \code{build_numeric_input()} returns a reactive \code{\link{numeric}} vector
+(side effect: render numeric input controls).
+\item \code{render_numeric_input()} is called for its side effects
+(creates UI elements).
+}
+}
 \description{
 Build Numeric Input
 }

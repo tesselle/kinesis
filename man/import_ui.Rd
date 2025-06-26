@@ -9,6 +9,9 @@ import_ui(id)
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
+\value{
+A \code{\link{list}} of UI elements.
+}
 \description{
 Import Data UI
 }

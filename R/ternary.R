@@ -2,6 +2,9 @@
 #' Ternary Plot UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [ternary_server()]
 #' @family plot modules
 #' @keywords internal
@@ -136,6 +139,8 @@ ternary_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `matrix`-like object.
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [ternary_ui()]
 #' @family plot modules
 #' @keywords internal

@@ -15,6 +15,9 @@ UI function.}
 \item{verbose}{A \code{\link{logical}} scalar: should \R report extra information on
 progress?}
 }
+\value{
+A reactive \code{\link{data.frame}} (see \code{\link[tabula:diversity]{tabula::diversity()}}).
+}
 \description{
 Alpha Diversity Server
 }

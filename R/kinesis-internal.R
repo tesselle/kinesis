@@ -10,7 +10,8 @@ tr_ <- function(...) {
 #' @param version A [`character`] string specifying the major version of
 #'  Bootstrap to use.
 #' @param ... Extra parameters to be passed to [bslib::bs_theme()].
-#' @seealso [bslib::bs_theme()]
+#' @return
+#'  Returns a [sass::sass_bundle()] object (see [bslib::bs_theme()]).
 #' @keywords internal
 #' @export
 theme_ui <- function(version = "5", ...) {
@@ -64,6 +65,7 @@ validate_zero <- function(x) {
 #'  (without extension and the leading dot).
 #' @param ext A [`character`] string specifying the file extension.
 #' @param project A [`character`] string specifying the name of the project.
+#' @return A [`character`] string.
 #' @family widgets
 #' @keywords internal
 #' @noRd
@@ -102,6 +104,11 @@ get_calendar <- function(id) {
 #'
 #' @param id A [`character`] string specifying the namespace.
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @return
+#'  * `build_numeric_input()` returns a reactive [`numeric`] vector
+#'    (side effect: render numeric input controls).
+#'  * `render_numeric_input()` is called for its side effects
+#'    (creates UI elements).
 #' @keywords internal
 build_numeric_input <- function(id, x) {
   stopifnot(is.reactive(x))
@@ -146,6 +153,9 @@ render_numeric_input <- function(id) {
 #' Updatable Select List
 #'
 #' @param id A [`character`] string specifying the namespace.
+#' @return
+#'  A select list control that can be added to a UI definition
+#'  (see [shiny::selectizeInput()]).
 #' @keywords internal
 selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
   ns <- NS(id)
@@ -178,7 +188,10 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @param none A [`logical`] scalar: should a placeholder be added as the first
 #'  element?
 #' @param server A [`logical`] scalar: should server-side selectize be used?
-#' @return A reactive [`character`] vector of column names.
+#' @return
+#'  A reactive [`character`] vector of column names.
+#'
+#'  Side effect: change the value of a select input on the client.
 #' @seealso [selectize_ui()]
 #' @keywords internal
 update_selectize_variables <- function(id, x, find = NULL, use = NULL,
@@ -242,7 +255,10 @@ update_selectize_variables <- function(id, x, find = NULL, use = NULL,
 #' @param none A [`logical`] scalar: should a placeholder be added as the first
 #'  element?
 #' @param server A [`logical`] scalar: should server-side selectize be used?
-#' @return A reactive [`character`] vector of column names.
+#' @return
+#'  A reactive [`character`] vector of column names.
+#'
+#'  Side effect: change the value of a select input on the client.
 #' @seealso [selectize_ui()]
 #' @keywords internal
 update_selectize_values <- function(id, x, exclude = reactive({ NULL }),
@@ -344,7 +360,7 @@ notify <- function(expr, title = NULL) {
 #' @param y A reactive object.
 #' @param title A [`character`] string giving the title of the notification.
 #' @return
-#'  `notify_change()` is called for its side-effects.
+#'  No return value, called for side effects.
 #' @keywords internal
 #' @noRd
 notify_change <- function(id, x, y, title = "Important message") {

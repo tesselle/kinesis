@@ -11,6 +11,10 @@ logratio_ui(id, title)
 
 \item{title}{A \code{\link{character}} string giving the sidebar title.}
 }
+\value{
+A nav item that may be passed to a nav container
+(e.g. \code{\link[bslib:navset]{bslib::navset_tab()}}).
+}
 \description{
 Log-Ratio UI
 }

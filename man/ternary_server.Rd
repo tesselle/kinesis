@@ -12,6 +12,9 @@ UI function.}
 
 \item{x}{A reactive \code{matrix}-like object.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Ternary Plot Server
 }

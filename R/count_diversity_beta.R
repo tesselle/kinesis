@@ -2,6 +2,9 @@
 #' Beta Diversity UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [diversity_beta_server()]
 #' @family count data modules
 #' @keywords internal
@@ -82,7 +85,8 @@ diversity_beta_ui <- function(id) {
 #' @param y A reactive `data.frame` returned by [diversity_alpha_server()].
 #' @param verbose A [`logical`] scalar: should \R report extra information on
 #'  progress?
-#' @return A reactive [`data.frame`].
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [diversity_beta_ui()]
 #' @family count data modules
 #' @keywords internal

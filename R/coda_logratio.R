@@ -3,6 +3,9 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @param title A [`character`] string giving the sidebar title.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [logratio_server()]
 #' @family coda modules
 #' @keywords internal

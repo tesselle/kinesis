@@ -2,6 +2,9 @@
 #' Time Intervals UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [time_interval_server()]
 #' @family chronology modules
 #' @keywords internal
@@ -50,7 +53,7 @@ time_interval_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame`.
-#' @return A reactive `list`.
+#' @return A reactive [`list`].
 #' @seealso [time_interval_ui()]
 #' @family chronology modules
 #' @keywords internal

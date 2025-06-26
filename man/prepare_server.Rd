@@ -23,7 +23,7 @@ UI function.}
 \code{\link[=import_server]{import_server()}}).}
 }
 \value{
-A reactive \code{data.frame}.
+A reactive \code{\link{data.frame}}.
 }
 \description{
 Prepare Data Server

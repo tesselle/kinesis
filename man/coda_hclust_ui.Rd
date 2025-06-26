@@ -6,6 +6,13 @@
 \usage{
 coda_hclust_ui(id)
 }
+\arguments{
+\item{id}{A \code{\link{character}} vector to be used for the namespace.}
+}
+\value{
+A nav item that may be passed to a nav container
+(e.g. \code{\link[bslib:navset]{bslib::navset_tab()}}).
+}
 \description{
 Compositional Data Hierarchical Clustering UI
 }

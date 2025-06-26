@@ -13,7 +13,7 @@ UI function.}
 \item{x}{A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.}
 }
 \value{
-A reactive \code{\link{hclust}} object.
+No return value, called for side effects.
 }
 \description{
 Compositional Data Hierarchical Clustering Server

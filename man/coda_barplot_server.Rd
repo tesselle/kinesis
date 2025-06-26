@@ -12,6 +12,9 @@ UI function.}
 
 \item{x}{A reactive \code{\link[nexus:CompositionMatrix-class]{nexus::CompositionMatrix}} object.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Bar Plot Server
 }

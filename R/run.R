@@ -101,6 +101,8 @@ get_config <- function(app, file = NA, active = NA, use_parent = TRUE) {
 #' @param name A [`character`] string specifying the name of an option to get.
 #'  If `NULL` (the default), all options are returned.
 #' @param default A value to be returned if the option is not currently set.
+#' @return
+#'  The value of a \pkg{Shiny} option (see [shiny::getShinyOption()]).
 #' @author N. Frerebeau
 #' @keywords internal
 #' @export

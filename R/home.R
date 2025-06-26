@@ -3,6 +3,9 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @param package A [`character`] vector of package names to be cited.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [home_server()]
 #' @family page modules
 #' @keywords internal
@@ -66,6 +69,9 @@ home_ui <- function(id, package) {
 #' Footer UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A [`list`] that can be converted into an HTML `<footer>` tag
+#'  (see [htmltools::tags()]).
 #' @seealso [footer_server()]
 #' @family page modules
 #' @keywords internal
@@ -93,6 +99,8 @@ footer_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [home_ui()]
 #' @family page modules
 #' @keywords internal
@@ -139,6 +147,8 @@ home_server <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [footer_ui()]
 #' @family page modules
 #' @keywords internal

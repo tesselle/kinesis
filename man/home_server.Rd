@@ -10,6 +10,9 @@ home_server(id)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Home Server
 }

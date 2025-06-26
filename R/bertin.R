@@ -3,6 +3,9 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @param title A [`character`] string giving the plot title.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [bertin_server()]
 #' @family count data modules
 #' @keywords internal
@@ -69,6 +72,8 @@ bertin_ui <- function(id, title = NULL) {
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @param verbose A [`logical`] scalar: should \R report extra information on
 #'  progress?
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [bertin_ui()]
 #' @family count data modules
 #' @keywords internal

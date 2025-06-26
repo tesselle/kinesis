@@ -11,6 +11,10 @@ bertin_ui(id, title = NULL)
 
 \item{title}{A \code{\link{character}} string giving the plot title.}
 }
+\value{
+A nav item that may be passed to a nav container
+(e.g. \code{\link[bslib:navset]{bslib::navset_tab()}}).
+}
 \description{
 Bertin Diagrams UI
 }

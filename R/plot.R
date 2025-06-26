@@ -6,6 +6,7 @@
 #' @param title A [`character`] string giving the card title.
 #' @param note A [`character`] string giving a note to be placed in the footer.
 #' @param ... Further parameters to be passed to [shiny::plotOutput()].
+#' @return A [htmltools::div()] tag.
 #' @family widgets
 #' @keywords internal
 output_plot <- function(id, ..., tools = NULL, title = NULL, note = NULL) {
@@ -58,6 +59,8 @@ brush_ylim <- function(e) {
 #'  UI function.
 #' @param x A reactive [`function`] recording the plot.
 #' @param ... Further parameters to be passed to [shiny::renderPlot()].
+#' @return
+#'  No return value, called for side effects.
 #' @family widgets
 #' @keywords internal
 render_plot <- function(id, x, ...) {
@@ -161,6 +164,8 @@ download_plot <- function(ns) {
 #' @param input Inputs selected by the user.
 #' @param x A reactive [`function`] recording the plot.
 #' @param format A [`character`] string specifying the file extension.
+#' @return
+#'  No return value, called for side effects.
 #' @keywords internal
 #' @noRd
 export_plot <- function(input, x, format) {

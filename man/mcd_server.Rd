@@ -13,7 +13,7 @@ UI function.}
 \item{x}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 }
 \value{
-A reactive \code{\link{data.frame}}.
+No return value, called for side effects.
 }
 \description{
 MCD Server

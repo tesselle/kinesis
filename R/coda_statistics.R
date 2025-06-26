@@ -2,6 +2,9 @@
 #' Compositional Data Summary UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [coda_summary_server()]
 #' @family coda modules
 #' @keywords internal
@@ -76,6 +79,8 @@ coda_summary_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive [`nexus::CompositionMatrix-class`] object.
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [coda_summary_ui()]
 #' @family coda modules
 #' @keywords internal

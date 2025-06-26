@@ -15,6 +15,9 @@ UI function.}
 \item{y}{A reactive \code{matrix}-like object use to compute the multivariate
 analysis.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Multivariate Analysis Server
 }

@@ -10,7 +10,10 @@ scatter_server(id, x)
 \item{id}{An ID string that corresponds with the ID used to call the module's
 UI function.}
 
-\item{x}{A reactive \code{data.frame}.}
+\item{x}{A reactive \code{\link{data.frame}}.}
+}
+\value{
+No return value, called for side effects.
 }
 \description{
 Scatter Plot Server

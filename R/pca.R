@@ -7,6 +7,9 @@
 #' @param scale A [`logical`] scalar: should the variables be scaled to unit
 #'  variance?
 #' @param help A [`character`] string giving a short help text.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [pca_server()]
 #' @family multivariate analysis modules
 #' @keywords internal

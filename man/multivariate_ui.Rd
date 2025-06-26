@@ -11,6 +11,8 @@ multivariate_ui(id)
 }
 \value{
 A tab that can be passed to \code{\link[shiny:tabsetPanel]{shiny::tabsetPanel()}}.
+
+A navigation container (see \code{\link[bslib:navset]{bslib::navset_card_pill()}}).
 }
 \description{
 Mutlivariate Analysis UI

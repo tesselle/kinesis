@@ -12,10 +12,10 @@ Bootstrap to use.}
 
 \item{...}{Extra parameters to be passed to \code{\link[bslib:bs_theme]{bslib::bs_theme()}}.}
 }
+\value{
+Returns a \code{\link[sass:sass_layer]{sass::sass_bundle()}} object (see \code{\link[bslib:bs_theme]{bslib::bs_theme()}}).
+}
 \description{
 Bootstrap Theme
-}
-\seealso{
-\code{\link[bslib:bs_theme]{bslib::bs_theme()}}
 }
 \keyword{internal}

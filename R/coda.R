@@ -2,6 +2,9 @@
 #' Compositional Data UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [coda_server()]
 #' @family coda modules
 #' @keywords internal

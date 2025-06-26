@@ -14,6 +14,9 @@ UI function.}
 
 \item{...}{Further parameters to be passed to \code{\link[shiny:renderPlot]{shiny::renderPlot()}}.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Plot Server
 }

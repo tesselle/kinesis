@@ -17,6 +17,9 @@ graphics_ui(
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
+\value{
+A \code{\link{list}} of UI elements.
+}
 \description{
 Graphical Parameters UI
 }

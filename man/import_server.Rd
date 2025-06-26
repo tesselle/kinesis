@@ -14,7 +14,7 @@ UI function.}
 \pkg{folio} or \pkg{datasets}.}
 }
 \value{
-A reactive \code{data.frame}.
+A reactive \code{\link{data.frame}}.
 }
 \description{
 Import Data Server

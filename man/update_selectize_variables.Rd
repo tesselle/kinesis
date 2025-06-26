@@ -37,6 +37,8 @@ element?}
 }
 \value{
 A reactive \code{\link{character}} vector of column names.
+
+Side effect: change the value of a select input on the client.
 }
 \description{
 Update a Select List with Column Names

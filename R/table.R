@@ -5,6 +5,8 @@
 #' @param x A reactive [`data.frame`] to be saved.
 #' @param name A [`character`] string specifying the name of the file
 #'  (without extension and the leading dot).
+#' @return
+#'  No return value, called for side effects.
 #' @family widgets
 #' @keywords internal
 #' @noRd
@@ -32,6 +34,8 @@ export_table <- function(x, name) {
 #' @param ... Further named arguments ([`data.frame`] to be saved).
 #' @param name A [`character`] string specifying the name of the file
 #'  (without extension and the leading dot).
+#' @return
+#'  No return value, called for side effects.
 #' @family widgets
 #' @keywords internal
 #' @noRd

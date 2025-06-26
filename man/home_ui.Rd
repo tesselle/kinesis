@@ -11,6 +11,10 @@ home_ui(id, package)
 
 \item{package}{A \code{\link{character}} vector of package names to be cited.}
 }
+\value{
+A nav item that may be passed to a nav container
+(e.g. \code{\link[bslib:navset]{bslib::navset_tab()}}).
+}
 \description{
 About UI
 }

@@ -2,6 +2,8 @@
 #' Graphical Parameters UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A [`list`] of UI elements.
 #' @seealso [graphics_server()]
 #' @family plot modules
 #' @keywords internal

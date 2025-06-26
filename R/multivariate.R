@@ -3,6 +3,8 @@
 #'
 #' @param id A [`character`] vector to be used for the namespace.
 #' @return A tab that can be passed to [shiny::tabsetPanel()].
+#' @return
+#'  A navigation container (see [bslib::navset_card_pill()]).
 #' @seealso [multivariate_server()]
 #' @family multivariate analysis modules
 #' @keywords internal
@@ -143,6 +145,8 @@ multivariate_ui <- function(id) {
 #' @param x A reactive [`dimensio::MultivariateAnalysis-class`] object.
 #' @param y A reactive `matrix`-like object use to compute the multivariate
 #'  analysis.
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [multivariate_ui]
 #' @family multivariate analysis modules
 #' @keywords internal

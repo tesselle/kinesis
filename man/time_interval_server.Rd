@@ -13,7 +13,7 @@ UI function.}
 \item{x}{A reactive \code{data.frame}.}
 }
 \value{
-A reactive \code{list}.
+A reactive \code{\link{list}}.
 }
 \description{
 Aoristic Analysis Server

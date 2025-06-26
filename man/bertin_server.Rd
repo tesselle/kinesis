@@ -15,6 +15,9 @@ UI function.}
 \item{verbose}{A \code{\link{logical}} scalar: should \R report extra information on
 progress?}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Bertin Diagrams Server
 }

@@ -17,6 +17,10 @@ variance?}
 
 \item{help}{A \code{\link{character}} string giving a short help text.}
 }
+\value{
+A nav item that may be passed to a nav container
+(e.g. \code{\link[bslib:navset]{bslib::navset_tab()}}).
+}
 \description{
 Principal Components Analysis UI
 }

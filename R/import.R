@@ -2,6 +2,8 @@
 #' Import Data UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A [`list`] of UI elements.
 #' @seealso [import_server()]
 #' @family generic modules
 #' @keywords internal
@@ -28,6 +30,8 @@ import_ui <- function(id) {
 #' Import Data Modal
 #'
 #' @param ns A [namespace][shiny::NS()] function.
+#' @return
+#'  A [`list`] of UI elements.
 #' @seealso [import_server()]
 #' @keywords internal
 #' @noRd
@@ -127,7 +131,7 @@ import_modal <- function(ns) {
 #'  UI function.
 #' @param demo A [`character`] string specifying the name of a dataset from
 #'  \pkg{folio} or \pkg{datasets}.
-#' @return A reactive `data.frame`.
+#' @return A reactive [`data.frame`].
 #' @seealso [import_ui()]
 #' @family generic modules
 #' @keywords internal

@@ -2,6 +2,9 @@
 #' Diversity Definitions UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @family count data modules
 #' @keywords internal
 #' @export

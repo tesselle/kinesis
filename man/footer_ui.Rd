@@ -9,6 +9,10 @@ footer_ui(id)
 \arguments{
 \item{id}{A \code{\link{character}} vector to be used for the namespace.}
 }
+\value{
+A \code{\link{list}} that can be converted into an HTML \verb{<footer>} tag
+(see \code{\link[htmltools:builder]{htmltools::tags()}}).
+}
 \description{
 Footer UI
 }

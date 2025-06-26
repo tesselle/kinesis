@@ -2,6 +2,9 @@
 #' Co-Occurrence UI
 #'
 #' @param id A [`character`] vector to be used for the namespace.
+#' @return
+#'  A nav item that may be passed to a nav container
+#'  (e.g. [bslib::navset_tab()]).
 #' @seealso [occurrence_server()]
 #' @family count data modules
 #' @keywords internal
@@ -54,7 +57,8 @@ occurrence_ui <- function(id) {
 #' @param x A reactive `data.frame` (typically returned by [import_server()]).
 #' @param verbose A [`logical`] scalar: should \R report extra information on
 #'  progress?
-#' @return A reactive [`data.frame`].
+#' @return
+#'  No return value, called for side effects.
 #' @seealso [occurrence_ui()]
 #' @family count data modules
 #' @keywords internal
