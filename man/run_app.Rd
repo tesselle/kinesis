@@ -42,8 +42,8 @@ Ternary Plot                  \tab \code{ternary}    \cr
 }
 }
 \examples{
-\dontrun{
-run_app("seriation")
+if (interactive()) {
+ run_app("seriation")
 }
 }
 \author{

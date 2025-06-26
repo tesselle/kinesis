@@ -23,8 +23,8 @@
 #'   Ternary Plot                  \tab `ternary`    \cr
 #'  }
 #' @examples
-#' \dontrun{
-#' run_app("seriation")
+#' if (interactive()) {
+#'  run_app("seriation")
 #' }
 #' @return A \pkg{shiny} application object.
 #' @family shiny apps
