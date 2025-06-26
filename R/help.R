@@ -1,5 +1,24 @@
 # HELP TEXT
 
+#' Make File Name
+#'
+#' @param name A [`character`] string specifying the name of the file
+#'  (without extension and the leading dot).
+#' @param ext A [`character`] string specifying the file extension.
+#' @param project A [`character`] string specifying the name of the project.
+#' @param timestamp A [`character`] string specifying the timestamp
+#'  (defaults to current date and time).
+#' @return A [`character`] string.
+#' @family widgets
+#' @keywords internal
+#' @noRd
+make_file_name <- function(name, ext, project = NULL, timestamp = NULL) {
+  project <- if (is.null(project)) "" else paste0(project, "_")
+  timestamp <- timestamp %||% format(Sys.time(), "%y%m%d_%H%M%S")
+
+  sprintf("%s%s_%s.%s", project, name, timestamp, ext)
+}
+
 #' Build an URL
 #'
 #' @param package A [`character`] string giving the name of a package.
@@ -57,10 +76,8 @@ cite_article <- function(author, year, doi = NULL, text = TRUE,
   if (text) {
     cite <- tags$span(before, author, "(", link, right)
   } else {
-    cite <- tags$span(
-      paste0("(", author, ", "), link, right,
-      .noWS = c("after-begin", "before-end")
-    )
+    cite <- tags$span(paste0("(", author, ", "), link, right,
+                      .noWS = c("after-begin", "before-end"))
   }
   if (!html) cite <- as.character(cite)
   cite

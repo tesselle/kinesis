@@ -24,12 +24,14 @@ testServer(kinesis:::coda_server, {
 
   session$setInputs("group-selected" = "dynasty")
   session$elapse(2000)
+  expect_equal(col_group(), c("dynasty"))
   dataset <- session$getReturned()
   expect_equal(dim(dataset()), c(369L, 8L))
   expect_true(nexus::is_grouped(dataset()))
 
   session$setInputs("condense-selected" = c("dynasty", "reference"))
   session$elapse(2000)
+  expect_equal(col_condense(), c("dynasty", "reference"))
   dataset <- session$getReturned()
   expect_equal(dim(dataset()), c(300L, 8L))
   expect_true(nexus::is_grouped(dataset()))

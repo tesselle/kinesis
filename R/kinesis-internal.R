@@ -59,23 +59,6 @@ validate_zero <- function(x) {
   if (isTruthy(x)) x else y
 }
 
-#' Make File Name
-#'
-#' @param name A [`character`] string specifying the name of the file
-#'  (without extension and the leading dot).
-#' @param ext A [`character`] string specifying the file extension.
-#' @param project A [`character`] string specifying the name of the project.
-#' @return A [`character`] string.
-#' @family widgets
-#' @keywords internal
-#' @noRd
-make_file_name <- function(name, ext, project = NULL) {
-  project <- if (is.null(project)) "" else paste0(project, "_")
-  time_stamp <- format(Sys.time(), "%y%m%d_%H%M%S")
-
-  sprintf("%s%s_%s.%s", project, name, time_stamp, ext)
-}
-
 # Widgets ======================================================================
 select_calendar <- function(id, default = "CE") {
   ns <- NS(id)

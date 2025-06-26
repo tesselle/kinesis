@@ -198,7 +198,7 @@ ternary_server <- function(id, x) {
       n <- nrow(tern)
 
       ## Compute center and scale
-      no_scale <- !input$center && !input$scale
+      no_scale <- isFALSE(input$center) && isFALSE(input$scale)
 
       ## Graphical parameters
       if (isTruthy(extra_quali())) {
@@ -257,7 +257,7 @@ ternary_server <- function(id, x) {
         )
 
         ## Add grid
-        if (input$grid) {
+        if (isTRUE(input$grid)) {
           isopleuros::ternary_grid(center = z$center, scale = z$scale)
         }
 
@@ -272,7 +272,7 @@ ternary_server <- function(id, x) {
           }
 
           ## Density contours
-          if (input$density) {
+          if (isTRUE(input$density)) {
             isopleuros::ternary_density(tern)
           }
 
@@ -285,13 +285,13 @@ ternary_server <- function(id, x) {
         }
 
         ## Add points
-        if (input$points) {
+        if (isTRUE(input$points)) {
           isopleuros::ternary_points(tern, col = col, pch = pch, cex = cex,
                                      center = z$center, scale = z$scale)
         }
 
         ## Add labels
-        if (input$labels) {
+        if (isTRUE(input$labels)) {
           isopleuros::ternary_labels(tern, center = z$center, scale = z$scale,
                                      labels = rownames(tern), col = col)
         }
