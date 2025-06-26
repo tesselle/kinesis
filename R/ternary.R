@@ -240,7 +240,9 @@ ternary_server <- function(id, x) {
 
       ## Build plot
       function() {
-        graphics::par(mar = c(1, 1, 1, 1))
+        oldpar <- graphics::par(mar = c(1, 1, 1, 1), no.readonly = TRUE)
+        on.exit(graphics::par(oldpar))
+
         z <- isopleuros::ternary_plot(
           x = tern,
           type = "n",
