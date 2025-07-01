@@ -5,12 +5,34 @@
 
 <!-- badges: start -->
 
-[![Code
-coverage](https://packages.tesselle.org/kinesis/coverage/badge.svg)](https://packages.tesselle.org/kinesis/coverage/)
+<a href="https://ci.codeberg.org/repos/14694" class="pkgdown-devel"><img
+src="https://ci.codeberg.org/api/badges/14694/status.svg"
+alt="status-badge" /></a>
+<a href="https://packages.tesselle.org/kinesis/coverage/"
+class="pkgdown-devel"><img
+src="https://packages.tesselle.org/kinesis/coverage/badge.svg"
+alt="Code coverage" /></a>
+<a href="https://cran.r-project.org/package=kinesis"
+class="pkgdown-devel"><img
+src="https://tinyverse.netlify.app/badge/kinesis"
+alt="Dependencies" /></a>
+
 <a href="https://tesselle.r-universe.dev/kinesis"
 class="pkgdown-devel"><img
 src="https://tesselle.r-universe.dev/badges/kinesis"
 alt="r-universe" /></a>
+<a href="https://cran.r-project.org/package=kinesis"
+class="pkgdown-release"><img
+src="https://www.r-pkg.org/badges/version/kinesis"
+alt="CRAN Version" /></a> <a
+href="https://cran.r-project.org/web/checks/check_results_kinesis.html"
+class="pkgdown-release"><img
+src="https://badges.cranchecks.info/worst/kinesis.svg"
+alt="CRAN checks" /></a>
+<a href="https://cran.r-project.org/package=kinesis"
+class="pkgdown-release"><img
+src="https://cranlogs.r-pkg.org/badges/kinesis"
+alt="CRAN Downloads" /></a>
 
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
