@@ -124,7 +124,13 @@ cff_keys <- list(
          value = "10.5281/zenodo.14645671"),
     list(description = "The versioned DOI for version 0.1.0.",
          type = "doi",
-         value = "10.5281/zenodo.14645672")
+         value = "10.5281/zenodo.14645672"),
+    list(description = "The versioned DOI for version 0.2.0.",
+         type = "doi",
+         value = "10.5281/zenodo.15784615"),
+    list(description = "The CRAN DOI",
+         type = "doi",
+         value = "10.32614/CRAN.package.kinesis")
   )
 )
 cff <- cffr::cff_create("DESCRIPTION", keys = cff_keys)
