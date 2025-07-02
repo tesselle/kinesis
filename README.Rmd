@@ -51,12 +51,9 @@ The applications are deployed on the [Huma-Num](https://www.huma-num.fr) Shiny s
 ## Local use
 ### Installation
 
-You can install the released version of **kinesis** from [our repository](https://tesselle.r-universe.dev) with:
+You can install the released version of **kinesis** from [CRAN](https://CRAN.R-project.org) with:
 
-```{r universe-installation, eval=FALSE}
-options(repos = c(CRAN = "https://cloud.r-project.org",
-                  tesselle = "https://tesselle.r-universe.dev"))
-
+```{r cran-installation, eval=FALSE}
 install.packages("kinesis")
 ```
 

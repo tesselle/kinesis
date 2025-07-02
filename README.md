@@ -78,13 +78,10 @@ Shiny server: <https://analytics.huma-num.fr/tesselle/>.
 
 ### Installation
 
-You can install the released version of **kinesis** from [our
-repository](https://tesselle.r-universe.dev) with:
+You can install the released version of **kinesis** from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-options(repos = c(CRAN = "https://cloud.r-project.org",
-                  tesselle = "https://tesselle.r-universe.dev"))
-
 install.packages("kinesis")
 ```
 

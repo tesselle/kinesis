@@ -4,7 +4,7 @@
   "identifier": "kinesis",
   "description": "A collection of 'shiny' applications for the 'tesselle' packages <https://www.tesselle.org/>. This package provides applications for archaeological data analysis and visualization. These mainly, but not exclusively, include applications for chronological modelling (e.g. matrix seriation, aoristic analysis) and count data analysis (e.g. diversity measures, compositional data analysis).",
   "name": "kinesis: 'shiny' Applications for the 'tesselle' Packages",
-  "relatedLink": ["https://packages.tesselle.org/kinesis/", "https://tesselle.r-universe.dev/kinesis"],
+  "relatedLink": ["https://packages.tesselle.org/kinesis/", "https://tesselle.r-universe.dev/kinesis", "https://CRAN.R-project.org/package=kinesis"],
   "codeRepository": "https://codeberg.org/tesselle/kinesis",
   "issueTracker": "https://codeberg.org/tesselle/kinesis/issues",
   "license": "https://spdx.org/licenses/GPL-3.0",
