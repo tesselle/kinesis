@@ -8,7 +8,7 @@ message: 'To cite package "kinesis" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'kinesis: ''shiny'' Applications for the ''tesselle'' Packages'
-version: 0.2.0
+version: 0.2.1
 doi: 10.1017/aap.2024.10
 identifiers:
 - description: The concept DOI.
@@ -72,7 +72,7 @@ references:
   institution:
     name: Université Bordeaux Montaigne
     address: Pessac, France
-  notes: R package version 0.2.0.9000
+  notes: R package version 0.2.1
   url: https://packages.tesselle.org/kinesis/
   doi: 10.5281/zenodo.14645671
 - type: software
@@ -295,7 +295,7 @@ references:
     orcid: https://orcid.org/0000-0002-0750-061X
   year: '2025'
   doi: 10.32614/CRAN.package.mirai
-  version: '>= 2.3.0'
+  version: '>= 2.4.0'
 - type: software
   title: nexus
   abstract: 'nexus: Sourcing Archaeological Materials by Chemical Composition'
@@ -381,7 +381,7 @@ references:
     given-names: Barbara
   year: '2025'
   doi: 10.32614/CRAN.package.shiny
-  version: '>= 1.10.0'
+  version: '>= 1.11.1'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'

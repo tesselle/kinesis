@@ -1,4 +1,6 @@
-# kinesis 0.2.0.9000
+# kinesis 0.2.1
+## Internals
+* Skip snapshot tests on CRAN.
 
 # kinesis 0.2.0
 ## Internals
