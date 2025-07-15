@@ -338,7 +338,7 @@
   "applicationCategory": "ArchaeologicalScience",
   "isPartOf": "https://www.tesselle.org",
   "keywords": ["archaeology", "archaeological-science", "archaeometry", "shiny-apps", "r-package"],
-  "fileSize": "1084.781KB",
+  "fileSize": "1082.485KB",
   "citation": [
     {
       "@type": "ScholarlyArticle",
