@@ -197,11 +197,6 @@ import_server <- function(id, demo = NULL) {
     }) |>
       bindEvent(input$go)
 
-    ## Bookmark -----
-    setBookmarkExclude(c("upload", "go"))
-    onBookmark(function(state) state$values$data <- data$values)
-    onRestore(function(state) data$values <- state$values$data)
-
     reactive({
       validate_csv(data$values)
       data$values

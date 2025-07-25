@@ -188,14 +188,6 @@ multivariate_server <- function(id, x, y) {
     }) |>
       bindEvent(axis1())
 
-    ## Bookmark -----
-    onRestored(function(state) {
-      updateSelectizeInput(session, inputId = "axis1",
-                           selected = state$input$axis1)
-      updateSelectizeInput(session, inputId = "axis2",
-                           selected = state$input$axis2)
-    })
-
     ## Select axes -----
     axis1 <- reactive({
       req(input$axis1)

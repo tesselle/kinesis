@@ -214,11 +214,6 @@ update_selectize_variables <- function(id, x, find = NULL, use = NULL,
     }) |>
       bindEvent(x())
 
-    ## Bookmark
-    onRestored(function(state) {
-      updateSelectizeInput(session, "selected", selected = state$input$selected)
-    })
-
     reactive({
       req(x()) # Allow to display validation message
       input$selected[which(input$selected != "")] # Remove placeholder
@@ -276,11 +271,6 @@ update_selectize_values <- function(id, x, exclude = reactive({ NULL }),
       )
     }) |>
       bindEvent(x(), exclude())
-
-    ## Bookmark
-    onRestored(function(state) {
-      updateSelectizeInput(session, "selected", selected = state$input$selected)
-    })
 
     reactive({ input$selected })
   })

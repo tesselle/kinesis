@@ -246,14 +246,6 @@ coda_zero_server <- function(id, x) {
     }) |>
       bindEvent(input$go)
 
-    ## Bookmark
-    onRestored(function(state) {
-      req(ui())
-      for (i in ids()) {
-        updateNumericInput(session, session$ns(i), value = state$input[[i]])
-      }
-    })
-
     reactive({ data$values })
   })
 }
