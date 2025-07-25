@@ -46,10 +46,6 @@ Imports:
     tabula (>= 3.3.1),
     utils
 Suggests: 
-    fontquiver,
-    rsvg,
-    svglite,
-    tinysnapshot,
     tinytest
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

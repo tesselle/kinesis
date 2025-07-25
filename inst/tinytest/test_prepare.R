@@ -1,6 +1,6 @@
 Sys.setenv(LANGUAGE = "en") # Force locale
+
 library("shiny")
-using("tinysnapshot")
 
 path <- system.file("tinytest", "fake.csv", package = "arkhe")
 fake <- read.csv(path)
