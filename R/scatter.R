@@ -129,12 +129,13 @@ scatter_server <- function(id, x) {
 
       n <- nrow(x())
       group <- if (isTruthy(extra_quali())) x()[[extra_quali()]] else rep("", n)
+
       by(
         data = x(),
         INDICES = group,
         FUN = function(x) {
           vars <- stats::as.formula(sprintf("%s~%s", axis2(), axis1()))
-          fit <- stats::lm(vars, data = x)
+          fit <- stats::lm(vars, data = x, na.action = stats::na.omit)
           pred <- stats::predict(fit, interval = "confidence", level = as.numeric(input$level))
           list(model = fit, predict = pred, response = x[[axis1()]])
         },
@@ -146,12 +147,11 @@ scatter_server <- function(id, x) {
     wrap <- reactive({
       req(x())
       level <- as.numeric(input$level)
-      group <- if (isTruthy(extra_quali())) x()[[extra_quali()]] else NULL
       switch(
         input$wrap,
-        tol = function(x, y, ...) dimensio::viz_tolerance(x, y, group = group, level = level, ...),
-        conf = function(x, y, ...) dimensio::viz_confidence(x, y, group = group, level = level, ...),
-        hull = function(x, y, ...) dimensio::viz_hull(x, y, group = group, ...),
+        tol = function(x, y, z, ...) dimensio::viz_tolerance(x, y, group = z, level = level, ...),
+        conf = function(x, y, z, ...) dimensio::viz_confidence(x, y, group = z, level = level, ...),
+        hull = function(x, y, z, ...) dimensio::viz_hull(x, y, group = z, ...),
         function(...) invisible()
       )
     })
@@ -164,15 +164,20 @@ scatter_server <- function(id, x) {
       ## Select data
       req(x(), axis1(), axis2())
 
-      col <- param$col_quali(x()[[extra_quali()]])
-      pch <- param$pch(x()[[extra_quali()]])
-      cex <- param$cex(x()[[extra_quanti()]])
+      coord_x <- x()[[axis1()]]
+      coord_y <- x()[[axis2()]]
+      quali <- if (isTruthy(extra_quali())) x()[[extra_quali()]] else NULL
+      quanti <- if (isTruthy(extra_quanti())) x()[[extra_quanti()]] else NULL
+
+      col <- param$col_quali(quali)
+      pch <- param$pch(quali)
+      cex <- param$cex(quanti)
 
       ## Build plot
       function() {
         graphics::plot(
-          x = x()[[axis1()]],
-          y = x()[[axis2()]],
+          x = coord_x,
+          y = coord_y,
           type = "p",
           xlim = range_plot$x,
           ylim = range_plot$y,
@@ -198,15 +203,19 @@ scatter_server <- function(id, x) {
         }
 
         ## Add ellipses
-        wrap()(x = x()[[axis1()]], y = x()[[axis2()]], color = param$pal_quali)
+        wrap()(x = coord_x, y = coord_y, z = quali, color = param$pal_quali)
 
         ## Add legend
         if (isTruthy(extra_quali())) {
+          labels <- unique(quali)
+          keep <- !is.na(labels)
+          cols <- unique(col)
+          symb <- unique(pch)
           graphics::legend(
             x = "topleft",
-            legend = unique(x()[[extra_quali()]]),
-            col = unique(col),
-            pch = unique(pch)
+            legend = labels[keep],
+            col = if (length(cols) == 1) cols else cols[keep],
+            pch = if (length(symb) == 1) symb else symb[keep]
           )
         }
       }
