@@ -1,20 +1,12 @@
 Sys.setenv(LANGUAGE = "en") # Force locale
 library("shiny")
 
-bronze <- read.csv("bronze.csv")
-path <- system.file("tinytest", "bronze.csv", package = "kinesis")
 parts <- c("Cu", "Sn", "Pb", "Zn", "Au", "Ag", "As", "Sb")
+cols <- c("dynasty", "reference", parts)
 
-testServer(kinesis:::coda_server, {
-  session$setInputs("import-file" = list(datapath = path),
-                    "import-header" = TRUE,
-                    "import-sep" = ",", "import-dec" = ".",
-                    "import-quote" = "\"'",
-                    "import-na.strings" = "NA", "import-skip" = 0,
-                    "import-comment" = "#", "import-go" = 1)
-
-  expect_equal(data_raw(), bronze)
-  session$setInputs("select-rownames-selected" = "", "select-colnames-selected" = parts, groups = "", condense = "")
+testServer(kinesis:::coda_server, args = list(demo = "bronze"), {
+  session$setInputs("import-demo" = 1)
+  session$setInputs("select-rownames" = "", "select-colnames" = cols, parts = parts)
   session$elapse(2000)
   expect_equal(dim(coda()), c(369L, 8L))
   expect_equal(dim(data_group()), c(369L, 8L))
@@ -22,16 +14,14 @@ testServer(kinesis:::coda_server, {
   dataset <- session$getReturned()
   expect_false(nexus::is_grouped(dataset()))
 
-  session$setInputs("group-selected" = "dynasty")
+  session$setInputs(group = "dynasty")
   session$elapse(2000)
-  expect_equal(col_group(), c("dynasty"))
   dataset <- session$getReturned()
   expect_equal(dim(dataset()), c(369L, 8L))
   expect_true(nexus::is_grouped(dataset()))
 
-  session$setInputs("condense-selected" = c("dynasty", "reference"))
+  session$setInputs(condense = c("dynasty", "reference"))
   session$elapse(2000)
-  expect_equal(col_condense(), c("dynasty", "reference"))
   dataset <- session$getReturned()
   expect_equal(dim(dataset()), c(300L, 8L))
   expect_true(nexus::is_grouped(dataset()))

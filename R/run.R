@@ -126,7 +126,7 @@ get_language <- function(default = NULL) {
 #' Get App Title
 #'
 #' @param default A [`character`] string specifying the default language
-#'  (see [get_language()]).
+#'  (see `get_language()`).
 #' @return A [`character`] string.
 #' @author N. Frerebeau
 #' @keywords internal
@@ -141,7 +141,7 @@ get_title <- function(default = NULL) {
 #' Get App Description
 #'
 #' @param default A [`character`] string specifying the default language
-#'  (see [get_language()]).
+#'  (see `get_language()`).
 #' @return A [`character`] string.
 #' @author N. Frerebeau
 #' @keywords internal

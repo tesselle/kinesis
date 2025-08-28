@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare", select = is.numeric, demo = "zuni")
+  data <- kinesis::prepare_server("prepare", detect = is.numeric, demo = "zuni")
 
   ## MCD
   kinesis::mcd_server("mcd", x = data)

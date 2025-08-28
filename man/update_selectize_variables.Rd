@@ -8,7 +8,6 @@ update_selectize_variables(
   id,
   x,
   find = NULL,
-  use = NULL,
   selected = NULL,
   preserve = TRUE,
   none = TRUE,
@@ -21,7 +20,7 @@ update_selectize_variables(
 
 \item{x}{A reactive \code{matrix}-like object.}
 
-\item{find}{A predicate \code{\link{function}} for column selection
+\item{find}{A predicate \code{\link{function}} for column detection
 (see \code{\link[arkhe:detect]{arkhe::detect()}}).}
 
 \item{selected}{A \code{\link{character}} vector specifying the initially selected

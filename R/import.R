@@ -145,24 +145,35 @@ import_server <- function(id, demo = NULL) {
       bindEvent(input$upload)
 
     ## Read from connection -----
-    obs <- observe({
+    ## Parse query parameters
+    data_url <- reactive({
       params <- parseQueryString(session$clientData$url_search)
-      query <- params[["data"]]
-
-      if (!is.null(query)) {
-        msg <- sprintf(tr_("Reading data from %s..."), query)
-        id <- showNotification(msg, duration = NULL, closeButton = FALSE,
-                               type = "message")
-        on.exit(removeNotification(id), add = TRUE)
-
-        data$values <- notify(utils::read.csv(file = url(query)), tr_("Data Input"))
-      }
-      obs$destroy()
+      params[["data"]]
     })
+    observe({
+      id <- showNotification(
+        ui = tr_("Reading data..."),
+        action = tags$a(href = data_url(), target = "_blank", data_url()),
+        duration = 3,
+        type = "message"
+      )
+      # on.exit(removeNotification(id), add = TRUE)
+
+      data$values <- notify(
+        utils::read.csv(file = url(data_url())),
+        tr_("Data Input")
+      )
+    }) |>
+      bindEvent(data_url())
 
     ## Load example data -----
     observe({
       req(demo)
+
+      msg <- sprintf(tr_("Loading \"%s\" data..."), demo)
+      id <- showNotification(msg, duration = 3, type = "message")
+      # on.exit(removeNotification(id), add = TRUE)
+
       tmp <- new.env(parent = emptyenv())
       on.exit(rm(tmp), add = TRUE)
 
@@ -173,22 +184,23 @@ import_server <- function(id, demo = NULL) {
 
     ## Read data file -----
     observe({
-      id <- showNotification(tr_("Reading data..."), duration = NULL,
-                             closeButton = FALSE, type = "message")
-      on.exit(removeNotification(id), add = TRUE)
+      id <- showNotification(tr_("Reading data..."), duration = 3, type = "message")
+      # on.exit(removeNotification(id), add = TRUE)
 
-      x <- notify({
-        utils::read.table(
-          file = input$file$datapath,
-          header = input$header,
-          sep = input$sep,
-          dec = input$dec,
-          quote = input$quote,
-          row.names = NULL,
-          na.strings = input$na.strings,
-          skip = if (!is.na(input$skip)) input$skip else 0,
-          comment.char = input$comment
-        )},
+      x <- notify(
+        {
+          utils::read.table(
+            file = input$file$datapath,
+            header = input$header,
+            sep = input$sep,
+            dec = input$dec,
+            quote = input$quote,
+            row.names = NULL,
+            na.strings = input$na.strings,
+            skip = if (!is.na(input$skip)) input$skip else 0,
+            comment.char = input$comment
+          )
+        },
         title = "Data Upload"
       )
 

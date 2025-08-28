@@ -162,8 +162,6 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #' @param x A reactive `matrix`-like object.
 #' @param find A predicate [`function`] for column detection
 #'  (see [arkhe::detect()]).
-#' @param find A predicate [`function`] for column selection
-#'  (see [arkhe::detect()]).
 #' @param selected A [`character`] vector specifying the initially selected
 #'  value(s).
 #' @param preserve A [`logical`] scalar: should existing selection be preserved
@@ -177,9 +175,9 @@ selectize_ui <- function(id, label = "Choose", multiple = FALSE) {
 #'  Side effect: change the value of a select input on the client.
 #' @seealso [selectize_ui()]
 #' @keywords internal
-update_selectize_variables <- function(id, x, find = NULL, use = NULL,
-                                       selected = NULL, preserve = TRUE,
-                                       none = TRUE, server = TRUE) {
+update_selectize_variables <- function(id, x, find = NULL, selected = NULL,
+                                       preserve = TRUE, none = TRUE,
+                                       server = TRUE) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -190,10 +188,6 @@ update_selectize_variables <- function(id, x, find = NULL, use = NULL,
       if (!is.null(choices) && is.function(find)) {
         found <- which(arkhe::detect(x = x(), f = find, margin = 2))
         choices <- choices[found]
-      }
-      if (length(choices) > 0 && is.function(use)) {
-        used <- arkhe::detect(x = x(), f = use, margin = 2)
-        selected <- choices[which(found & used)]
       }
       if (isTRUE(preserve)) {
         ## Try to keep previous selection, if any
