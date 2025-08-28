@@ -56,7 +56,6 @@ prepare_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param detect A predicate [`function`] used to select columns.
-#' @param select A [`logical`] scalar: should all detected columns be selected?
 #' @param demo A [`character`] string specifying the name of a dataset (see
 #'  [import_server()]).
 #' @return A reactive [`data.frame`].
@@ -64,11 +63,11 @@ prepare_ui <- function(id) {
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, detect = \(...) TRUE, select = TRUE, demo = NULL) {
+prepare_server <- function(id, detect = \(...) TRUE, demo = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_clean <- import_server("import", demo = demo) |>
-      select_server("select", x = _, detect = detect, select = select) |>
+      select_server("select", x = _, detect = detect) |>
       clean_server("clean", x = _) |>
       missing_server("missing", x = _)
 
@@ -155,13 +154,7 @@ select_ui <- function(id) {
       multiple = FALSE,
       options = list(plugins = "clear_button")
     ),
-    checkboxGroupInput(
-      inputId = ns("colnames"),
-      label = tr_("Variables"),
-      choices = NULL,
-      selected = NULL,
-      inline = TRUE
-    )
+    variables_ui(id = ns("variables"), label = tr_("Variables"))
   )
 }
 
@@ -169,13 +162,11 @@ select_ui <- function(id) {
 #' @param x A reactive `matrix`-like object.
 #' @param detect A predicate [`function`] for column detection
 #'  (see [arkhe::detect()]).
-#' @param select A [`logical`] scalar: should all detected columns be selected?
 #' @param min_row An [`integer`] specifying the expected minimum number of rows.
 #' @param min_col An [`integer`] specifying the expected minimum number of columns.
 #' @return A reactive [`data.frame`].
 #' @noRd
-select_server <- function(id, x, detect = NULL, select = TRUE,
-                          min_row = 1, min_col = 1) {
+select_server <- function(id, x, detect = NULL, min_row = 1, min_col = 1) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
@@ -206,34 +197,9 @@ select_server <- function(id, x, detect = NULL, select = TRUE,
       out
     })
 
-    ## Update UI
-    observe({
-      choices <- colnames(named())
-      if (is.function(detect)) {
-        found <- which(arkhe::detect(x = named(), f = detect, margin = 2))
-        choices <- choices[found]
-      }
-      selected <- if (isTRUE(select)) choices else NULL
-
-      freezeReactiveValue(input, "colnames")
-      updateCheckboxGroupInput(
-        inputId = "colnames",
-        choices = choices,
-        selected = selected
-      )
-    }) |>
-      bindEvent(named())
-
     ## Select variables
-    selected <- reactive({
-      req(named())
-      out <- arkhe::get_columns(named(), names = input$colnames)
-      validate_dim(out, i = min_row, j = min_col)
-      out
-    }) |>
-      debounce(500)
-
-    selected
+    variables_server("variables", x = named, detect = detect,
+                     min_row = min_row, min_col = min_col)
   })
 }
 

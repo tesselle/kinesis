@@ -17,8 +17,7 @@ diversity_beta_ui <- function(id) {
     title = HTML(tr_("&#946; Diversity")),
     layout_sidebar(
       sidebar = sidebar(
-        width = 400,
-        h5(tr_("Principal Coordinates Analysis")),
+        title = tr_("Principal Coordinates Analysis"),
         selectInput(
           inputId = ns("method"),
           label = tr_("Dissimilarity measure"),
@@ -81,8 +80,9 @@ diversity_beta_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param x A reactive `data.frame` (typically returned by [import_server()]).
+#' @param x A reactive `data.frame` returned by [diversity_server()].
 #' @param y A reactive `data.frame` returned by [diversity_alpha_server()].
+#' @param z A reactive `data.frame` (typically returned by [import_server()]).
 #' @param verbose A [`logical`] scalar: should \R report extra information on
 #'  progress?
 #' @return
@@ -91,23 +91,17 @@ diversity_beta_ui <- function(id) {
 #' @family count data modules
 #' @keywords internal
 #' @export
-diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALSE)) {
+diversity_beta_server <- function(id, x, y, z, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    col_quali <- update_selectize_variables("extra_quali", x = x, find = Negate(is.numeric))
+    col_quali <- update_selectize_variables("extra_quali", x = z, find = Negate(is.numeric))
     col_quanti <- update_selectize_variables("extra_quanti", x = y, find = is.numeric)
 
-    ## Get count data -----
-    counts <- reactive({
-      req(x())
-      arkhe::keep_columns(x(), f = is.numeric, verbose = verbose)
-    })
-
     ## Check data -----
-    old <- reactive({ counts() }) |> bindEvent(input$go)
-    notify_change(session$ns("change"), counts, old, title = tr_("Beta Diversity"))
+    old <- reactive({ x() }) |> bindEvent(input$go)
+    notify_change(session$ns("change"), x, old, title = tr_("Beta Diversity"))
 
     ## Compute similarity -----
     compute_beta <- ExtendedTask$new(
@@ -118,7 +112,7 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
       bslib::bind_task_button("go")
 
     observe({
-      compute_beta$invoke(x = counts(), method = input$method)
+      compute_beta$invoke(x = x(), method = input$method)
     }) |>
       bindEvent(input$go)
 
@@ -153,13 +147,13 @@ diversity_beta_server <- function(id, x, y, verbose = get_option("verbose", FALS
     })
 
     plot_pcoa <- reactive({
-      req(analysis(), x(), y())
+      req(analysis(), y(), z())
 
       ## Extra variables
       extra_quanti <- arkhe::seek_columns(y(), names = col_quanti())
       if (!is.null(extra_quanti)) extra_quanti <- y()[[extra_quanti]]
-      extra_quali <- arkhe::seek_columns(x(), names = col_quali())
-      if (!is.null(extra_quali)) extra_quali <- x()[[extra_quali]]
+      extra_quali <- arkhe::seek_columns(z(), names = col_quali())
+      if (!is.null(extra_quali)) extra_quali <- z()[[extra_quali]]
 
       col <- "black"
       if (isTruthy(extra_quanti)) {

@@ -27,6 +27,8 @@ Other count data modules:
 \code{\link{diversity_beta_server}()},
 \code{\link{diversity_beta_ui}()},
 \code{\link{diversity_docs_ui}()},
+\code{\link{diversity_server}()},
+\code{\link{diversity_ui}()},
 \code{\link{occurrence_server}()}
 }
 \concept{count data modules}
