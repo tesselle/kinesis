@@ -2,7 +2,7 @@ Sys.setenv(LANGUAGE = "en") # Force locale
 
 library("shiny")
 
-path <- system.file("tinytest", "fake.csv", package = "arkhe")
+path <- "fake.csv"
 fake <- read.csv(path)
 x <- reactiveVal(fake)
 
@@ -13,26 +13,6 @@ x <- reactiveVal(fake)
 # all = FALSE
 # zero_as_NA = FALSE
 # remove = "none"
-
-# Import =======================================================================
-testServer(kinesis:::import_server, {
-  session$setInputs("file" = list(datapath = path),
-                    "header" = TRUE,
-                    "sep" = ",",
-                    "dec" = ".",
-                    "quote" = "\"'",
-                    "na.strings" = "NA",
-                    "skip" = 0,
-                    "comment" = "#",
-                    "go" = 1)
-  dataset <- session$getReturned()
-  expect_equal(dataset(), fake)
-})
-testServer(kinesis:::import_server, args = list(demo = "compiegne"), {
-  session$setInputs("demo" = 1)
-  dataset <- session$getReturned()
-  expect_equal(dim(dataset()), c(5L, 16L))
-})
 
 # Select =======================================================================
 testServer(kinesis:::select_server, args = list(x = x), {

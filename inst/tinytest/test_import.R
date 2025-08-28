@@ -2,7 +2,7 @@ Sys.setenv(LANGUAGE = "en") # Force locale
 library("shiny")
 
 # Import =======================================================================
-path <- system.file("tinytest", "fake.csv", package = "arkhe")
+path <- "fake.csv"
 fake <- read.csv(path)
 
 testServer(import_server, {
@@ -18,4 +18,9 @@ testServer(import_server, {
 
   session$setInputs(file = list(datapath = path), go = 1)
   expect_equal(data$values, fake)
+})
+
+testServer(kinesis:::import_server, args = list(demo = "compiegne"), {
+  session$setInputs("demo" = 1)
+  expect_equal(dim(data$values), c(5L, 16L))
 })
