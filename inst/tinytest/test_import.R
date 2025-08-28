@@ -20,7 +20,7 @@ testServer(import_server, {
   expect_equal(data$values, fake)
 })
 
-testServer(kinesis:::import_server, args = list(demo = "compiegne"), {
+testServer(kinesis:::import_server, args = list(demo = "iris"), {
   session$setInputs("demo" = 1)
-  expect_equal(dim(data$values), c(5L, 16L))
+  expect_equal(dim(data$values), c(150L, 5L))
 })

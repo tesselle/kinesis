@@ -174,11 +174,11 @@ import_server <- function(id, demo = NULL) {
       id <- showNotification(msg, duration = 3, type = "message")
       # on.exit(removeNotification(id), add = TRUE)
 
-      tmp <- new.env(parent = emptyenv())
-      on.exit(rm(tmp), add = TRUE)
-
-      data(list = demo, package = c("folio", "datasets"), envir = tmp)
-      data$values <- get(demo, envir = tmp)
+      path <- system.file("extdata", paste0(demo, ".csv"), package = "kinesis")
+      data$values <- notify(
+        utils::read.csv(file = path),
+        tr_("Data Input")
+      )
     }) |>
       bindEvent(input$demo)
 
