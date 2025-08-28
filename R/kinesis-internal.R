@@ -195,7 +195,8 @@ update_selectize_variables <- function(id, x, find = NULL, selected = NULL,
         if (length(keep) > 0) selected <- keep
       }
       if (isTRUE(none)) {
-        choices <- c(Choose = "", choices)
+        choices <- c("", choices)
+        names(choices) <- c(tr_("Choose"), rep("", length(choices) - 1))
       }
 
       freezeReactiveValue(input, "selected")
@@ -253,7 +254,8 @@ update_selectize_values <- function(id, x, exclude = reactive({ NULL }),
         if (length(keep) > 0) selected <- keep
       }
       if (isTRUE(none)) {
-        choices <- c(Choose = "", choices)
+        choices <- c("", choices)
+        names(choices) <- c(tr_("Choose"), rep("", length(choices) - 1))
       }
 
       freezeReactiveValue(input, "selected")
