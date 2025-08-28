@@ -298,11 +298,15 @@ ternary_server <- function(id, x) {
 
         ## Add legend
         if (isTruthy(extra_quali())) {
+          labels <- unique(symbol_group)
+          keep <- !is.na(labels)
+          cols <- unique(col)
+          symb <- unique(pch)
           graphics::legend(
             x = "topleft",
-            legend = unique(symbol_group),
-            col = unique(col),
-            pch = unique(pch),
+            legend = labels[keep],
+            col = if (length(cols) == 1) cols else cols[keep],
+            pch = if (length(symb) == 1) symb else symb[keep],
             bty = "n"
           )
         }
