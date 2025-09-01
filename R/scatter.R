@@ -25,12 +25,6 @@ scatter_ui <- function(id) {
         ## Input: aesthetics mapping
         selectize_ui(id = ns("extra_quali"), label = tr_("Extra qualitative variable")),
         selectize_ui(id = ns("extra_quanti"), label = tr_("Extra quantitative variable")),
-        ## Input: linear regression
-        checkboxInput(
-          inputId = ns("regression"),
-          label = tr_("Linear regression"),
-          value = FALSE
-        ),
         ## Input: add ellipses
         radioButtons(
           inputId = ns("wrap"),
@@ -122,27 +116,6 @@ scatter_server <- function(id, x) {
                  threshold = 5)
     })
 
-    ## Linear regression -----
-    model <- reactive({
-      req(x(), axis2(), axis1())
-      if (!isTRUE(input$regression)) return(NULL)
-
-      n <- nrow(x())
-      group <- if (isTruthy(extra_quali())) x()[[extra_quali()]] else rep("", n)
-
-      by(
-        data = x(),
-        INDICES = group,
-        FUN = function(x) {
-          vars <- stats::as.formula(sprintf("%s~%s", axis2(), axis1()))
-          fit <- stats::lm(vars, data = x, na.action = stats::na.omit)
-          pred <- stats::predict(fit, interval = "confidence", level = as.numeric(input$level))
-          list(model = fit, predict = pred, response = x[[axis1()]])
-        },
-        simplify = FALSE
-      )
-    })
-
     ## Ellipses -----
     wrap <- reactive({
       req(x())
@@ -162,7 +135,14 @@ scatter_server <- function(id, x) {
     ## Build plot -----
     plot_scatter <- reactive({
       ## Select data
-      req(x(), axis1(), axis2())
+      req(x(), axis1())
+
+      if (!isTruthy(axis2())) {
+        fun <- function() {
+          graphics::hist(x()[[axis1()]], xlab = axis1(), main = NULL, las = 1)
+        }
+        return(fun)
+      }
 
       coord_x <- x()[[axis1()]]
       coord_y <- x()[[axis2()]]
@@ -190,17 +170,6 @@ scatter_server <- function(id, x) {
           asp = param$asp,
           las = 1
         )
-
-        ## Add regression
-        if (length(model()) > 0) {
-          col_lines <- param$col_quali(names(model()))
-          for (i in seq_along(model())) {
-            fit <- model()[[i]]
-            k <- order(fit$response)
-            graphics::lines(x = fit$response[k], y = fit$predict[k, 1],
-                            col = col_lines[i], lwd = 2)
-          }
-        }
 
         ## Add ellipses
         wrap()(x = coord_x, y = coord_y, z = quali, color = param$pal_quali)

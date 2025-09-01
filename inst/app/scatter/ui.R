@@ -10,6 +10,7 @@ function(request) {
     kinesis::home_ui("home", package = "dimensio"),
     kinesis::prepare_ui("prepare"),
     kinesis::scatter_ui("scatter"),
+    kinesis::lm_ui("lm"),
     bslib::nav_spacer(),
     bslib::nav_item(bslib::input_dark_mode()),
     footer = kinesis::footer_ui("footer"),
