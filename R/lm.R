@@ -20,17 +20,14 @@ lm_ui <- function(id) {
         width = 400,
         title = tr_("Linear Model"),
         ## Input: select axes
-        selectizeInput(
-          inputId = ns("response"),
+        selectize_ui(
+          id = ns("response"),
           label = tr_("Dependent variable"),
-          choices = NULL,
           multiple = FALSE
         ),
-        checkboxGroupInput(
-          inputId = ns("explanatory"),
-          label = tr_("Independent variables"),
-          choices = NULL,
-          inline = TRUE
+        checkbox_ui(
+          id = ns("explanatory"),
+          label = tr_("Independent variables")
         )
       ), # sidebar
       navset_card_pill(
@@ -93,48 +90,22 @@ lm_server <- function(id, x) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    quanti <- reactive({
-      req(x())
-      i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2))
-      x()[i]
-    })
-
-    observe({
-      choices <- c("", colnames(quanti()))
-      names(choices) <- c(tr_("Choose"), rep("", ncol(quanti())))
-
-      freezeReactiveValue(input, "response")
-      updateSelectizeInput(
-        inputId = "response",
-        choices = choices,
-        server = TRUE
-      )
-    }) |>
-      bindEvent(quanti())
-
-    observe({
-      choices <- setdiff(colnames(quanti()), input$response)
-      selected <- intersect(choices, input$explanatory)
-
-      freezeReactiveValue(input, "explanatory")
-      updateCheckboxGroupInput(
-        inputId = "explanatory",
-        choices = choices,
-        selected = if (length(selected) > 0) selected else NULL
-      )
-    }) |>
-      bindEvent(input$response)
+    quanti <- subset_quantitative(x)
+    resp <- update_selectize_colnames("response", x = quanti)
+    expl <- update_checkbox_colnames("explanatory", x = quanti, exclude = resp)
 
     ## Linear regression -----
+    vars <- reactive({
+      req(resp(), expl())
+      stats::as.formula(paste0(resp(), " ~ ", paste0(expl(), collapse = " + ")))
+    }) |>
+      bindEvent(expl())
+
     model <- reactive({
-      req(x())
-      req(input$response)
-      req(input$explanatory)
-      vars <- stats::as.formula(
-        paste0(input$response, " ~ ", paste0(input$explanatory, collapse = " + "))
-      )
-      stats::lm(vars, data = x(), na.action = stats::na.omit, y = TRUE)
-    })
+      stats::lm(vars(), data = x(), na.action = stats::na.omit, y = TRUE)
+    }) |>
+      bindEvent(vars())
+
     prediction <- reactive({
       data.frame(
         y = model()$y,

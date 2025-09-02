@@ -4,7 +4,7 @@
 \alias{diversity_beta_server}
 \title{Beta Diversity Server}
 \usage{
-diversity_beta_server(id, x, y, z, verbose = get_option("verbose", FALSE))
+diversity_beta_server(id, x, quanti, quali)
 }
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's
@@ -12,12 +12,9 @@ UI function.}
 
 \item{x}{A reactive \code{data.frame} returned by \code{\link[=diversity_server]{diversity_server()}}.}
 
-\item{y}{A reactive \code{data.frame} returned by \code{\link[=diversity_alpha_server]{diversity_alpha_server()}}.}
+\item{quanti}{A reactive \code{data.frame} returned by \code{\link[=diversity_alpha_server]{diversity_alpha_server()}}.}
 
-\item{z}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
-
-\item{verbose}{A \code{\link{logical}} scalar: should \R report extra information on
-progress?}
+\item{quali}{A reactive \code{data.frame} (typically returned by \code{\link[=import_server]{import_server()}}).}
 }
 \value{
 No return value, called for side effects.

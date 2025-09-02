@@ -18,8 +18,8 @@ diversity_ui <- function(id) {
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
-        title = tr_("Count data"),
-        variables_ui(ns("count"), label = tr_("Types"))
+        # title = tr_("Count data"),
+        checkbox_ui(ns("count"), label = tr_("Count data"))
       ), # sidebar
       navset_card_pill(
         bertin_ui(ns("plot"), title = tr_("Plot")),
@@ -49,12 +49,14 @@ diversity_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
 
   moduleServer(id, function(input, output, session) {
     ## Get count data -----
-    counts <- variables_server("count", x = x, detect = is.numeric)
+    quanti <- subset_quantitative(x, positive = TRUE)
+    vars <- update_checkbox_colnames("count", x = quanti)
+    counts <- select_data(quanti, vars, drop = FALSE)
 
     ## Diversity -----
     bertin_server("plot", x = counts)
     alpha <- diversity_alpha_server("alpha", x = counts)
-    diversity_beta_server("beta", x = counts, y = alpha, z = x)
+    diversity_beta_server("beta", x = counts, quanti = alpha, quali = x)
     occ <- occurrence_server("occurrence", x = counts)
 
     counts

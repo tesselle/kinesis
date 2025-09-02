@@ -104,14 +104,15 @@ coda_ui <- function(id) {
 coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE)) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
-    data_clean <- import_server("import", demo = demo) |>
-      select_server("select", x = _)
+    data_raw <- import_server("import", demo = demo)
+    data_sub <- select_server("select", x = data_raw)
 
     ## Update UI -----
     observe({
-      choices <- colnames(data_clean())
+      choices <- colnames(data_sub())
 
-      found <- which(arkhe::detect(x = data_clean(), f = is.numeric, margin = 2))
+      f <- \(x) is.numeric(x) && all(x >= 0)
+      found <- which(arkhe::detect(x = data_sub(), f = f, margin = 2))
       choices_num <- choices[found]
 
       freezeReactiveValue(input, "parts")
@@ -121,7 +122,8 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
         selected = NULL
       )
 
-      found <- which(arkhe::detect(x = data_clean(), f = is.numeric, margin = 2, negate = TRUE))
+      f <- \(x) Negate(is.numeric)(x)
+      found <- which(arkhe::detect(x = data_sub(), f = f, margin = 2))
       choices_char <- choices[found]
 
       freezeReactiveValue(input, "group")
@@ -138,16 +140,16 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
         server = TRUE
       )
     }) |>
-      bindEvent(data_clean())
+      bindEvent(data_sub())
 
     ## Compositions -----
     coda <- reactive({
-      req(data_clean())
+      req(data_sub())
       req(input$parts)
 
       notify(
         nexus::as_composition(
-          from = data_clean(),
+          from = data_sub(),
           parts = input$parts,
           autodetect = FALSE,
           verbose = verbose
@@ -163,7 +165,7 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
       out <- coda()
       if (isTruthy(input$group)) {
-        by <- data_clean()[input$group]
+        by <- data_sub()[input$group]
         out <- nexus::group(out, by = by, verbose = verbose)
       }
 
@@ -177,7 +179,7 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
       out <- data_group()
       if (isTruthy(input$condense)) {
-        by <- data_clean()[input$condense]
+        by <- data_sub()[input$condense]
         out <- nexus::condense(out, by = by, ignore_na = FALSE, verbose = verbose)
       }
 
@@ -186,9 +188,8 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
       debounce(500)
 
     ## Missing values -----
-    data_missing <- data_condense |>
-      clean_server("clean", x = _) |>
-      missing_server("missing", x = _)
+    data_clean <- clean_server("clean", x = data_condense)
+    data_missing <- missing_server("missing", x = data_clean)
 
     ## Zeros -----
     # TODO

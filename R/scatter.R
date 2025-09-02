@@ -20,11 +20,11 @@ scatter_ui <- function(id) {
         width = 400,
         title = tr_("Variables"),
         ## Input: select axes
-        selectize_ui(id = ns("axis1"), label = tr_("Component X")),
-        selectize_ui(id = ns("axis2"), label = tr_("Component Y")),
+        selectize_ui(ns("axis1"), label = tr_("Component X")),
+        selectize_ui(ns("axis2"), label = tr_("Component Y")),
         ## Input: aesthetics mapping
-        selectize_ui(id = ns("extra_quali"), label = tr_("Extra qualitative variable")),
-        selectize_ui(id = ns("extra_quanti"), label = tr_("Extra quantitative variable")),
+        selectize_ui(ns("extra_quali"), label = tr_("Extra qualitative variable")),
+        selectize_ui(ns("extra_quanti"), label = tr_("Extra quantitative variable")),
         ## Input: add ellipses
         radioButtons(
           inputId = ns("wrap"),
@@ -85,21 +85,18 @@ scatter_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    ## Select columns -----
-    quanti <- reactive({
-      req(x())
-      i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2))
-      colnames(x())[i]
-    })
-    quali <- reactive({
-      req(x())
-      i <- which(arkhe::detect(x = x(), f = is.numeric, margin = 2, negate = TRUE))
-      colnames(x())[i]
-    })
-    axis1 <- update_selectize_values("axis1", x = quanti)
-    axis2 <- update_selectize_values("axis2", x = quanti, exclude = axis1)
-    extra_quali <- update_selectize_values("extra_quali", x = quali)
-    extra_quanti <- update_selectize_values("extra_quanti", x = quanti)
+    ## Update UI -----
+    quanti <- subset_quantitative(x)
+    quali <- subset_qualitative(x)
+
+    axis1 <- update_selectize_colnames("axis1", x = quanti)
+    axis2 <- update_selectize_colnames("axis2", x = quanti, exclude = axis1)
+    col_quali <- update_selectize_colnames("extra_quali", x = quali)
+    col_quanti <- update_selectize_colnames("extra_quanti", x = quanti)
+
+    ## Extra variables -----
+    extra_quali <- select_data(quali, col_quali, drop = TRUE)
+    extra_quanti <- select_data(quanti, col_quanti, drop = TRUE)
 
     ## Interactive zoom -----
     ## When a double-click happens, check if there's a brush on the plot.
@@ -118,7 +115,6 @@ scatter_server <- function(id, x) {
 
     ## Ellipses -----
     wrap <- reactive({
-      req(x())
       level <- as.numeric(input$level)
       switch(
         input$wrap,
@@ -135,23 +131,14 @@ scatter_server <- function(id, x) {
     ## Build plot -----
     plot_scatter <- reactive({
       ## Select data
-      req(x(), axis1())
-
-      if (!isTruthy(axis2())) {
-        fun <- function() {
-          graphics::hist(x()[[axis1()]], xlab = axis1(), main = NULL, las = 1)
-        }
-        return(fun)
-      }
+      req(x(), axis1(), axis2())
 
       coord_x <- x()[[axis1()]]
       coord_y <- x()[[axis2()]]
-      quali <- if (isTruthy(extra_quali())) x()[[extra_quali()]] else NULL
-      quanti <- if (isTruthy(extra_quanti())) x()[[extra_quanti()]] else NULL
 
-      col <- param$col_quali(quali)
-      pch <- param$pch(quali)
-      cex <- param$cex(quanti)
+      col <- param$col_quali(extra_quali())
+      pch <- param$pch(extra_quali())
+      cex <- param$cex(extra_quanti())
 
       ## Build plot
       function() {
@@ -171,12 +158,12 @@ scatter_server <- function(id, x) {
           las = 1
         )
 
-        ## Add ellipses
-        wrap()(x = coord_x, y = coord_y, z = quali, color = param$pal_quali)
-
-        ## Add legend
         if (isTruthy(extra_quali())) {
-          labels <- unique(quali)
+          ## Add ellipses
+          wrap()(x = coord_x, y = coord_y, z = extra_quali(), color = param$pal_quali)
+
+          ## Add legend
+          labels <- unique(extra_quali())
           keep <- !is.na(labels)
           cols <- unique(col)
           symb <- unique(pch)

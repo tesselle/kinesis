@@ -66,22 +66,22 @@ prepare_ui <- function(id) {
 prepare_server <- function(id, detect = \(...) TRUE, demo = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
-    data_clean <- import_server("import", demo = demo) |>
-      select_server("select", x = _, detect = detect) |>
-      clean_server("clean", x = _) |>
-      missing_server("missing", x = _)
+    data_raw <- import_server("import", demo = demo)
+    data_sub <- select_server("select", x = data_raw, detect = detect)
+    data_clean <- clean_server("clean", x = data_sub)
+    data_miss <- missing_server("missing", x = data_clean)
 
     ## Render description -----
-    box_server("box", x = data_clean)
+    box_server("box", x = data_miss)
 
     ## Render table -----
     output$table <- gt::render_gt({
-      tbl <- if (isTRUE(input$head)) utils::head(data_clean()) else data_clean()
+      tbl <- if (isTRUE(input$head)) utils::head(data_miss()) else data_miss()
       gt::gt(tbl, rownames_to_stub = TRUE) |>
         gt::tab_options(table.width = "100%")
     })
 
-    data_clean
+    data_miss
   })
 }
 
@@ -146,15 +146,12 @@ select_ui <- function(id) {
 
   tags$div(
     h5(tr_("Select data")),
-    selectizeInput(
-      inputId = ns("rownames"),
+    selectize_ui(
+      id = ns("rownames"),
       label = tr_("Sample names"),
-      choices = NULL,
-      selected = NULL,
-      multiple = FALSE,
-      options = list(plugins = "clear_button")
+      multiple = FALSE
     ),
-    variables_ui(id = ns("variables"), label = tr_("Variables"))
+    checkbox_ui(ns("variables"), label = tr_("Variables"))
   )
 }
 
@@ -166,30 +163,19 @@ select_ui <- function(id) {
 #' @param min_col An [`integer`] specifying the expected minimum number of columns.
 #' @return A reactive [`data.frame`].
 #' @noRd
-select_server <- function(id, x, detect = NULL, min_row = 1, min_col = 1) {
+select_server <- function(id, x, detect = NULL) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI
-    observe({
-      choices <- c("", colnames(x()))
-      names(choices) <- c(tr_("Choose"), rep("", ncol(x())))
-
-      freezeReactiveValue(input, "rownames")
-      updateSelectizeInput(
-        inputId = "rownames",
-        choices = choices,
-        server = TRUE
-      )
-    }) |>
-      bindEvent(x())
+    rows <- update_selectize_colnames("rownames", x)
 
     ## Assign row names
     named <- reactive({
       req(x())
       out <- notify(
         {
-          column <- arkhe::seek_columns(x(), names = input$rownames)
+          column <- arkhe::seek_columns(x(), names = rows())
           arkhe::assign_rownames(x(), column = column %|||% 0, remove = TRUE)
         },
         title = tr_("Row names")
@@ -197,9 +183,12 @@ select_server <- function(id, x, detect = NULL, min_row = 1, min_col = 1) {
       out
     })
 
+    ## Subset
+    sub <- subset_data(named, f = detect)
+
     ## Select variables
-    variables_server("variables", x = named, detect = detect,
-                     min_row = min_row, min_col = min_col)
+    vars <- update_checkbox_colnames("variables", x = sub)
+    select_data(sub, vars, drop = FALSE)
   })
 }
 

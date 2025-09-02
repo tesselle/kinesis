@@ -81,23 +81,30 @@ diversity_beta_ui <- function(id) {
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
 #' @param x A reactive `data.frame` returned by [diversity_server()].
-#' @param y A reactive `data.frame` returned by [diversity_alpha_server()].
-#' @param z A reactive `data.frame` (typically returned by [import_server()]).
-#' @param verbose A [`logical`] scalar: should \R report extra information on
-#'  progress?
+#' @param quanti A reactive `data.frame` returned by [diversity_alpha_server()].
+#' @param quali A reactive `data.frame` (typically returned by [import_server()]).
 #' @return
 #'  No return value, called for side effects.
 #' @seealso [diversity_beta_ui()]
 #' @family count data modules
 #' @keywords internal
 #' @export
-diversity_beta_server <- function(id, x, y, z, verbose = get_option("verbose", FALSE)) {
+diversity_beta_server <- function(id, x, quanti, quali) {
   stopifnot(is.reactive(x))
+  stopifnot(is.reactive(quanti))
+  stopifnot(is.reactive(quali))
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    col_quali <- update_selectize_variables("extra_quali", x = z, find = Negate(is.numeric))
-    col_quanti <- update_selectize_variables("extra_quanti", x = y, find = is.numeric)
+    quanti <- subset_quantitative(quanti)
+    quali <- subset_qualitative(quali)
+
+    col_quali <- update_selectize_colnames("extra_quali", x = quali)
+    col_quanti <- update_selectize_colnames("extra_quanti", x = quanti)
+
+    ## Extra variables -----
+    extra_quali <- select_data(quali, col_quali, drop = TRUE)
+    extra_quanti <- select_data(quanti, col_quanti, drop = TRUE)
 
     ## Check data -----
     old <- reactive({ x() }) |> bindEvent(input$go)
@@ -147,39 +154,32 @@ diversity_beta_server <- function(id, x, y, z, verbose = get_option("verbose", F
     })
 
     plot_pcoa <- reactive({
-      req(analysis(), y(), z())
+      req(analysis())
 
-      ## Extra variables
-      extra_quanti <- arkhe::seek_columns(y(), names = col_quanti())
-      if (!is.null(extra_quanti)) extra_quanti <- y()[[extra_quanti]]
-      extra_quali <- arkhe::seek_columns(z(), names = col_quali())
-      if (!is.null(extra_quali)) extra_quali <- z()[[extra_quali]]
-
-      col <- "black"
-      if (isTruthy(extra_quanti)) {
-        col <- param_pcoa$col_quant(extra_quanti)
+      if (length(extra_quali()) == 0 && length(extra_quanti()) > 0) {
+        col <- param_pcoa$pal_quanti
+      } else {
+        col <- param_pcoa$pal_quali
       }
-      if (isTruthy(extra_quali)) {
-        col <- param_pcoa$col_quali(extra_quali)
-      }
-      cex <- param_pcoa$cex(extra_quanti)
-      pch <- param_pcoa$pch(extra_quali)
 
       function() {
         dimensio::plot(
           x = analysis(),
           labels = input$pcoa_labels,
-          extra_quali = extra_quali,
-          extra_quanti = extra_quanti,
-          col = col,
-          pch = pch,
-          cex = cex,
+          extra_quali = extra_quali(),
+          extra_quanti = extra_quanti(),
+          color = col,
+          symbol = param_pcoa$pal_pch,
+          size = param_pcoa$pal_cex,
           panel.first = graphics::grid()
         )
 
         if (isTRUE(input$hull)) {
-          dimensio::viz_hull(analysis(), group = extra_quali,
-                             color = param_pcoa$pal_quali)
+          dimensio::viz_hull(
+            x = analysis(),
+            group = extra_quali,
+            color = param_pcoa$pal_quali
+          )
         }
       }
     })

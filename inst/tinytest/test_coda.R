@@ -6,7 +6,7 @@ cols <- c("dynasty", "reference", parts)
 
 testServer(kinesis:::coda_server, args = list(demo = "bronze"), {
   session$setInputs("import-demo" = 1)
-  session$setInputs("select-rownames" = "", "select-variables-names" = cols)
+  session$setInputs("select-rownames-names" = "", "select-variables-names" = cols)
   session$setInputs(parts = parts)
   session$elapse(2000)
   expect_equal(dim(coda()), c(369L, 8L))
