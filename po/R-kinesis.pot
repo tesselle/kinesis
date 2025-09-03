@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.2.1.9000\n"
-"POT-Creation-Date: 2025-08-28 19:55+0200\n"
+"POT-Creation-Date: 2025-09-03 16:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 msgid "Analysis"
 msgstr ""
 
-#: aorisitc.R:21 aorisitc.R:96 aorisitc.R:117 time_interval.R:94
+#: aorisitc.R:21 aorisitc.R:96 aorisitc.R:117 time_interval.R:81
 msgid "Aoristic Analysis"
 msgstr ""
 
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Threshold"
 msgstr ""
 
-#: bertin.R:52 import.R:96 multivariate.R:66 scatter.R:38 ternary.R:50 ternary.R:80
+#: bertin.R:52 import.R:96 multivariate.R:64 scatter.R:32 ternary.R:50 ternary.R:80
 msgid "None"
 msgstr ""
 
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Median"
 msgstr ""
 
-#: ca.R:17 ca.R:74
+#: ca.R:17 ca.R:76
 msgid "CA"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Data"
 msgstr ""
 
-#: coda.R:22 coda.R:155
+#: coda.R:22 coda.R:157
 msgid "Compositional Data"
 msgstr ""
 
@@ -181,37 +181,37 @@ msgstr ""
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:208 multivariate.R:160 multivariate.R:163
+#: coda.R:209 multivariate.R:158
 msgid "Group"
 msgstr ""
 
-#: coda.R:228
+#: coda.R:229
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:229
+#: coda.R:230
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:230
+#: coda.R:231
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:231
+#: coda.R:232
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:236
+#: coda.R:237
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:242
+#: coda.R:243
 msgid "Replace zero"
 msgstr ""
 
@@ -255,7 +255,7 @@ msgstr ""
 msgid "Hierarchical Clustering"
 msgstr ""
 
-#: coda_hclust.R:24 multivariate.R:403
+#: coda_hclust.R:24 multivariate.R:395
 msgid "Distance"
 msgstr ""
 
@@ -491,11 +491,11 @@ msgstr ""
 msgid "Alpha diversity"
 msgstr ""
 
-#: count_diversity_beta.R:51 time_interval.R:38
+#: count_diversity_beta.R:51 time_interval.R:33
 msgid "Groups"
 msgstr ""
 
-#: count_diversity_beta.R:55 multivariate.R:67 scatter.R:39 ternary.R:81
+#: count_diversity_beta.R:55 multivariate.R:65 scatter.R:33 ternary.R:81
 msgid "Convex hull"
 msgstr ""
 
@@ -507,7 +507,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:104 count_diversity_beta.R:120 count_diversity_docs.R:89
+#: count_diversity_beta.R:111 count_diversity_beta.R:127 count_diversity_docs.R:89
 msgid "Beta Diversity"
 msgstr ""
 
@@ -585,12 +585,8 @@ msgstr ""
 msgid "Indices"
 msgstr ""
 
-#: diversity.R:21
-msgid "Count data"
-msgstr ""
-
 #: diversity.R:22
-msgid "Types"
+msgid "Count data"
 msgstr ""
 
 #: graphics.R:19
@@ -816,28 +812,104 @@ msgstr ""
 msgid "Import a CSV file first."
 msgstr ""
 
-#: kinesis-internal.R:42
+#: kinesis-internal.R:48
 msgid "Your data should not contain missing values."
 msgstr ""
 
-#: kinesis-internal.R:46
+#: kinesis-internal.R:52
 msgid "Your data should not contain zeros."
 msgstr ""
 
-#: kinesis-internal.R:68 time_interval.R:32
+#: kinesis-internal.R:75
 msgid "Calendar"
 msgstr ""
 
-#: kinesis-internal.R:199 kinesis-internal.R:258 prepare.R:176
-msgid "Choose"
-msgstr ""
-
-#: kinesis-internal.R:344
+#: kinesis-internal.R:215
 msgid "Your data seem to have changed."
 msgstr ""
 
-#: kinesis-internal.R:345
+#: kinesis-internal.R:216
 msgid "You should perform your analysis again."
+msgstr ""
+
+#: lm.R:17 lm.R:21
+msgid "Linear Model"
+msgstr ""
+
+#: lm.R:25
+msgid "Dependent variable"
+msgstr ""
+
+#: lm.R:30
+msgid "Independent variables"
+msgstr ""
+
+#: lm.R:35
+msgid "Summary"
+msgstr ""
+
+#: lm.R:39
+msgid "Diagnostic"
+msgstr ""
+
+#: lm.R:42
+msgid "Residuals histogram"
+msgstr ""
+
+#: lm.R:43
+msgid "Residual Q-Q plot"
+msgstr ""
+
+#: lm.R:44
+msgid "Residuals-Fitted"
+msgstr ""
+
+#: lm.R:45
+msgid "Scale-Location"
+msgstr ""
+
+#: lm.R:46
+msgid "Cook's distance"
+msgstr ""
+
+#: lm.R:47
+msgid "Residuals-Leverage"
+msgstr ""
+
+#: lm.R:51
+msgid "Prediction"
+msgstr ""
+
+#: lm.R:57
+msgid "Interval"
+msgstr ""
+
+#: lm.R:58 lm.R:169
+msgid "Confidence interval"
+msgstr ""
+
+#: lm.R:63
+msgid "Level"
+msgstr ""
+
+#: lm.R:170
+msgid "Prediction interval"
+msgstr ""
+
+#: lm.R:178
+msgid "Response"
+msgstr ""
+
+#: lm.R:179
+msgid "Fitted"
+msgstr ""
+
+#: lm.R:180
+msgid "Lower bound"
+msgstr ""
+
+#: lm.R:181
+msgid "Upper bound"
 msgstr ""
 
 #: multivariate.R:18
@@ -848,115 +920,115 @@ msgstr ""
 msgid "Horizontal axis"
 msgstr ""
 
-#: multivariate.R:29
+#: multivariate.R:28
 msgid "Vertical axis"
 msgstr ""
 
-#: multivariate.R:36
+#: multivariate.R:34
 msgid "Label individuals"
 msgstr ""
 
-#: multivariate.R:41
+#: multivariate.R:39
 msgid "Label variables"
 msgstr ""
 
-#: multivariate.R:46
+#: multivariate.R:44
 msgid "Display supplementary individuals"
 msgstr ""
 
-#: multivariate.R:51
+#: multivariate.R:49
 msgid "Display supplementary variables"
 msgstr ""
 
-#: multivariate.R:56 scatter.R:27 ternary.R:31
+#: multivariate.R:54 scatter.R:27 ternary.R:31
 msgid "Extra quantitative variable"
 msgstr ""
 
-#: multivariate.R:60 scatter.R:26 ternary.R:30
+#: multivariate.R:58 scatter.R:26 ternary.R:30
 msgid "Extra qualitative variable"
 msgstr ""
 
-#: multivariate.R:65 scatter.R:37 ternary.R:79
+#: multivariate.R:63 scatter.R:31 ternary.R:79
 msgid "Wrap:"
 msgstr ""
 
-#: multivariate.R:66 scatter.R:38 ternary.R:80
+#: multivariate.R:64 scatter.R:32 ternary.R:80
 msgid "Tolerance ellipse"
 msgstr ""
 
-#: multivariate.R:67 scatter.R:39 ternary.R:81
+#: multivariate.R:65 scatter.R:33 ternary.R:81
 msgid "Confidence ellipse"
 msgstr ""
 
-#: multivariate.R:72 scatter.R:44 ternary.R:86
+#: multivariate.R:70 scatter.R:38 ternary.R:86
 msgid "Ellipse level:"
 msgstr ""
 
-#: multivariate.R:81
+#: multivariate.R:79
 msgid "Results"
 msgstr ""
 
-#: multivariate.R:83 scatter.R:52 ternary.R:118
+#: multivariate.R:81 scatter.R:46 ternary.R:118
 msgid "Click and drag to select an area, then double-click to zoom in."
 msgstr ""
 
-#: multivariate.R:84 scatter.R:53 ternary.R:119
+#: multivariate.R:82 scatter.R:47 ternary.R:119
 msgid "Double-click again to reset the zoom."
 msgstr ""
 
-#: multivariate.R:90
+#: multivariate.R:88
 msgid "Individuals factor map"
 msgstr ""
 
-#: multivariate.R:101
+#: multivariate.R:99
 msgid "Variables factor map"
 msgstr ""
 
-#: multivariate.R:113
+#: multivariate.R:111
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:122 prepare.R:157 scatter.R:21 ternary.R:24
+#: multivariate.R:120 prepare.R:154 scatter.R:21 ternary.R:24
 msgid "Variables"
 msgstr ""
 
-#: multivariate.R:131 multivariate.R:133
+#: multivariate.R:129 multivariate.R:131
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:365
+#: multivariate.R:357
 msgid "Eigenvalues"
 msgstr ""
 
-#: multivariate.R:366
+#: multivariate.R:358
 msgid "Explained var. (%)"
 msgstr ""
 
-#: multivariate.R:367
+#: multivariate.R:359
 msgid "Cumulative var. (%)"
 msgstr ""
 
-#: multivariate.R:388
+#: multivariate.R:380
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:393
+#: multivariate.R:385
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:398
+#: multivariate.R:390
 msgid "Squared cosinus"
 msgstr ""
 
-#: multivariate.R:408
+#: multivariate.R:400
 msgid "Axis"
 msgstr ""
 
-#: pca.R:22 pca.R:89
+#: pca.R:22 pca.R:91
 msgid "PCA"
 msgstr ""
 
-#: pca.R:26 pca.R:121
+#: pca.R:26 pca.R:123
 msgid "Principal Components Analysis"
 msgstr ""
 
@@ -968,7 +1040,7 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: pca.R:92
+#: pca.R:94
 msgid ""
 "PCA is computed on centered log-ratio (CLR), you should check the data "
 "transformation first."
@@ -1026,55 +1098,55 @@ msgstr ""
 msgid "Sample names"
 msgstr ""
 
-#: prepare.R:195
+#: prepare.R:181
 msgid "Row names"
 msgstr ""
 
-#: prepare.R:214
+#: prepare.R:203
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:221
+#: prepare.R:210
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:227
+#: prepare.R:216
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:234
+#: prepare.R:223
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:241
+#: prepare.R:230
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:302
+#: prepare.R:291
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:308
+#: prepare.R:297
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:314
+#: prepare.R:303
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:316
+#: prepare.R:305
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:317
+#: prepare.R:306
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:318
+#: prepare.R:307
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:319
+#: prepare.R:308
 msgid "Remove columns with missing values"
 msgstr ""
 
@@ -1086,7 +1158,7 @@ msgstr ""
 msgid "Could not find the configuration file for %s."
 msgstr ""
 
-#: scatter.R:17 scatter.R:60
+#: scatter.R:17 scatter.R:54
 msgid "Scatter Plot"
 msgstr ""
 
@@ -1098,15 +1170,11 @@ msgstr ""
 msgid "Component Y"
 msgstr ""
 
-#: scatter.R:31
-msgid "Linear regression"
-msgstr ""
-
-#: scatter.R:49 ternary.R:97
+#: scatter.R:43 ternary.R:97
 msgid "Grid"
 msgstr ""
 
-#: scatter.R:70
+#: scatter.R:64
 msgid "Click the plot to select rows of data."
 msgstr ""
 
@@ -1206,13 +1274,17 @@ msgstr ""
 msgid "Upper temporal boundary"
 msgstr ""
 
+#: variables.R:171
+msgid "Choose"
+msgstr ""
+
 #: kinesis-internal.R:36
 msgid "Select at least %d row."
 msgid_plural "Select at least %d rows."
 msgstr[0] ""
 msgstr[1] ""
 
-#: kinesis-internal.R:37
+#: kinesis-internal.R:40
 msgid "Select at least %d column."
 msgid_plural "Select at least %d columns."
 msgstr[0] ""
