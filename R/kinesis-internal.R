@@ -182,10 +182,13 @@ notify <- function(expr, title = NULL) {
     }
   )
 
-  if (!is.null(err))
+  if (!is.null(err)) {
     show_notification(text = err, title = title, type = "error")
-  if (!is.null(warn))
+  }
+  if (!is.null(warn)) {
+    warn <- unique(warn)
     show_notification(text = warn, title = title, type = "warning")
+  }
 
   res
 }
