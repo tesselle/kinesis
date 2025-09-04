@@ -111,7 +111,8 @@ multivariate_ui <- function(id) {
       title = tr_("Individuals"),
       layout_column_wrap(
         output_plot(id = ns("plot_cos2_1")),
-        output_plot(id = ns("plot_cos2_2"))
+        output_plot(id = ns("plot_cos2_2")),
+        min_height = "50%"
       ),
       gt::gt_output(outputId = ns("info_ind"))
     ),
@@ -120,7 +121,8 @@ multivariate_ui <- function(id) {
       title = tr_("Variables"),
       layout_column_wrap(
         output_plot(id = ns("plot_contrib_1")),
-        output_plot(id = ns("plot_contrib_2"))
+        output_plot(id = ns("plot_contrib_2")),
+        min_height = "50%"
       ),
       gt::gt_output(outputId = ns("info_var"))
     ),
@@ -394,7 +396,8 @@ multivariate_summary <- function(x, axes, margin) {
       id = "cos2"
     ) |>
     gt::cols_label(
-      dist = tr_("Distance")
+      gt::matches("dist") ~ tr_("Distance"),
+      gt::matches("inertia") ~ tr_("Inertia")
     ) |>
     gt::cols_label_with(
       columns = gt::starts_with("F"),
