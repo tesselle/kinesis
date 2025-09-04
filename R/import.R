@@ -26,7 +26,7 @@ import_ui <- function(id) {
     ),
     selectize_ui(
       id = ns("rownames"),
-      label = tr_("Sample names"),
+      label = tr_("Row names"),
       multiple = FALSE
     )
   )
@@ -157,17 +157,17 @@ import_server <- function(id, demo = NULL) {
       params[["data"]]
     })
     observe({
-      id <- showNotification(
-        ui = tr_("Reading data..."),
-        action = tags$a(href = data_url(), target = "_blank", data_url()),
-        duration = 3,
-        type = "message"
-      )
+      msg <- tr_("Reading data...")
+      # detail <- tags$a(href = data_url(), target = "_blank", data_url())
+      # id <- showNotification(msg, action = detail, duration = 3, type = "message")
       # on.exit(removeNotification(id), add = TRUE)
 
       csv <- notify(
-        utils::read.csv(file = url(data_url())),
-        tr_("Data Input")
+        withProgress(
+          utils::read.csv(file = url(data_url())),
+          message = msg
+        ),
+        title = tr_("Data Input")
       )
 
       values(csv)
@@ -179,13 +179,16 @@ import_server <- function(id, demo = NULL) {
       req(demo)
 
       msg <- sprintf(tr_("Loading \"%s\" data..."), demo)
-      id <- showNotification(msg, duration = 3, type = "message")
+      # id <- showNotification(msg, duration = 3, type = "message")
       # on.exit(removeNotification(id), add = TRUE)
 
       path <- system.file("extdata", paste0(demo, ".csv"), package = "kinesis")
       csv <- notify(
-        utils::read.csv(file = path),
-        tr_("Data Input")
+        withProgress(
+          utils::read.csv(file = path),
+          message = msg
+        ),
+        title = tr_("Data Upload")
       )
 
       values(csv)
@@ -194,11 +197,12 @@ import_server <- function(id, demo = NULL) {
 
     ## Read data file -----
     observe({
-      id <- showNotification(tr_("Reading data..."), duration = 3, type = "message")
+      msg <- tr_("Reading data...")
+      # id <- showNotification(msg, duration = 3, type = "message")
       # on.exit(removeNotification(id), add = TRUE)
 
       csv <- notify(
-        {
+        withProgress(
           utils::read.table(
             file = input$file$datapath,
             header = input$header,
@@ -209,9 +213,10 @@ import_server <- function(id, demo = NULL) {
             na.strings = input$na.strings,
             skip = if (!is.na(input$skip)) input$skip else 0,
             comment.char = input$comment
-          )
-        },
-        title = "Data Upload"
+          ),
+          message = msg
+        ),
+        title = tr_("Data Upload")
       )
 
       if (!is.null(csv)) removeModal()
