@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: kinesis 0.2.1.9000\n"
-"POT-Creation-Date: 2025-09-03 16:47+0200\n"
+"POT-Creation-Date: 2025-09-04 15:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Threshold"
 msgstr ""
 
-#: bertin.R:52 import.R:96 multivariate.R:64 scatter.R:32 ternary.R:50 ternary.R:80
+#: bertin.R:52 import.R:101 multivariate.R:64 scatter.R:32 ternary.R:50 ternary.R:80
 msgid "None"
 msgstr ""
 
@@ -127,29 +127,33 @@ msgstr ""
 msgid "Cramer's V: %.2f"
 msgstr ""
 
-#: coda.R:17 coda.R:31 prepare.R:17 prepare.R:22 prepare.R:31
+#: coda.R:17 coda.R:30 count.R:17 count.R:22 count.R:30 prepare.R:17 prepare.R:22 prepare.R:30
 msgid "Data"
 msgstr ""
 
-#: coda.R:22 coda.R:157
+#: coda.R:22 coda.R:127
 msgid "Compositional Data"
 msgstr ""
 
-#: coda.R:36
+#: coda.R:37
 msgid "Compositional parts"
 msgstr ""
 
-#: coda.R:45
+#: coda.R:40 count.R:40
+msgid "Select the variables you want to use."
+msgstr ""
+
+#: coda.R:47
 msgid "Group by"
 msgstr ""
 
-#: coda.R:48
+#: coda.R:50
 msgid ""
 "You can use a qualitative variable to assign each sample to a (reference) "
 "group."
 msgstr ""
 
-#: coda.R:49
+#: coda.R:51
 msgid "Missing values will be interpreted as unassigned samples."
 msgstr ""
 
@@ -169,49 +173,49 @@ msgid ""
 "repeated measurements)."
 msgstr ""
 
-#: coda.R:71 home.R:29
-msgid "Overview"
+#: coda.R:71 count.R:46 prepare.R:33
+msgid "Table overview"
 msgstr ""
 
-#: coda.R:76 prepare.R:39
+#: coda.R:78 count.R:53 prepare.R:38
 msgid "Clean values"
 msgstr ""
 
-#: coda.R:80 prepare.R:43 prepare.R:109
+#: coda.R:82 count.R:57 prepare.R:42 prepare.R:106
 msgid "Missing values"
 msgstr ""
 
-#: coda.R:209 multivariate.R:158
+#: coda.R:171 multivariate.R:158
 msgid "Group"
 msgstr ""
 
-#: coda.R:229
+#: coda.R:191
 msgid ""
 "If your data contains zeros, these can be considered as values below the "
 "detection limit (i.e. small unknown values)."
 msgstr ""
 
-#: coda.R:230
+#: coda.R:192
 msgid ""
 "In this case, you can define the detection limit for each compositional part "
 "below."
 msgstr ""
 
-#: coda.R:231
+#: coda.R:193
 msgid ""
 "If all limits are specified, zeros will be replaced by a fraction of these "
 "limits."
 msgstr ""
 
-#: coda.R:232
+#: coda.R:194
 msgid "For computational details, see"
 msgstr ""
 
-#: coda.R:237
+#: coda.R:199
 msgid "Fraction"
 msgstr ""
 
-#: coda.R:243
+#: coda.R:205
 msgid "Replace zero"
 msgstr ""
 
@@ -255,7 +259,7 @@ msgstr ""
 msgid "Hierarchical Clustering"
 msgstr ""
 
-#: coda_hclust.R:24 multivariate.R:395
+#: coda_hclust.R:24 multivariate.R:397
 msgid "Distance"
 msgstr ""
 
@@ -431,6 +435,10 @@ msgstr ""
 msgid "Proportionality Index of Parts"
 msgstr ""
 
+#: count.R:37 diversity.R:22
+msgid "Count data"
+msgstr ""
+
 #: count_diversity_alpha.R:17
 msgid "&#945; Diversity"
 msgstr ""
@@ -507,7 +515,7 @@ msgstr ""
 msgid "PCoA"
 msgstr ""
 
-#: count_diversity_beta.R:111 count_diversity_beta.R:127 count_diversity_docs.R:89
+#: count_diversity_beta.R:108 count_diversity_beta.R:124 count_diversity_docs.R:89
 msgid "Beta Diversity"
 msgstr ""
 
@@ -585,10 +593,6 @@ msgstr ""
 msgid "Indices"
 msgstr ""
 
-#: diversity.R:22
-msgid "Count data"
-msgstr ""
-
 #: graphics.R:19
 msgid "Qualitative scheme"
 msgstr ""
@@ -623,11 +627,11 @@ msgstr ""
 msgid "You can import your data in CSV format."
 msgstr ""
 
-#: help.R:109 import.R:58
+#: help.R:109 import.R:63
 msgid "It assumes that you keep your data tidy:"
 msgstr ""
 
-#: help.R:110 import.R:59
+#: help.R:110 import.R:64
 msgid ""
 "each variable must be saved in its own column and each sample must be saved "
 "in its own row."
@@ -683,6 +687,10 @@ msgstr ""
 msgid "Welcome!"
 msgstr ""
 
+#: home.R:29
+msgid "Overview"
+msgstr ""
+
 #: home.R:37
 msgid "Logo of the tesselle project."
 msgstr ""
@@ -720,92 +728,100 @@ msgstr ""
 msgid "Example data"
 msgstr ""
 
-#: import.R:43
+#: import.R:29 import.R:239
+msgid "Row names"
+msgstr ""
+
+#: import.R:48
 msgid "Import Data"
 msgstr ""
 
-#: import.R:45 plot.R:144
+#: import.R:50 plot.R:144
 msgid "Cancel"
 msgstr ""
 
-#: import.R:53
+#: import.R:58
 msgid "Select the location of, and the file you want to upload."
 msgstr ""
 
-#: import.R:54
+#: import.R:59
 msgid "Please check the default settings and adjust them to your data."
 msgstr ""
 
-#: import.R:55
+#: import.R:60
 msgid "This application only supports data encoded in UFT-8."
 msgstr ""
 
-#: import.R:63
+#: import.R:68
 msgid "Choose a CSV or a TSV file:"
 msgstr ""
 
-#: import.R:73
+#: import.R:78
 msgid "Header"
 msgstr ""
 
-#: import.R:79
+#: import.R:84
 msgid "Decimal"
 msgstr ""
 
-#: import.R:80
+#: import.R:85
 msgid "Dot"
 msgstr ""
 
-#: import.R:80 import.R:88
+#: import.R:85 import.R:93
 msgid "Comma"
 msgstr ""
 
-#: import.R:87
+#: import.R:92
 msgid "Separator"
 msgstr ""
 
-#: import.R:88
+#: import.R:93
 msgid "Semicolon"
 msgstr ""
 
-#: import.R:88
+#: import.R:93
 msgid "Tab"
 msgstr ""
 
-#: import.R:95
+#: import.R:100
 msgid "Quote"
 msgstr ""
 
-#: import.R:96
+#: import.R:101
 msgid "Double quote"
 msgstr ""
 
-#: import.R:96
+#: import.R:101
 msgid "Single quote"
 msgstr ""
 
-#: import.R:105
+#: import.R:110
 msgid "Lines of the data file to skip:"
 msgstr ""
 
-#: import.R:113
+#: import.R:118
 msgid "String to be interpreted as missing value:"
 msgstr ""
 
-#: import.R:119
+#: import.R:124
 msgid "Character to be interpreted as comment:"
 msgstr ""
 
-#: import.R:155 import.R:187
+#: import.R:160 import.R:200
 msgid "Reading data..."
 msgstr ""
 
-#: import.R:164 import.R:180
+#: import.R:170
 msgid "Data Input"
 msgstr ""
 
-#: import.R:173
+#: import.R:181
 msgid "Loading \"%s\" data..."
+msgstr ""
+
+#: import.R:191 import.R:219
+msgid "Data Upload"
 msgstr ""
 
 #: kinesis-internal.R:33
@@ -884,7 +900,7 @@ msgstr ""
 msgid "Interval"
 msgstr ""
 
-#: lm.R:58 lm.R:169
+#: lm.R:58 lm.R:170
 msgid "Confidence interval"
 msgstr ""
 
@@ -892,23 +908,23 @@ msgstr ""
 msgid "Level"
 msgstr ""
 
-#: lm.R:170
+#: lm.R:171
 msgid "Prediction interval"
 msgstr ""
 
-#: lm.R:178
+#: lm.R:179
 msgid "Response"
 msgstr ""
 
-#: lm.R:179
+#: lm.R:180
 msgid "Fitted"
 msgstr ""
 
-#: lm.R:180
+#: lm.R:181
 msgid "Lower bound"
 msgstr ""
 
-#: lm.R:181
+#: lm.R:182
 msgid "Upper bound"
 msgstr ""
 
@@ -988,7 +1004,7 @@ msgstr ""
 msgid "Individuals"
 msgstr ""
 
-#: multivariate.R:120 prepare.R:154 scatter.R:21 ternary.R:24
+#: multivariate.R:120 scatter.R:21 ternary.R:24
 msgid "Variables"
 msgstr ""
 
@@ -996,31 +1012,31 @@ msgstr ""
 msgid "Screeplot"
 msgstr ""
 
-#: multivariate.R:357
+#: multivariate.R:359
 msgid "Eigenvalues"
 msgstr ""
 
-#: multivariate.R:358
+#: multivariate.R:360
 msgid "Explained var. (%)"
 msgstr ""
 
-#: multivariate.R:359
+#: multivariate.R:361
 msgid "Cumulative var. (%)"
 msgstr ""
 
-#: multivariate.R:380
+#: multivariate.R:382
 msgid "Coordinates"
 msgstr ""
 
-#: multivariate.R:385
+#: multivariate.R:387
 msgid "Contribution"
 msgstr ""
 
-#: multivariate.R:390
+#: multivariate.R:392
 msgid "Squared cosinus"
 msgstr ""
 
-#: multivariate.R:400
+#: multivariate.R:402
 msgid "Axis"
 msgstr ""
 
@@ -1050,7 +1066,7 @@ msgstr ""
 msgid "Tools"
 msgstr ""
 
-#: plot.R:23 prepare.R:116
+#: plot.R:23 prepare.R:113
 msgid "Download"
 msgstr ""
 
@@ -1074,79 +1090,63 @@ msgstr ""
 msgid "Unknown graphics device."
 msgstr ""
 
-#: prepare.R:34
-msgid "Table overview"
-msgstr ""
-
-#: prepare.R:101
+#: prepare.R:98
 msgid "Dimensions"
 msgstr ""
 
-#: prepare.R:105
+#: prepare.R:102
 msgid "Sparsity"
 msgstr ""
 
-#: prepare.R:113
+#: prepare.R:110
 msgid "Export your data for futur use."
 msgstr ""
 
 #: prepare.R:148
-msgid "Select data"
-msgstr ""
-
-#: prepare.R:151
-msgid "Sample names"
-msgstr ""
-
-#: prepare.R:181
-msgid "Row names"
-msgstr ""
-
-#: prepare.R:203
 msgid "Remove leading/trailing whitespace"
 msgstr ""
 
-#: prepare.R:210
+#: prepare.R:155
 msgid "Remove rows with zero"
 msgstr ""
 
-#: prepare.R:216
+#: prepare.R:161
 msgid "Remove columns with zero"
 msgstr ""
 
-#: prepare.R:223
+#: prepare.R:168
 msgid "Remove constant columns"
 msgstr ""
 
-#: prepare.R:230
+#: prepare.R:175
 msgid "Remove only if all values meet the condition"
 msgstr ""
 
-#: prepare.R:291
+#: prepare.R:236
 msgid "Empty string as missing value"
 msgstr ""
 
-#: prepare.R:297
+#: prepare.R:242
 msgid "Zero as missing value"
 msgstr ""
 
-#: prepare.R:303
+#: prepare.R:248
 msgid "Remove missing values:"
 msgstr ""
 
-#: prepare.R:305
+#: prepare.R:250
 msgid "Keep as is"
 msgstr ""
 
-#: prepare.R:306
+#: prepare.R:251
 msgid "Replace missing values with zeros"
 msgstr ""
 
-#: prepare.R:307
+#: prepare.R:252
 msgid "Remove rows with missing values"
 msgstr ""
 
-#: prepare.R:308
+#: prepare.R:253
 msgid "Remove columns with missing values"
 msgstr ""
 
@@ -1274,7 +1274,7 @@ msgstr ""
 msgid "Upper temporal boundary"
 msgstr ""
 
-#: variables.R:171
+#: variables.R:172
 msgid "Choose"
 msgstr ""
 
