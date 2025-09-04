@@ -7,7 +7,7 @@ function(request) {
   bslib::page_navbar(
     title = toupper(kinesis::get_option("name")),
     id = "main",
-    kinesis::home_ui("home", package = "tabula"),
+    kinesis::home_ui("home"),
     kinesis::prepare_ui("prepare"),
     kinesis::diversity_ui("diversity"),
     kinesis::diversity_docs_ui("docs"),

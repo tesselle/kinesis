@@ -10,7 +10,7 @@
 #' @family page modules
 #' @keywords internal
 #' @export
-home_ui <- function(id, package) {
+home_ui <- function(id, package = NULL) {
   # Create a namespace function using the provided id
   ns <- NS(id)
 
