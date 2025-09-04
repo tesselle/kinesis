@@ -226,7 +226,9 @@ multivariate_server <- function(id, x, y) {
     plot_ind <- reactive({
       req(x())
 
-      if (length(extra_quali()) == 0 && length(extra_quanti()) > 0) {
+      default_quali <- "observation"
+      if (!isTruthy(extra_quali()) && isTruthy(extra_quanti())) {
+        default_quali <- NULL
         col <- param_ind$pal_quanti
       } else {
         col <- param_ind$pal_quali
@@ -242,7 +244,7 @@ multivariate_server <- function(id, x, y) {
           active = TRUE,
           sup = isTRUE(input$sup_ind),
           labels = isTRUE(input$lab_ind),
-          extra_quali = extra_quali() %|||% "observation",
+          extra_quali = extra_quali() %|||% default_quali,
           extra_quanti = extra_quanti(),
           color = col,
           symbol = param_ind$pal_pch,

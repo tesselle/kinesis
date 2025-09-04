@@ -6,26 +6,6 @@ path <- "fake.csv"
 fake <- read.csv(path)
 x <- reactiveVal(fake)
 
-# remove_whitespace = FALSE
-# remove_zero_row = FALSE
-# remove_zero_column = FALSE
-# remove_constant_column = FALSE
-# all = FALSE
-# zero_as_NA = FALSE
-# remove = "none"
-
-# Select =======================================================================
-testServer(kinesis:::select_server, args = list(x = x), {
-  session$setInputs("rownames" = "", "variables-names" = colnames(fake))
-  dataset <- session$getReturned()
-  expect_equal(dataset(), fake)
-
-  session$setInputs("variables-names" = c("doi", "color", "height"))
-  session$elapse(2000)
-  dataset <- session$getReturned()
-  expect_equal(dataset(), fake[, c("doi", "color", "height")])
-})
-
 # Clean ========================================================================
 testServer(kinesis:::clean_server, args = list(x = x), {
   dataset <- session$getReturned()

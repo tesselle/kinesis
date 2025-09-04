@@ -99,7 +99,8 @@ lm_server <- function(id, x) {
       req(resp(), expl())
       stats::as.formula(paste0(resp(), " ~ ", paste0(expl(), collapse = " + ")))
     }) |>
-      bindEvent(expl())
+      bindEvent(expl()) |>
+      debounce(500)
 
     model <- reactive({
       stats::lm(vars(), data = x(), na.action = stats::na.omit, y = TRUE)

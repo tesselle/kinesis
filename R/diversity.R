@@ -50,13 +50,19 @@ diversity_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   moduleServer(id, function(input, output, session) {
     ## Get count data -----
     quanti <- subset_quantitative(x, positive = TRUE)
+    quali <- subset_qualitative(x)
+
+    ## Update UI -----
     vars <- update_checkbox_colnames("count", x = quanti)
-    counts <- select_data(quanti, vars, drop = FALSE)
+
+    ## Select variables -----
+    counts <- select_data(quanti, vars, drop = FALSE) |>
+      debounce(500)
 
     ## Diversity -----
     bertin_server("plot", x = counts)
     alpha <- diversity_alpha_server("alpha", x = counts)
-    diversity_beta_server("beta", x = counts, quanti = alpha, quali = x)
+    diversity_beta_server("beta", x = counts, quanti = alpha, quali = quali)
     occ <- occurrence_server("occurrence", x = counts)
 
     counts

@@ -4,7 +4,8 @@ select_data <- function(x, names, drop = FALSE) {
   stopifnot(is.reactive(names))
 
   reactive({
-    req(x())
+    if (!all(dim(x()) > 0)) return(NULL)
+
     cols <- arkhe::get_columns(x = x(), names = names())
     if (!isTRUE(drop)) return(cols)
     unlist(cols, use.names = FALSE)
@@ -182,7 +183,6 @@ update_input <- function(control, id, x,
       bindEvent(trigger())
 
     ## Return variable names
-    reactive({ input$names }) |>
-      debounce(500)
+    reactive({ input$names })
   })
 }

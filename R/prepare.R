@@ -20,8 +20,7 @@ prepare_ui <- function(id) {
       sidebar = sidebar(
         width = 400,
         title = tr_("Data"),
-        import_ui(ns("import")),
-        select_ui(ns("select"))
+        import_ui(ns("import"))
       ), # sidebar
       ## Output: value box
       box_ui(ns("box")),
@@ -55,7 +54,6 @@ prepare_ui <- function(id) {
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's
 #'  UI function.
-#' @param detect A predicate [`function`] used to select columns.
 #' @param demo A [`character`] string specifying the name of a dataset (see
 #'  [import_server()]).
 #' @return A reactive [`data.frame`].
@@ -63,12 +61,11 @@ prepare_ui <- function(id) {
 #' @family generic modules
 #' @keywords internal
 #' @export
-prepare_server <- function(id, detect = \(...) TRUE, demo = NULL) {
+prepare_server <- function(id, demo = NULL) {
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_raw <- import_server("import", demo = demo)
-    data_sub <- select_server("select", x = data_raw, detect = detect)
-    data_clean <- clean_server("clean", x = data_sub)
+    data_clean <- clean_server("clean", x = data_raw)
     data_miss <- missing_server("missing", x = data_clean)
 
     ## Render description -----
@@ -99,15 +96,15 @@ box_ui <- function(id) {
     fill = FALSE,
     value_box(
       title = tr_("Dimensions"),
-      value = textOutput(outputId = ns("value_dimensions"))
+      uiOutput(outputId = ns("value_dimensions"))
     ),
     value_box(
       title = tr_("Sparsity"),
-      value = textOutput(outputId = ns("value_sparsity"))
+      uiOutput(outputId = ns("value_sparsity"))
     ),
     value_box(
       title = tr_("Missing values"),
-      value = textOutput(outputId = ns("value_missing"))
+      uiOutput(outputId = ns("value_missing"))
     ),
     card(
       helpText(tr_("Export your data for futur use.")),
@@ -122,73 +119,21 @@ box_server <- function(id, x) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-    output$value_dimensions <- renderText({
+    output$value_dimensions <- renderUI({
       req(x())
       paste0(dim(x()), collapse = " x ")
     })
-    output$value_sparsity <- renderText({
+    output$value_sparsity <- renderUI({
       req(x())
       paste0(round(arkhe::sparsity(x()) * 100, 2), "%")
     })
-    output$value_missing <- renderText({
+    output$value_missing <- renderUI({
       req(x())
       sum(is.na(x()))
     })
 
     ## Download -----
     output$download <- export_table(x, "data")
-  })
-}
-
-## Select ----------------------------------------------------------------------
-select_ui <- function(id) {
-  ns <- NS(id)
-
-  tags$div(
-    h5(tr_("Select data")),
-    selectize_ui(
-      id = ns("rownames"),
-      label = tr_("Sample names"),
-      multiple = FALSE
-    ),
-    checkbox_ui(ns("variables"), label = tr_("Variables"))
-  )
-}
-
-#' @param id A [`character`] string specifying the namespace.
-#' @param x A reactive `matrix`-like object.
-#' @param detect A predicate [`function`] for column detection
-#'  (see [arkhe::detect()]).
-#' @param min_row An [`integer`] specifying the expected minimum number of rows.
-#' @param min_col An [`integer`] specifying the expected minimum number of columns.
-#' @return A reactive [`data.frame`].
-#' @noRd
-select_server <- function(id, x, detect = NULL) {
-  stopifnot(is.reactive(x))
-
-  moduleServer(id, function(input, output, session) {
-    ## Update UI
-    rows <- update_selectize_colnames("rownames", x)
-
-    ## Assign row names
-    named <- reactive({
-      req(x())
-      out <- notify(
-        {
-          column <- arkhe::seek_columns(x(), names = rows())
-          arkhe::assign_rownames(x(), column = column %|||% 0, remove = TRUE)
-        },
-        title = tr_("Row names")
-      )
-      out
-    })
-
-    ## Subset
-    sub <- subset_data(named, f = detect)
-
-    ## Select variables
-    vars <- update_checkbox_colnames("variables", x = sub)
-    select_data(sub, vars, drop = FALSE)
   })
 }
 
@@ -324,7 +269,6 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
   stopifnot(is.reactive(x))
 
   moduleServer(id, function(input, output, session) {
-
     ## Replace empty strings
     empty_as_na <- reactive({
       req(x())
@@ -358,15 +302,12 @@ missing_server <- function(id, x, verbose = get_option("verbose", FALSE)) {
         function(x) { x }
       )
 
-      out <- fun(zero_as_na())
-      validate_dim(out)
-
-      out
+      fun(zero_as_na())
     })
 
     ## Render plot
     plot_missing <- reactive({
-      req(no_missing())
+      req(all(dim(no_missing()) > 0))
       function() {
         col <- if (anyNA(no_missing())) c("#DDDDDD", "#BB5566") else "#DDDDDD"
         tabula::plot_heatmap(object = is.na(no_missing()), color = col,

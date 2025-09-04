@@ -20,8 +20,7 @@ coda_ui <- function(id) {
       sidebar = sidebar(
         width = 400,
         title = tr_("Compositional Data"),
-        import_ui(ns("import")),
-        select_ui(ns("select"))
+        import_ui(ns("import"))
       ), # sidebar
       ## Output: value box
       box_ui(ns("box")),
@@ -31,15 +30,18 @@ coda_ui <- function(id) {
           title = tr_("Data"),
           layout_sidebar(
             sidebar = sidebar(
-              checkboxGroupInput(
-                inputId = ns("parts"),
-                label = tr_("Compositional parts"),
-                choices = NULL,
-                selected = NULL,
-                inline = TRUE
+              checkbox_ui(
+                id = ns("parts"),
+                label = tooltip(
+                  trigger = span(
+                    tr_("Compositional parts"),
+                    icon("info-circle")
+                  ),
+                  tr_("Select the variables you want to use.")
+                )
               ),
-              selectizeInput(
-                inputId = ns("group"),
+              selectize_ui(
+                id = ns("group"),
                 label = tooltip(
                   trigger = span(
                     tr_("Group by"),
@@ -48,12 +50,10 @@ coda_ui <- function(id) {
                   tr_("You can use a qualitative variable to assign each sample to a (reference) group."),
                   tr_("Missing values will be interpreted as unassigned samples.")
                 ),
-                choices = NULL,
-                multiple = TRUE,
-                options = list(plugins = "remove_button")
+                multiple = TRUE
               ),
-              selectizeInput(
-                inputId = ns("condense"),
+              selectize_ui(
+                id = ns("condense"),
                 label = tooltip(
                   trigger = span(
                     tr_("Condense by"),
@@ -62,13 +62,15 @@ coda_ui <- function(id) {
                   tr_("You can use one or more categorical variable to split the data into subsets and compute the compositional mean for each."),
                   tr_("Usefull if your data contain several observations for the same sample (e.g. repeated measurements).")
                 ),
-                choices = NULL,
-                multiple = TRUE,
-                options = list(plugins = "remove_button")
+                multiple = TRUE
               ),
             ), # sidebar
             ## Output: display data
-            checkboxInput(inputId = ns("head"), label = tr_("Overview"), value = TRUE),
+            checkboxInput(
+              inputId = ns("head"),
+              label = tr_("Table overview"),
+              value = TRUE
+            ),
             gt::gt_output(outputId = ns("table"))
           ) # layout_sidebar
         ),
@@ -105,87 +107,46 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
   moduleServer(id, function(input, output, session) {
     ## Prepare data -----
     data_raw <- import_server("import", demo = demo)
-    data_sub <- select_server("select", x = data_raw)
+    quanti <- subset_quantitative(data_raw, positive = TRUE)
+    quali <- subset_qualitative(data_raw)
 
     ## Update UI -----
-    observe({
-      choices <- colnames(data_sub())
-
-      f <- \(x) is.numeric(x) && all(x >= 0)
-      found <- which(arkhe::detect(x = data_sub(), f = f, margin = 2))
-      choices_num <- choices[found]
-
-      freezeReactiveValue(input, "parts")
-      updateCheckboxGroupInput(
-        inputId = "parts",
-        choices = choices_num,
-        selected = NULL
-      )
-
-      f <- \(x) Negate(is.numeric)(x)
-      found <- which(arkhe::detect(x = data_sub(), f = f, margin = 2))
-      choices_char <- choices[found]
-
-      freezeReactiveValue(input, "group")
-      updateSelectizeInput(
-        inputId = "group",
-        choices = choices_char,
-        server = TRUE
-      )
-
-      freezeReactiveValue(input, "condense")
-      updateSelectizeInput(
-        inputId = "condense",
-        choices = choices,
-        server = TRUE
-      )
-    }) |>
-      bindEvent(data_sub())
+    var_parts <- update_checkbox_colnames("parts", x = quanti)
+    var_group <- update_selectize_colnames("group", x = quali)
+    var_condense <- update_selectize_colnames("condense", x = data_raw)
 
     ## Compositions -----
-    coda <- reactive({
-      req(data_sub())
-      req(input$parts)
-
+    data_coda <- reactive({
       notify(
         nexus::as_composition(
-          from = data_sub(),
-          parts = input$parts,
+          from = quanti(),
+          parts = var_parts(),
           autodetect = FALSE,
           verbose = verbose
         ),
         title = tr_("Compositional Data")
       )
     }) |>
+      bindEvent(var_parts()) |>
       debounce(500)
 
     ## Group -----
     data_group <- reactive({
-      req(coda())
+      if (!isTruthy(var_group()) || !isTruthy(data_coda()))
+        return(data_coda())
 
-      out <- coda()
-      if (isTruthy(input$group)) {
-        by <- data_sub()[input$group]
-        out <- nexus::group(out, by = by, verbose = verbose)
-      }
-
-      out
-    }) |>
-      debounce(500)
+      nexus::group(data_coda(), by = quali()[var_group()],
+                   verbose = verbose)
+    })
 
     ## Condense -----
     data_condense <- reactive({
-      req(data_group())
+      if (!isTruthy(var_condense()) || !isTruthy(data_group()))
+        return(data_group())
 
-      out <- data_group()
-      if (isTruthy(input$condense)) {
-        by <- data_sub()[input$condense]
-        out <- nexus::condense(out, by = by, ignore_na = FALSE, verbose = verbose)
-      }
-
-      out
-    }) |>
-      debounce(500)
+      nexus::condense(data_group(), by = data_raw()[var_condense()],
+                      ignore_na = FALSE, verbose = verbose)
+    })
 
     ## Missing values -----
     data_clean <- clean_server("clean", x = data_condense)
@@ -196,6 +157,7 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
     ## Check -----
     data_valid <- reactive({
+      validate_csv(data_missing())
       validate_dim(data_missing(), i = 1, j = 3)
       validate_na(data_missing())
       validate_zero(data_missing())
@@ -205,15 +167,15 @@ coda_server <- function(id, demo = NULL, verbose = get_option("verbose", FALSE))
 
     ## Render tables -----
     output$table <- gt::render_gt({
-      req(data_valid())
-      tbl <- as.data.frame(data_valid(), group_var = tr_("Group"))
+      req(data_missing())
+      tbl <- as.data.frame(data_missing(), group_var = tr_("Group"))
       tbl <- if (isTRUE(input$head)) utils::head(tbl) else tbl
       gt::gt(tbl, rownames_to_stub = TRUE) |>
         gt::tab_options(table.width = "100%")
     })
 
     ## Value box -----
-    box_server("box", x = data_missing)
+    box_server("box", x = data_valid)
 
     data_valid
   })

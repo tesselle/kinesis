@@ -8,7 +8,7 @@
 #' @noRd
 function(input, output, session) {
   ## Data
-  data <- kinesis::prepare_server("prepare", detect = is.numeric, demo = "zuni")
+  data <- kinesis::count_server("prepare", demo = "zuni")
 
   ## CA
   ca_results <- kinesis::ca_server("ca", x = data)

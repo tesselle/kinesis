@@ -96,9 +96,6 @@ diversity_beta_server <- function(id, x, quanti, quali) {
 
   moduleServer(id, function(input, output, session) {
     ## Update UI -----
-    quanti <- subset_quantitative(quanti)
-    quali <- subset_qualitative(quali)
-
     col_quali <- update_selectize_colnames("extra_quali", x = quali)
     col_quanti <- update_selectize_colnames("extra_quanti", x = quanti)
 
@@ -156,7 +153,7 @@ diversity_beta_server <- function(id, x, quanti, quali) {
     plot_pcoa <- reactive({
       req(analysis())
 
-      if (length(extra_quali()) == 0 && length(extra_quanti()) > 0) {
+      if (!isTruthy(extra_quali()) && isTruthy(extra_quanti())) {
         col <- param_pcoa$pal_quanti
       } else {
         col <- param_pcoa$pal_quali
@@ -177,7 +174,7 @@ diversity_beta_server <- function(id, x, quanti, quali) {
         if (isTRUE(input$hull)) {
           dimensio::viz_hull(
             x = analysis(),
-            group = extra_quali,
+            group = extra_quali(),
             color = param_pcoa$pal_quali
           )
         }

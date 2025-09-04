@@ -22,6 +22,8 @@ Alpha Diversity UI
 Other count data modules: 
 \code{\link{bertin_server}()},
 \code{\link{bertin_ui}()},
+\code{\link{count_server}()},
+\code{\link{count_ui}()},
 \code{\link{diversity_alpha_server}()},
 \code{\link{diversity_beta_server}()},
 \code{\link{diversity_beta_ui}()},

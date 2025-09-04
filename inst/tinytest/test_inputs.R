@@ -16,34 +16,28 @@ testServer(kinesis:::build_numeric_input, args = list(x = x), {
 x <- reactiveVal(iris)
 
 testServer(kinesis:::update_checkbox_colnames, args = list(x = x), {
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), NULL)
 
   session$setInputs(names = c("Sepal.Length", "Sepal.Width"))
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), c("Sepal.Length", "Sepal.Width"))
 })
 
 testServer(kinesis:::update_selectize_colnames, args = list(x = x), {
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), NULL)
 
   session$setInputs("names" = "species")
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), "species")
 })
 
 testServer(kinesis:::update_selectize_rownames, args = list(x = x), {
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), NULL)
 
   session$setInputs("names" = "species")
-  session$elapse(2000)
   val <- session$getReturned()
   expect_equal(val(), "species")
 })

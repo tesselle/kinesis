@@ -23,6 +23,11 @@ import_ui <- function(id) {
       inputId = ns("demo"),
       label = tr_("Example data"),
       icon = icon("book")
+    ),
+    selectize_ui(
+      id = ns("rownames"),
+      label = tr_("Sample names"),
+      multiple = FALSE
     )
   )
 }
@@ -138,7 +143,8 @@ import_modal <- function(ns) {
 #' @export
 import_server <- function(id, demo = NULL) {
   moduleServer(id, function(input, output, session) {
-    data <- reactiveValues(values = NULL)
+    ## Store data -----
+    values <- reactiveVal()
 
     ## Show modal dialog -----
     observe({ showModal(import_modal(session$ns)) }) |>
@@ -159,10 +165,12 @@ import_server <- function(id, demo = NULL) {
       )
       # on.exit(removeNotification(id), add = TRUE)
 
-      data$values <- notify(
+      csv <- notify(
         utils::read.csv(file = url(data_url())),
         tr_("Data Input")
       )
+
+      values(csv)
     }) |>
       bindEvent(data_url())
 
@@ -175,10 +183,12 @@ import_server <- function(id, demo = NULL) {
       # on.exit(removeNotification(id), add = TRUE)
 
       path <- system.file("extdata", paste0(demo, ".csv"), package = "kinesis")
-      data$values <- notify(
+      csv <- notify(
         utils::read.csv(file = path),
         tr_("Data Input")
       )
+
+      values(csv)
     }) |>
       bindEvent(input$demo)
 
@@ -187,7 +197,7 @@ import_server <- function(id, demo = NULL) {
       id <- showNotification(tr_("Reading data..."), duration = 3, type = "message")
       # on.exit(removeNotification(id), add = TRUE)
 
-      x <- notify(
+      csv <- notify(
         {
           utils::read.table(
             file = input$file$datapath,
@@ -204,14 +214,25 @@ import_server <- function(id, demo = NULL) {
         title = "Data Upload"
       )
 
-      if (!is.null(x)) removeModal()
-      data$values <- x
+      if (!is.null(csv)) removeModal()
+      values(csv)
     }) |>
       bindEvent(input$go)
 
+    ## Update UI -----
+    rows <- update_selectize_colnames("rownames", values)
+
+    ## Assign row names -----
     reactive({
-      validate_csv(data$values)
-      data$values
+      if (!isTruthy(rows())) return(values())
+
+      notify(
+        {
+          column <- arkhe::seek_columns(values(), names = rows())
+          arkhe::assign_rownames(values(), column = column %|||% 0, remove = TRUE)
+        },
+        title = tr_("Row names")
+      )
     })
   })
 }
