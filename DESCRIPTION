@@ -1,6 +1,6 @@
 Package: kinesis
 Title: 'shiny' Applications for the 'tesselle' Packages
-Version: 0.2.1.9000
+Version: 0.3.0
 Authors@R: c(
     person("Nicolas", "Frerebeau", , "nicolas.frerebeau@u-bordeaux-montaigne.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5759-4944")),
@@ -30,24 +30,24 @@ Imports:
     arkhe (>= 1.11.0),
     bslib (>= 0.9.0),
     config (>= 0.3.2),
-    dimensio (>= 0.14.0),
+    dimensio (>= 0.14.1),
     grDevices,
     gt (>= 1.0.0),
     isopleuros (>= 1.4.0),
     kairos (>= 2.3.0),
     khroma (>= 1.16.0),
-    mirai (>= 2.4.0),
+    mirai (>= 2.5.0),
     nexus (>= 0.6.0),
     sass (>= 0.4.10),
     shiny (>= 1.11.1),
     stats,
-    tabula (>= 3.3.1),
+    tabula (>= 3.3.2),
     utils
 Suggests: 
     tinytest
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 X-schema.org-applicationCategory: Archaeological Science
 X-schema.org-isPartOf: https://www.tesselle.org
 X-schema.org-keywords: archaeology, archaeological-science, archaeometry,
