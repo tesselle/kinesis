@@ -1,3 +1,5 @@
+# kinesis 0.3.0.9000
+
 # kinesis 0.3.0
 ## Bugfixes & changes
 * The apps no longer stop when the current session ends.

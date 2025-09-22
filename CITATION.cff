@@ -23,6 +23,9 @@ identifiers:
 - description: The versioned DOI for version 0.2.1.
   type: doi
   value: 10.5281/zenodo.15918746
+- description: The versioned DOI for version 0.3.0.
+  type: doi
+  value: 10.5281/zenodo.17177309
 - description: The CRAN DOI
   type: doi
   value: 10.32614/CRAN.package.kinesis
@@ -93,7 +96,7 @@ references:
   title: aion
   abstract: 'aion: Archaeological Time Series'
   notes: Imports
-  url: https://packages.tesselle.org/aion/
+  url: https://tesselle.r-universe.dev/aion
   repository: https://CRAN.R-project.org/package=aion
   authors:
   - family-names: Frerebeau
@@ -104,9 +107,9 @@ references:
     given-names: Joe
     email: joseph.roe@iaw.unibe.ch
     orcid: https://orcid.org/0000-0002-1011-1244
-  year: '2025'
   doi: 10.32614/CRAN.package.aion
   version: '>= 1.5.0'
+  year: '2025'
 - type: software
   title: arkhe
   abstract: 'arkhe: Tools for Cleaning Rectangular Data'
