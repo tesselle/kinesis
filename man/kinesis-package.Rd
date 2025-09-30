@@ -24,15 +24,6 @@ Université Bordeaux Montaigne\cr
 F-33607 Pessac cedex\cr
 France
 }
-\section{Package options}{
-
-\pkg{kinesis} uses the following \code{\link[=options]{options()}} to configure behavior:
-\itemize{
-\item \code{kinesis.workers}: an \code{\link{integer}} specifying the number of \R sessions
-to be used for asynchronous (parallel) computing. Defaults to 1.
-}
-}
-
 \seealso{
 Useful links:
 \itemize{

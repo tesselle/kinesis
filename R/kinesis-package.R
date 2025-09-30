@@ -12,11 +12,6 @@
 #'  F-33607 Pessac cedex\cr
 #'  France
 #'
-#' @section Package options:
-#'  \pkg{kinesis} uses the following [options()] to configure behavior:
-#'  * `kinesis.workers`: an [`integer`] specifying the number of \R sessions
-#'  to be used for asynchronous (parallel) computing. Defaults to 1.
-#'
 #' @name kinesis-package
 #' @aliases kinesis-package kinesis
 #' @docType package
