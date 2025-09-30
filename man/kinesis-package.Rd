@@ -14,6 +14,7 @@ A collection of 'shiny' applications for the 'tesselle' packages \url{https://ww
 \tabular{ll}{
 \strong{Version} \tab 0.3.1 \cr
 \strong{License} \tab GPL-3 \cr
+\strong{CRAN DOI} \tab \doi{10.32614/CRAN.package.kinesis} \cr
 \strong{Zenodo DOI} \tab \doi{10.5281/zenodo.14645671} \cr
 }
 

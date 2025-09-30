@@ -2,6 +2,7 @@
 #'  \tabular{ll}{
 #'   **Version** \tab 0.3.1 \cr
 #'   **License** \tab GPL-3 \cr
+#'   **CRAN DOI** \tab \doi{10.32614/CRAN.package.kinesis} \cr
 #'   **Zenodo DOI** \tab \doi{10.5281/zenodo.14645671} \cr
 #'  }
 #'

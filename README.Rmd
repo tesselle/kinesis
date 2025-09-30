@@ -131,6 +131,9 @@ cff_keys <- list(
     list(description = "The versioned DOI for version 0.3.0.",
          type = "doi",
          value = "10.5281/zenodo.17177309"),
+    list(description = "The versioned DOI for version 0.3.1.",
+         type = "doi",
+         value = "10.5281/zenodo.17232778"),
     list(description = "The CRAN DOI",
          type = "doi",
          value = "10.32614/CRAN.package.kinesis")

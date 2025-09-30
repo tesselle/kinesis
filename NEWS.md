@@ -1,3 +1,5 @@
+# kinesis 0.3.1.9000
+
 # kinesis 0.3.1
 ## Bugfixes & changes
 * Fix column names of multivariate analysis summary table.
