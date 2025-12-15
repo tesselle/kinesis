@@ -40,6 +40,7 @@ public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostat
 
 [![DOI
 Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.14645671.svg)](https://doi.org/10.5281/zenodo.14645671)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://codeberg.org/tesselle/kinesis/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://codeberg.org/tesselle/kinesis)
 <!-- badges: end -->
 
 ## Overview
@@ -71,7 +72,7 @@ This package is a part of the tesselle project
 
 ## Remote use
 
-The applications are deployed on <https://shiny.archaeo.science>.
+The applications are deployed at <https://shiny.archaeo.science>.
 
 ## Local use
 

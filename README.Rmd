@@ -29,6 +29,7 @@ Sys.setenv(LANGUAGE = "en") # Force locale
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 [![DOI Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.14645671.svg)](https://doi.org/10.5281/zenodo.14645671)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://codeberg.org/tesselle/kinesis/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://codeberg.org/tesselle/kinesis)
 <!-- badges: end -->
 
 ## Overview
@@ -46,7 +47,7 @@ print(cite, bibtex = FALSE)
 
 ## Remote use
 
-The applications are deployed on <https://shiny.archaeo.science>.
+The applications are deployed at <https://shiny.archaeo.science>.
 
 ## Local use
 ### Installation
